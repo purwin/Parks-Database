@@ -1,0 +1,257 @@
+{% from "_macros.html" import nav %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Create</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"
+	  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	  crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	
+
+	<link rel="stylesheet" href="../static/css/style.css">
+	<!-- <script src="../static/js/create.js"></script> -->
+</head>
+<body>
+<div class='container'>
+	{{ nav() }}
+	<div class="form_please">
+		<form action="{{ url_for('create') }}" method="post">
+		<div class='head'>
+		<h1>
+			<label for='create_item'>New</label> 
+			<select id="create_type" name='create_item'>
+				<option value='' disabled selected></option>
+				<option value="exhibition">Exhibition</option>
+				<option value="artwork">Artwork</option>
+				<option value="artist">Artist</option>
+				<option value="park">Park</option>
+				<option value="event">Event</option>
+				<option value="organization">Organization</option>
+				<option value="organizer">Organizer</option>
+				<option value="employee">Employee</option>
+			</select>
+		</h1>
+		</div>
+		<div id='create_exhibition' class='create_div'>
+			<h2>Exhibition</h2>
+			<div class='bio'>
+				<h3>Bio</h3>
+				<ul>
+					<li><label for='exh_name'>Name</label> <input type='text' name='exh_name'></li>
+					<li><label>Exhibition Dates</label> <input type='date' name='exh_startDate'> to <input type='date' name='exh_endDate'></li>
+				</ul>
+				<h3>Organizations</h3>
+				<button type='button' class='orgCreate btn-reg' data-toggle="modal" data-target="#modal_orgCreate">Create</button>
+				<ul class="ul_org">
+					<li>
+						<select id='' name='exh_org' class=''>
+							<option value='' disabled selected>Organization</option>
+							{% for org in orgs %}
+							<option value="{{ org.id }}">{{ org.name }}</option>
+							{% endfor %}
+						</select>
+						<button id='orgAdd' type='button' class='btn-edit org_add'>+</button>
+					</li>
+				</ul>
+			</div>
+			<div class='exh_artworks'>
+				<h3>Artworks</h3>
+					<button type='button' class='artCreate btn-reg' data-toggle="modal" data-target="#modal_artCreate">Create</button>
+					<ul id='exh_art_list'>
+						<li>
+							<select id='' name='exh_art' class=''>
+								<option value='' disabled selected>Artwork</option>
+								{% for artwork in artworks %}
+								<option value="{{ artwork.id }}">{{ artwork.name }}</option>
+								{% endfor %}
+							</select> @ 
+							<select id='' name='exh_park' class=''>
+								<option value='' disabled selected>Park</option>
+								{% for park in parks %}
+								<option value="{{ park.id }}">{{ park.name }}</option>
+								{% endfor %}
+							</select> 
+							<button id='artAdd' type='button' class='btn-edit art_add'>+</button>
+						</li>
+					</ul>
+
+			</div>
+			<div class='install'>
+				<h3>Install Details</h3>
+				<ul>
+					<li><label for='exh_installStart'>Install Date(s)</label> <input type='date' name='exh_installStart'> to <input type='date' name='exh_installEnd'></li>
+				</ul>
+			</div>
+			<div class='deinstall'>
+				<h3>De-Install Details</h3>
+				<ul>
+					<li><label for='exh_deinstallDate'>De-Install Due Date</label> <input type='date' name='exh_deinstallDate'></li>
+				</ul>
+			</div>
+		</div>
+		<div id='create_artwork' class='create_div'>
+			<h2>Artwork</h2>
+			<div class="art_bio">
+				<h3>Bio</h3>
+				<ul>
+					<li>Name <input type="text" name="artwork_name"> 
+						<!-- <input type='text' id='' name='art_park' class='' list='parks'>
+							<datalist id='parks'>
+								<option value='' disabled selected>Park</option>
+								{% for park in parks %}
+								<option data-value="{{ park.id }}" value="{{ park.name }}"></option>
+								{% endfor %}
+							</datalist> -->
+					</li>
+				</ul>
+			</div>
+			<div class="art_artists">
+				<h3>Artists</h3>
+				<button type="button" class="artistCreate btn-reg" data-toggle="modal" data-target="#modal_artistCreate">Create</button>
+				<ul class="ul_artist">
+					<li>Artist <input type="text" id="try_it" name="art_artist" class="" list="artists">
+							<datalist id="artists">
+								{% for artist in artists %}
+								<option data-value="{{ artist.id }}" value="{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}"></option>
+								{% endfor %}
+							</datalist>
+							<button id="artistAdd" type="button" class="artist_add btn-edit">+</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id='create_artist' class='create_div'>
+			<h2>Artist</h2>
+			<ul>
+				<li>Name <input type='text' name='artist_pName' placeholder='primary/last name'> <input type='text' name='artist_fName' placeholder='first name'></li>
+				<li>Email <input type='text' name='artist_email'></li>
+				<li>Phone <input type='text' name='artist_phone'></li>
+				<li>Website  <input type='text' name='artist_website'></li>
+			</ul>
+		</div>
+		<div id='create_park' class='create_div'>
+			<h2>Park</h2>
+			<ul>
+				<li>Name <input type='text' name='park_name'></li>
+				<li>Park ID <input type='text' name='park_park_id'></li>
+				<li>Borough <select id="create_type" name='park_borough' style='border:none; border-radius: 0px; border-bottom: 2px dashed red; font-size:15px; -webkit-appearance:none; padding-left:5px;'>
+					<option value="" selected disabled>Select a Borough</option>
+					<option value="Manhattan">Manhattan</option>
+					<option value="Brooklyn">Brooklyn</option>
+					<option value="Queens">Queens</option>
+					<option value="Bronx">Bronx</option>
+					<option value="Staten Island">Staten Island</option>
+					</select></li>
+				<li>Address <input type='text' name='park_address'></li>
+				<li>Community Board # <input type='text' name='park_cb'></li>
+			</ul>
+		</div>
+		<div id='create_organization' class='create_div'>
+			<h2>Organization</h2>
+			<ul>
+				<li>Name <input type='text' name='org_name'></li>
+				<li>Website <input type='text' name='org_website'></li>
+				<li>Phone <input type='text' name='org_phone'></li>
+			</ul>
+		</div>
+		<div class='form_submit'>
+			<button type='button' class='btn-no'><a href="{{ url_for('home') }}">Cancel</a></button>
+			<input type='submit' value='Create'>
+		</div>
+		</form>
+	</div>
+
+
+	<!-- Create artwork modal -->
+	<div id="modal_artCreate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header bg-green">
+	        <h5 class="modal-title" id="exampleModalLabel">CREATE AN ARTWORK</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+<!-- 	      	<form>
+		      	<ul>
+			        <li>Name <input type='text' name='artwork_name'></li>
+					<li>Artist <input type='text' id='' name='art_artist' class='' list='artists'>
+							<datalist id='artists'>
+								{% for artist in artists %}
+								<option data-value="{{ artist.id }}" value="{{ artist.name }}"></option>
+								{% endfor %}
+							</datalist>
+							<button type='button' class='artistCreate btn-add' data-toggle="modal" data-target="#modal_artistCreate">Create</button> 
+							<button type='button' id='artistAdd' class='artist_add btn-edit'>+</button>
+					</li>
+				</ul>
+			</form>	 -->		
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn-no" data-dismiss="modal">Cancel</button>
+	        <button type="button" id="modal_add_artwork" class="btn-add">Add</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Create artist modal -->
+	<div id="modal_artistCreate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header bg-green">
+	        <h5 class="modal-title" id="exampleModalLabel">CREATE AN ARTIST</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+<!-- 	      	<form id='form_artist'>
+				<ul>
+					<li>Name <input type='text' name='artist_pName' placeholder='primary/last name'> <input type='text' name='artist_fName' placeholder='first name'></li>
+					<li>Email <input type='text' name='artist_email'></li>
+					<li>Phone <input type='text' name='artist_phone'></li>
+					<li>Website  <input type='text' name='artist_website'></li>
+				</ul>
+			</form> -->
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn-no" data-dismiss="modal">Cancel</button>
+	        <button type="button" id="modal_add_artist" class="btn-add">Add</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Create org modal -->
+	<div id="modal_orgCreate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header bg-green">
+	        <h5 class="modal-title" id="exampleModalLabel">CREATE AN ORGANIZATION</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn-no" data-dismiss="modal">Cancel</button>
+	        <button type="button" id='modal_add_org' class="btn-add">Add</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+</div>
+<script src="{{ url_for('static', filename='js/create.js') }}"></script>
+</body>
+</html>

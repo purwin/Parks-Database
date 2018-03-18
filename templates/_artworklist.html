@@ -1,0 +1,5 @@
+Artwork <input type="text" id="" name="exh_art" class="" list="artworks"><datalist id="artworks">
+		{% for artwork in artworks %}
+		<option data-value="{{ artwork.id }}" value="{{ artwork.name }}"></option>
+		{% endfor %}
+		</datalist>

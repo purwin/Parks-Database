@@ -1,0 +1,12 @@
+{% macro nav() %}
+<div class='links'>
+	<li><a href="{{ url_for('home') }}">Home</a></li>
+	<li><a href="{{ url_for('exhibitions') }}">Exhibitions</a></li>
+	<li><a href="{{ url_for('parks') }}">Parks</a></li>
+	<li><a href="{{ url_for('artists') }}">Artists</a></li>
+	<li><a href="{{ url_for('artworks') }}">Artworks</a></li>
+	<li><a href="{{ url_for('orgs') }}">Orgs</a></li>
+	<li>Events</li>
+	<li><a href="{{ url_for('create') }}">Create</a></li>
+</div>
+{% endmacro %}

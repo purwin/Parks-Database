@@ -1,0 +1,89 @@
+{% from "_macros.html" import nav %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{{ exhibition.name|capitalize }}</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"
+	  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	  crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			console.log( "jquery!" );
+		});
+	</script>
+	<style>
+		span.artist {
+			display:  inline-block;
+			vertical-align: top;
+		}
+		span.artwork {
+			display:  inline-block;
+			vertical-align: top;
+		}
+		span.park {
+			display:  inline-block;
+			vertical-align: top;
+		}
+	</style>
+</head>
+<body>
+<div class='container'>
+	<div>
+		{% if exhibition %}
+		<h1>{{ exhibition.name|upper }}</h1>
+		{{ nav() }}
+		<div class='bio'>
+			<h2>Bio</h2>
+			<ul>
+				<li>Exhibition Dates: {{ exhibition.startDate }} to {{ exhibition.endDate }}</li>
+				<li>Parks: {% for park in exhibition.parks %} <a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a>{% endfor %}</li>
+			</ul>
+			<h3>Organizations</h3>
+			<ul>
+				{% if exhibition.organizations %}
+				{% for x in exhibition.organizations %}
+				<li><a href="{{ url_for('org', organization_id=x.id) }}">{{ x.name }}</a></li>
+				{% endfor %}
+				{% else %}
+				<li><i>This exhibition has not attached organizations.</i></li>
+				{% endif %}
+			</ul>
+		</div>
+	{% if exhib %}
+	<div class='artworks'>
+		<h2>Artworks</h2>
+		<ul>
+			{% for x in exhib %}
+			<li>ID: {{ x.artw.id }}; <span class='artowrk'><a href="{{ url_for('artwork', artwork_id=x.artw.id) }}">{{ x.artw.name }}</a></span> by 
+				<span class='artist'>{% for artist in x.artw.creators %}<a href="{{ url_for('artist', artist_id=artist.id) }}">{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}</a><br/>{% endfor %}</span> @ 
+				<span class='park'><a href="{{ url_for('park', park_id=x.nycpark.id) }}">{{ x.nycpark.name }}</a></span></li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% else %}
+	<p><i>This exhibition has no related artworks.</i></p>
+	{% endif %}
+
+		<div class='install'>
+			<h2>Install Details</h2>
+			<ul>
+				<li>Install Date(s): {{ exhibition.installStart }}{%if exhibition.installEnd %} to {{ exhibition.installEnd }}{% endif %}</li>
+			</ul>
+		</div>
+		<div class='deinstall'>
+			<h2>De-Install Details</h2>
+			<ul>
+				<li>De-Install Due Date: {{ exhibition.deinstallDate }}</li>
+			</ul>
+		</div>
+		{% endif %}
+	</div>
+</div>
+</body>
+</html>

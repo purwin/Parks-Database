@@ -47,7 +47,7 @@
 					<li><label>Exhibition Dates</label> <input type='date' name='exh_startDate'> to <input type='date' name='exh_endDate'></li>
 				</ul>
 				<h3>Organizations</h3>
-				<button type='button' class='orgCreate btn-reg' data-toggle="modal" data-target="#modal_orgCreate">Create</button>
+				<button type='button' class='orgCreate btn-reg' data-toggle="modal" data-target="#modal_orgCreate">Create</button> <button id='orgAdd' type='button' class='btn-edit org_add'>+</button>
 				<ul class="ul_org">
 					<li>
 						<select id='' name='exh_org' class=''>
@@ -56,13 +56,12 @@
 							<option value="{{ org.id }}">{{ org.name }}</option>
 							{% endfor %}
 						</select>
-						<button id='orgAdd' type='button' class='btn-edit org_add'>+</button>
 					</li>
 				</ul>
 			</div>
 			<div class='exh_artworks'>
 				<h3>Artworks</h3>
-					<button type='button' class='artCreate btn-reg' data-toggle="modal" data-target="#modal_artCreate">Create</button>
+					<button type='button' class='artCreate btn-reg' data-toggle="modal" data-target="#modal_artCreate">Create</button> <button id='artAdd' type='button' class='btn-edit art_add'>+</button>
 					<ul id='exh_art_list'>
 						<li>
 							<select id='' name='exh_art' class=''>
@@ -77,7 +76,6 @@
 								<option value="{{ park.id }}">{{ park.name }}</option>
 								{% endfor %}
 							</select> 
-							<button id='artAdd' type='button' class='btn-edit art_add'>+</button>
 						</li>
 					</ul>
 
@@ -113,15 +111,14 @@
 			</div>
 			<div class="art_artists">
 				<h3>Artists</h3>
-				<button type="button" class="artistCreate btn-reg" data-toggle="modal" data-target="#modal_artistCreate">Create</button>
+				<button type="button" class="artistCreate btn-reg" data-toggle="modal" data-target="#modal_artistCreate">Create</button> <button id="artistAdd" type="button" class="artist_add btn-edit">+</button>
 				<ul class="ul_artist">
-					<li>Artist <input type="text" id="try_it" name="art_artist" class="" list="artists">
+					<li>Artist <input type="text" id="try_it" name="art_artist" class="try_it" list="artists">
 							<datalist id="artists">
 								{% for artist in artists %}
 								<option data-value="{{ artist.id }}" value="{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}"></option>
 								{% endfor %}
 							</datalist>
-							<button id="artistAdd" type="button" class="artist_add btn-edit">+</button>
 					</li>
 				</ul>
 			</div>
@@ -179,20 +176,7 @@
 	        </button>
 	      </div>
 	      <div class="modal-body">
-<!-- 	      	<form>
-		      	<ul>
-			        <li>Name <input type='text' name='artwork_name'></li>
-					<li>Artist <input type='text' id='' name='art_artist' class='' list='artists'>
-							<datalist id='artists'>
-								{% for artist in artists %}
-								<option data-value="{{ artist.id }}" value="{{ artist.name }}"></option>
-								{% endfor %}
-							</datalist>
-							<button type='button' class='artistCreate btn-add' data-toggle="modal" data-target="#modal_artistCreate">Create</button> 
-							<button type='button' id='artistAdd' class='artist_add btn-edit'>+</button>
-					</li>
-				</ul>
-			</form>	 -->		
+	
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn-no" data-dismiss="modal">Cancel</button>

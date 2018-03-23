@@ -46,6 +46,14 @@ class Artwork(Base):
 	def __repr__(self):
 		return '<Artwork:{}>'.format(self.name)
 
+	@property
+	def serialize(self):
+
+		return {
+			'id': self.id,
+			'name': self.name,
+		}
+
 #triple join table
 class Exh_art_park(Base):
 	__tablename__ = 'exhibition_artwork_park'

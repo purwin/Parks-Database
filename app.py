@@ -75,19 +75,20 @@ def createArtist():
 @app.route('/createArtwork', methods=['GET', 'POST'])
 def createArtwork():
 	newArtwork = Artwork(name=request.form['artwork_name'])
+	session.add(newArtwork)
 	try:
 		art_artist = request.form.getlist('art_artist')
 		for x in art_artist:
 			creator = session.query(Artist).filter_by(id=x).one()
-			newArtwork.append(creator)
+			newArtwork.creators.append(creator)
 	except:
 		e = sys.exc_info()[0]
 		print "error: {}".format(e)
-	session.add(newArtwork)
 	session.commit()
 	session.flush()
 	artworks = session.query(Artwork).all()
-	return jsonify({'data': render_template('_artworklist.html', artworks=artworks)})
+	return jsonify(newArtwork.serialize)
+	# return jsonify({'data': render_template('_artworklist.html', artworks=artworks)})
 
 @app.route('/createOrg', methods=['POST'])
 def createOrg():

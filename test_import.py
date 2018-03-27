@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from parks_db import *
 
-engine = create_engine('sqlite:////Users/michaelpurwin/Documents/workings/parks database/___PARKS_DB/sqlite_parks_db.db')
+engine = create_engine('sqlite:////Users/michaelpurwin/Documents/workings/parks database/parks_db/sqlite_parks_db.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)

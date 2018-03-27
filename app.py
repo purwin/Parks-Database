@@ -70,7 +70,9 @@ def createArtist():
 	session.add(newArtist)
 	session.commit()
 	session.flush()
-	return jsonify(newArtist.serialize)
+	#return jsonify(newArtist.serialize)
+	artists = session.query(Artist).all()
+	return jsonify({'data': render_template('_artistlist.html', artists=artists)})
 
 @app.route('/createArtwork', methods=['GET', 'POST'])
 def createArtwork():
@@ -87,16 +89,16 @@ def createArtwork():
 	session.commit()
 	session.flush()
 	artworks = session.query(Artwork).all()
-	return jsonify(newArtwork.serialize)
+	return jsonify(artworks)
 	# return jsonify({'data': render_template('_artworklist.html', artworks=artworks)})
 
 @app.route('/createOrg', methods=['POST'])
 def createOrg():
-	newOrg = Org(name=request.form['org_name'], website=request.form['org_site'], phone=request.form['org_phone'])
+	newOrg = Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone'])
 	session.add(newOrg)
 	session.commit()
 	session.flush()
-	return "Organization created!"
+	return jsonify(newOrg.serialize)
 
 @app.route('/exhibitions')
 def exhibitions():

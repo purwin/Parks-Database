@@ -105,6 +105,16 @@ class Org(Base):
 	website = Column(String(40))
 	phone = Column(String(12))
 
+	@property
+	def serialize(self):
+
+		return {
+			'id': self.id,
+			'name': self.name,
+			'phone': self.phone,
+			'website': self.website
+		}
+
 exh_org = Table('exh_org', Base.metadata,
 	Column('exhibition_id', Integer, ForeignKey('exhibition.id')),
 	Column('organization_id', Integer, ForeignKey('organization.id'))

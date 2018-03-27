@@ -1,5 +1,16 @@
-Artwork <input type="text" id="" name="exh_art" class="" list="artworks"><datalist id="artworks">
+{% macro liExh(artworks, parks) %}
+<li class="li_exh">
+	<select id='' name='exh_art' class=''>
+		<option value='' disabled selected>Artwork</option>
 		{% for artwork in artworks %}
-		<option data-value="{{ artwork.id }}" value="{{ artwork.name }}"></option>
+		<option value="{{ artwork.id }}">{{ artwork.name }}</option>
 		{% endfor %}
-		</datalist>
+	</select> @ 
+	<select id='' name='exh_park' class=''>
+		<option value='' disabled selected>Park</option>
+		{% for park in parks %}
+		<option value="{{ park.id }}">{{ park.name }}</option>
+		{% endfor %}
+	</select> 
+</li>
+{% endmacro %}

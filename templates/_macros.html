@@ -10,32 +10,3 @@
 	<li><a href="{{ url_for('create') }}">Create</a></li>
 </div>
 {% endmacro %}
-
-<!-- create.html artist li -->
-{% macro liArt(artists) %}
-<li class="li_artist">Artist <input type="text" name="art_artist" list="artists">
-		<datalist id="artists">
-			{% for artist in artists %}
-			<option data-value="{{ artist.id }}" value="{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}"></option>
-			{% endfor %}
-		</datalist>
-</li>
-{% endmacro %}
-
-<!-- create.html exhibition li -->
-{% macro liExh(artworks, parks) %}
-<li class="li_exh">
-	<select id='' name='exh_art' class=''>
-		<option value='' disabled selected>Artwork</option>
-		{% for artwork in artworks %}
-		<option value="{{ artwork.id }}">{{ artwork.name }}</option>
-		{% endfor %}
-	</select> @ 
-	<select id='' name='exh_park' class=''>
-		<option value='' disabled selected>Park</option>
-		{% for park in parks %}
-		<option value="{{ park.id }}">{{ park.name }}</option>
-		{% endfor %}
-	</select> 
-</li>
-{% endmacro %}

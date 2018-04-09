@@ -46,7 +46,7 @@ def create():
 				e = sys.exc_info()[0]
 				print "error: {}".format(e)
 		elif request.form['create_item'] == 'artwork':
-			session.add(Artwork(name=request.form['artwork_name']))
+			session.add(Artwork(name=request.form['art_name']))
 		elif request.form['create_item'] == 'park':
 			session.add(Park(name=request.form['park_name'], park_id=request.form['park_park_id'], borough=request.form['park_borough'], address=request.form['park_address'], cb=request.form['park_cb']))
 		elif request.form['create_item'] == 'artist':
@@ -66,39 +66,37 @@ def create():
 
 @app.route('/createArtist', methods=['GET', 'POST'])
 def createArtist():
-	newArtist = Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website'])
-	session.add(newArtist)
+	session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
 	session.commit()
 	session.flush()
-	#return jsonify(newArtist.serialize)
 	artists = session.query(Artist).all()
-	return jsonify({'data': render_template('_artistlist.html', artists=artists)})
+	return jsonify({'data': render_template('include/artist_list.html', artists=artists)})
 
 @app.route('/createArtwork', methods=['GET', 'POST'])
 def createArtwork():
-	newArtwork = Artwork(name=request.form['artwork_name'])
+	newArtwork = Artwork(name=request.form['art_name'])
 	session.add(newArtwork)
 	try:
 		art_artist = request.form.getlist('art_artist')
 		for x in art_artist:
 			creator = session.query(Artist).filter_by(id=x).one()
 			newArtwork.creators.append(creator)
+		session.commit()
+		session.flush()
+		artworks = session.query(Artwork).all()
+		parks = session.query(Park).all()
+		return jsonify({'data': render_template('include/exh_list.html', artworks=artworks, parks=parks)})
 	except:
 		e = sys.exc_info()[0]
 		print "error: {}".format(e)
-	session.commit()
-	session.flush()
-	artworks = session.query(Artwork).all()
-	return jsonify(artworks)
-	# return jsonify({'data': render_template('_artworklist.html', artworks=artworks)})
 
 @app.route('/createOrg', methods=['POST'])
 def createOrg():
-	newOrg = Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone'])
-	session.add(newOrg)
+	session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
 	session.commit()
 	session.flush()
-	return jsonify(newOrg.serialize)
+	orgs = session.query(Org).all()
+	return jsonify({'data': render_template('include/org_list.html', orgs=orgs)})
 
 @app.route('/exhibitions')
 def exhibitions():

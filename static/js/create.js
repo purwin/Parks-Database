@@ -46,20 +46,34 @@ var model = {
 		post: "createOrg"
 	},
 
-	exh: {
-		li: "",
-		modal: "",
-		post: ""
-	},
+	// exh: {
+	// 	li: "",
+	// 	modal: "",
+	// 	post: ""
+	// },
+
+	// event: {
+	// 	li: "",
+	// 	modal: "",
+	// 	post: ""
+	// },
+
+	// contact: {
+	// 	li: "",
+	// 	modal: "",
+	// 	post: ""
+	// },
+
+	createButton: null,
 
 	init: function() {
 		this['artist'].li = $('.art_artists ul.ul_artist').html();
 		this['org'].li = $('#create_exhibition ul.ul_org').html();
-		this['exh'].li = $('#exh_art_list').html();
+		this['art'].li = $('ul.ul_art').html();
 
 		this['art'].modal = "<form id='form_art'>\
 				<ul>\
-				<li><label for='artwork_name'>Name</label> <input type='text' name='artwork_name'></li>\
+				<li><label for='art_name'>Name</label> <input type='text' name='art_name'></li>\
 				</ul>\
 				<h4>Artists</h4>\
 				<button type='button' id='createModal2_artist' class='artist_create btn-add' data-toggle='modal' data-target='#modal_artistCreate'>Create</button>\
@@ -96,34 +110,87 @@ var controller = {
 	// add new li
 	appendUL: function(x){
 		y = x.id.split("_")[1];
-		$(x).next('ul').append(model[y].li);
+		$(x).nextAll('ul').append(model[y].li);
 	},
 
 	// add new modal form
 	showModal: function(x){
+		model.createButton = x;
 		y = x.id.split("_")[1];
+
 		$('#modal_' + y).modal('show').find('div.modal-body').html(model[y].modal);
+	},
+
+	// switch datalist values with data-values
+	valSwitch: function(x){
+		y = x.id.split("_")[1];
+		var tempVal, idVal;
+
+		try {
+			$('#form_' + y + ' [id^="datalist_"]').each(function(index){
+				tempVal = $(this).val();
+				console.log("Temp val: " + tempVal)
+				idVal = $('#form_' + y + ' option').filter(function() {
+					return this.value == tempVal;
+				}).data('value');
+				console.log("ID val: " + idVal);
+				$(this).val(idVal);
+			});
+		}
+		catch (e) {
+			console.log("Catch: " + e);
+		}
 	},
 
 	// post modal forms
 	postData: function(x){
+		console.log("WHAT: " + x.id);
 		y = x.id.split("_")[1];
 
-		// if
-		$.ajax({
-			url: '/' + model[y].post,
-			data: $('#form_' + y).serialize(),
-			type: 'POST',
-			success: function(response) {
-				model[y].li = response.data;
-				$(".li_" + y).html(model[y].li);
-		    },
-		    error: function(error) {
-				console.log(error);
-			}
-		});
+		// store values
+		var tempName = $("#form_" + y + " [id^='datalist_'] input[name$='_name']").val(); // store name of input, pass to new li
 
-		$('#modal_' + y).modal('hide');
+		// change values
+		controller.valSwitch(x);
+		// try {
+			
+			// var tempVal, idVal;
+			// $('#form_' + y + ' [id^="datalist_"]').each(function(index){
+			// 	tempVal = $(this).val();
+			// 	idVal = $('#form_art #artists option').filter(function() {
+			// 		return this.value == tempVal;
+			// 	}).data('value');
+			// 	console.log("ID val: " + idVal);
+			// 	$(this).val(idVal);
+			// });
+			// console.log("Temp val name: " + tempVal);
+		// }
+		// catch (e){
+		// 	console.log("Catch: " + e);
+		// }
+
+		// post data
+		// $.ajax({
+		// 	url: '/' + model[y].post,
+		// 	data: $('#form_' + y).serialize(),
+		// 	type: 'POST',
+		// 	success: function(response) {
+		// 		model[y].li = response.data;
+		// 		$(".li_" + y).html(model[y].li);
+		//     },
+		//     error: function(error) {
+		// 		console.log(error);
+		// 	}
+		// });
+
+		// // hide post modal
+		// $('#modal_' + y).modal('hide');
+
+		// // add new li
+		this.appendUL(model.createButton);
+		
+		// // add stored values
+		// $(model.createButton).nextAll('ul').find('.datalist_' + y).last().val(tempName);
 
 	},
 
@@ -206,6 +273,7 @@ var view = {
 		this.addSelection();
 		this.modal();
 		this.post();
+		this.form_create();
 	},
 
 	// + button used to add new artwork / artist / org
@@ -225,41 +293,19 @@ var view = {
 	},
 
 	// send data via modal
-	post: function(x){
+	post: function(){
 		$('body').on('click', '.post_data', function(event) {
 			event.preventDefault();
 			controller.postData(this);
+			console.log("post");
 		});
 	},
 
-	artworkCreate: function(){
-		$('body').on('click', '#modal_add_artwork', function(event) {
+	form_create: function(){
+		$('#form_create').submit(function(event) {
 			event.preventDefault();
-
-			$('#form_art #try_it').each(function(index){
-				console.log(index + ": " + $( this ).val());
-				var val = $(this).val();
-				var xyz = $('#form_art #artists option').filter(function() {
-					return this.value == val;
-				}).data('value');
-				console.log("XYZ: " + xyz);
-				$(this).val(xyz);
-			});
-
-			$.ajax({
-				url: '/createArtwork',
-				data: $('#form_art').serialize(),
-				type: 'POST',
-				success: function(response) {
-					console.log("Response: " + response);
-					// console.log("ID: " + response.id);
-					// console.log("Name: " + response.name);
-				},
-				error: function(error){
-					console.log(error);
-				}
-			});
-			$('#modal_artCreate').modal('hide');
+			y = $(this).attr('id').split("_")[1];
+			controller.valSwitch(this);
 		});
 	}
 

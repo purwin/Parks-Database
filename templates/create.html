@@ -1,9 +1,8 @@
 {% from "_macros.html" import nav %}
-{% from "_macros.html" import liArt with context %}
-{% from "_artworklist.html" import liExh with context %}
+<!doctype html>
 <html>
 <head>
-	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Create</title>
 	<script src="https://code.jquery.com/jquery-3.3.1.js"
 	  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -20,15 +19,15 @@
 	<!-- <script src="../static/js/create.js"></script> -->
 </head>
 <body>
-<div class='container'>
+<div class="container">
 	{{ nav() }}
 	<div class="form_please">
-		<form action="{{ url_for('create') }}" method="post">
-		<div class='head'>
+		<form id="form_create" action="{{ url_for('create') }}" method="post">
+		<div class="head">
 		<h1>
-			<label for='create_item'>New</label> 
-			<select id="create_type" name='create_item'>
-				<option value='' disabled selected></option>
+			<label for="create_item">New</label> 
+			<select id="create_type" name="create_item">
+				<option value="" disabled selected></option>
 				<option value="exhibition">Exhibition</option>
 				<option value="artwork">Artwork</option>
 				<option value="artist">Artist</option>
@@ -40,79 +39,72 @@
 			</select>
 		</h1>
 		</div>
-		<div id='create_exhibition' class='create_div'>
+		<div id="create_exhibition" class="create_div">
 			<h2>Exhibition</h2>
-			<div class='bio'>
+			<div class="bio">
 				<h3>Bio</h3>
 				<ul>
-					<li><label for='exh_name'>Name</label> <input type='text' name='exh_name'></li>
-					<li><label>Exhibition Dates</label> <input type='date' name='exh_startDate'> to <input type='date' name='exh_endDate'></li>
+					<li><label for="exh_name">Name</label> <input type="text" name="exh_name"></li>
+					<li><label>Exhibition Dates</label> <input type="date" name="exh_startDate"> to <input type="date" name="exh_endDate"></li>
 				</ul>
 				<h3>Organizations</h3>
-				<button type='button' id="createModal_org" class='org_create btn-reg' data-toggle="modal" data-target="#modal_org">Create</button> <button id='add_org' type='button' class='btn-edit org_add'>+</button>
+				<button type="button" id="createModal_org" class="org_create btn-reg" data-toggle="modal" data-target="#modal_org">Create</button> <button id="add_org" type="button" class="btn-edit org_add">+</button>
 				<ul class="ul_org">
-					<li class="li_org">
-						<select id='' name='exh_org' class=''>
-							<option value='' disabled selected>Organization</option>
-							{% for org in orgs %}
-							<option value="{{ org.id }}">{{ org.name }}</option>
-							{% endfor %}
-						</select>
-					</li>
+					{% include "include/org_list.html" ignore missing with context %}
 				</ul>
 			</div>
-			<div class='exh_artworks'>
+			<div class="exh_artworks">
 				<h3>Artworks</h3>
-					<button type='button' id="createModal_art" class='art_create btn-reg' data-toggle="modal" data-target="#modal_art">Create</button> <button id='add_exh' type='button' class='btn-edit art_add'>+</button>
-					<ul id='exh_art_list'>
-						{{ liExh(artworks, parks)}}
+					<button type="button" id="createModal_art" class="art_create btn-reg" data-toggle="modal" data-target="#modal_art">Create</button> <button id="add_art" type="button" class="btn-edit art_add">+</button>
+					<ul class="ul_art">
+					{% include "include/exh_list.html" ignore missing with context %}
 					</ul>
 
 			</div>
-			<div class='install'>
+			<div class="install">
 				<h3>Install Details</h3>
 				<ul>
-					<li><label for='exh_installStart'>Install Date(s)</label> <input type='date' name='exh_installStart'> to <input type='date' name='exh_installEnd'></li>
+					<li><label for="exh_installStart">Install Date(s)</label> <input type="date" name="exh_installStart"> to <input type="date" name="exh_installEnd"></li>
 				</ul>
 			</div>
-			<div class='deinstall'>
+			<div class="deinstall">
 				<h3>De-Install Details</h3>
 				<ul>
-					<li><label for='exh_deinstallDate'>De-Install Due Date</label> <input type='date' name='exh_deinstallDate'></li>
+					<li><label for="exh_deinstallDate">De-Install Due Date</label> <input type="date" name="exh_deinstallDate"></li>
 				</ul>
 			</div>
 		</div>
-		<div id='create_artwork' class='create_div'>
+		<div id="create_artwork" class="create_div">
 			<h2>Artwork</h2>
 			<div class="art_bio">
 				<h3>Bio</h3>
 				<ul>
-					<li>Name <input type="text" name="artwork_name"></li>
+					<li><label for="art_name">Name</label> <input type="text" name="art_name"></li>
 				</ul>
 			</div>
 			<div class="art_artists">
 				<h3>Artists</h3>
 				<button type="button" id="createModal_artist" class="artist_create btn-reg" data-toggle="modal" data-target="#modal_artist">Create</button> <button id="add_artist" type="button" class="artist_add btn-edit">+</button>
 				<ul class="ul_artist">
-					{{ liArt(artists)}}
+					{% include "include/artist_list.html" ignore missing with context %}
 				</ul>
 			</div>
 		</div>
-		<div id='create_artist' class='create_div'>
+		<div id="create_artist" class="create_div">
 			<h2>Artist</h2>
 			<ul>
-				<li>Name <input type='text' name='artist_pName' placeholder='primary/last name'> <input type='text' name='artist_fName' placeholder='first name'></li>
-				<li>Email <input type='text' name='artist_email'></li>
-				<li>Phone <input type='text' name='artist_phone'></li>
-				<li>Website  <input type='text' name='artist_website'></li>
+				<li>Name <input type="text" name="artist_pName" placeholder="primary/last name"> <input type="text" name="artist_fName" placeholder="first name"></li>
+				<li>Email <input type="text" name="artist_email"></li>
+				<li>Phone <input type="text" name="artist_phone"></li>
+				<li>Website  <input type="text" name="artist_website"></li>
 			</ul>
 		</div>
-		<div id='create_park' class='create_div'>
+		<div id="create_park" class="create_div">
 			<h2>Park</h2>
 			<ul>
-				<li>Name <input type='text' name='park_name'></li>
-				<li>Park ID <input type='text' name='park_park_id'></li>
-				<li>Borough <select id="create_type" name='park_borough' style='border:none; border-radius: 0px; border-bottom: 2px dashed red; font-size:15px; -webkit-appearance:none; padding-left:5px;'>
+				<li>Name <input type="text" name="park_name"></li>
+				<li>Park ID <input type="text" name="park_park_id"></li>
+				<li>Borough <select id="" name="park_borough" style="border:none; border-radius: 0px; border-bottom: 2px dashed red; font-size:15px; -webkit-appearance:none; padding-left:5px;">
 					<option value="" selected disabled>Select a Borough</option>
 					<option value="Manhattan">Manhattan</option>
 					<option value="Brooklyn">Brooklyn</option>
@@ -120,21 +112,22 @@
 					<option value="Bronx">Bronx</option>
 					<option value="Staten Island">Staten Island</option>
 					</select></li>
-				<li>Address <input type='text' name='park_address'></li>
-				<li>Community Board # <input type='text' name='park_cb'></li>
+				<li>Address <input type="text" name="park_address"></li>
+				<li>Community Board # <input type="text" name="park_cb"></li>
 			</ul>
 		</div>
-		<div id='create_organization' class='create_div'>
+		<div id="create_organization" class="create_div">
 			<h2>Organization</h2>
 			<ul>
-				<li>Name <input type='text' name='org_name'></li>
-				<li>Website <input type='text' name='org_website'></li>
-				<li>Phone <input type='text' name='org_phone'></li>
+				<li>Name <input type="text" name="org_name"></li>
+				<li>Website <input type="text" name="org_website"></li>
+				<li>Phone <input type="text" name="org_phone"></li>
 			</ul>
 		</div>
-		<div class='form_submit'>
-			<button type='button' class='btn-no'><a href="{{ url_for('home') }}">Cancel</a></button>
-			<input type='submit' value='Create'>
+		<div class="form_submit">
+			<button type="button" class="btn-no"><a href="{{ url_for('home') }}">Cancel</a></button>
+			<!-- <button type="button" class="btn-add">Create</button> -->
+			<input type="submit" class="btn-add" value="Create" id="post_create">
 		</div>
 		</form>
 	</div>

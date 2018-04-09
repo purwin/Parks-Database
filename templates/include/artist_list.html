@@ -1,4 +1,4 @@
-<li class="li_artist">Artist <input type="text" name="art_artist" list="artists">
+<li class="li_artist">Artist <input id="datalist_artist" type="text" name="art_artist" list="artists">
 		<datalist id="artists">
 			{% for artist in artists %}
 			<option data-value="{{ artist.id }}" value="{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}"></option>

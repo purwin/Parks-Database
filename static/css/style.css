@@ -30,13 +30,12 @@ h4 { display:  inline-block; }
 .btn-no:hover { border-color: #e76a58; }
 .btn-no:active { border-color: #f1a69b; background-color: #e76a58; color: #f4f4f4;}
 
-
 .btn-add { border: 1.5px solid #a1d3ff; border-radius: 4px; background-color: #fff; color: #62b5ff; cursor: pointer; }
 .btn-add:focus { outline:0; }
 .btn-add:hover { border-color: #62b5ff; }
 .btn-add:active { border-color: #a1d3ff; background-color: #62b5ff; color: #f4f4f4;}
 
-
+.btn-reg a, .btn-edit a, .btn-no a, .btn-add a {color: inherit; text-decoration: none; }
 
 /* ---------- CREATE ---------- */
 
@@ -45,7 +44,7 @@ h4 { display:  inline-block; }
 }
 
 .form_submit {
-	display: none;
+	/* display: none; */
 }
 
 select#create_type {

@@ -1,0 +1,14 @@
+<li class="li_art">
+	<input id="datalist_art" type="text" name="exh_art" list="artworks" placeholder="Artwork" class="datalist_art">
+		<datalist id="artworks">
+			{% for art in artworks %}
+				<option data-value="{{ art.id }}" value="{{ art.name }}"></option>
+			{% endfor %}
+		</datalist> @ 
+	<input id="datalist_park" type="text" name="exh_park" list="parks" placeholder="Park">
+		<datalist id="parks">
+			{% for park in parks %}
+				<option data-value="{{ park.id }}" value="{{ park.name }}"></option>
+			{% endfor %}
+		</datalist>
+</li>

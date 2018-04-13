@@ -170,24 +170,28 @@ var controller = {
 		// }
 
 		// post data
-		// $.ajax({
-		// 	url: '/' + model[y].post,
-		// 	data: $('#form_' + y).serialize(),
-		// 	type: 'POST',
-		// 	success: function(response) {
-		// 		model[y].li = response.data;
-		// 		$(".li_" + y).html(model[y].li);
-		//     },
-		//     error: function(error) {
-		// 		console.log(error);
-		// 	}
-		// });
+		$.ajax({
+			url: '/' + model[y].post,
+			data: $('#form_' + y).serialize(),
+			type: 'POST',
+			success: function(response) {
+				console.log("RESPONSE: " + response.data);
+				console.log(".li_" + y)
+				model[y].li = response.data;
+				$(".li_" + y).html(model[y].li);
+		    },
+		    error: function(error) {
+				console.log(error);
+			}
+		});
 
 		// // hide post modal
-		// $('#modal_' + y).modal('hide');
+		$('#modal_' + y).modal('hide');
+
+		// figure out whether another modal is still showing, set model.createButton to this
 
 		// // add new li
-		this.appendUL(model.createButton);
+		// this.appendUL(model.createButton);
 		
 		// // add stored values
 		// $(model.createButton).nextAll('ul').find('.datalist_' + y).last().val(tempName);
@@ -297,7 +301,6 @@ var view = {
 		$('body').on('click', '.post_data', function(event) {
 			event.preventDefault();
 			controller.postData(this);
-			console.log("post");
 		});
 	},
 

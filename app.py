@@ -14,7 +14,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
@@ -72,8 +71,8 @@ def createArtist():
 	artists = session.query(Artist).all()
 	return jsonify({'data': render_template('include/artist_list.html', artists=artists)})
 
-@app.route('/createArtwork', methods=['GET', 'POST'])
-def createArtwork():
+@app.route('/createArt', methods=['GET', 'POST'])
+def createArt():
 	newArtwork = Artwork(name=request.form['art_name'])
 	session.add(newArtwork)
 	try:
@@ -85,7 +84,7 @@ def createArtwork():
 		session.flush()
 		artworks = session.query(Artwork).all()
 		parks = session.query(Park).all()
-		return jsonify({'data': render_template('include/exh_list.html', artworks=artworks, parks=parks)})
+		return jsonify({'data': render_template('include/art_list.html', artworks=artworks, parks=parks)})
 	except:
 		e = sys.exc_info()[0]
 		print "error: {}".format(e)

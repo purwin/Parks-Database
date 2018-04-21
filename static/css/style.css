@@ -1,43 +1,115 @@
-/* ---------- GENERAL ---------- */
-body {color: #58595b;}
+/*
+ *
+ * Resets
+ *
+ */
+body {
+	color: #58595b;
+	max-width: 100%;
+	font-size: 18px;
+}
 
-/* -- TEXT -- */
+/*
+ *
+ * Text
+ *
+ */
 /* h2 { color:  #e76a58; } */
 h2 { color:  #b8dd9b; }
-/* -- LINKS -- */
+/*
+ *
+ * Links
+ *
+ */
 div.links a { color: #58595b; text-decoration: none; border-bottom: 2px solid #b8dd9b; }
 /* div.links a:hover { color:  #e76a58; } */
 div.links a:hover { color:  #b8dd9b; }
 
 h4 { display:  inline-block; }
 
-/* -- DIVS -- */
+/*
+ *
+ * Divs
+ *
+ */
+.head { 
+	padding: 1rem;
+	background-color: #b8dd9b;
+}
+
+.leaf { /* z-index: 1; */ }
+/* .leaf .dropdown-menu { background-color: #fff; } */
+.leaf button { background-color: transparent; }
 .bg-green { background-color: #b8dd9b; }
 
-/* -- BUTTONS -- */
-.btn-reg { border: 1.5px solid #bcbdbd; border-radius: 4px; background-color: #fff; color: #58595b; cursor: pointer; }
-.btn-reg:focus { outline:0; }
-.btn-reg:hover { border-color: #58595b; }
-.btn-reg:active { border-color: #bcbdbd; background-color: #58595b; color: #f4f4f4;} 
+/*
+ *
+ * Exhibition
+ *
+ */
 
-.btn-edit { border: 1.5px solid #ffe491; border-radius: 4px; background-color: #fff; color: #ffd248; cursor: pointer; }
-.btn-edit:focus { outline:0; }
-.btn-edit:hover { border-color: #ffd248; }
-.btn-edit:active { border-color: #ffe491; background-color: #ffd248; color: #f4f4f4;}
+span.artist {
+	display: inline-block;
+	vertical-align: top;
+}
+span.artwork {
+	display: inline-block;
+	vertical-align: top;
+}
+span.park {
+	display: inline-block;
+	vertical-align: top;
+}
 
-.btn-no { border: 1.5px solid #f1a69b; border-radius: 4px; background-color: #fff; color: #e76a58; cursor: pointer; }
-.btn-no:focus { outline:0; }
-.btn-no:hover { border-color: #e76a58; }
-.btn-no:active { border-color: #f1a69b; background-color: #e76a58; color: #f4f4f4;}
+/*
+ *
+ * Buttons
+ *
+ */
 
-.btn-add { border: 1.5px solid #a1d3ff; border-radius: 4px; background-color: #fff; color: #62b5ff; cursor: pointer; }
-.btn-add:focus { outline:0; }
-.btn-add:hover { border-color: #62b5ff; }
-.btn-add:active { border-color: #a1d3ff; background-color: #62b5ff; color: #f4f4f4;}
+/* .btn__parks a, .btn__parks--edit a, .btn__parks--no a, .btn__parks--add a {color: inherit; text-decoration: none; } */
+.btn__parks {
+	cursor: pointer;
+	border-width: 1.5px;
+	border-style: solid;
+	border-color: #bcbdbd;
+	border-radius: 4px;
+	background-color: #fff;
+	color: #58595b;
+}
+.btn__parks a {
+	color: inherit;
+	text-decoration: none;
+}
+.btn__parks:focus {
+	outline:0;
+}
+.btn__parks:hover {
+	border-color: #58595b;
+}
+.btn__parks:active {
+	border-color: #bcbdbd;
+	background-color: #58595b;
+	color: #f4f4f4;
+}
 
-.btn-reg a, .btn-edit a, .btn-no a, .btn-add a {color: inherit; text-decoration: none; }
+.btn__parks--edit { border-color: #ffe491; color: #ffd248; }
+.btn__parks--edit:hover { border-color: #ffd248; }
+.btn__parks--edit:active { border-color: #ffe491; background-color: #ffd248; }
 
-/* ---------- CREATE ---------- */
+.btn__parks--no { border-color: #f1a69b; color: #e76a58; }
+.btn__parks--no:hover { border-color: #e76a58; }
+.btn__parks--no:active { border-color: #f1a69b; background-color: #e76a58; }
+
+.btn__parks--add { border-color: #a1d3ff; color: #62b5ff; }
+.btn__parks--add:hover { border-color: #62b5ff; }
+.btn__parks--add:active { border-color: #a1d3ff; background-color: #62b5ff; }
+
+/*
+ *
+ * Create
+ *
+ */
 
 .create_div {
 	/* display: none; */
@@ -51,7 +123,7 @@ select#create_type {
 	border:none;
 	border-radius: 0px;
 	border-bottom: 5px dashed grey;
-	font-size:20px;
+	/* font-size:20px; */
 	-webkit-appearance:none;
 	padding:  0 1rem;
 }
@@ -60,4 +132,25 @@ select#create_type option[value="exhibition"] { border-bottom: 5px dashed red; }
 select#create_type option[value="park"] { border-bottom: 5px dashed green; }
 
 
-/* ---------- CREATE ---------- */
+/*
+ *
+ * Bootstrap Overrides
+ *
+ */
+.dropdown-menu { min-width: 0rem; }
+
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {  }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {  
+	.leaf { position: fixed; }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {  }
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  }

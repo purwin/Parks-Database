@@ -1,35 +1,36 @@
+{% extends "layout.html" %}
 {% from "_macros.html" import nav %}
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Artists</title>
-	<script src="https://code.jquery.com/jquery-3.3.1.js"
-	  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-	  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-<div class='container'>
-	<h1>ARTISTS</h1>
+{% block title %}NYC Parks Database – Artists{% endblock %}
+{% block content %}
+
 	{{ nav() }}
-	<div class='artists'>
-		{% if artists %}
-		{% for a in artists %}
-		<h2><a href="{{ url_for('artist', artist_id=a.id) }}">{% if a.fName %}{{ a.fName }} {% endif %}{{ a.pName }}</a></h2>
-		<ul>
-			<li>ID: {{ a.id }}</li>
-			<li>Email: {{ a.email }}</li>
-			<li>Phone: {{ a.phone }}</li>
-			<li>Web site: <a href="http://{{ a.website }}" target="_blank">{{ a.website }}</a></li>
-		</ul>
-		{% endfor %}
-		{% endif %}
+	<div class="container-fluid">
+		<section id="section--head">
+			<div class="row justify-content-center head">
+				<div class="col-sm-12 col-md-8">	
+					<h1 class="text-center display-3"><b>ARTISTS</b></h1>
+				</div>
+			</div>
+		</section>
+		<section id="section--artists">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					{% if artists %}
+						{% for a in artists %}
+							<h2 class="text-center display-4 p-4"><a href="{{ url_for('artist', artist_id=a.id) }}">{% if a.fName %}{{ a.fName }} {% endif %}{{ a.pName }}</a></h2>
+							<ul>
+								<li>ID: {{ a.id }}</li>
+								<li>Email: {{ a.email }}</li>
+								<li>Phone: {{ a.phone }}</li>
+								<li>Web site: <a href="http://{{ a.website }}" target="_blank">{{ a.website }}</a></li>
+							</ul>
+						{% endfor %}
+					{% else %}
+						<p><i>There are no artists in the database.</i></p>
+					{% endif %}
+				</div>
+			</div>
+		</section>
 	</div>
-</div>
-</body>
-</html>
+
+{% endblock %}

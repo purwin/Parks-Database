@@ -1,46 +1,47 @@
 {% from "_macros.html" import nav %}
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>{% if artist.fName %}{{ artist.fName|capitalize }} {% endif %}{{ artist.pName|capitalize }}</title>
-	<script src="https://code.jquery.com/jquery-3.3.1.js"
-	  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-	  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-<div class="container">
-	{% if artist %}
-	<h1>{% if artist.fName %}{{ artist.fName|upper }} {% endif %}{{ artist.pName|upper }}</h1>
-	{{ nav() }}
-	<div class='bio'>
-		<h2>Bio</h2>
-		<ul>
-			<li>ID: {{ artist.id }}</li>
-			<li>Email: {{ artist.email }}</li>
-			<li>Phone: {{ artist.phone }}</li>
-			<li>Web site: <a href="http://{{ artist.website }}" target="_blank">{{ artist.website }}</a></li>
-		</ul>
+{% extends "layout.html" %}
+
+{% block title %}Parks Database – {% if artist.fName %}{{ artist.fName|capitalize }} {% endif %}{{ artist.pName|capitalize }}{% endblock %}
+{% block content %}
+{{ nav() }}
+{% if artist %}
+<div class="container-fluid">
+	<section id="section--head">
+		<div class="row justify-content-center head">
+			<div class="col-sm-12 col-md-8">
+				<h1 class="text-center display-3"><b>{% if artist.fName %}{{ artist.fName|upper }} {% endif %}{{ artist.pName|upper }}</b></h1>
+			</div>
+		</div>
+	</section>
+	<div class="row justify-content-center">
+			<div class="col-sm-12 col-md-8 col-lg-6">
+				<section id="section--bio">
+				<h2 class="text-center display-4 p-4">Bio</h2>
+				<ul>
+					<li>ID: {{ artist.id }}</li>
+					<li>Email: {{ artist.email }}</li>
+					<li>Phone: {{ artist.phone }}</li>
+					<li>Web site: <a href="http://{{ artist.website }}" target="_blank">{{ artist.website }}</a></li>
+				</ul>
+				</section>
+			</div>
+			<div class="col-sm-12 col-md-8 col-lg-6">
+				<section id="section--artworks">
+				<h2 class="text-center display-4 p-4">Artworks</h2>
+				{% if artist.artworks %}
+				<ul>
+					{% for x in artist.artworks %}
+					<li>ID: {{ x.id }}</li>
+					<li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li>
+					{% endfor %}
+				</ul>
+				{% else %}
+				<p><i>There are no artworks connected with this artist.</i></p>
+				{% endif %}
+				</section>
+			</div>
 	</div>
-	{% if artist.artworks %}
-	<div class='artworks'>
-		<h2>Artworks</h2>
-		<ul>
-			{% for x in artist.artworks %}
-			<li>ID: {{ x.id }}</li>
-			<li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
-	{% else %}
-	<p><i>There are no artworks connected with this artist.</i></p>
-	{% endif %}
-	{% endif %}
 </div>
-</body>
-</html>
+{% endif %}
+
+{% endblock %}

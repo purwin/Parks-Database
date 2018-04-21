@@ -1,12 +1,23 @@
 {% macro nav() %}
-<div class='links'>
-	<li><a href="{{ url_for('home') }}">Home</a></li>
-	<li><a href="{{ url_for('exhibitions') }}">Exhibitions</a></li>
-	<li><a href="{{ url_for('parks') }}">Parks</a></li>
-	<li><a href="{{ url_for('artists') }}">Artists</a></li>
-	<li><a href="{{ url_for('artworks') }}">Artworks</a></li>
-	<li><a href="{{ url_for('orgs') }}">Orgs</a></li>
-	<li>Events</li>
-	<li><a href="{{ url_for('create') }}">Create</a></li>
+<div class="container-fluid leaf">
+	<div class="row">
+		<div class="col-md-2 dropdown">
+			<div class="h-100 dropdown links pt-2">
+				<button class="btn btn-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<img class="img-fluid" src="{{ url_for('static', filename='img/leaf.png') }}" />
+				</button>
+				<div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+					<li class="dropdown-item"><a href="{{ url_for('home') }}">Home</a></li>
+					<li class="dropdown-item"><a href="{{ url_for('exhibitions') }}">Exhibitions</a></li>
+					<li class="dropdown-item"><a href="{{ url_for('parks') }}">Parks</a></li>
+					<li class="dropdown-item"><a href="{{ url_for('artists') }}">Artists</a></li>
+					<li class="dropdown-item"><a href="{{ url_for('artworks') }}">Artworks</a></li>
+					<li class="dropdown-item"><a href="{{ url_for('orgs') }}">Orgs</a></li>
+					<li class="dropdown-item">Events</li>
+					<li class="dropdown-item"><a href="{{ url_for('create') }}">Create</a></li>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endmacro %}

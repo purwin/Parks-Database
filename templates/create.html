@@ -3,26 +3,32 @@
 {% block title %}NYC Parks Database – Create{% endblock %}
 {% block content %}
 
-	<div class="container">
-		{{ nav() }}
-		<div class="form_please">
-			<form id="form_create" action="{{ url_for('create') }}" method="post">
-			<div class="head">
-			<h1>
-				<label for="create_item">New</label> 
-				<select id="create_type" name="create_item">
-					<option value="" disabled selected></option>
-					<option value="exhibition">Exhibition</option>
-					<option value="artwork">Artwork</option>
-					<option value="artist">Artist</option>
-					<option value="park">Park</option>
-					<option value="event">Event</option>
-					<option value="organization">Organization</option>
-					<option value="organizer">Organizer</option>
-					<option value="employee">Employee</option>
-				</select>
-			</h1>
+	{{ nav() }}
+	<div class="container-fluid">
+		<form id="form_create" action="{{ url_for('create') }}" method="post">
+		<section id="section--head">
+			<div class="row justify-content-center head">
+				<div class="col-sm-12 col-md-8">
+					<div class="form_please">
+						<h1 class="display-3 text-center">
+							<label for="create_item">New</label> 
+							<select id="create_type"  class="display-4" name="create_item">
+								<option value="" disabled selected></option>
+								<option value="exhibition">Exhibition</option>
+								<option value="artwork">Artwork</option>
+								<option value="artist">Artist</option>
+								<option value="park">Park</option>
+								<option value="event">Event</option>
+								<option value="organization">Organization</option>
+								<option value="organizer">Organizer</option>
+								<option value="employee">Employee</option>
+							</select>
+						</h1>
+					</div>
+				</div>
 			</div>
+		</section>
+
 			<div id="create_exhibition" class="create_div">
 				<h2>Exhibition</h2>
 				<div class="bio">
@@ -41,7 +47,7 @@
 					<h3>Artworks</h3>
 						<button type="button" id="createModal_art" class="art_create btn__parks" data-toggle="modal" data-target="#modal_art">Create</button> <button id="add_art" type="button" class="btn__parks btn__parks--edit art_add">+</button>
 						<ul class="ul_art">
-						{% include "include/art_list.html" ignore missing with context %}
+							{% include "include/art_list.html" ignore missing with context %}
 						</ul>
 
 				</div>

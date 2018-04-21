@@ -64,7 +64,7 @@ var model = {
 	// 	post: ""
 	// },
 
-	createButton: null,
+	createButton: [null],
 
 	init: function() {
 		this['artist'].li = $('.art_artists ul.ul_artist').html();
@@ -115,7 +115,8 @@ var controller = {
 
 	// add new modal form
 	showModal: function(x){
-		model.createButton = x;
+		model.createButton.push(x);
+		console.log("M.c: " + model.createButton);
 		y = x.id.split("_")[1];
 
 		$('#modal_' + y).modal('show').find('div.modal-body').html(model[y].modal);
@@ -123,7 +124,7 @@ var controller = {
 
 	// switch datalist values with data-values
 	valSwitch: function(x){
-		y = x.id.split("_")[1];
+		let y = x.id.split("_")[1];
 		var tempVal, idVal;
 
 		try {
@@ -142,32 +143,26 @@ var controller = {
 		}
 	},
 
+	popModalList: function(){
+		let x = model.createButton.pop();
+		console.log("Current modalList: " + model.createButton);
+		return x;
+	},
+
+	cancelPost: function(x){
+		this.popModalList();
+	},
+
 	// post modal forms
 	postData: function(x){
 		console.log("WHAT: " + x.id);
-		y = x.id.split("_")[1];
+		let y = x.id.split("_")[1];
 
 		// store values
 		var tempName = $("#form_" + y + " [id^='datalist_'] input[name$='_name']").val(); // store name of input, pass to new li
 
 		// change values
 		controller.valSwitch(x);
-		// try {
-			
-			// var tempVal, idVal;
-			// $('#form_' + y + ' [id^="datalist_"]').each(function(index){
-			// 	tempVal = $(this).val();
-			// 	idVal = $('#form_art #artists option').filter(function() {
-			// 		return this.value == tempVal;
-			// 	}).data('value');
-			// 	console.log("ID val: " + idVal);
-			// 	$(this).val(idVal);
-			// });
-			// console.log("Temp val name: " + tempVal);
-		// }
-		// catch (e){
-		// 	console.log("Catch: " + e);
-		// }
 
 		// post data
 		$.ajax({
@@ -178,7 +173,7 @@ var controller = {
 				console.log("RESPONSE: " + response.data);
 				console.log(".li_" + y)
 				model[y].li = response.data;
-				$(".li_" + y).html(model[y].li);
+				// $(".li_" + y).html(model[y].li);
 		    },
 		    error: function(error) {
 				console.log(error);
@@ -188,10 +183,8 @@ var controller = {
 		// // hide post modal
 		$('#modal_' + y).modal('hide');
 
-		// figure out whether another modal is still showing, set model.createButton to this
-
-		// // add new li
-		// this.appendUL(model.createButton);
+		// // add new li, pop most recent modal from modal array
+		this.appendUL(this.popModalList());
 		
 		// // add stored values
 		// $(model.createButton).nextAll('ul').find('.datalist_' + y).last().val(tempName);
@@ -278,6 +271,7 @@ var view = {
 		this.modal();
 		this.post();
 		this.form_create();
+		this.cancelPost();
 	},
 
 	// + button used to add new artwork / artist / org
@@ -293,6 +287,13 @@ var view = {
 		$('body').on('click', '.art_create, .artist_create, .org_create', function(event) { // update this to '.create_modal'
 			event.preventDefault();
 			controller.showModal(this);
+		});
+	},
+
+	cancelPost: function(){
+		$('body').on('click', '.post_cancel', function(event) {
+			event.preventDefault();
+			controller.cancelPost(this);
 		});
 	},
 

@@ -67,17 +67,17 @@ var model = {
 	createButton: [null],
 
 	init: function() {
-		this['artist'].li = $('.art_artists ul.ul_artist').html();
-		this['org'].li = $('#create_exhibition ul.ul_org').html();
-		this['art'].li = $('ul.ul_art').html();
+		this['artist'].li = $('#section--create--art ul.ul_artist').html();
+		this['org'].li = $('#section--create--exhibition ul.ul_org').html();
+		this['art'].li = $('#section--create--exhibition ul.ul_art').html();
 
 		this['art'].modal = "<form id='form_art'>\
 				<ul>\
 				<li><label for='art_name'>Name</label> <input type='text' name='art_name'></li>\
 				</ul>\
 				<h4>Artists</h4>\
-				<button type='button' id='createModal2_artist' class='artist_create btn-add' data-toggle='modal' data-target='#modal_artistCreate'>Create</button>\
-				<button type='button' id='addModal_artist' class='artist_add btn-edit'>+</button>\
+				<button type='button' id='createModal2_artist' class='artist_create btn__parks' data-toggle='modal' data-target='#modal_artistCreate'>Create</button>\
+				<button type='button' id='addModal_artist' class='artist_add btn__parks btn__parks--edit'>+</button>\
 				<ul class='ul_artist'>" + this['artist'].li + "</ul>\
 				</form>";
 

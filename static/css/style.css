@@ -37,7 +37,7 @@ h4 { display:  inline-block; }
 	background-color: #b8dd9b;
 }
 
-.leaf { /* z-index: 1; */ }
+.leaf .dropdown { z-index: 1; }
 /* .leaf .dropdown-menu { background-color: #fff; } */
 .leaf button { background-color: transparent; }
 .bg-green { background-color: #b8dd9b; }

@@ -1,14 +1,21 @@
-<li class="li_art">
-	<input id="datalist_art" type="text" name="exh_art" list="artworks" placeholder="Artwork" class="datalist_art">
+<li class="li_art form-row mb-1">
+	<div class="col">
+		<input id="datalist_art" type="text" name="exh_art" list="artworks" placeholder="Artwork Name" class="datalist_art form-control">
 		<datalist id="artworks">
 			{% for art in artworks %}
 				<option data-value="{{ art.id }}" value="{{ art.name }}"></option>
 			{% endfor %}
-		</datalist> @ 
-	<input id="datalist_park" type="text" name="exh_park" list="parks" placeholder="Park">
+		</datalist>
+	</div>
+	<div class="col p-0">
+		<span class="align-middle">@</span>
+	</div>
+	<div class="col">
+		<input id="datalist_park" type="text" name="exh_park" list="parks" placeholder="Artwork Park" class="form-control">
 		<datalist id="parks">
 			{% for park in parks %}
 				<option data-value="{{ park.id }}" value="{{ park.name }}"></option>
 			{% endfor %}
 		</datalist>
+	</div>
 </li>

@@ -98,34 +98,7 @@ var model = {
 
 		this['artist'].modal = "<form id='form_artist' class='pt-3'>" + $('#section--create--artist ul').parent().html() + "</form>";
 
-		this['org'].modal = "<form id='form_org'>\
-				<ul class='pt-3'>\
-				<li class='row mb-3'>\
-				<div class='col-md-4 text-md-right'>\
-				<label for='org_name'>Name</label>\
-				</div>\
-				<div class='col-md-6'>\
-				<input type='text' name='org_name' placeholder='Organization Name' class='form-control'>\
-				</div>\
-				</li>\
-				<li class='row mb-3'>\
-				<div class='col-md-4 text-md-right'>\
-				<label for='org_website'>Website</label>\
-				</div>\
-				<div class='col-md-6'>\
-				<input type='text' name='org_website' placeholder='www.pizza.org' class='form-control'>\
-				</div>\
-				</li>\
-				<li class='row mb-3'>\
-				<div class='col-md-4 text-md-right'>\
-				<label for='org_phone'>Phone</label>\
-				</div>\
-				<div class='col-md-6'>\
-				<input type='text' name='org_phone' placeholder='###-###-####' class='form-control'>\
-				</div>\
-				</li>\
-				</ul>\
-				</form>";
+		this['org'].modal = "<form id='form_org' class='pt-3'>" + $('#section--create--org ul').parent().html() + "</form>";
 	}
 
 };
@@ -202,7 +175,7 @@ var controller = {
 				console.log("RESPONSE: " + response.data);
 				console.log(".li_" + y)
 				model[y].li = response.data;
-				// $(".li_" + y).html(model[y].li);
+				$(".li_" + y).html(model[y].li);
 		    },
 		    error: function(error) {
 				console.log(error);

@@ -72,13 +72,28 @@ var model = {
 		this['art'].li = $('#section--create--exhibition ul.ul_art').html();
 
 		this['art'].modal = "<form id='form_art'>\
+				<div class='row justify-content-center'>\
+				<div class='col-10 py-4'>\
 				<ul>\
-				<li><label for='art_name'>Name</label> <input type='text' name='art_name'></li>\
+				<li class='row mb-3'>\
+				<div class='col text-md-right'>\
+				<label for='art_name'>Name</label>\
+				</div>\
+				<div class='col'>\
+				<input type='text' name='art_name' placeholder='Artwork Name' class='form-control'>\
+				</div>\
+				</li>\
 				</ul>\
-				<h4>Artists</h4>\
-				<button type='button' id='createModal2_artist' class='artist_create btn__parks' data-toggle='modal' data-target='#modal_artistCreate'>Create</button>\
+				</div>\
+				<div class='col-md-10'>\
+				<h3 class='section__head section__head--modal pb-1 mb-3'>Artists</h3>\
+				<p class='d-inline'>Related Artists</p>\
+				<button type='button' id='createModal2_artist' class='artist_create btn__parks mb-3' data-toggle='modal' data-target='#modal_artistCreate'>Create</button>\
 				<button type='button' id='addModal_artist' class='artist_add btn__parks btn__parks--edit'>+</button>\
-				<ul class='ul_artist'>" + this['artist'].li + "</ul>\
+				<ul class='ul_artist'>"
+				+ this['artist'].li +
+				"</ul>\
+				</div>\
 				</form>";
 
 		this['artist'].modal = "<form id='form_artist'>\

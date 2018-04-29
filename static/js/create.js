@@ -106,10 +106,31 @@ var model = {
 				</form>";
 
 		this['org'].modal = "<form id='form_org'>\
-				<ul>\
-				<li><label for='org_name'>Name</label> <input type='text' name='org_name'></li>\
-				<li><label for='org_website'>Website</label> <input type='text' name='org_website'></li>\
-				<li><label for='org_phone'>Phone</label> <input type='text' name='org_phone'></li>\
+				<ul class='pt-3'>\
+				<li class='row mb-3'>\
+				<div class='col-md-4 text-md-right'>\
+				<label for='org_name'>Name</label>\
+				</div>\
+				<div class='col-md-6'>\
+				<input type='text' name='org_name' placeholder='Organization Name' class='form-control'>\
+				</div>\
+				</li>\
+				<li class='row mb-3'>\
+				<div class='col-md-4 text-md-right'>\
+				<label for='org_website'>Website</label>\
+				</div>\
+				<div class='col-md-6'>\
+				<input type='text' name='org_website' placeholder='www.pizza.org' class='form-control'>\
+				</div>\
+				</li>\
+				<li class='row mb-3'>\
+				<div class='col-md-4 text-md-right'>\
+				<label for='org_phone'>Phone</label>\
+				</div>\
+				<div class='col-md-6'>\
+				<input type='text' name='org_phone' placeholder='###-###-####' class='form-control'>\
+				</div>\
+				</li>\
 				</ul>\
 				</form>";
 	}

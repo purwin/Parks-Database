@@ -1,8 +1,9 @@
 /*
  *
- * Resets
+ * Global
  *
  */
+
 body {
 	color: #58595b;
 	max-width: 100%;
@@ -14,13 +15,15 @@ body {
  * Text
  *
  */
-/* h2 { color:  #e76a58; } */
+
 h2 { color:  #b8dd9b; }
+
 /*
  *
  * Links
  *
  */
+
 div.links a { color: #58595b; text-decoration: none; border-bottom: 2px solid #b8dd9b; }
 /* div.links a:hover { color:  #e76a58; } */
 div.links a:hover { color:  #b8dd9b; }
@@ -32,10 +35,17 @@ h4 { display:  inline-block; }
  * Divs
  *
  */
+
 .head { 
 	padding: 1rem;
 	background-color: #b8dd9b;
 }
+
+/*
+ *
+ * Nav Dropdown
+ *
+ */
 
 .leaf .dropdown { z-index: 1; }
 /* .leaf .dropdown-menu { background-color: #fff; } */
@@ -44,30 +54,10 @@ h4 { display:  inline-block; }
 
 /*
  *
- * Exhibition
- *
- */
-
-span.artist {
-	display: inline-block;
-	vertical-align: top;
-}
-span.artwork {
-	display: inline-block;
-	vertical-align: top;
-}
-span.park {
-	display: inline-block;
-	vertical-align: top;
-}
-
-/*
- *
  * Buttons
  *
  */
 
-/* .btn__parks a, .btn__parks--edit a, .btn__parks--no a, .btn__parks--add a {color: inherit; text-decoration: none; } */
 .btn__parks {
 	cursor: pointer;
 	border-width: 1.5px;
@@ -93,53 +83,75 @@ span.park {
 	color: #f4f4f4;
 }
 
-.btn__parks--edit { border-color: #ffe491; color: #ffd248; }
-.btn__parks--edit:hover { border-color: #ffd248; }
-.btn__parks--edit:active { border-color: #ffe491; background-color: #ffd248; }
-
-.btn__parks--no { border-color: #f1a69b; color: #e76a58; }
-.btn__parks--no:hover { border-color: #e76a58; }
-.btn__parks--no:active { border-color: #f1a69b; background-color: #e76a58; }
-
-.btn__parks--add { border-color: #a1d3ff; color: #62b5ff; }
-.btn__parks--add:hover { border-color: #62b5ff; }
-.btn__parks--add:active { border-color: #a1d3ff; background-color: #62b5ff; }
-
-/*
- *
- * Create
- *
- */
-
-.create_div {
-	/* display: none; */
+.btn__parks--edit {
+	border-color: #ffe491;
+	color: #ffd248;
+}
+.btn__parks--edit:hover {
+	border-color: #ffd248;
+}
+.btn__parks--edit:active {
+	border-color: #ffe491;
+	background-color: #ffd248;
 }
 
-.form_submit {
-	/* display: none; */
+.btn__parks--no {
+	border-color: #f1a69b;
+	color: #e76a58;
+}
+.btn__parks--no:hover {
+	border-color: #e76a58;
+}
+.btn__parks--no:active {
+	border-color: #f1a69b;
+	background-color: #e76a58;
 }
 
-select#create_type {
-	border:none;
-	border-radius: 0px;
-	border-bottom: 5px dashed grey;
-	/* font-size:20px; */
-	-webkit-appearance:none;
-	padding:  0 1rem;
+.btn__parks--add {
+	border-color: #a1d3ff;
+	color: #62b5ff;
 }
-
-select#create_type option[value="exhibition"] { border-bottom: 5px dashed red; }
-select#create_type option[value="park"] { border-bottom: 5px dashed green; }
-
+.btn__parks--add:hover {
+	border-color: #62b5ff;
+}
+.btn__parks--add:active {
+	border-color: #a1d3ff;
+	background-color: #62b5ff;
+}
 
 /*
  *
  * Bootstrap Overrides
  *
  */
+
+/*
+ *
+ * Bootstrap Overrides
+ *
+ */
+
 .dropdown-menu { min-width: 0rem; }
 
 
+/*
+ *
+ * Exhibition
+ *
+ */
+
+span.artist {
+	display: inline-block;
+	vertical-align: top;
+}
+span.artwork {
+	display: inline-block;
+	vertical-align: top;
+}
+span.park {
+	display: inline-block;
+	vertical-align: top;
+}
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {  }

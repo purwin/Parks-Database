@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from "_macros.html" import nav %}
+{% block head_extras %}<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">{% endblock %}
 {% block title %}NYC Parks Database – Create{% endblock %}
 {% block content %}
 
@@ -10,8 +11,8 @@
 			<div class="row justify-content-center head">
 				<div class="col-sm-12 col-md-8">
 					<h1 class="display-3 text-center">
-						<label for="create_item">New</label> 
-						<select id="create_type"  class="display-4" name="create_item">
+						<label for="create_item">New</label>&#x2009;
+						<select id="create_type" class="display-4" name="create_item">
 							<option value="" disabled selected></option>
 							<option value="exhibition">Exhibition</option>
 							<option value="artwork">Artwork</option>
@@ -28,115 +29,320 @@
 		</section>
 		<section id="section--create--exhibition">
 			<h2 class="text-center">Exhibition</h2>
+			<div class="row">
+				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
+					<h3 class="section__head display-4 p-1">Exhibition Bio</h3>
+				</div>
+			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1">Bio</h3>
+				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
-						<li><label for="exh_name">Name</label> <input type="text" name="exh_name"></li>
-						<li><label for="exh_startDate">Exhibition Dates</label> <input type="date" name="exh_startDate"> to <input type="date" name="exh_endDate"></li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="exh_name">Name</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="exh_name" placeholder="Exhibition Name" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="exh_startDate">Exhibition Start</label>
+							</div>
+							<div class="col-md-6">
+								<input type="date" name="exh_startDate" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="exh_endDate">Exhibition End</label>
+							</div>
+							<div class="col-md-6">
+								<input type="date" name="exh_endDate" class="form-control">
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1 d-inline-flex">Organizations</h3>
-					<button type="button" id="createModal_org" class="org_create btn__parks" data-toggle="modal" data-target="#modal_org">Create</button> <button id="add_org" type="button" class="btn__parks btn__parks--edit org_add">+</button>
-					<ul class="ul_org">
-						{% include "include/org_list.html" ignore missing with context %}
-					</ul>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Organizations</h3>
 				</div>
 			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1 d-inline-flex">Artworks</h3>
-					<button type="button" id="createModal_art" class="art_create btn__parks" data-toggle="modal" data-target="#modal_art">Create</button> <button id="add_art" type="button" class="btn__parks btn__parks--edit art_add">+</button>
-					<ul class="ul_art">
-						{% include "include/art_list.html" ignore missing with context %}
-					</ul>
+				<div class="col-sm-12 col-md-10 py-4">
+					<div class="row">
+						<div class="col-md-6 text-md-right">
+							<p>Related Organizations</p>
+						</div>
+						<div class="col-md-6">
+							<button type="button" id="createModal_org" class="org_create btn__parks mb-3" data-toggle="modal" data-target="#modal_org">Create</button>
+							<button id="add_org" type="button" class="btn__parks btn__parks--edit org_add">+</button>
+							<ul class="ul_org">
+								{% include "include/org_list.html" ignore missing with context %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Artworks</h3>
 				</div>
 			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3>Install Details</h3>
+				<div class="col-12 py-4">
+					<div class="row">
+						<div class="col-md-6 text-md-right">
+							<p>Exhibition Artworks</p>
+						</div>
+						<div class="col-md-6">
+							<button type="button" id="createModal_art" class="art_create btn__parks mb-3" data-toggle="modal" data-target="#modal_art">Create</button>
+							<button id="add_art" type="button" class="btn__parks btn__parks--edit art_add">+</button>
+							<ul class="ul_art form-inline">
+								{% include "include/art_list.html" ignore missing with context %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Install Details</h3>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-12 py-4">
 					<ul>
-						<li><label for="exh_installStart">Install Date(s)</label> <input type="date" name="exh_installStart"> to <input type="date" name="exh_installEnd"></li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="exh_installStart">Install Date(s)</label>
+							</div>
+							<div class="col-md-6">
+								<div class="form-row mb-1">
+									<div class="col-10">
+										<input type="date" name="exh_installStart" class="form-control">
+									</div>
+									<div class="col">
+										<span class="align-middle px-1">to</span>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-10">
+										<input type="date" name="exh_installEnd" class="form-control">
+									</div>
+								</div>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">De-Install Details</h3>
+				</div>
+			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3>De-Install Details</h3>
+				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
-						<li><label for="exh_deinstallDate">De-Install Due Date</label> <input type="date" name="exh_deinstallDate"></li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="exh_deinstallDate">De-Install Due Date</label>
+							</div>
+							<div class="col-md-6">
+								<input type="date" name="exh_deinstallDate" class="form-control">
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</section>
 		<section id="section--create--art">
 			<h2 class="text-center">Artwork</h2>
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1">Bio</h3>
-					<ul>
-						<li><label for="art_name">Name</label> <input type="text" name="art_name"></li>
-					</ul>
+			<div class="row">
+				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
+					<h3 class="section__head display-4 p-1">Artwork Bio</h3>
 				</div>
 			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1 d-inline-flex">Artists</h3>
-					<button type="button" id="createModal_artist" class="artist_create btn__parks" data-toggle="modal" data-target="#modal_artist">Create</button> <button id="add_artist" type="button" class="artist_add btn__parks btn__parks--edit">+</button>
-					<ul class="ul_artist">
-						{% include "include/artist_list.html" ignore missing with context %}
+				<div class="col-sm-12 col-md-10 py-4">
+					<ul>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="art_name">Name</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="art_name" placeholder="Artwork Name" class="form-control">
+							</div>
+						</li>
 					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Artists</h3>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-10 py-4">
+					<div class="row">
+						<div class="col-md-6 text-md-right">
+							<p>Related Artists</p>
+						</div>
+						<div class="col-md-6">
+							<button type="button" id="createModal_artist" class="artist_create btn__parks mb-3" data-toggle="modal" data-target="#modal_artist">Create</button>
+							<button id="add_artist" type="button" class="artist_add btn__parks btn__parks--edit mb-3">+</button>
+							<ul class="ul_artist">
+								{% include "include/artist_list.html" ignore missing with context %}
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
-		<section class="section--create--artist">
+		<section id="section--create--artist">
 			<h2 class="text-center">Artist</h2>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Artist Bio</h3>
+				</div>
+			</div>
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1">Bio</h3>
 					<ul>
-						<li>Name <input type="text" name="artist_pName" placeholder="primary/last name"> <input type="text" name="artist_fName" placeholder="first name"></li>
-						<li>Email <input type="text" name="artist_email"></li>
-						<li>Phone <input type="text" name="artist_phone"></li>
-						<li>Website  <input type="text" name="artist_website"></li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="artist_pName" style="height: 100%; vertical-align: text-top;">Name</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="artist_pName" placeholder="Primary/Last Name" class="form-control mb-1">
+								<input type="text" name="artist_fName" placeholder="First Name" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="artist_email" style="height: 100%; vertical-align: text-top;">Email</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="artist_email" placeholder="you@pizza.com" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="artist_phone">Phone</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="artist_phone" placeholder="###-###-####" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="artist_website">Website</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="artist_website" placeholder="www.pizza.org" class="form-control">
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</section>
-		<section class="section--create--park">
+		<section id="section--create--park" class="py-5">
 			<h2 class="text-center">Park</h2>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Park Bio</h3>
+				</div>
+			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1">Bio</h3>
+				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
-						<li>Name <input type="text" name="park_name"></li>
-						<li>Park ID <input type="text" name="park_park_id"></li>
-						<li>Borough <select id="" name="park_borough">
-							<option value="" selected disabled>Select a Borough</option>
-							<option value="Manhattan">Manhattan</option>
-							<option value="Brooklyn">Brooklyn</option>
-							<option value="Queens">Queens</option>
-							<option value="Bronx">Bronx</option>
-							<option value="Staten Island">Staten Island</option>
-							</select></li>
-						<li>Address <input type="text" name="park_address"></li>
-						<li>Community Board # <input type="text" name="park_cb"></li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="park_name" style="height: 100%; vertical-align: text-top;">Name</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="park_name" placeholder="Park Name" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="park_park_id" style="height: 100%; vertical-align: text-top;">Park ID</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="park_park_id" placeholder="ID ###" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="park_borough" style="height: 100%; vertical-align: text-top;">Borough</label>
+							</div>
+							<div class="col-md-6">
+								<select name="park_borough" class="form-control">
+									<option value="" selected disabled>Select a Borough</option>
+									<option value="Manhattan">Manhattan</option>
+									<option value="Brooklyn">Brooklyn</option>
+									<option value="Queens">Queens</option>
+									<option value="Bronx">Bronx</option>
+									<option value="Staten Island">Staten Island</option>
+								</select>
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="park_address" style="height: 100%; vertical-align: text-top;">Address</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="park_address" placeholder="Park Address" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="park_cb" style="height: 100%; vertical-align: text-top;">Community Board</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="park_cb" placeholder="##" class="form-control">
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</section>
-		<section class="section--create--org">
+		<section id="section--create--org">
 			<h2 class="text-center">Organization</h2>
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Organization Bio</h3>
+				</div>
+			</div>
 			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
-					<h3 class="p-1">Bio</h3>
+				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
-						<li>Name <input type="text" name="org_name"></li>
-						<li>Website <input type="text" name="org_website"></li>
-						<li>Phone <input type="text" name="org_phone"></li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="org_name" style="height: 100%; vertical-align: text-top;">Name</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="org_name" placeholder="Organization Name" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="org_website" style="height: 100%; vertical-align: text-top;">Website</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="org_website" placeholder="www.pizza.org" class="form-control">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-6 text-md-right">
+								<label for="org_phone" style="height: 100%; vertical-align: text-top;">Phone</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="org_phone" placeholder="###-###-####" class="form-control">
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>

@@ -96,7 +96,7 @@ var model = {
 				</div>\
 				</form>";
 
-		this['artist'].modal = "<form id='form_artist'>" + $('#section--create--artist ul').parent().html() + "</form>";
+		this['artist'].modal = "<form id='form_artist' class='pt-3'>" + $('#section--create--artist ul').parent().html() + "</form>";
 
 		this['org'].modal = "<form id='form_org'>\
 				<ul class='pt-3'>\

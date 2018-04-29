@@ -96,14 +96,7 @@ var model = {
 				</div>\
 				</form>";
 
-		this['artist'].modal = "<form id='form_artist'>\
-				<ul>\
-				<li><label for='artist_pName'>Name</label> <input type='text' name='artist_pName' placeholder='primary/last name'> <input type='text' name='artist_fName' placeholder='first name'></li>\
-				<li><label for='artist_email'>Email</label> <input type='text' name='artist_email'></li>\
-				<li><label for='artist_phone'>Phone</label> <input type='text' name='artist_phone'></li>\
-				<li><label for='artist_website'>Website</label> <input type='text' name='artist_website'></li>\
-				</ul>\
-				</form>";
+		this['artist'].modal = "<form id='form_artist'>" + $('#section--create--artist ul').parent().html() + "</form>";
 
 		this['org'].modal = "<form id='form_org'>\
 				<ul class='pt-3'>\

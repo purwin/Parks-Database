@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% from "_macros.html" import nav %}
+{% block title %}NYC Parks Database – Artists{% endblock %}
+{% block content %}
+
+	{{ nav() }}
+	<div class="container-fluid">
+		<section id="section--head">
+			<div class="row justify-content-center head">
+				<div class="col-sm-12 col-md-8">
+					<h1 class="text-center display-3"><b>{{ exhibition.name|upper }}</b></h1>
+				</div>
+			</div>
+		</section>
+		<section id="section--bio">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					<h2 class="text-center display-4 p-4">Bio</h2>
+					<ul>
+						<li>Exhibition Dates: {{ exhibition.startDate }} to {{ exhibition.endDate }}</li>
+					</ul>
+					<h3 class="text-center">Parks</h3>
+					<ul>
+						{% if exhibition.parks %}
+						{% for park in exhibition.parks %}
+							<li><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></li>
+						{% endfor %}
+						{% else %}
+							<li><i>This exhibition has no connected parks.</i></li>
+						{% endif %}
+					</ul>
+					<h3 class="text-center">Organizations</h3>
+					<ul>
+						{% if exhibition.organizations %}
+						{% for x in exhibition.organizations %}
+							<li><a href="{{ url_for('org', organization_id=x.id) }}">{{ x.name }}</a></li>
+						{% endfor %}
+						{% else %}
+							<li><i>This exhibition has no connected organizations.</i></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section id="section--art">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					<h2 class="text-center display-4 p-4">Artworks</h2>
+					<ul>
+						{% if exhib %}
+						{% for x in exhib %}
+							<li>ID: {{ x.artw.id }}; <span class="artwork"><a href="{{ url_for('artwork', artwork_id=x.artw.id) }}">{{ x.artw.name }}</a></span> {% if x.artw.creators.count() > 0 %}by <span class="artist">{% for artist in x.artw.creators %}<a href="{{ url_for('artist', artist_id=artist.id) }}">{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}</a><br/>{% endfor %}{% endif %}</span> @ 
+							<span class="park"><a href="{{ url_for('park', park_id=x.nycpark.id) }}">{{ x.nycpark.name }}</a></span></li>
+						{% endfor %}
+						{% else %}
+							<li><i>This exhibition has no related artworks.</i></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section id="section--install">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					<h2 class="text-center display-4 p-4">Install Details</h2>
+					<ul>
+						<li>Install Date(s): {{ exhibition.installStart }}{%if exhibition.installEnd %} to {{ exhibition.installEnd }}{% endif %}</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section id="section--de-install">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					<h2 class="text-center display-4 p-4">De-Install Details</h2>
+					<ul>
+						<li>De-Install Due Date: {{ exhibition.deinstallDate }}</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+	</div>
+
+{% endblock %}

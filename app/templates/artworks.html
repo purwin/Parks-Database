@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% from "_macros.html" import nav %}
+{% block title %}NYC Parks Database — Artworks{% endblock %}
+{% block content %}
+
+	{{ nav() }}
+	<div class="container-fluid">
+		<section id="section--head">
+			<div class="row justify-content-center head">
+				<div class="col-sm-12 col-md-8">
+					<h1 class="text-center display-3"><b>ARTWORKS</b></h1>
+				</div>
+			</div>
+		</section>
+		<section id="section--art">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					{% if artworks %}
+					{% for x in artworks %}
+						<h2><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></h2>
+						<ul>
+							<li>ID: {{ x.id }}</li>
+							<li>Artists:
+								<ul>
+									{% if x.creators.count() > 0 %}
+									{% for creator in x.creators %}
+										<li><a href="{{ url_for('artist', artist_id=creator.id) }}">{% if creator.fName %}{{ creator.fName }} {% endif %}{{ creator.pName }}</a></li>
+									{% endfor %}
+									{% else %}
+									<li><i>This artwork doesn't have any artists yet.</i></li>
+									{% endif %}
+								</ul>
+							</li>
+						</ul>
+					{% endfor %}
+					{% else %}
+					<p><i>There are no artworks in the database.</i></p>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+	</div>
+
+{% endblock %}

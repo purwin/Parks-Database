@@ -1,0 +1,8 @@
+<li class="li_org mb-1">
+	<input id="datalist_org" type="text" name="exh_org" list="orgs" placeholder="Organization Name" class="form-control">
+		<datalist id="orgs">
+			{% for org in orgs %}
+			<option data-value="{{ org.id }}" value="{{ org.name }}"></option>
+			{% endfor %}
+		</datalist>
+</li>

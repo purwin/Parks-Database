@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% from "_macros.html" import nav %}
+{% block title %}NYC Parks Database – Artists{% endblock %}
+{% block content %}
+
+	{{ nav() }}
+	<div class="container-fluid">
+		<section id="section--head">
+			<div class="row justify-content-center head">
+				<div class="col-sm-12 col-md-8">
+					<h1 class="text-center display-3"><b>{{ artwork.name|upper }}</b></h1>
+				</div>
+			</div>
+		</section>
+		<section id="section--bio">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					<h2 class="text-center display-4 p-4">Bio</h2>
+					<ul>
+						<li>ID: {{ artwork.id }}</li>
+						<li>Artists:
+							<ul>
+								{% if artwork.creators.count() > 0 %}
+								{% for creator in artwork.creators %}
+									<li><a href="{{ url_for('artist', artist_id=creator.id) }}">{% if creator.fName %}{{ creator.fName }} {% endif %}{{ creator.pName }}</a></li>
+								{% endfor %}
+								{% else %}
+								<li><i>This artwork doesn't have any artists yet.</i></li>
+								{% endif %}
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section id="section--exhibitions">
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-8">
+					<h2 class="text-center display-4 p-4">Exhibitions</h2>
+					{% if artwork.exhibitions %}
+					{% for exhibition in artwork.exhibitions %}
+						<ul>
+							<li>ID: {{ exhibition.id }}</li>
+							<li>Name: <a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}">{{ exhibition.name }}</a></li>
+							<li>Exhibition Dates: {{ exhibition.startDate }} to {{ exhibition.endDate }}</li>
+						</ul>
+					{% endfor %}
+					{% else %}
+					<p><i>This artwork has no connected exhibitions.</i></p>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+	</div>
+
+{% endblock %}

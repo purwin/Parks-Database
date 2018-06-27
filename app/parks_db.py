@@ -19,6 +19,7 @@ class Exhibition(db.Model):
 	artworks = db.relationship('Artwork', secondary='exh_art_park', backref = db.backref('exhibition'))
 	events = db.relationship('Event', backref='exhibition')
 	organizations = db.relationship('Org', secondary=exh_org, backref=db.backref('exhibitions', lazy='dynamic'))
+	prm = db.Column(db.String(10))
 
 	def __repr__(self):
 		return '<Exhibition:{}>'.format(self.name)

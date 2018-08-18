@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 from app import app, db
-from parks_db import *
+from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 
 import sys
 
@@ -108,10 +108,10 @@ def createOrg():
 
 @app.route('/exhibitions')
 def exhibitions():
+  exhibitions = Exhibition.query.all()
   activeExhibitions = []
   activeDeinstalls = []
   upcomingExhibitions = []
-  exhibitions = Exhibition.query.all()
   return render_template('exhibitions.html', exhibitions = exhibitions)
 
 

@@ -1,31 +1,5 @@
 $( document ).ready(function() {
 
-// var model = {
-// 	topCat: null,
-// 	allCats: [
-// 		{
-// 			name: 'Doug',
-// 			clickCount: 0,
-// 			img: 'https://visualhunt.com/photos/s/7/eye-cat-pet.jpg',
-// 			admin: false
-// 		},
-// 		{
-// 			name: 'Tanya',
-// 			clickCount: 0,
-// 			img: 'https://cdn.images.express.co.uk/img/dynamic/128/590x/secondary/cats-480738.jpg',
-// 			admin: false
-// 		},
-// 		{
-// 			name: 'Pappa Louis',
-// 			clickCount: 0,
-// 			img: 'http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg',
-// 			admin: false
-// 		}
-
-// 	]
-// };
-
-
 var model = {
 
 	art: {
@@ -64,6 +38,7 @@ var model = {
 	// 	post: ""
 	// },
 
+	// Declare list of active createButtons
 	createButton: [null],
 
 	init: function() {
@@ -118,7 +93,6 @@ var controller = {
 	// add new modal form
 	showModal: function(x){
 		model.createButton.push(x);
-		console.log("M.c: " + model.createButton);
 		y = x.id.split("_")[1];
 
 		$('#modal_' + y).modal('show').find('div.modal-body').html(model[y].modal);
@@ -145,17 +119,19 @@ var controller = {
 		}
 	},
 
+	// Pop most recent addition to modal list
 	popModalList: function(){
 		let x = model.createButton.pop();
 		console.log("Current modalList: " + model.createButton);
 		return x;
 	},
 
+	// Remove modal ref from list when a modal is cancelled
 	cancelPost: function(x){
 		this.popModalList();
 	},
 
-	// post modal forms
+	// Post modal forms
 	postData: function(x){
 		console.log("WHAT: " + x.id);
 		let y = x.id.split("_")[1];
@@ -163,8 +139,10 @@ var controller = {
 		// store values
 		var tempName = $("#form_" + y + " [id^='datalist_'] input[name$='_name']").val(); // store name of input, pass to new li
 
-		// change values
+		// change values to IDs
 		controller.valSwitch(x);
+
+		console.log("Post data: " + $('#form_' + y).serialize());
 
 		// post data
 		$.ajax({

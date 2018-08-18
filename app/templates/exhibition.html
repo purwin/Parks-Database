@@ -49,7 +49,7 @@
 					<ul>
 						{% if exhib %}
 						{% for x in exhib %}
-							<li>ID: {{ x.artw.id }}; <span class="artwork"><a href="{{ url_for('artwork', artwork_id=x.artw.id) }}">{{ x.artw.name }}</a></span> {% if x.artw.creators.count() > 0 %}by <span class="artist">{% for artist in x.artw.creators %}<a href="{{ url_for('artist', artist_id=artist.id) }}">{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}</a><br/>{% endfor %}{% endif %}</span> @ 
+							<li>ID: {{ x.artw.id }}; <span class="artwork"><a href="{{ url_for('artwork', artwork_id=x.artw.id) }}">{{ x.artw.name }}</a></span> {% if x.artw.artists %}by <span class="artist">{% for artist in x.artw.artists %}<a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.full_name }}</a><br/>{% endfor %}{% endif %}</span> @ 
 							<span class="park"><a href="{{ url_for('park', park_id=x.nycpark.id) }}">{{ x.nycpark.name }}</a></span></li>
 						{% endfor %}
 						{% else %}

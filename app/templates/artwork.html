@@ -20,9 +20,9 @@
 						<li>ID: {{ artwork.id }}</li>
 						<li>Artists:
 							<ul>
-								{% if artwork.creators.count() > 0 %}
-								{% for creator in artwork.creators %}
-									<li><a href="{{ url_for('artist', artist_id=creator.id) }}">{% if creator.fName %}{{ creator.fName }} {% endif %}{{ creator.pName }}</a></li>
+								{% if artwork.artists %}
+								{% for artist in artwork.artists %}
+									<li><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.full_name }}</a></li>
 								{% endfor %}
 								{% else %}
 								<li><i>This artwork doesn't have any artists yet.</i></li>

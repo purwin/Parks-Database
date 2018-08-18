@@ -1,7 +1,7 @@
 {% from "_macros.html" import nav %}
 {% extends "layout.html" %}
 
-{% block title %}Parks Database – {% if artist.fName %}{{ artist.fName|capitalize }} {% endif %}{{ artist.pName|capitalize }}{% endblock %}
+{% block title %}Parks Database – {{ artist.full_name|capitalize }}{% endblock %}
 {% block content %}
 {{ nav() }}
 {% if artist %}
@@ -9,7 +9,7 @@
 	<section id="section--head">
 		<div class="row justify-content-center head">
 			<div class="col-sm-12 col-md-8">
-				<h1 class="text-center display-3"><b>{% if artist.fName %}{{ artist.fName|upper }} {% endif %}{{ artist.pName|upper }}</b></h1>
+				<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>
 			</div>
 		</div>
 	</section>

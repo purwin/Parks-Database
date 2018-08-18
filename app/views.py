@@ -58,37 +58,40 @@ def create():
 
 @app.route('/createArtist', methods=['GET', 'POST'])
 def createArtist():
-	db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
-	db.session.commit()
-	db.session.flush()
-	artists = Artist.query.all()
-	return jsonify({'data': render_template('include/artist_list.html', artists=artists)})
+  if request.method == 'POST':
+  	db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
+  	db.session.commit()
+  	db.session.flush()
+  	artists = Artist.query.all()
+  	return jsonify({'data': render_template('include/artist_list.html', artists=artists)})
 
 @app.route('/createArt', methods=['GET', 'POST'])
 def createArt():
-	newArtwork = Artwork(name=request.form['art_name'])
-	db.session.add(newArtwork)
-	try:
-		art_artist = request.form.getlist('art_artist')
-		for x in art_artist:
-			creator = Artist.query.filter_by(id=x).one()
-			newArtwork.creators.append(creator)
-		db.session.commit()
-		db.session.flush()
-		artworks = Artwork.query.all()
-		parks = Park.query.all()
-		return jsonify({'data': render_template('include/art_list.html', artworks=artworks, parks=parks)})
-	except:
-		e = sys.exc_info()[0]
-		print "error: {}".format(e)
+  if request.method == 'POST':
+  	newArtwork = Artwork(name=request.form['art_name'])
+  	db.session.add(newArtwork)
+  	try:
+  		art_artist = request.form.getlist('art_artist')
+  		for x in art_artist:
+  			creator = Artist.query.filter_by(id=x).one()
+  			newArtwork.creators.append(creator)
+  		db.session.commit()
+  		db.session.flush()
+  		artworks = Artwork.query.all()
+  		parks = Park.query.all()
+  		return jsonify({'data': render_template('include/art_list.html', artworks=artworks, parks=parks)})
+  	except:
+  		e = sys.exc_info()[0]
+  		print "error: {}".format(e)
 
 @app.route('/createOrg', methods=['POST'])
 def createOrg():
-	db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
-	db.session.commit()
-	db.session.flush()
-	orgs = Org.query.all()
-	return jsonify({'data': render_template('include/org_list.html', orgs=orgs)})
+  if request.method == 'POST':
+  	db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
+  	db.session.commit()
+  	db.session.flush()
+  	orgs = Org.query.all()
+  	return jsonify({'data': render_template('include/org_list.html', orgs=orgs)})
 
 @app.route('/exhibitions')
 def exhibitions():

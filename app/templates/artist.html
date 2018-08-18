@@ -41,7 +41,59 @@
 				</section>
 			</div>
 	</div>
+	<div class="row justify-content-center">
+		<div class="col-sm-12 col-md-8 col-lg-6">
+			<button id="editForm">Edit</button>
+			<form action="" id="formArtist">
+					<h2>Bio</h2>
+					<ul>
+						<li><label for="">First Name:</label> <input id="testo" type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext" readonly></li>
+						<li><label for="">Last Name:</label> <input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext" readonly></li>
+						<li><label for="">Email:</label> <input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly></li>
+						<li><label for="">Phone:</label> <input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly></li>
+						<li><label for="">Web site:</label> <input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext" readonly></li>
+					</ul>
+				<button id="cancel" hidden>Cancel</button>
+				</form>
+			</div>
+	</div>
 </div>
+<script>
+	// Make form editable
+	$("#editForm").on('click', function(event) {
+		event.preventDefault();
+
+		// Update input attributes
+		$("#formArtist").find(":input").each(function() {
+			// Remove input readonly attributes
+			$(this).attr("readonly", false);
+			// Update input classes
+			$(this).toggleClass('form-control-plaintext').toggleClass('form-control');;
+		});
+
+		// Display form buttons
+		$("#formArtist").find("button").each(function() {
+			$(this).attr("hidden", false);
+		});
+	});
+
+	// Cancel form editing
+	$("#cancel").on('click', function(event) {
+		event.preventDefault();
+
+		$("#formArtist").find(":input").each(function() {
+			// Remove input readonly attributes
+			$(this).attr("readonly", true);
+			// Update input classes
+			$(this).toggleClass('form-control-plaintext').toggleClass('form-control');;
+		});
+
+		// Hide form buttons
+		$("#formArtist").find("button").each(function() {
+			$(this).attr("hidden", true);
+		});
+	});
+</script>
 {% endif %}
 
 {% endblock %}

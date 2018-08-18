@@ -22,35 +22,58 @@ def home():
 @app.route('/create', methods=['GET', 'POST'])
 def create():
   if request.method == 'POST':
+
+    # Create exhibition
     if request.form['create_item'] == 'exhibition':
       newItem = Exhibition(name=request.form['exh_name'], startDate=request.form['exh_startDate'], endDate=request.form['exh_endDate'], installStart=request.form['exh_installStart'], installEnd=request.form['exh_installEnd'], deinstallDate=request.form['exh_deinstallDate'])
       db.session.add(newItem)
       db.session.flush()
       try:
         exh_art = request.form.getlist('exh_art')
+        # Remove any empty items from artwork list
+        exh_art = filter(None, exh_art)
         exh_park = request.form.getlist('exh_park')
+        # Remove any empty items from park list
+        exh_park = filter(None, exh_park)
         for x, y in zip(exh_art, exh_park):
-          # if x or y not empty...
+          # add exhibition, art, park ref to database
           exh_rel = Exh_art_park(exhibition_id=newItem.id, artwork_id=x, park_id=y)
           db.session.add(exh_rel)
-        for z in request.form.getlist('exh_org'):
-          # if z not empty...
+
+        exh_org = request.form.getlist('exh_org')
+        # Remove any empty items from org list
+        exh_org = filter(None, exh_org)
+        for z in exh_org:
+          # add org to exhibition
           org = Org.query.filter_by(id=z).one()
           newItem.organizations.append(org)
+
       except:
         e = sys.exc_info()[0]
         print "error: {}".format(e)
+
+    # Create artwork
     elif request.form['create_item'] == 'artwork':
       db.session.add(Artwork(name=request.form['art_name']))
+
+    # Create park
     elif request.form['create_item'] == 'park':
       db.session.add(Park(name=request.form['park_name'], park_id=request.form['park_park_id'], borough=request.form['park_borough'], address=request.form['park_address'], cb=request.form['park_cb']))
+
+    # Create artist
     elif request.form['create_item'] == 'artist':
       db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
+
+    # Create organization
     elif request.form['create_item'] == 'organization':
       db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
+
+    # Create event
+
     else: return redirect(url_for('home'))
     db.session.commit()
     return redirect(url_for('home'))
+
   else:
     artworks = Artwork.query.all()
     parks = Park.query.all()

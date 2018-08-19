@@ -168,7 +168,8 @@ def artists():
 @app.route('/artists/<int:artist_id>')
 def artist(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
-  return render_template('artist.html', artist = artist)
+  artworks = Artwork.query.all()
+  return render_template('artist.html', artist = artist, artworks = artworks)
 
 
 @app.route('/artworks')

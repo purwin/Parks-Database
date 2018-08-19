@@ -6,22 +6,53 @@
 {{ nav() }}
 {% if artist %}
 <div class="container-fluid">
-	<section id="section--head">
-		<div class="row justify-content-center head">
-			<div class="col-sm-12 col-md-8">
-				<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>
+	<form action="" id="formArtist">
+		<section id="section--head">
+			<div class="row justify-content-center head">
+				<div class="col-sm-12 col-md-8">
+					<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>
+					<h1 class="">
+					<input type="text" name="fName" value="{{ artist.fName }}" class="text-center form-control-plaintext display-3" readonly>
+					<input type="text" name="pName" value="{{ artist.pName }}" class="text-center form-control-plaintext display-3" readonly>
+					</h1>
+				</div>
+			</div>
+		</section>
+		<div class="row justify-content-center">
+			<div class="col-sm-12 col-md-10 text-right p-4">
+				<button class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
 			</div>
 		</div>
-	</section>
-	<div class="row justify-content-center">
+		<div class="row justify-content-center">
 			<div class="col-sm-12 col-md-8 col-lg-6">
 				<section id="section--bio">
 				<h2 class="text-center display-4 p-4">Bio</h2>
 				<ul>
 					<li>ID: {{ artist.id }}</li>
-					<li>Email: {{ artist.email }}</li>
-					<li>Phone: {{ artist.phone }}</li>
-					<li>Web site: <a href="http://{{ artist.website }}" target="_blank">{{ artist.website }}</a></li>
+					<li class="row mb-3">
+						<div class="col-md-4">
+							<label for="email" style="height: 100%; vertical-align: text-top;">Email</label>
+						</div>
+						<div class="col-md-6">
+							<input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly>
+						</div>
+					</li>
+					<li class="row mb-3">
+						<div class="col-md-4">
+							<label for="phone" style="height: 100%; vertical-align: text-top;">Phone</label>
+						</div>
+						<div class="col-md-6">
+							<input type="text" name="email" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
+						</div>
+					</li>
+					<li class="row mb-3">
+						<div class="col-md-4">
+							<label for="website" style="height: 100%; vertical-align: text-top;">Website</label>
+						</div>
+						<div class="col-md-6">
+							<a href="http://{{ artist.website }}"><input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext" readonly></a>
+						</div>
+					</li>
 				</ul>
 				</section>
 			</div>
@@ -33,6 +64,19 @@
 					{% for x in artist.artworks %}
 					<li>ID: {{ x.id }}</li>
 					<li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li>
+					<li class="row mb-3">
+						<div class="col-md-4">
+							<label for="art_name">Artwork</label>
+						</div>
+						<div class="col-md-6">
+							<input id="datalist_art" type="text" name="artist_art" list="artworks" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
+							<datalist id="artworks">
+								{% for art in artworks %}
+									<option data-value="{{ art.id }}" value="{{ art.name }}"></option>
+								{% endfor %}
+							</datalist>
+						</div>
+					</li>
 					{% endfor %}
 				</ul>
 				{% else %}
@@ -40,31 +84,31 @@
 				{% endif %}
 				</section>
 			</div>
-	</div>
-	<div class="row justify-content-center">
-		<div class="col-sm-12 col-md-8 col-lg-6">
-			<button id="editForm">Edit</button>
-			<form action="" id="formArtist">
-					<h2>Bio</h2>
-					<ul>
-						<li><label for="">First Name:</label> <input id="testo" type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext" readonly></li>
-						<li><label for="">Last Name:</label> <input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext" readonly></li>
-						<li><label for="">Email:</label> <input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly></li>
-						<li><label for="">Phone:</label> <input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly></li>
-						<li><label for="">Web site:</label> <input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext" readonly></li>
-					</ul>
-				<button id="cancel" hidden>Cancel</button>
-				</form>
+		</div>
+		<section id="section--submit">
+			<div class="row justify-content-center" id="form_buttons" hidden>
+				<div class="col-sm-12 col-md-10 text-right p-4">
+					<button type="button" class="btn__parks btn__parks--no" id="form_cancel">Cancel</button>
+					<button type="button" class="btn__parks btn__parks--add ml-2" value="Create" id="form_update">Update</button>
+				</div>
 			</div>
-	</div>
+		</section>
+		<button id="cancel" hidden>Cancel</button>
+	</form>
 </div>
 <script>
 	// Make form editable
-	$("#editForm").on('click', function(event) {
+	$("#form_edit").on('click', function(event) {
 		event.preventDefault();
 
-		// Update input attributes
-		$("#formArtist").find(":input").each(function() {
+		// Disable a anchor links when in edit mode
+		$("#formArtist").find("a").each(function(e) {
+			$(this).attr("onclick", "return false");
+		});
+
+		// Make inputs editable
+		$("#formArtist").find(":input").not(":button").each(function() {
+			console.log(this);
 			// Remove input readonly attributes
 			$(this).attr("readonly", false);
 			// Update input classes
@@ -72,26 +116,23 @@
 		});
 
 		// Display form buttons
-		$("#formArtist").find("button").each(function() {
+		$("#formArtist").find("#form_buttons").each(function() {
 			$(this).attr("hidden", false);
 		});
 	});
 
 	// Cancel form editing
-	$("#cancel").on('click', function(event) {
+	$("#form_cancel").on('click', function(event) {
 		event.preventDefault();
 
-		$("#formArtist").find(":input").each(function() {
-			// Remove input readonly attributes
-			$(this).attr("readonly", true);
-			// Update input classes
-			$(this).toggleClass('form-control-plaintext').toggleClass('form-control');;
-		});
+		window.location.reload(true);
+	});
 
-		// Hide form buttons
-		$("#formArtist").find("button").each(function() {
-			$(this).attr("hidden", true);
-		});
+	// Submit form updates
+	$("#form_update").on('click', function(event) {
+		event.preventDefault();
+
+		window.location.reload(true);
 	});
 </script>
 {% endif %}

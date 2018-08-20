@@ -31,7 +31,7 @@
 					<li>ID: {{ artist.id }}</li>
 					<li class="row mb-3">
 						<div class="col-md-4">
-							<label for="email" style="height: 100%; vertical-align: text-top;">Email</label>
+							<label for="email" style="padding-top:.375rem; padding-bottom:.375rem;">Email</label>
 						</div>
 						<div class="col-md-6">
 							<input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly>
@@ -39,7 +39,7 @@
 					</li>
 					<li class="row mb-3">
 						<div class="col-md-4">
-							<label for="phone" style="height: 100%; vertical-align: text-top;">Phone</label>
+							<label for="phone" style="padding-top:.375rem; padding-bottom:.375rem;">Phone</label>
 						</div>
 						<div class="col-md-6">
 							<input type="text" name="email" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
@@ -47,7 +47,7 @@
 					</li>
 					<li class="row mb-3">
 						<div class="col-md-4">
-							<label for="website" style="height: 100%; vertical-align: text-top;">Website</label>
+							<label for="website" style="padding-top:.375rem; padding-bottom:.375rem;">Website</label>
 						</div>
 						<div class="col-md-6">
 							<a href="http://{{ artist.website }}"><input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext" readonly></a>
@@ -66,10 +66,10 @@
 					<li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li>
 					<li class="row mb-3">
 						<div class="col-md-4">
-							<label for="art_name">Artwork</label>
+							<label for="art_name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
 						</div>
 						<div class="col-md-6">
-							<input id="datalist_art" type="text" name="artist_art" list="artworks" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
+							<input id="datalist_art" type="text" name="artist_art" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
 							<datalist id="artworks">
 								{% for art in artworks %}
 									<option data-value="{{ art.id }}" value="{{ art.name }}"></option>
@@ -134,6 +134,11 @@
 
 		window.location.reload(true);
 	});
+
+
+	// Remove current artwork from artist
+
+	// Add new artwork li
 </script>
 {% endif %}
 

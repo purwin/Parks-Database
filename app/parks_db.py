@@ -14,7 +14,8 @@ artist_artwork = db.Table(
 exh_org = db.Table(
 	'exh_org',
 	db.Column('exhibition_id', db.Integer, db.ForeignKey('exhibition.id')),
-	db.Column('organization_id', db.Integer, db.ForeignKey('org.id'))
+	db.Column('organization_id', db.Integer, db.ForeignKey('org.id')),
+	db.UniqueConstraint('exhibition_id', 'organization_id', name='UC_exhibition_id_organization_id')
 )
 
 

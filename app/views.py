@@ -140,8 +140,8 @@ def exhibitions():
 
 @app.route('/exhibitions/<int:exhibition_id>')
 def exhibition(exhibition_id):
-  exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
-  exhib = Exh_art_park.query.filter_by(exhibition_id=exhibition_id).all()
+  exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
+  exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
   return render_template('exhibition.html', exhibition = exhibition, exhib = exhib)
 
 
@@ -155,7 +155,7 @@ def parks():
 @app.route('/parks/<int:park_id>')
 def park(park_id):
   park = Park.query.filter_by(id=park_id).one()
-  park_art = Exh_art_park.query.filter_by(park_id=park_id).all()
+  park_art = Exh_art_park.query.filter_by(park_id = park_id).all()
   return render_template('park.html', park = park, park_art = park_art)
 
 
@@ -167,9 +167,33 @@ def artists():
 
 @app.route('/artists/<int:artist_id>')
 def artist(artist_id):
-  artist = Artist.query.filter_by(id=artist_id).one()
+  artist = Artist.query.filter_by(id = artist_id).one()
   artworks = Artwork.query.all()
   return render_template('artist.html', artist = artist, artworks = artworks)
+
+
+@app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])
+def artist_edit(artist_id):
+  artist = Artist.query.filter_by(id=artist_id).one()
+  if request.method == 'POST':
+    artist.pName = request.form['pName']
+    artist.fName = request.form['fName']
+    artist.email = request.form['email']
+    artist.phone = request.form['phone']
+    artist.website = request.form['website']
+    try:
+      artist_art = request.form.getlist('artist_art')
+      # Remove any empty items from list
+      artist_art = filter(None, artist_art)
+      for x in artist_art:
+        artwork = Artwork.query.filter_by(id = x).one()
+        artist.artworks.append(artwork)
+    except Exception as e:
+      raise e
+    db.session.add(artist)
+    db.session.commit()
+  # Return message/error via AJAX
+  return redirect(url_for('artist', artist_id = artist.id))
 
 
 @app.route('/artworks')
@@ -187,7 +211,7 @@ def artwork(artwork_id):
 @app.route('/organizations')
 def orgs():
   orgs = Org.query.all()
-  return render_template('orgs.html', orgs=orgs)
+  return render_template('orgs.html', orgs = orgs)
 
 
 @app.route('/organizations/<int:organization_id>')

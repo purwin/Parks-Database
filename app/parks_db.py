@@ -6,7 +6,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 artist_artwork = db.Table(
 	'artist_artwork',
 	db.Column('artwork_id', db.Integer, db.ForeignKey('artwork.id')),
-	db.Column('artist_id', db.Integer, db.ForeignKey('artist.id'))
+	db.Column('artist_id', db.Integer, db.ForeignKey('artist.id')),
+	db.UniqueConstraint('artwork_id', 'artist_id', name='UC_artist_id_artwork_id')
 )
 
 
@@ -148,7 +149,6 @@ class Artist(db.Model):
 
 	@property
 	def serialize(self):
-
 		return {
 			'id': self.id,
 			'pName': self.pName,

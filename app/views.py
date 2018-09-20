@@ -176,15 +176,19 @@ def artist(artist_id):
 def artist_edit(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
   if request.method == 'POST':
+    # Update artist items
     artist.pName = request.form['pName']
     artist.fName = request.form['fName']
     artist.email = request.form['email']
     artist.phone = request.form['phone']
     artist.website = request.form['website']
     try:
+      # Clear artist artworks
+      artist.artworks = []
       artist_art = request.form.getlist('artist_art')
-      # Remove any empty items from list
+      # Remove any empty form items from artworks list
       artist_art = filter(None, artist_art)
+      # Add latest artworks to artist
       for x in artist_art:
         artwork = Artwork.query.filter_by(id = x).one()
         artist.artworks.append(artwork)
@@ -192,7 +196,7 @@ def artist_edit(artist_id):
       raise e
     db.session.add(artist)
     db.session.commit()
-  # Return message/error via AJAX
+  # Return message/error via AJAX?
   return redirect(url_for('artist', artist_id = artist.id))
 
 

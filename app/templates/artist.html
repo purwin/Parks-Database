@@ -6,7 +6,7 @@
 {{ nav() }}
 {% if artist %}
 <div class="container-fluid">
-	<form action="" id="formArtist">
+	<form action="/artists/{{ artist.id }}/edit" id="formArtist" method="post">
 		<section id="section--head">
 			<div class="row justify-content-center head">
 				<div class="col-sm-12 col-md-8">
@@ -42,7 +42,7 @@
 							<label for="phone" style="padding-top:.375rem; padding-bottom:.375rem;">Phone</label>
 						</div>
 						<div class="col-md-6">
-							<input type="text" name="email" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
+							<input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
 						</div>
 					</li>
 					<li class="row mb-3">
@@ -108,7 +108,6 @@
 
 		// Make inputs editable
 		$("#formArtist").find(":input").not(":button").each(function() {
-			console.log(this);
 			// Remove input readonly attributes
 			$(this).attr("readonly", false);
 			// Update input classes
@@ -131,9 +130,29 @@
 	// Submit form updates
 	$("#form_update").on('click', function(event) {
 		event.preventDefault();
-
-		window.location.reload(true);
+		// Do the data-value / value switch
+		valSwitch();
+		// Post data to /artists/<int:artist_id>/edit url
+		$("#formArtist").submit();
 	});
+
+	// Switch datalist values with data-values (pulled from create.js)
+	function valSwitch(){
+		try {
+			$('#formArtist #datalist_art').each(function(index){
+				tempVal = $(this).val();
+				console.log("Temp val: " + tempVal)
+				idVal = $('#formArtist option').filter(function() {
+					return this.value == tempVal;
+				}).data('value');
+				console.log("ID val: " + idVal);
+				$(this).val(idVal);
+			});
+		}
+		catch (e) {
+			console.log("Catch: " + e);
+		}
+	}
 
 
 	// Remove current artwork from artist

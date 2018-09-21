@@ -1,4 +1,5 @@
 {% from "_macros.html" import nav %}
+{% from "_macros.html" import datalist %}
 {% extends "layout.html" %}
 
 {% block title %}Parks Database – {{ artist.full_name|capitalize }}{% endblock %}
@@ -70,11 +71,8 @@
 						</div>
 						<div class="col-md-6">
 							<input id="datalist_art" type="text" name="artist_art" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
-							<datalist id="artworks">
-								{% for art in artworks %}
-									<option data-value="{{ art.id }}" value="{{ art.name }}"></option>
-								{% endfor %}
-							</datalist>
+							<!-- Call datalist macro function -->
+							{{ datalist("artworks", artworks) }}
 						</div>
 					</li>
 					{% endfor %}

@@ -21,3 +21,23 @@
 	</div>
 </div>
 {% endmacro %}
+
+
+<!-- Datalist function for artwork/exhibition/park/org lists -->
+{% macro datalist(data_id, collection) %}
+<datalist id="{{ data_id }}">
+	{% for item in collection %}
+		<option data-value="{{ item.id }}" value="{{ item.name }}"></option>
+	{% endfor %}
+</datalist>
+{% endmacro %}
+
+
+<!-- Datalist function for artist lists -->
+{% macro datalist_artist(data_id, collection) %}
+<datalist id="{{ data_id }}">
+	{% for item in collection %}
+		<option data-value="{{ item.id }}" value="{{ item.full_name }}"></option>
+	{% endfor %}
+</datalist>
+{% endmacro %}

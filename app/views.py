@@ -185,11 +185,11 @@ def artist_edit(artist_id):
     try:
       # Clear artist artworks
       artist.artworks = []
-      artist_art = request.form.getlist('artist_art')
+      artist_art = request.form.getlist('artworks')
       # Remove any empty form items from artworks list
       artist_art = filter(None, artist_art)
-      # Add latest artworks to artist
-      for x in artist_art:
+      # Add latest artworks to artist, removing duplicates
+      for x in list(set(artist_art)):
         artwork = Artwork.query.filter_by(id = x).one()
         artist.artworks.append(artwork)
     except Exception as e:

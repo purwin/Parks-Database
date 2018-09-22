@@ -73,7 +73,7 @@
 				<section id="section--artworks">
 				<h2 class="text-center display-4 p-4">Artworks</h2>
 				{% if artist.artworks %}
-				<button type="button" class="d-none form_add btn__parks btn__parks--add ml-2" id="add_artist">Add</button>
+				<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_artist">Add</button>
 				<ul class="ul_artworks">
 					{% for x in artist.artworks %}
 					<li>ID: {{ x.id }}</li>
@@ -118,6 +118,9 @@
 		<div class="col-md-6">
 			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art form-control">
 			{{ datalist("artworks", artworks) }}
+		</div>
+		<div class="col-md-2">
+			<button type="button" class="btn__parks btn__parks--delete form_remove"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
 </script>

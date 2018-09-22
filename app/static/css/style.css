@@ -119,6 +119,19 @@ h4 { display:  inline-block; }
 	background-color: #62b5ff;
 }
 
+.btn__parks--delete {
+	color: #f1a69b;
+	border: none;
+}
+.btn__parks--delete:hover {
+	color: #e76a58;
+	border: none;
+}
+.btn__parks--delete:active {
+	border-color: #f1a69b;
+	border: none;
+}
+
 /*
  *
  * Bootstrap Overrides

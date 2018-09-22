@@ -12,10 +12,6 @@
 			<div class="row justify-content-center head">
 				<div class="col-sm-12 col-md-8">
 					<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>
-					<h1 class="">
-					<input type="text" name="fName" value="{{ artist.fName }}" class="text-center form-control-plaintext display-3" readonly>
-					<input type="text" name="pName" value="{{ artist.pName }}" class="text-center form-control-plaintext display-3" readonly>
-					</h1>
 				</div>
 			</div>
 		</section>
@@ -30,6 +26,22 @@
 				<h2 class="text-center display-4 p-4">Bio</h2>
 				<ul>
 					<li>ID: {{ artist.id }}</li>
+					<li class="row mb-3 d-none">
+						<div class="col-md-4">
+							<label for="fName" style="padding-top:.375rem; padding-bottom:.375rem;">First Name</label>
+						</div>
+						<div class="col-md-6">
+							<input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext">
+						</div>
+					</li>
+					<li class="row mb-3 d-none">
+						<div class="col-md-4">
+							<label for="pName" style="padding-top:.375rem; padding-bottom:.375rem;">Last Name (Primary)</label>
+						</div>
+						<div class="col-md-6">
+							<input type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext">
+						</div>
+					</li>
 					<li class="row mb-3">
 						<div class="col-md-4">
 							<label for="email" style="padding-top:.375rem; padding-bottom:.375rem;">Email</label>
@@ -84,14 +96,13 @@
 			</div>
 		</div>
 		<section id="section--submit">
-			<div class="row justify-content-center" id="form_buttons" hidden>
+			<div class="row justify-content-center d-none" id="form_buttons">
 				<div class="col-sm-12 col-md-10 text-right p-4">
 					<button type="button" class="btn__parks btn__parks--no" id="form_cancel">Cancel</button>
 					<button type="button" class="btn__parks btn__parks--add ml-2" value="Create" id="form_update">Update</button>
 				</div>
 			</div>
 		</section>
-		<button id="cancel" hidden>Cancel</button>
 	</form>
 </div>
 <!-- Empty artwork template -->
@@ -125,8 +136,8 @@
 		});
 
 		// Display form buttons
-		$("#formArtist").find("#form_buttons").each(function() {
-			$(this).attr("hidden", false);
+		$("#formArtist").find(".d-none").each(function() {
+			$(this).toggleClass("d-none");
 		});
 	});
 
@@ -163,7 +174,6 @@
 			console.log("Catch: " + e);
 		}
 	}
-
 
 	// Remove current artwork from artist
 

@@ -1,7 +1,7 @@
 {% from "_macros.html" import nav %}
 {% from "_macros.html" import datalist %}
 {% extends "layout.html" %}
-
+{% block head_extras %}<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">{% endblock %}
 {% block title %}Parks Database – {{ artist.full_name|capitalize }}{% endblock %}
 {% block content %}
 {{ nav() }}
@@ -17,7 +17,7 @@
 		</section>
 		<div class="row justify-content-center">
 			<div class="col-sm-12 col-md-10 text-right p-4">
-				<button class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
+				<button type="button" class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
 			</div>
 		</div>
 		<div class="row justify-content-center">
@@ -73,18 +73,22 @@
 				<section id="section--artworks">
 				<h2 class="text-center display-4 p-4">Artworks</h2>
 				{% if artist.artworks %}
-				<ul>
+				<button type="button" class="d-none form_add btn__parks btn__parks--add ml-2" id="add_artist">Add</button>
+				<ul class="ul_artworks">
 					{% for x in artist.artworks %}
 					<li>ID: {{ x.id }}</li>
 					<li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li>
-					<li class="row mb-3">
+					<li class="row mb-3 align-items-center">
 						<div class="col-md-4">
 							<label for="art_name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
 						</div>
 						<div class="col-md-6">
-							<input id="datalist_art" type="text" name="artist_art" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
+							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
 							<!-- Call datalist macro function -->
 							{{ datalist("artworks", artworks) }}
+						</div>
+						<div class="col-md-2">
+							<button type="button" class="btn__parks btn__parks--delete form_remove d-none"><i class="far fa-times-circle"></i></button>
 						</div>
 					</li>
 					{% endfor %}
@@ -106,21 +110,20 @@
 	</form>
 </div>
 <!-- Empty artwork template -->
-<script id="template-artwork" type="text/template">
+<script id="template_artwork" type="text/template">
 	<li class="row mb-3">
 		<div class="col-md-4">
 			<label for="name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
 		</div>
 		<div class="col-md-6">
-			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art form-control-plaintext" readonly>
+			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art form-control">
 			{{ datalist("artworks", artworks) }}
 		</div>
 	</li>
 </script>
 <script>
-	// Make form editable
+	// Click event to make form editable
 	$("#form_edit").on('click', function(event) {
-		event.preventDefault();
 
 		// Disable a anchor links when in edit mode
 		$("#formArtist").find("a").each(function(e) {
@@ -135,26 +138,33 @@
 			$(this).toggleClass('form-control-plaintext').toggleClass('form-control');;
 		});
 
-		// Display form buttons
+		// Display hidden elements
 		$("#formArtist").find(".d-none").each(function() {
 			$(this).toggleClass("d-none");
 		});
+
+		// Hide edit button
+		$(this).addClass('invisible');
 	});
 
-	// Cancel form editing
+	// Click event to cancel form editing
 	$("#form_cancel").on('click', function(event) {
-		event.preventDefault();
-
+		// Reload page
 		window.location.reload(true);
 	});
 
-	// Submit form updates
+	// Click event to  submit form updates
 	$("#form_update").on('click', function(event) {
-		event.preventDefault();
 		// Do the data-value / value switch
 		valSwitch();
 		// Post data to /artists/<int:artist_id>/edit url
 		$("#formArtist").submit();
+	});
+
+	// Click event to add an artist list item
+	$(".form_add").on('click', function(event) {
+		// add template html to relevant ul
+		$(".ul_artworks").append($("#template_artwork").html());
 	});
 
 	// Switch datalist values with data-values (pulled from create.js)
@@ -177,7 +187,6 @@
 
 	// Remove current artwork from artist
 
-	// Add new artwork li
 </script>
 {% endif %}
 

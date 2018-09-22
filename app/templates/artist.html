@@ -94,6 +94,18 @@
 		<button id="cancel" hidden>Cancel</button>
 	</form>
 </div>
+<!-- Empty artwork template -->
+<script id="template-artwork" type="text/template">
+	<li class="row mb-3">
+		<div class="col-md-4">
+			<label for="name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
+		</div>
+		<div class="col-md-6">
+			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art form-control-plaintext" readonly>
+			{{ datalist("artworks", artworks) }}
+		</div>
+	</li>
+</script>
 <script>
 	// Make form editable
 	$("#form_edit").on('click', function(event) {

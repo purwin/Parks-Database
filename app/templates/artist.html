@@ -63,7 +63,8 @@
 							<label for="website" style="padding-top:.375rem; padding-bottom:.375rem;">Website</label>
 						</div>
 						<div class="col-md-6">
-							<a href="http://{{ artist.website }}"><input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext" readonly></a>
+							<a href="http://{{ artist.website }}" class="d-block">{{ artist.website }}</a>
+							<input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext d-none">
 						</div>
 					</li>
 				</ul>
@@ -76,14 +77,15 @@
 				<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_artist">Add</button>
 				<ul class="ul_artworks">
 					{% for x in artist.artworks %}
-					<li>ID: {{ x.id }}</li>
-					<li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li>
-					<li class="row mb-3 align-items-center">
+					<!-- <li>ID: {{ x.id }}</li> -->
+					<!-- <li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li> -->
+					<li class="row mb-3 align-items-center artist__li--artworks">
 						<div class="col-md-4">
 							<label for="art_name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
 						</div>
 						<div class="col-md-6">
-							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext" readonly>
+							<a href="{{ url_for('artwork', artwork_id=x.id) }}" class="d-block">{{ x.name }}</a>
+							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext d-none" readonly>
 							<!-- Call datalist macro function -->
 							{{ datalist("artworks", artworks) }}
 						</div>
@@ -111,7 +113,7 @@
 </div>
 <!-- Empty artwork template -->
 <script id="template_artwork" type="text/template">
-	<li class="row mb-3">
+	<li class="row mb-3 artist__li--artworks">
 		<div class="col-md-4">
 			<label for="name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
 		</div>
@@ -129,9 +131,9 @@
 	$("#form_edit").on('click', function(event) {
 
 		// Disable a anchor links when in edit mode
-		$("#formArtist").find("a").each(function(e) {
-			$(this).attr("onclick", "return false");
-		});
+		// $("#formArtist").find("a").each(function(e) {
+		// 	$(this).attr("onclick", "return false");
+		// });
 
 		// Make inputs editable
 		$("#formArtist").find(":input").not(":button").each(function() {
@@ -144,6 +146,11 @@
 		// Display hidden elements
 		$("#formArtist").find(".d-none").each(function() {
 			$(this).toggleClass("d-none");
+		});
+
+		// Hide non-edit elements
+		$("#formArtist").find(".d-block").each(function() {
+			$(this).toggleClass("d-block").toggleClass("d-none");
 		});
 
 		// Hide edit button
@@ -170,6 +177,14 @@
 		$(".ul_artworks").append($("#template_artwork").html());
 	});
 
+	// Remove current artwork from artist
+	$(".form_remove").on('click', function(event) {
+		console.log(this);
+		console.log($(this));
+		console.log($(this).parent());
+		$(this).closest(".artist__li--artworks").remove();
+	})
+
 	// Switch datalist values with data-values (pulled from create.js)
 	function valSwitch(){
 		try {
@@ -187,8 +202,6 @@
 			console.log("Catch: " + e);
 		}
 	}
-
-	// Remove current artwork from artist
 
 </script>
 {% endif %}

@@ -20,87 +20,91 @@
 				<button type="button" class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
 			</div>
 		</div>
-		<div class="row justify-content-center">
-			<div class="col-sm-12 col-md-8 col-lg-6">
-				<section id="section--bio">
-				<h2 class="text-center display-4 p-4">Bio</h2>
-				<ul>
-					<li>ID: {{ artist.id }}</li>
-					<li class="row mb-3 d-none">
-						<div class="col-md-4">
-							<label for="fName" style="padding-top:.375rem; padding-bottom:.375rem;">First Name</label>
-						</div>
-						<div class="col-md-6">
-							<input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext">
-						</div>
-					</li>
-					<li class="row mb-3 d-none">
-						<div class="col-md-4">
-							<label for="pName" style="padding-top:.375rem; padding-bottom:.375rem;">Last Name (Primary)</label>
-						</div>
-						<div class="col-md-6">
-							<input type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext">
-						</div>
-					</li>
-					<li class="row mb-3">
-						<div class="col-md-4">
-							<label for="email" style="padding-top:.375rem; padding-bottom:.375rem;">Email</label>
-						</div>
-						<div class="col-md-6">
-							<input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly>
-						</div>
-					</li>
-					<li class="row mb-3">
-						<div class="col-md-4">
-							<label for="phone" style="padding-top:.375rem; padding-bottom:.375rem;">Phone</label>
-						</div>
-						<div class="col-md-6">
-							<input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
-						</div>
-					</li>
-					<li class="row mb-3">
-						<div class="col-md-4">
-							<label for="website" style="padding-top:.375rem; padding-bottom:.375rem;">Website</label>
-						</div>
-						<div class="col-md-6">
-							<a href="http://{{ artist.website }}" class="d-block">{{ artist.website }}</a>
-							<input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext d-none">
-						</div>
-					</li>
-				</ul>
-				</section>
+		<section id="section--bio">
+			<div class="row justify-content-center py-4">
+				<div class="col-sm-12 col-md-8 col-lg-6">
+					<h2 class="text-center display-4 p-4">Bio</h2>
+					<ul>
+						<li>ID: {{ artist.id }}</li>
+						<li class="row mb-3 d-none">
+							<div class="col-md-4">
+								<label for="fName">First Name</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext">
+							</div>
+						</li>
+						<li class="row mb-3 d-none">
+							<div class="col-md-4">
+								<label for="pName">Last Name (Primary)</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext">
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-4">
+								<label for="email">Email</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly>
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-4">
+								<label for="phone">Phone</label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
+							</div>
+						</li>
+						<li class="row mb-3">
+							<div class="col-md-4">
+								<label for="website">Website</label>
+							</div>
+							<div class="col-md-6">
+								<a href="http://{{ artist.website }}" class="d-inline">{{ artist.website }}</a>
+								<input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext d-none">
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
-			<div class="col-sm-12 col-md-8 col-lg-6">
-				<section id="section--artworks">
-				<h2 class="text-center display-4 p-4">Artworks</h2>
-				{% if artist.artworks %}
-				<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_artist">Add</button>
-				<ul class="ul_artworks">
-					{% for x in artist.artworks %}
-					<!-- <li>ID: {{ x.id }}</li> -->
-					<!-- <li><a href="{{ url_for('artwork', artwork_id=x.id) }}">{{ x.name }}</a></li> -->
-					<li class="row mb-3 align-items-center artist__li--artworks">
-						<div class="col-md-4">
-							<label for="art_name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
+		</section>
+		<section id="section--artworks">
+			<div class="row justify-content-center py-4">
+				<div class="col-sm-12 col-md-8 col-lg-6">
+					<h2 class="text-center display-4 p-4">Artworks</h2>
+					{% if artist.artworks %}
+					<div class="row justify-content-center">
+						<div class="col-12 text-right p-4">
+							<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_artist">Add</button>
 						</div>
-						<div class="col-md-6">
-							<a href="{{ url_for('artwork', artwork_id=x.id) }}" class="d-block">{{ x.name }}</a>
-							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext d-none" readonly>
-							<!-- Call datalist macro function -->
-							{{ datalist("artworks", artworks) }}
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn__parks btn__parks--delete form_remove d-none"><i class="far fa-times-circle"></i></button>
-						</div>
-					</li>
-					{% endfor %}
-				</ul>
-				{% else %}
-				<p><i>There are no artworks connected with this artist.</i></p>
-				{% endif %}
-				</section>
+					</div>
+					<ul class="ul_artworks">
+						{% for x in artist.artworks %}
+						<li class="row mb-3 align-items-center artist__li--artworks">
+							<div class="col-md-4">
+								<label for="art_name">Artwork</label>
+							</div>
+							<div class="col-md-6">
+								<a href="{{ url_for('artwork', artwork_id=x.id) }}" class="d-inline">{{ x.name }}</a>
+								<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext d-none" readonly>
+								<!-- Call datalist macro function -->
+								{{ datalist("artworks", artworks) }}
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn__parks btn__parks--delete form_remove d-none"><i class="far fa-times-circle"></i></button>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<p><i>There are no artworks connected with this artist.</i></p>
+					{% endif %}
+				</div>
 			</div>
-		</div>
+		</section>
 		<section id="section--submit">
 			<div class="row justify-content-center d-none" id="form_buttons">
 				<div class="col-sm-12 col-md-10 text-right p-4">
@@ -115,7 +119,7 @@
 <script id="template_artwork" type="text/template">
 	<li class="row mb-3 artist__li--artworks">
 		<div class="col-md-4">
-			<label for="name" style="padding-top:.375rem; padding-bottom:.375rem;">Artwork</label>
+			<label for="name">Artwork</label>
 		</div>
 		<div class="col-md-6">
 			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art form-control">
@@ -148,9 +152,14 @@
 			$(this).toggleClass("d-none");
 		});
 
-		// Hide non-edit elements
+		// Hide non-edit block elements
 		$("#formArtist").find(".d-block").each(function() {
 			$(this).toggleClass("d-block").toggleClass("d-none");
+		});
+
+		// Hide non-edit inline elements
+		$("#formArtist").find(".d-inline").each(function() {
+			$(this).toggleClass("d-inline").toggleClass("d-none");
 		});
 
 		// Hide edit button
@@ -162,28 +171,6 @@
 		// Reload page
 		window.location.reload(true);
 	});
-
-	// Click event to  submit form updates
-	$("#form_update").on('click', function(event) {
-		// Do the data-value / value switch
-		valSwitch();
-		// Post data to /artists/<int:artist_id>/edit url
-		$("#formArtist").submit();
-	});
-
-	// Click event to add an artist list item
-	$(".form_add").on('click', function(event) {
-		// add template html to relevant ul
-		$(".ul_artworks").append($("#template_artwork").html());
-	});
-
-	// Remove current artwork from artist
-	$(".form_remove").on('click', function(event) {
-		console.log(this);
-		console.log($(this));
-		console.log($(this).parent());
-		$(this).closest(".artist__li--artworks").remove();
-	})
 
 	// Switch datalist values with data-values (pulled from create.js)
 	function valSwitch(){
@@ -202,6 +189,25 @@
 			console.log("Catch: " + e);
 		}
 	}
+
+	// Click event to submit form updates
+	$("#form_update").on('click', function(event) {
+		// Do the data-value / value switch
+		valSwitch();
+		// Post data to /artists/<int:artist_id>/edit url
+		$("#formArtist").submit();
+	});
+
+	// Click event to add an artist list item
+	$(".form_add").on('click', function(event) {
+		// add template html to relevant ul
+		$(".ul_artworks").append($("#template_artwork").html());
+	});
+
+	// Click event to remove current artwork from artist
+	$(".form_remove").on('click', function(event) {
+		$(this).closest(".artist__li--artworks").remove();
+	})
 
 </script>
 {% endif %}

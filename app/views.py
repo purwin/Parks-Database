@@ -169,7 +169,9 @@ def artists():
 def artist(artist_id):
   artist = Artist.query.filter_by(id = artist_id).one()
   artworks = Artwork.query.all()
-  return render_template('artist.html', artist = artist, artworks = artworks)
+  exhibitions = Exhibition.query.all()
+  parks = Park.query.all()
+  return render_template('artist.html', artist = artist, artworks = artworks, exhibitions = exhibitions, parks = parks)
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])

@@ -20,6 +20,7 @@
 				<button type="button" class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
 			</div>
 		</div>
+
 		<section id="section--bio">
 			<div class="row justify-content-center py-4">
 				<div class="col-sm-12 col-md-8 col-lg-6">
@@ -71,6 +72,7 @@
 				</div>
 			</div>
 		</section>
+
 		<section id="section--artworks">
 			<div class="row justify-content-center py-4">
 				<div class="col-sm-12 col-md-8 col-lg-6">
@@ -105,6 +107,44 @@
 				</div>
 			</div>
 		</section>
+
+		<section id="section--exhibitions">
+			<div class="row justify-content-center py-4">
+				<div class="col-sm-12 col-md-8 col-lg-6">
+					<h2 class="text-center display-4 p-4">Exhibitions</h2>
+					{% if artist.artworks %}
+						<div class="row justify-content-center">
+							<div class="col-12 text-right p-4">
+								<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_exhibition">Add</button>
+							</div>
+						</div>
+						<ul class="ul_artworks">
+							{% for artwork in artist.artworks %}
+								{% if artwork.exhibition %}
+									{% for exhibition in artwork.exhibition %}
+										<li class="row mb-3 align-items-center artist__li--exhibitions">
+											<div class="col-md-4">
+												<label for="art_name">Exhibition</label>
+											</div>
+											<div class="col-md-6">
+												<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" class="d-inline">{{ exhibition.name }}</a>
+												<input id="datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="datalist_art form-control-plaintext d-none" readonly>
+												<!-- Call datalist macro function -->
+												{{ datalist("exhibitions", exhibitions) }}
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn__parks btn__parks--delete form_remove d-none"><i class="far fa-times-circle"></i></button>
+											</div>
+										</li>
+									{% endfor %}
+								{% endif %}
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+
 		<section id="section--submit">
 			<div class="row justify-content-center d-none" id="form_buttons">
 				<div class="col-sm-12 col-md-10 text-right p-4">
@@ -144,7 +184,7 @@
 			// Remove input readonly attributes
 			$(this).attr("readonly", false);
 			// Update input classes
-			$(this).toggleClass('form-control-plaintext').toggleClass('form-control');;
+			$(this).toggleClass('form-control-plaintext').toggleClass('form-control');
 		});
 
 		// Display hidden elements

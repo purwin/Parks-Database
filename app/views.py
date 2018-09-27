@@ -171,7 +171,13 @@ def artist(artist_id):
   artworks = Artwork.query.all()
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
-  return render_template('artist.html', artist = artist, artworks = artworks, exhibitions = exhibitions, parks = parks)
+  artist_join = (db.session.query(Artist, Exh_art_park, Artwork, Park).filter(Exh_art_park.artwork_id == Artwork.id).filter(Artist.id == artist_id)).all()
+  # for i in artist_join:
+  #   print "ARTIST: {}: {}".format(i.Artist.id, i.Artist.full_name)
+  #   print "ARTWORK: {}: {}".format(i.Artwork.id, i.Artwork.name)
+  #   print "EXH: {}: {}".format(i.Exh_art_park.exhibition_id, i.Exh_art_park.exhib.name)
+  #   print "PARK: {}: {}".format(i.Park.id, i.Park.name)
+  return render_template('artist.html', artist = artist, artworks = artworks, exhibitions = exhibitions, parks = parks, artist_join = artist_join)
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])

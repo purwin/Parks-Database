@@ -7,14 +7,14 @@
 {{ nav() }}
 {% if artist %}
 <div class="container-fluid">
-	<form action="/artists/{{ artist.id }}/edit" id="formArtist" method="post">
-		<section id="section--head">
-			<div class="row justify-content-center head">
-				<div class="col-sm-12 col-md-8">
-					<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>
-				</div>
+	<section id="section--head">
+		<div class="row justify-content-center head align-items-center">
+			<div class="col-sm-12 col-md-8">
+				<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>
 			</div>
-		</section>
+		</div>
+	</section>
+	<form action="/artists/{{ artist.id }}/edit" id="formArtist" method="post">
 		<div class="row justify-content-center">
 			<div class="col-sm-12 col-md-10 text-right p-4">
 				<button type="button" class="btn__parks btn__parks--edit" id="form_edit">Edit</button>

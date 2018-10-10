@@ -39,6 +39,7 @@ h4 { display:  inline-block; }
 .head { 
 	padding: 1rem;
 	background-color: #b8dd9b;
+	min-height: 200px;
 }
 
 /*
@@ -47,7 +48,13 @@ h4 { display:  inline-block; }
  *
  */
 
-.leaf .dropdown { z-index: 1; }
+.leaf {
+	z-index: 1;
+}
+
+/* .leaf .dropdown { z-index: 1; } */
+/* .leaf__links { z-index: 1; } */
+/* .leaf { z-index: 1; } */
 /* .leaf .dropdown-menu { background-color: #fff; } */
 .leaf button { background-color: transparent; }
 .bg-green { background-color: #b8dd9b; }
@@ -171,7 +178,12 @@ span.park {
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {  
-	.leaf { position: fixed; }
+	.leaf {
+		position: fixed;
+		width: 130px;
+		top: 35px;
+		left: 15px;
+	}
 }
 
 /* Large devices (desktops, 992px and up) */

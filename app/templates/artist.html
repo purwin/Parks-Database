@@ -96,7 +96,7 @@
 								{{ datalist("artworks", artworks) }}
 							</div>
 							<div class="col-md-2">
-								<button type="button" class="btn__parks btn__parks--delete form_remove d-none"><i class="far fa-times-circle"></i></button>
+								<button type="button" class="btn__parks btn__parks--delete form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
 							</div>
 						</li>
 						{% endfor %}
@@ -109,46 +109,56 @@
 		</section>
 
 		<section id="section--exhibitions">
-			<div class="row justify-content-center py-4">
-				<div class="col-sm-12 col-md-8 col-lg-6">
-					<h2 class="text-center display-4 p-4">Exhibitions</h2>
+			<div class="[ row justify-content-center py-4 ]">
+				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
+					<h2 class="[ text-center display-4 p-4 ]">Exhibitions</h2>
 					{% if artist.artworks %}
-						<div class="row justify-content-center">
-							<div class="col-12 text-right p-4">
-								<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_exhibition">Add</button>
-							</div>
-						</div>
 						{% for artwork in artist.artworks %}
 							<h3>{{ artwork.name }}</h3>
-							<ul class="ul_exhibitions">
-								{% for thing in artist_join %}
-									{% if thing.Artwork.id == artwork.id %}
-										<li class="row mb-3 align-items-center artist__li--exhibitions">
-											<div class="col-md-4">
-												<label for="exh_name">Exhibition</label>
-											</div>
-											<div class="col-md-6">
-												<a href="{{ url_for('exhibition', exhibition_id=thing.Exh_art_park.exhib.id) }}" class="d-inline">{{ thing.Exh_art_park.exhib.name }}</a>
-												<input id="datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ thing.Exh_art_park.exhib.id }}" value="{{ thing.Exh_art_park.exhib.name }}" class="datalist_exhibition form-control-plaintext d-none" readonly>
-												<!-- Call datalist macro function -->
-												{{ datalist("exhibitions", exhibitions) }}
-											</div>
-<!-- 											<div class="col-md-2">
-												@
-											</div> -->
-											<div class="col-md-4">
-												<label for="exh_name">@ Park</label>
-											</div>
-											<div class="col-md-6">
-												<a href="{{ url_for('park', park_id=thing.Park.id) }}" class="d-inline">{{ thing.Park.name }}</a>
-												<input id="datalist_park" type="text" name="parks" list="parks" data-value="{{ thing.Park.id }}" value="{{ thing.Park.name }}" class="datalist_park form-control-plaintext d-none" readonly>
-												<!-- Call datalist macro function -->
-												{{ datalist("parks", parks) }}
-											</div>
-										</li>
-									{% endif %}
-								{% endfor %}
-							</ul>
+							<div class="[ row justify-content-center ]">
+								<div class="[ col-12 text-right p-4 ]">
+									<button type="button" class="form_add btn__parks btn__parks--add [ d-none ml-2 ]" id="add_exhibition">Add</button>
+								</div>
+							</div>
+							{% if artwork.exhibitions %}
+								<ul class="ul_exhibitions">
+									{% for thing in artist_join %}
+										{% if thing.Artwork.id == artwork.id %}
+											<li class="artist__li--exhibitions [ row mb-3 align-items-center ]">
+												<div class="[ col-md-1 ]" hidden>
+													<label for="exh_name">Artwork</label>
+												</div>
+												<div class="[ col-md-1 ]" hidden>
+													<input type="text" name="parks" value="{{ thing.Artwork.id }}" class="form-control-plaintext">
+												</div>
+												<div class="[ col-md-4 ]">
+													<label for="exh_name">Exhibition</label>
+												</div>
+												<div class="[ col-md-6 ]">
+													<a href="{{ url_for('exhibition', exhibition_id=thing.Exh_art_park.exhib.id) }}" class="d-inline">{{ thing.Exh_art_park.exhib.name }}</a>
+													<input id="datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ thing.Exh_art_park.exhib.id }}" value="{{ thing.Exh_art_park.exhib.name }}" class="datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+													<!-- Call datalist macro function -->
+													{{ datalist("exhibitions", exhibitions) }}
+												</div>
+												<div class="col-md-2">
+													<button type="button" class="btn__parks btn__parks--delete form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
+												</div>
+												<div class="[ col-md-4 ]">
+													<label for="exh_name">Park</label>
+												</div>
+												<div class="[ col-md-6 ]">
+													<a href="{{ url_for('park', park_id=thing.Park.id) }}" class="d-inline">{{ thing.Park.name }}</a>
+													<input id="datalist_park" type="text" name="parks" list="parks" data-value="{{ thing.Park.id }}" value="{{ thing.Park.name }}" class="datalist_park [ form-control-plaintext d-none ]" readonly>
+													<!-- Call datalist macro function -->
+													{{ datalist("parks", parks) }}
+												</div>
+											</li>
+										{% endif %}
+									{% endfor %}
+								</ul>
+							{% else %}
+								<p class="pl-4"><i>{{ artwork.name }} hasn't been part of an exhibition yet.</i></p>
+							{% endif %}
 						{% endfor %}
 						{% else %}
 						<p><i>{{ artist.full_name }} hasn't been part of an exhibition yet.</i></p>
@@ -169,18 +179,22 @@
 </div>
 <!-- Empty artwork template -->
 <script id="template_artwork" type="text/template">
-	<li class="row mb-3 artist__li--artworks">
-		<div class="col-md-4">
+	<li class="artist__li--artworks [ row mb-3 ]">
+		<div class="[ col-md-4 ]">
 			<label for="name">Artwork</label>
 		</div>
-		<div class="col-md-6">
-			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art form-control">
+		<div class="[ col-md-6 ]">
+			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
-		<div class="col-md-2">
+		<div class="[ col-md-2 ]">
 			<button type="button" class="btn__parks btn__parks--delete form_remove"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
+</script>
+
+<script id="template_exhibition" type="text/template">
+	
 </script>
 <script>
 	// Click event to make form editable

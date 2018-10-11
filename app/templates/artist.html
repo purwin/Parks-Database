@@ -4,10 +4,10 @@
 {% block head_extras %}<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">{% endblock %}
 {% block title %}Parks Database – {{ artist.full_name|capitalize }}{% endblock %}
 {% block content %}
-{{ nav() }}
 {% if artist %}
 <div class="container-fluid">
 	<section id="section--head">
+		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
 			<div class="col-sm-12 col-md-8">
 				<h1 class="text-center display-3"><b>{{ artist.full_name|upper }}</b></h1>

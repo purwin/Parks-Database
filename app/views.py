@@ -208,6 +208,17 @@ def artist_edit(artist_id):
   return redirect(url_for('artist', artist_id = artist.id))
 
 
+@app.route('/artists/<int:artist_id>/delete', methods=['GET', 'POST'])
+def artist_delete(artist_id):
+  artist = Artist.query.filter_by(id=artist_id).one()
+  if request.method == 'POST':
+      db.session.delete(artist)
+      db.session.commit()
+      return redirect(url_for('artists'))
+  else:
+      return render_template('artist_delete.html', artist=artist)
+
+
 @app.route('/artworks')
 def artworks():
   artworks = Artwork.query.all()

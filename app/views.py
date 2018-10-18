@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from forms import form_artist
 
 import sys
 
@@ -172,12 +173,13 @@ def artist(artist_id):
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   artist_join = (db.session.query(Artist, Exh_art_park, Artwork, Park).filter(Exh_art_park.artwork_id == Artwork.id).filter(Artist.id == artist_id)).all()
+  form = form_artist()
   # for i in artist_join:
   #   print "ARTIST: {}: {}".format(i.Artist.id, i.Artist.full_name)
   #   print "ARTWORK: {}: {}".format(i.Artwork.id, i.Artwork.name)
   #   print "EXH: {}: {}".format(i.Exh_art_park.exhibition_id, i.Exh_art_park.exhib.name)
   #   print "PARK: {}: {}".format(i.Park.id, i.Park.name)
-  return render_template('artist.html', artist = artist, artworks = artworks, exhibitions = exhibitions, parks = parks, artist_join = artist_join)
+  return render_template('artist.html', artist = artist, artworks = artworks, exhibitions = exhibitions, parks = parks, artist_join = artist_join, form = form)
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])

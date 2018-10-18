@@ -6,6 +6,7 @@
 {% block content %}
 {% if artist %}
 <div class="container-fluid">
+
 	<section id="section--head">
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
@@ -14,7 +15,10 @@
 			</div>
 		</div>
 	</section>
+
 	<form action="/artists/{{ artist.id }}/edit" id="formArtist" method="post">
+		{{ form.csrf_token }}
+
 		<div class="row justify-content-center">
 			<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
 				<button type="button" class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
@@ -26,50 +30,67 @@
 			<div class="row justify-content-center py-4">
 				<div class="col-sm-12 col-md-8 col-lg-6">
 					<h2 class="text-center display-4 p-4">Bio</h2>
+
 					<ul>
 						<li>ID: {{ artist.id }}</li>
+
 						<li class="row mb-3 d-none">
 							<div class="col-md-4">
-								<label for="fName">First Name</label>
+								<!-- <label for="fName">First Name</label> -->
+								{{ form.fName.label }}
 							</div>
 							<div class="col-md-6">
-								<input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext">
+								{{ form.fName(class="form-control-plaintext", value=artist.fName) }}
+								<!-- <input type="text" name="fName" value="{{ artist.fName }}" class="form-control-plaintext"> -->
 							</div>
 						</li>
+
 						<li class="row mb-3 d-none">
 							<div class="col-md-4">
-								<label for="pName">Last Name (Primary)</label>
+								<!-- <label for="pName">Last Name (Primary)</label> -->
+								{{ form.pName.label }}
 							</div>
 							<div class="col-md-6">
-								<input type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext">
+								{{ form.pName(class="form-control-plaintext", value=artist.pName) }}
+								<!-- <input type="text" name="pName" value="{{ artist.pName }}" class="form-control-plaintext"> -->
 							</div>
 						</li>
+
 						<li class="row mb-3">
 							<div class="col-md-4">
-								<label for="email">Email</label>
+								<!-- <label for="email">Email</label> -->
+								{{ form.email.label }}
 							</div>
 							<div class="col-md-6">
-								<input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly>
+								{{ form.email(class="form-control-plaintext", value=artist.email, readonly=true) }}
+								<!-- <input type="text" name="email" value="{{ artist.email }}" class="form-control-plaintext" readonly> -->
 							</div>
 						</li>
+
 						<li class="row mb-3">
 							<div class="col-md-4">
-								<label for="phone">Phone</label>
+								<!-- <label for="phone">Phone</label> -->
+								{{ form.phone.label }}
 							</div>
 							<div class="col-md-6">
-								<input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly>
+								{{ form.phone(class="form-control-plaintext", value=artist.phone, readonly=true) }}
+								<!-- <input type="text" name="phone" value="{{ artist.phone }}" class="form-control-plaintext" readonly> -->
 							</div>
 						</li>
+
 						<li class="row mb-3">
 							<div class="col-md-4">
-								<label for="website">Website</label>
+								<!-- <label for="website">Website</label> -->
+								{{ form.website.label }}
 							</div>
 							<div class="col-md-6">
 								<a href="http://{{ artist.website }}" class="d-inline">{{ artist.website }}</a>
-								<input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext d-none">
+								{{ form.website(class="form-control-plaintext d-none", value=artist.website) }}
+								<!-- <input type="text" name="website" value="{{ artist.website }}" class="form-control-plaintext d-none"> -->
 							</div>
 						</li>
 					</ul>
+
 				</div>
 			</div>
 		</section>
@@ -78,95 +99,133 @@
 			<div class="row justify-content-center py-4">
 				<div class="col-sm-12 col-md-8 col-lg-6">
 					<h2 class="text-center display-4 p-4">Artworks</h2>
+
 					{% if artist.artworks %}
-					<div class="row justify-content-center">
-						<div class="col-12 text-right p-4">
-							<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_artist">Add</button>
+
+						<div class="row justify-content-center">
+							<div class="col-12 text-right p-4">
+								<button type="button" class="form_add btn__parks btn__parks--add  [ d-none ml-2 ]" id="add_artist">Add</button>
+							</div>
 						</div>
-					</div>
-					<ul class="ul_artworks">
-						{% for x in artist.artworks %}
-						<li class="row mb-3 align-items-center artist__li--artworks">
-							<div class="col-md-4">
-								<label for="art_name">Artwork</label>
-							</div>
-							<div class="col-md-6">
-								<a href="{{ url_for('artwork', artwork_id=x.id) }}" class="d-inline">{{ x.name }}</a>
-								<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext d-none" readonly>
-								<!-- Call datalist macro function -->
-								{{ datalist("artworks", artworks) }}
-							</div>
-							<div class="col-md-2">
-								<button type="button" class="btn__parks btn__parks--delete form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
-							</div>
-						</li>
-						{% endfor %}
-					</ul>
+
+						<ul class="ul_artworks">
+
+							{% for x in artist.artworks %}
+
+								<li class="row mb-3 align-items-center artist__li--artworks">
+									<div class="col-md-4">
+										<label for="art_name">Artwork</label>
+									</div>
+									<div class="col-md-6">
+										<a href="{{ url_for('artwork', artwork_id=x.id) }}" class="d-inline">{{ x.name }}</a>
+										{{ form.artworks(class="datalist_art form-control-plaintext d-none", id="datalist_art", list="artworks", data_value=x.id, value=x.name, readonly=true) }}
+										<!-- <input id="datalist_art" type="text" name="artworks" list="artworks" data-value="{{ x.id }}" value="{{ x.name }}" class="datalist_art form-control-plaintext d-none" readonly> -->
+										<!-- Call datalist macro function -->
+										{{ datalist("artworks", artworks) }}
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="btn__parks btn__parks--delete form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
+									</div>
+								</li>
+
+							{% endfor %}
+
+						</ul>
+
 					{% else %}
-					<p><i>There are no artworks connected with this artist.</i></p>
+
+						<p><i>There are no artworks connected with this artist.</i></p>
+
 					{% endif %}
+
 				</div>
 			</div>
 		</section>
 
-		<section id="section--exhibitions">
+		<!-- <section id="section--exhibitions">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
 					<h2 class="[ text-center display-4 p-4 ]">Exhibitions</h2>
+
 					{% if artist.artworks %}
+
 						{% for artwork in artist.artworks %}
+
 							<h3>{{ artwork.name }}</h3>
 							<div class="[ row justify-content-center ]">
 								<div class="[ col-12 text-right p-4 ]">
 									<button type="button" class="form_add btn__parks btn__parks--add [ d-none ml-2 ]" id="add_exhibition">Add</button>
 								</div>
 							</div>
+
 							{% if artwork.exhibitions %}
+
 								<ul class="ul_exhibitions">
+
 									{% for thing in artist_join %}
+
 										{% if thing.Artwork.id == artwork.id %}
+
 											<li class="artist__li--exhibitions [ row mb-3 align-items-center ]">
+
 												<div class="[ col-md-1 ]" hidden>
 													<label for="exh_name">Artwork</label>
 												</div>
+
 												<div class="[ col-md-1 ]" hidden>
 													<input type="text" name="parks" value="{{ thing.Artwork.id }}" class="form-control-plaintext">
 												</div>
+
 												<div class="[ col-md-4 ]">
 													<label for="exh_name">Exhibition</label>
 												</div>
+
 												<div class="[ col-md-6 ]">
 													<a href="{{ url_for('exhibition', exhibition_id=thing.Exh_art_park.exhib.id) }}" class="d-inline">{{ thing.Exh_art_park.exhib.name }}</a>
-													<input id="datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ thing.Exh_art_park.exhib.id }}" value="{{ thing.Exh_art_park.exhib.name }}" class="datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+													<input id="datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ thing.Exh_art_park.exhib.id }}" value="{{ thing.Exh_art_park.exhib.name }}" class="datalist_exhibition [ form-control-plaintext d-none ]" readonly> -->
 													<!-- Call datalist macro function -->
-													{{ datalist("exhibitions", exhibitions) }}
+													<!-- {{ datalist("exhibitions", exhibitions) }}
 												</div>
+
 												<div class="col-md-2">
 													<button type="button" class="btn__parks btn__parks--delete form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
 												</div>
+
 												<div class="[ col-md-4 ]">
 													<label for="exh_name">Park</label>
 												</div>
+
 												<div class="[ col-md-6 ]">
 													<a href="{{ url_for('park', park_id=thing.Park.id) }}" class="d-inline">{{ thing.Park.name }}</a>
-													<input id="datalist_park" type="text" name="parks" list="parks" data-value="{{ thing.Park.id }}" value="{{ thing.Park.name }}" class="datalist_park [ form-control-plaintext d-none ]" readonly>
+													<input id="datalist_park" type="text" name="parks" list="parks" data-value="{{ thing.Park.id }}" value="{{ thing.Park.name }}" class="datalist_park [ form-control-plaintext d-none ]" readonly> -->
 													<!-- Call datalist macro function -->
-													{{ datalist("parks", parks) }}
+													<!-- {{ datalist("parks", parks) }}
 												</div>
+
 											</li>
+
 										{% endif %}
+
 									{% endfor %}
+
 								</ul>
+
 							{% else %}
+
 								<p class="pl-4"><i>{{ artwork.name }} hasn't been part of an exhibition yet.</i></p>
+
 							{% endif %}
+
 						{% endfor %}
+
 						{% else %}
-						<p><i>{{ artist.full_name }} hasn't been part of an exhibition yet.</i></p>
+
+							<p><i>{{ artist.full_name }} hasn't been part of an exhibition yet.</i></p>
+
 					{% endif %}
 				</div>
 			</div>
-		</section>
+		</section> -->
 
 		<section id="section--submit">
 			<div class="row justify-content-center d-none" id="form_buttons">
@@ -176,6 +235,7 @@
 				</div>
 			</div>
 		</section>
+
 	</form>
 </div>
 <!-- Empty artwork template -->

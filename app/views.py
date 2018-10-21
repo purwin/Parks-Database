@@ -143,7 +143,8 @@ def exhibitions():
 def exhibition(exhibition_id):
   exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
   exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
-  return render_template('exhibition.html', exhibition = exhibition, exhib = exhib)
+  form = form_exhibition()
+  return render_template('exhibition.html', exhibition = exhibition, exhib = exhib, form = form)
 
 
 @app.route('/parks')
@@ -185,13 +186,14 @@ def artist(artist_id):
 @app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])
 def artist_edit(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
-  if request.method == 'POST':
+  form = form_artist()
+  if form.validate_on_submit():
     # Update artist items
-    artist.pName = request.form['pName']
-    artist.fName = request.form['fName']
-    artist.email = request.form['email']
-    artist.phone = request.form['phone']
-    artist.website = request.form['website']
+    artist.pName = form.pName.data
+    artist.fName = form.fName.data
+    artist.email = form.email.data
+    artist.phone = form.phone.data
+    artist.website = form.website.data
     try:
       # Clear artist artworks
       artist.artworks = []

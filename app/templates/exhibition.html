@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
-{% from "_macros.html" import nav %}
 {% block title %}NYC Parks Database – Artists{% endblock %}
 {% block content %}
 
 	<div class="container-fluid">
+
 		<section id="section--head">
 			{% include "include/nav.html" %}
 			<div class="head [ row justify-content-center align-items-center ]">
@@ -12,73 +12,272 @@
 				</div>
 			</div>
 		</section>
-		<section id="section--bio">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Bio</h2>
-					<ul>
-						<li>Exhibition Dates: {{ exhibition.startDate }} to {{ exhibition.endDate }}</li>
-					</ul>
-					<h3 class="text-center">Parks</h3>
-					<ul>
-						{% if exhibition.parks %}
-						{% for park in exhibition.parks %}
-							<li><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></li>
-						{% endfor %}
-						{% else %}
-							<li><i>This exhibition has no connected parks.</i></li>
-						{% endif %}
-					</ul>
-					<h3 class="text-center">Organizations</h3>
-					<ul>
-						{% if exhibition.organizations %}
-						{% for x in exhibition.organizations %}
-							<li><a href="{{ url_for('org', organization_id=x.id) }}">{{ x.name }}</a></li>
-						{% endfor %}
-						{% else %}
-							<li><i>This exhibition has no connected organizations.</i></li>
-						{% endif %}
-					</ul>
+
+		<form action="/exhibitions/{{ exhibition.id }}/edit" id="formExhibition" method="post">
+			{{ form.csrf_token }}
+
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
+					<button type="button" class="btn__parks btn__parks--edit" id="form_edit">Edit</button>
+					<a href="{{ url_for('exhibition_delete', exhibition_id=exhibition.id) }}" role="button" class="btn__parks btn__parks--no [ btn btn-sm ]">Delete</a>
 				</div>
 			</div>
-		</section>
-		<section id="section--art">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Artworks</h2>
-					<ul>
-						{% if exhib %}
-						{% for x in exhib %}
-							<li>ID: {{ x.artw.id }}; <span class="artwork"><a href="{{ url_for('artwork', artwork_id=x.artw.id) }}">{{ x.artw.name }}</a></span> {% if x.artw.artists %}by <span class="artist">{% for artist in x.artw.artists %}<a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.full_name }}</a><br/>{% endfor %}{% endif %}</span> @ 
-							<span class="park"><a href="{{ url_for('park', park_id=x.nycpark.id) }}">{{ x.nycpark.name }}</a></span></li>
-						{% endfor %}
-						{% else %}
-							<li><i>This exhibition has no related artworks.</i></li>
-						{% endif %}
-					</ul>
+
+			<section id="section--bio">
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-8 ]">
+						<h2 class="[ display-4 p-4 ]">Bio</h2>
+						<ul>
+
+							<li class="[ row mb-3 d-none ]">
+								<div class="[ col-md-4 ]">{{ form.name.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.name(class="form-control-plaintext", value=exhibition.name) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 d-block ]">Exhibition Dates</div>
+								<div class="[ col-md-6 d-block ]">{{ exhibition.start_date }}–{{ exhibition.end_date }}</div>
+							</li>
+
+							<li class="[ row mb-3 d-none ]">
+								<div class="[ col-md-4 ]">{{ form.start_date.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.start_date(class="form-control-plaintext", value=exhibition.start_date, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 d-none ]">
+								<div class="[ col-md-4 ]">{{ form.end_date.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.end_date(class="form-control-plaintext", value=exhibition.end_date, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.opening.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.opening(class="form-control-plaintext", value=exhibition.opening, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.comments.label }}</div>
+								<div class="[ col-md-6 ]">
+									<p class="d-block">{{ exhibition.comments }}</p>
+									{{ form.comments(class="form-control-plaintext d-none", value=exhibition.comments, readonly=true) }}
+								</div>
+							</li>
+
+						</ul>
+
+						<h3 class="">Parks</h3>
+						<ul>
+							{% if exhibition.parks %}
+
+							{% for park in exhibition.parks %}
+
+								<li><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></li>
+
+							{% endfor %}
+
+							{% else %}
+
+								<li><i>This exhibition has no connected parks.</i></li>
+
+							{% endif %}
+						</ul>
+
+						<h3 class="">Organizations</h3>
+						<ul>
+							{% if exhibition.organizations %}
+
+							{% for x in exhibition.organizations %}
+
+								<li><a href="{{ url_for('org', organization_id=x.id) }}">{{ x.name }}</a></li>
+
+							{% endfor %}
+
+							{% else %}
+
+								<li><i>This exhibition has no connected organizations.</i></li>
+
+							{% endif %}
+						</ul>
+
+					</div>
 				</div>
-			</div>
-		</section>
-		<section id="section--install">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Install Details</h2>
-					<ul>
-						<li>Install Date(s): {{ exhibition.installStart }}{%if exhibition.installEnd %} to {{ exhibition.installEnd }}{% endif %}</li>
-					</ul>
+			</section>
+
+			<section id="section--art">
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-8 ]">
+						<h2 class="[ display-4 p-4 ]">Artworks</h2>
+
+						<ul>
+
+							{% if exhib %}
+
+								{% for x in exhib %}
+
+									<li>ID: {{ x.artw.id }}; <span class="artwork"><a href="{{ url_for('artwork', artwork_id=x.artw.id) }}">{{ x.artw.name }}</a></span> {% if x.artw.artists %}by <span class="artist">{% for artist in x.artw.artists %}<a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.name }}</a><br/>{% endfor %}{% endif %}</span> @ 
+									<span class="park"><a href="{{ url_for('park', park_id=x.nycpark.id) }}">{{ x.nycpark.name }}</a></span></li>
+
+								{% endfor %}
+
+							{% else %}
+
+								<li><i>This exhibition has no related artworks.</i></li>
+
+							{% endif %}
+
+						</ul>
+
+					</div>
 				</div>
-			</div>
-		</section>
-		<section id="section--de-install">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">De-Install Details</h2>
-					<ul>
-						<li>De-Install Due Date: {{ exhibition.deinstallDate }}</li>
-					</ul>
+			</section>
+
+			<section id="section--install">
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-8 ]">
+						<h2 class="[ display-4 p-4 ]">Install Details</h2>
+
+						<ul>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 d-block ]">Install Date{% if exhibition.install_end %}s{% endif %}</div>
+								<div class="[ col-md-6 d-block ]">{{ exhibition.install_start }}{% if exhibition.install_end %}–{{ exhibition.install_end }}{% endif %}</div>
+							</li>
+
+							<li class="[ row mb-3 d-none ]">
+								<div class="[ col-md-4 ]">{{ form.install_start.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.install_start(class="form-control-plaintext", value=exhibition.install_start, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 d-none ]">
+								<div class="[ col-md-4 ]">{{ form.install_end.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.install_end(class="form-control-plaintext", value=exhibition.install_end, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.prm.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.prm(class="form-control-plaintext", value=exhibition.prm, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.approval.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.approval(class="form-control-plaintext", value=exhibition.approval, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.walkthrough.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.walkthrough(class="form-control-plaintext", value=exhibition.walkthrough, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.cb_presentation.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.cb_presentation(class="form-control-plaintext", value=exhibition.cb_presentation, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.license_mailed.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.license_mailed(class="form-control-plaintext", value=exhibition.license_mailed, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.license_signed.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.license_signed(class="form-control-plaintext", value=exhibition.license_signed, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.license_borough.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.license_borough(class="form-control-plaintext", value=exhibition.license_borough, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.bond.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.bond(class="form-control-plaintext", value=exhibition.bond, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.coi.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.coi(class="form-control-plaintext", value=exhibition.coi, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.coi_renewal.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.coi_renewal.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.signage_submit.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.signage_submit(class="form-control-plaintext", value=exhibition.signage_submit, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.signage_received.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.signage_received(class="form-control-plaintext", value=exhibition.signage_received, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.press_draft.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.press_draft(class="form-control-plaintext", value=exhibition.press_draft, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.press_approved.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.press_approved(class="form-control-plaintext", value=exhibition.press_approved, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.web_text.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.web_text(class="form-control-plaintext", value=exhibition.web_text, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.work_images.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.work_images(class="form-control-plaintext", value=exhibition.work_images, readonly=true) }}</div>
+							</li>
+
+						</ul>
+
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+
+			<section id="section--de-install">
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-8 ]">
+						<h2 class="[ display-4 p-4 ]">De-Install Details</h2>
+
+						<ul>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.deinstall_date.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.deinstall_date(class="form-control-plaintext", value=exhibition.deinstall_date, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.deinstall_check.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.deinstall_check(class="form-control-plaintext", value=exhibition.deinstall_check, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.bond_return.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.bond_return(class="form-control-plaintext", value=exhibition.bond_return, readonly=true) }}</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-4 ]">{{ form.press_clippings.label }}</div>
+								<div class="[ col-md-6 ]">{{ form.press_clippings(class="form-control-plaintext", value=exhibition.press_clippings, readonly=true) }}</div>
+							</li>
+
+						</ul>
+
+					</div>
+				</div>
+			</section>
+
+		</form>
+
 	</div>
 
 {% endblock %}

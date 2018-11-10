@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-{% from "_macros.html" import nav %}
 {% block title %}NYC Parks Database – Artists{% endblock %}
 {% block content %}
 
@@ -17,7 +16,7 @@
 				<div class="col-sm-12 col-md-8">
 					{% if artists %}
 						{% for a in artists %}
-							<h2 class="text-center display-4 p-4"><a href="{{ url_for('artist', artist_id=a.id) }}">{{ a.full_name }}</a></h2>
+							<h2 class="text-center display-4 p-4"><a href="{{ url_for('artist', artist_id=a.id) }}">{{ a.name }}</a></h2>
 							<ul>
 								<li>ID: {{ a.id }}</li>
 								<li>Email: {{ a.email }}</li>

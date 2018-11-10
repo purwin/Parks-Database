@@ -1,19 +1,19 @@
-<div class="leaf">
+<div class="site-nav">
   <div class="[ w-100 dropdown ]">
     <div class="[ w-100 dropdown links ]">
-      <button class="[ btn btn-block p-0 ]" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="site-nav__butt [ btn btn-block p-0 ]" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img class="[ img-fluid ]" src="{{ url_for('static', filename='img/leaf.png') }}" />
       </button>
-      <div class="leaf__links [ dropdown-menu w-100 border-0 ]" aria-labelledby="dropdownMenuButton">
+      <div class="site-nav__menu [ dropdown-menu w-100 border-0 ]" aria-labelledby="dropdownMenuButton">
         <ul class="[ p-0 m-0 ]">
-          <div class="[ dropdown-item ]"><a href="{{ url_for('home') }}">Home</a></div>
-          <div class="[ dropdown-item ]"><a href="{{ url_for('exhibitions') }}">Exhibitions</a></div>
-          <div class="[ dropdown-item ]"><a href="{{ url_for('parks') }}">Parks</a></div>
-          <div class="[ dropdown-item ]"><a href="{{ url_for('artists') }}">Artists</a></div>
-          <div class="[ dropdown-item ]"><a href="{{ url_for('artworks') }}">Artworks</a></div>
-          <div class="[ dropdown-item ]"><a href="{{ url_for('orgs') }}">Orgs</a></div>
-          <div class="[ dropdown-item ]"><a href="#" disabled>Events</a></div>
-          <div class="[ dropdown-item ]"><a href="{{ url_for('create') }}">Create</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('home') }}">Home</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('exhibitions') }}">Exhibitions</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('parks') }}">Parks</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('artists') }}">Artists</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('artworks') }}">Artworks</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('orgs') }}">Orgs</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="#" disabled>Events</a></div>
+          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('create') }}">Create</a></div>
         </ul>
       </div>
     </div>

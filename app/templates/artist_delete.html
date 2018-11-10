@@ -1,9 +1,7 @@
-{% from "_macros.html" import nav %}
-{% from "_macros.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
 {% endblock %}
-{% block title %}Parks Database – Delete {{ artist.full_name|capitalize }}{% endblock %}
+{% block title %}Parks Database – Delete {{ artist.name|capitalize }}{% endblock %}
 {% block content %}
 
 <div class="container-fluid">
@@ -12,7 +10,7 @@
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
 			<div class="[ col-sm-12 col-md-8 ]">
-				<h1 class="[ text-center display-3 ]"><b>{{ artist.full_name|upper }}</b></h1>
+				<h1 class="[ text-center display-3 ]"><b>{{ artist.name|upper }}</b></h1>
 			</div>
 		</div>
 	</section>
@@ -20,7 +18,7 @@
 	<form action="" id="" method="post">
 
 		<div class="[ row justify-content-center py-4 ]">
-			<p>Are you sure you want to delete <b>{{ artist.full_name }}</b> from the database?</p>
+			<p>Are you sure you want to delete <b>{{ artist.name }}</b> from the database?</p>
 		</div>
 
 		<section id="section--submit">

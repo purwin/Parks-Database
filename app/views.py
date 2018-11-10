@@ -3,20 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
-from forms import form_artist
+from forms import Form_artist, Form_exhibition
 
 import sys
 
-@app.route('/')
-@app.route('/index')
 @app.route('/home')
+@app.route('/index')
+@app.route('/')
 def home():
   todayItems = []
   activeExhibitions = []
   upcomingItems = []
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
-  return render_template('home.html', exhibitions=exhibitions, parks=parks)
+  return render_template('index.html', exhibitions=exhibitions, parks=parks)
 
 
 # Route: Create database items
@@ -143,8 +143,43 @@ def exhibitions():
 def exhibition(exhibition_id):
   exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
   exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
-  form = form_exhibition()
+  form = Form_exhibition()
   return render_template('exhibition.html', exhibition = exhibition, exhib = exhib, form = form)
+
+
+@app.route('/exhibitions/<int:exhibition_id>/edit', methods=['GET', 'POST'])
+def exhibition_edit(exhibition_id):
+  exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
+  form = Form_exhibition()
+  if form.validate_on_submit():
+    # Update exhibition items
+    try:
+      # Clear artist artworks
+      artist.artworks = []
+      artist_art = request.form.getlist('artworks')
+      # Remove any empty form items from artworks list
+      artist_art = filter(None, artist_art)
+      # Add latest artworks to artist, removing duplicates
+      for x in list(set(artist_art)):
+        artwork = Artwork.query.filter_by(id = x).one()
+        artist.artworks.append(artwork)
+    except Exception as e:
+      raise e
+    db.session.add(artist)
+    db.session.commit()
+  # Return message/error via AJAX?
+  return redirect(url_for('exhibition', exhibition_id = exhibition.id))
+
+
+@app.route('/exhibitions/<int:exhibition_id>/delete', methods=['GET', 'POST'])
+def exhibition_delete(exhibition_id):
+  exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
+  if request.method == 'POST':
+      db.session.delete(exhibition)
+      db.session.commit()
+      return redirect(url_for('exhibitions'))
+  else:
+      return render_template('exhibition_delete.html', exhibition = exhibition)
 
 
 @app.route('/parks')
@@ -174,9 +209,11 @@ def artist(artist_id):
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   artist_join = (db.session.query(Artist, Exh_art_park, Artwork, Park).filter(Exh_art_park.artwork_id == Artwork.id).filter(Artist.id == artist_id)).all()
-  form = form_artist()
+  form = Form_artist()
+  for artwork in artist.artworks:
+    form.artworks.append_entry(artwork)
   # for i in artist_join:
-  #   print "ARTIST: {}: {}".format(i.Artist.id, i.Artist.full_name)
+  #   print "ARTIST: {}: {}".format(i.Artist.id, i.Artist.name)
   #   print "ARTWORK: {}: {}".format(i.Artwork.id, i.Artwork.name)
   #   print "EXH: {}: {}".format(i.Exh_art_park.exhibition_id, i.Exh_art_park.exhib.name)
   #   print "PARK: {}: {}".format(i.Park.id, i.Park.name)
@@ -186,7 +223,7 @@ def artist(artist_id):
 @app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])
 def artist_edit(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
-  form = form_artist()
+  form = Form_artist()
   if form.validate_on_submit():
     # Update artist items
     artist.pName = form.pName.data
@@ -195,20 +232,23 @@ def artist_edit(artist_id):
     artist.phone = form.phone.data
     artist.website = form.website.data
     try:
-      # Clear artist artworks
+      # Update artist.artworks
       artist.artworks = []
-      artist_art = request.form.getlist('artworks')
       # Remove any empty form items from artworks list
-      artist_art = filter(None, artist_art)
+      artworks = filter(None, form.artworks.data)
       # Add latest artworks to artist, removing duplicates
-      for x in list(set(artist_art)):
-        artwork = Artwork.query.filter_by(id = x).one()
+      for item in list(set(artworks)):
+        artwork = Artwork.query.filter_by(id = item).one()
+        print "Adding {} to {}".format(artwork.name, artist.name)
         artist.artworks.append(artwork)
     except Exception as e:
       raise e
     db.session.add(artist)
     db.session.commit()
-  # Return message/error via AJAX?
+    # FUTURE: Return OK message via AJAX
+  else:
+    print form.errors
+    # FUTURE: Return Error messages via AJAX
   return redirect(url_for('artist', artist_id = artist.id))
 
 

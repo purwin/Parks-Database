@@ -21,13 +21,41 @@ exh_org = db.Table(
 
 class Exhibition(db.Model):
 	# __tablename__ = 'exhibition'
+	# Bio
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(80))
-	startDate = db.Column(db.String(20))
-	endDate = db.Column(db.String(20))
-	installStart = db.Column(db.String(20))
-	installEnd = db.Column(db.String(20))
-	deinstallDate = db.Column(db.String(20))
+	start_date = db.Column(db.String(20))
+	end_date = db.Column(db.String(20))
+	opening = db.Column(db.String(20))
+	comments = db.Column(db.String())
+
+	# Install
+	install_start = db.Column(db.String(20))
+	install_end = db.Column(db.String(20))
+	prm = db.Column(db.String(5))
+	approval = db.Column(db.String(5))
+	walkthrough = db.Column(db.String(10))
+	cb_presentation = db.Column(db.String(10))
+	license_mailed = db.Column(db.String(5))
+	license_signed = db.Column(db.String(5))
+	license_borough = db.Column(db.String(5))
+	bond = db.Column(db.String(10))
+	coi = db.Column(db.String(10))
+	coi_renewal = db.Column(db.String(10))
+	signage_submit = db.Column(db.String(5))
+	signage_received = db.Column(db.String(5))
+	press_draft = db.Column(db.String(5))
+	press_approved = db.Column(db.String())
+	web_text = db.Column(db.String(5))
+	work_images = db.Column(db.String(5))
+
+	# De-Install
+	deinstall_date = db.Column(db.String(20))
+	deinstall_check = db.Column(db.String(5))
+	bond_return = db.Column(db.String(5))
+	press_clippings = db.Column(db.String(5))
+
+	# Related
 	parks = db.relationship('Park',
 													secondary='exh_art_park',
 													backref=db.backref('exhibition')
@@ -43,7 +71,6 @@ class Exhibition(db.Model):
 																										 lazy='dynamic'
 																										)
 	)
-	prm = db.Column(db.String(10))
 
 	def __repr__(self):
 		return "<Exhibition: (%s)>"
@@ -139,7 +166,7 @@ class Artist(db.Model):
 	website = db.Column(db.String(80))
 
 	@hybrid_property
-	def full_name(self):
+	def name(self):
 	    if self.fName is not None:
 	        return self.fName + " " + self.pName
 	    else:
@@ -206,26 +233,3 @@ for x in exhib:
 
 
 '''
-
-
-# potential query examps
-
-#query(...).select_from(Exhibition_artwork_park).join((Exhibition, Exhibition_artwork_park.exhibition_id==Exhibition.id))
-# -or- exhib = session.query(Exhibition_artwork_park).filter(Exhibition_artwork_park.exhib_id == '#').all()
-# for e in exhib:
-# print artwork_id.name
-# print park_id.name
-
-# equals: query.filter(User.name == 'leela')
-# not equals: query.filter(User.name != 'leela')
-# like: query.filter(User.name.like('%leela%'))
-# is not null: filter(User.name != None)
-# and: filter(User.name == 'leela', User.fullname == 'leela dharan')
-# another and: filter(User.name == 'leela').filter(User.fullname == 'leela dharan')
-# or: (from sqlalchemy import or_) filter(or_(User.name == 'leela', User.name == 'akshay'))
-
-# another way to add something to a row thing
-#bob = Author(name='Bob')
-#dune = Book(title='Dune')
-#moby_dick = Book(title='Moby Dick')
-#bob.books = [dune, moby_dick]

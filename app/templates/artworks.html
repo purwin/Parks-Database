@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-{% from "_macros.html" import nav %}
 {% block title %}NYC Parks Database — Artworks{% endblock %}
 {% block content %}
 
@@ -24,7 +23,7 @@
 								<ul>
 									{% if x.artists %}
 									{% for artist in x.artists %}
-										<li><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.full_name }}</a></li>
+										<li><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.name }}</a></li>
 									{% endfor %}
 									{% else %}
 									<li><i>This artwork doesn't have any artists yet.</i></li>

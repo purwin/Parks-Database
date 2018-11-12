@@ -42,15 +42,20 @@ $("#form_cancel").on('click', function(event) {
 
 
 // Switch datalist values with data-values (pulled from create.js)
-function valSwitch(){
+function valSwitch() {
   try {
     $('#formArtist #datalist_art').each(function(index){
+      // Hide item
+      $(this).hide();
+      // Store name value
       tempVal = $(this).val();
       console.log("Temp val: " + tempVal)
+      // Get data-value (ID) of matching value item
       idVal = $('#formArtist option').filter(function() {
         return this.value == tempVal;
       }).data('value');
       console.log("ID val: " + idVal);
+      // Assign ID as value 
       $(this).val(idVal);
     });
   }
@@ -60,19 +65,61 @@ function valSwitch(){
 }
 
 
+function postArtist() {
+  var csrftoken = $('meta[name=csrf-token]').attr('content');
+
+  // Add CSRF Token to AJAX Header
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken)
+          }
+      }
+  });
+
+  // send AJAX request to artist_edit function
+  $.ajax({
+    url: '/artists/1/edit',
+    type: 'POST',
+    // contentType: 'application/json; charset=utf-8',
+    // dataType: 'json',
+    data: $('#formArtist').serialize(),
+    error: function(xhr, textStatus, error) {
+        console.log("XHR: " + xhr.statusText);
+        console.log("Text: " + textStatus);
+        console.log("Error: " + error);
+    }
+  })
+  .done(function(data) {
+    // If the form has errors...
+    if (data.success == false) {
+      console.log("Form errors!");
+      console.dir(data)
+      // Add errors to page
+    } else {
+      // If no form errors, reload page
+      window.location.reload(true);
+    }
+  });
+}
+
+
 // Click event to submit form updates
 $("#form_update").on('click', function(event) {
+
   // Do the data-value / value switch
   valSwitch();
-  // Post data to /artists/<int:artist_id>/edit url
-  $("#formArtist").submit();
-});
 
+  // POST AJAX data
+  postArtist();
+  });
 
 // Click event to add an artist list item
 $(".form_add").on('click', function(event) {
   // add template html to relevant ul
   $(".ul_artworks").append($("#template_artwork").html());
+  var x = $( "input[name='artworks']" ).attr("name", "artworks-" + $(".ul_artworks li").length);
+  console.log(x);
 });
 
 

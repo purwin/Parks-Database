@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired
 
 
 class Form_artist(FlaskForm):
-  pName = StringField('Primary Name', validators=[DataRequired()])
+  pName = StringField('Primary/Last Name', validators=[DataRequired()])
   fName = StringField('First Name')
   email = StringField('Email', validators=[DataRequired()])
   phone = StringField('Phone')

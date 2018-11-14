@@ -38,6 +38,9 @@ var model = {
 	// 	post: ""
 	// },
 
+	// Declare selected form type
+	selected,
+
 	// Declare list of active createButtons
 	createButton: [null],
 
@@ -79,19 +82,19 @@ var model = {
 };
 
 var controller = {
-	init: function(){
+	init: function() {
 		model.init();
 		view.init();
 	},
 
 	// add new li
-	appendUL: function(x){
+	appendUL: function(x) {
 		y = x.id.split("_")[1];
 		$(x).nextAll('ul').append(model[y].li);
 	},
 
 	// add new modal form
-	showModal: function(x){
+	showModal: function(x) {
 		model.createButton.push(x);
 		y = x.id.split("_")[1];
 
@@ -99,12 +102,12 @@ var controller = {
 	},
 
 	// switch datalist values with data-values
-	valSwitch: function(x){
+	valSwitch: function(x) {
 		let y = x.id.split("_")[1];
 		var tempVal, idVal;
 
 		try {
-			$('#form_' + y + ' [id^="datalist_"]').each(function(index){
+			$('#form_' + y + ' [id^="datalist_"]').each(function(index) {
 				tempVal = $(this).val();
 				console.log("Temp val: " + tempVal)
 				idVal = $('#form_' + y + ' option').filter(function() {
@@ -120,19 +123,24 @@ var controller = {
 	},
 
 	// Pop most recent addition to modal list
-	popModalList: function(){
+	popModalList: function() {
 		let x = model.createButton.pop();
 		console.log("Current modalList: " + model.createButton);
 		return x;
 	},
 
+	// Set selected form type
+	setSelcted: function() {
+
+	}
+
 	// Remove modal ref from list when a modal is cancelled
-	cancelPost: function(x){
+	cancelPost: function(x) {
 		this.popModalList();
 	},
 
 	// Post modal forms
-	postData: function(x){
+	postData: function(x) {
 		console.log("WHAT: " + x.id);
 		let y = x.id.split("_")[1];
 
@@ -173,7 +181,7 @@ var controller = {
 };
 
 var view = {
-	init: function(){
+	init: function() {
 		this.addSelection();
 		this.modal();
 		this.post();
@@ -182,7 +190,7 @@ var view = {
 	},
 
 	// + button used to add new artwork / artist / org
-	addSelection: function(){
+	addSelection: function() {
 		$('body').on('click', '.art_add, .artist_add, .org_add', function(event) { // update this to '.add_li'
 			event.preventDefault();
 			controller.appendUL(this);
@@ -190,14 +198,14 @@ var view = {
 	},
 
 	// show artist modal
-	modal: function(){
+	modal: function() {
 		$('body').on('click', '.art_create, .artist_create, .org_create', function(event) { // update this to '.create_modal'
 			event.preventDefault();
 			controller.showModal(this);
 		});
 	},
 
-	cancelPost: function(){
+	cancelPost: function() {
 		$('body').on('click', '.post_cancel', function(event) {
 			event.preventDefault();
 			controller.cancelPost(this);
@@ -205,14 +213,14 @@ var view = {
 	},
 
 	// send data via modal
-	post: function(){
+	post: function() {
 		$('body').on('click', '.post_data', function(event) {
 			event.preventDefault();
 			controller.postData(this);
 		});
 	},
 
-	form_create: function(){
+	form_create: function() {
 			$('body').on('click', '#post_create', function(event) {
 			event.preventDefault();
 			y = $(this).attr('id').split("_")[1];

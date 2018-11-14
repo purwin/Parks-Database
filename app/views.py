@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
-from forms import Form_artist, Form_exhibition
+from forms import Form_artist, Form_exhibition, Form_artwork, Form_park, Form_org
 
 import sys
 
@@ -26,7 +26,12 @@ def create():
 
     # Create exhibition
     if request.form['create_item'] == 'exhibition':
-      newItem = Exhibition(name=request.form['exh_name'], startDate=request.form['exh_startDate'], endDate=request.form['exh_endDate'], installStart=request.form['exh_installStart'], installEnd=request.form['exh_installEnd'], deinstallDate=request.form['exh_deinstallDate'])
+      newItem = Exhibition(name=request.form['exh_name'],
+                           startDate=request.form['exh_startDate'],
+                           endDate=request.form['exh_endDate'],
+                           installStart=request.form['exh_installStart'],
+                           installEnd=request.form['exh_installEnd'],
+                           deinstallDate=request.form['exh_deinstallDate'])
       db.session.add(newItem)
       db.session.flush()
       try:
@@ -38,7 +43,8 @@ def create():
         exh_park = filter(None, exh_park)
         for x, y in zip(exh_art, exh_park):
           # add exhibition, art, park ref to database
-          exh_rel = Exh_art_park(exhibition_id=newItem.id, artwork_id=x, park_id=y)
+          exh_rel = Exh_art_park(exhibition_id=newItem.id, artwork_id=x,
+                                 park_id=y)
           db.session.add(exh_rel)
 
         exh_org = request.form.getlist('exh_org')
@@ -59,15 +65,25 @@ def create():
 
     # Create park
     elif request.form['create_item'] == 'park':
-      db.session.add(Park(name=request.form['park_name'], park_id=request.form['park_park_id'], borough=request.form['park_borough'], address=request.form['park_address'], cb=request.form['park_cb']))
+      db.session.add(Park(name=request.form['park_name'],
+                          park_id=request.form['park_park_id'],
+                          borough=request.form['park_borough'],
+                          address=request.form['park_address'],
+                          cb=request.form['park_cb']))
 
     # Create artist
     elif request.form['create_item'] == 'artist':
-      db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
+      db.session.add(Artist(pName=request.form['artist_pName'],
+                            fName=request.form['artist_fName'],
+                            email=request.form['artist_email'],
+                            phone=request.form['artist_phone'],
+                            website=request.form['artist_website']))
 
     # Create organization
     elif request.form['create_item'] == 'organization':
-      db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
+      db.session.add(Org(name=request.form['org_name'],
+                         website=request.form['org_website'],
+                         phone=request.form['org_phone']))
 
     # Create event
 
@@ -80,18 +96,29 @@ def create():
     parks = Park.query.all()
     orgs = Org.query.all()
     artists = Artist.query.all()
-    return render_template('create.html', artworks=artworks, parks=parks, orgs=orgs, artists=artists)
+
+    return render_template('create.html', artworks = artworks, parks = parks,
+                           orgs = orgs, artists = artists,
+                           form_artist = form_artist,
+                           form_artwork = form_artwork, form_park = form_park,
+                           form_exhibition = form_exhibition,
+                           form_org = form_org)
 
 
 # Route: Create Artist via AJAX request
 @app.route('/createArtist', methods=['GET', 'POST'])
-def createArtist():
+def artist_create():
   if request.method == 'POST':
-    db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
+    db.session.add(Artist(pName=request.form['artist_pName'],
+                          fName=request.form['artist_fName'],
+                          email=request.form['artist_email'],
+                          phone=request.form['artist_phone'],
+                          website=request.form['artist_website']))
     db.session.commit()
     db.session.flush()
     artists = Artist.query.all()
-    return jsonify({'data': render_template('include/artist_list.html', artists=artists)})
+    return jsonify({'data': render_template('include/artist_list.html',
+                    artists=artists)})
 
 
 # Route: Create Artwork via AJAX request
@@ -105,7 +132,7 @@ def createArt():
       art_artist = request.form.getlist('art_artist')
       # Remove any empty items from list
       art_artist = filter(None, art_artist)
-      print "Adding these artist IDs to {}: {}".format(newArtwork.name, art_artist)
+      print "Adding artist ID to {}: {}".format(newArtwork.name, art_artist)
       for x in art_artist:
         creator = Artist.query.filter_by(id=x).one()
         newArtwork.artists.append(creator)
@@ -113,7 +140,8 @@ def createArt():
       db.session.flush()
       artworks = Artwork.query.all()
       parks = Park.query.all()
-      return jsonify({'data': render_template('include/art_list.html', artworks=artworks, parks=parks)})
+      return jsonify({'data': render_template('include/art_list.html',
+                      artworks=artworks, parks=parks)})
     except:
       e = sys.exc_info()[0]
       print "error: {}".format(e)
@@ -123,11 +151,14 @@ def createArt():
 @app.route('/createOrg', methods=['POST'])
 def createOrg():
   if request.method == 'POST':
-    db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
+    db.session.add(Org(name=request.form['org_name'],
+                       website=request.form['org_website'],
+                       phone=request.form['org_phone']))
     db.session.commit()
     db.session.flush()
     orgs = Org.query.all()
-    return jsonify({'data': render_template('include/org_list.html', orgs=orgs)})
+    return jsonify({'data': render_template('include/org_list.html',
+                    orgs=orgs)})
 
 
 @app.route('/exhibitions')
@@ -144,7 +175,8 @@ def exhibition(exhibition_id):
   exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
   exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
   form = Form_exhibition()
-  return render_template('exhibition.html', exhibition = exhibition, exhib = exhib, form = form)
+  return render_template('exhibition.html', exhibition = exhibition,
+                         exhib = exhib, form = form)
 
 
 @app.route('/exhibitions/<int:exhibition_id>/edit', methods=['GET', 'POST'])
@@ -208,7 +240,9 @@ def artist(artist_id):
   artworks = Artwork.query.all()
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
-  artist_join = (db.session.query(Artist, Exh_art_park, Artwork, Park).filter(Exh_art_park.artwork_id == Artwork.id).filter(Artist.id == artist_id)).all()
+  artist_join = (db.session.query(Artist, Exh_art_park, Artwork, Park)
+    .filter(Exh_art_park.artwork_id == Artwork.id)
+    .filter(Artist.id == artist_id)).all()
   form = Form_artist()
   for artwork in artist.artworks:
     form.artworks.append_entry(artwork)
@@ -217,13 +251,22 @@ def artist(artist_id):
   #   print "ARTWORK: {}: {}".format(i.Artwork.id, i.Artwork.name)
   #   print "EXH: {}: {}".format(i.Exh_art_park.exhibition_id, i.Exh_art_park.exhib.name)
   #   print "PARK: {}: {}".format(i.Park.id, i.Park.name)
-  return render_template('artist.html', artist = artist, artworks = artworks, exhibitions = exhibitions, parks = parks, artist_join = artist_join, form = form)
+  return render_template('artist.html', artist = artist, artworks = artworks,
+                         exhibitions = exhibitions, parks = parks,
+                         artist_join = artist_join, form = form)
 
 
-@app.route('/artists/<int:artist_id>/edit', methods=['GET', 'POST'])
+@app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def artist_edit(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
   form = Form_artist()
+  if form.validate_on_submit():
+    print "YAY!"
+    return jsonify({"success": True, "data": form.data})
+  else:
+    print "NONO!"
+    return jsonify({"success": False, "data": form.errors})
+
   if form.validate_on_submit():
     # Update artist items
     artist.pName = form.pName.data

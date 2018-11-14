@@ -1,12 +1,20 @@
+{% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
-{% block head_extras %}<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">{% endblock %}
+{% block head_extras %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+{% endblock %}
 {% block title %}NYC Parks Database – Create{% endblock %}
 {% block content %}
 
 <div class="container-fluid pb-5">
+
 	{% include "include/nav.html" %}
+
 	<form id="form_create" action="{{ url_for('create') }}" method="post">
+
 		<section id="section--head">
+
 			<div class="head [ row justify-content-center align-items-center ]">
 				<div class="col-sm-12 col-md-8">
 					<h1 class="display-3 text-center">
@@ -25,49 +33,338 @@
 					</h1>
 				</div>
 			</div>
+
 		</section>
+
 		<section id="section--create--exhibition">
+			{{ exhibition_form.csrf_token }}
+
 			<h2 class="text-center">Exhibition</h2>
+
 			<div class="row">
 				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
-					<h3 class="section__head display-4 p-1">Exhibition Bio</h3>
+					<h3 class="section__head display-4 p-1">Bio</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10 py-4">
+
 					<ul>
-						<li class="row mb-3">
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.name.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.name(class="form-control", placeholder="Exhibition Name") }}
+							</div>
+						</li>
+
+<!-- 						<li class="row mb-3">
 							<div class="col-md-6 text-md-right">
 								<label for="exh_name">Name</label>
 							</div>
 							<div class="col-md-6">
 								<input type="text" name="exh_name" placeholder="Exhibition Name" class="form-control">
 							</div>
+						</li> -->
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.start_date.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.start_date(class="form-control") }}
+							</div>
 						</li>
-						<li class="row mb-3">
+
+<!-- 						<li class="row mb-3">
 							<div class="col-md-6 text-md-right">
 								<label for="exh_startDate">Exhibition Start</label>
 							</div>
 							<div class="col-md-6">
 								<input type="date" name="exh_startDate" class="form-control">
 							</div>
+						</li> -->
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.end_date.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.end_date(class="form-control") }}
+							</div>
 						</li>
-						<li class="row mb-3">
+
+<!-- 						<li class="row mb-3">
 							<div class="col-md-6 text-md-right">
 								<label for="exh_endDate">Exhibition End</label>
 							</div>
 							<div class="col-md-6">
 								<input type="date" name="exh_endDate" class="form-control">
 							</div>
+						</li> -->
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.opening.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.opening(class="form-control") }}
+							</div>
 						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.comments.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.comments(class="form-control") }}
+							</div>
+						</li>
+
 					</ul>
+
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
+					<h3 class="section__head display-4 p-1">Install Details</h3>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-10 py-4">
+
+					<ul>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.install_start.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.install_start(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.install_end.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.install_end(class="form-control") }}
+							</div>
+						</li>
+
+						<!-- <li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.prm.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.prm(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.approval.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.approval(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.walkthrough.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.walkthrough(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.cb_presentation.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.cb_presentation(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.license_mailed.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.license_mailed(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.license_signed.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.license_signed(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.license_borough.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.license_borough(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.bond.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.bond(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.coi.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.coi(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.coi_renewal.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.coi_renewal(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.signage_submit.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.signage_submit(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.signage_received.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.signage_received(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.press_draft.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.press_draft(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.press_approved.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.press_approved(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.web_text.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.web_text(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.work_images.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.work_images(class="form-control") }}
+							</div>
+						</li> -->
+
+					</ul>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
+					<h3 class="section__head display-4 p-1">De-Install Details</h3>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-sm-12 col-md-10 py-4">
+
+					<ul>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.deinstall_date.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.deinstall_date(class="form-control") }}
+							</div>
+						</li>
+
+						<!-- <li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.deinstall_check.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.deinstall_check(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.bond_return.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.bond_return(class="form-control") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ exhibition_form.press_clippings.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ exhibition_form.press_clippings(class="form-control") }}
+							</div>
+						</li> -->
+
+					</ul>
+
+				</div>
+			</div>
+
 			<div class="row">
 				<div class="col-6 pb-4 offset-1">
 					<h3 class="section__head display-4 p-1">Organizations</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10 py-4">
 					<div class="row">
@@ -84,11 +381,13 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-6 pb-4 offset-1">
 					<h3 class="section__head display-4 p-1">Artworks</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-12 py-4">
 					<div class="row">
@@ -105,64 +404,44 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Install Details</h3>
+
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-12 text-right p-4 ]">
+					<button type="button" class="form_add butt butt--add [ d-none ml-2 ]" id="add_artist">Add</button>
 				</div>
 			</div>
-			<div class="row justify-content-center">
-				<div class="col-12 py-4">
-					<ul>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="exh_installStart">Install Date(s)</label>
-							</div>
-							<div class="col-md-6">
-								<div class="form-row mb-1">
-									<div class="col-10">
-										<input type="date" name="exh_installStart" class="form-control">
-									</div>
-									<div class="col">
-										<span class="align-middle px-1">to</span>
-									</div>
-								</div>
-								<div class="form-row">
-									<div class="col-10">
-										<input type="date" name="exh_installEnd" class="form-control">
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">De-Install Details</h3>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
-					<ul>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="exh_deinstallDate">De-Install Due Date</label>
-							</div>
-							<div class="col-md-6">
-								<input type="date" name="exh_deinstallDate" class="form-control">
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
+
+			<ul class="exhibition__ul">
+
+					<li class="exhibition__li--artworks [ row mb-3 align-items-center ]">
+						<div class="[ col-md-4 ]">
+							<label for="art_name">exhibition_form.artworks.label</label>
+						</div>
+						<div class="[ col-md-6 ]">
+							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_art [ form-control-plaintext d-none ]">
+							<!-- Call datalist macro function -->
+							{{ datalist("artworks", artworks) }}
+						</div>
+						<div class="[ col-md-2 ]">
+							<button type="button" class="butt butt--delete-icon form_remove"><i class="far fa-times-circle"></i></button>
+						</div>
+					</li>
+
+			</ul>
+
 		</section>
+
 		<section id="section--create--art">
+			{{ artwork_form.csrf_token }}
+
 			<h2 class="text-center">Artwork</h2>
+
 			<div class="row">
 				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
 					<h3 class="section__head display-4 p-1">Artwork Bio</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
@@ -177,6 +456,7 @@
 					</ul>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="col-6 pb-4 offset-1">
 					<h3 class="section__head display-4 p-1">Artists</h3>
@@ -199,14 +479,19 @@
 					</div>
 				</div>
 			</div>
+
 		</section>
-		<section id="section--create--artist">
+
+<section id="section--create--artist">
+
 			<h2 class="text-center">Artist</h2>
+
 			<div class="row">
 				<div class="col-6 pb-4 offset-1">
 					<h3 class="section__head display-4 p-1">Artist Bio</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10">
 					<ul>
@@ -246,14 +531,19 @@
 					</ul>
 				</div>
 			</div>
+
 		</section>
+
 		<section id="section--create--park" class="py-5">
+
 			<h2 class="text-center">Park</h2>
+
 			<div class="row">
 				<div class="col-6 pb-4 offset-1">
 					<h3 class="section__head display-4 p-1">Park Bio</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
@@ -307,14 +597,19 @@
 					</ul>
 				</div>
 			</div>
+
 		</section>
+
 		<section id="section--create--org">
+
 			<h2 class="text-center">Organization</h2>
+
 			<div class="row">
 				<div class="col-6 pb-4 offset-1">
 					<h3 class="section__head display-4 p-1">Organization Bio</h3>
 				</div>
 			</div>
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10 py-4">
 					<ul>
@@ -345,8 +640,11 @@
 					</ul>
 				</div>
 			</div>
+
 		</section>
+
 		<section id="section--submit">
+
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10 text-right">
 					<button type="button" class="btn__parks btn__parks--no"><a href="{{ url_for('home') }}">Cancel</a></button>
@@ -355,8 +653,11 @@
 					<button type="button" class="btn__parks btn__parks--add ml-2" value="Create" id="post_create">Create</button>
 				</div>
 			</div>
+
 		</section>
+
 	</form>
+
 </div>
 
 <!-- Create artwork modal -->

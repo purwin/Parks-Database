@@ -94,22 +94,6 @@ def create():
       form_org = form_org)
 
 
-# Route: Create Artist via AJAX request
-@app.route('/createArtist', methods=['GET', 'POST'])
-def createArtist():
-  if request.method == 'POST':
-    db.session.add(Artist(pName=request.form['artist_pName'],
-                          fName=request.form['artist_fName'],
-                          email=request.form['artist_email'],
-                          phone=request.form['artist_phone'],
-                          website=request.form['artist_website']))
-    db.session.commit()
-    db.session.flush()
-    artists = Artist.query.all()
-    return jsonify({'data': render_template('include/artist_list.html',
-                    artists=artists)})
-
-
 # Route: Create Artwork via AJAX request
 @app.route('/createArt', methods=['GET', 'POST'])
 def createArt():
@@ -245,6 +229,21 @@ def artist(artist_id):
                          artist_join = artist_join, form = form)
 
 
+# Route: Create Artist via AJAX request
+@app.route('/createArtist', methods=['GET', 'POST'])
+def createArtist():
+  if request.method == 'POST':
+    db.session.add(Artist(pName=request.form['artist_pName'],
+                          fName=request.form['artist_fName'],
+                          email=request.form['artist_email'],
+                          phone=request.form['artist_phone'],
+                          website=request.form['artist_website']))
+    db.session.commit()
+    db.session.flush()
+    artists = Artist.query.all()
+    return jsonify({'data': render_template('include/artist_list.html',
+                    artists=artists)})
+
 @app.route('/artists/create', methods=['GET', 'POST'])
 def artist_create():
   pass
@@ -282,13 +281,6 @@ def artist_edit(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
   form = Form_artist()
   if form.validate_on_submit():
-    print "YAY!"
-    return jsonify({"success": True, "data": form.data})
-  else:
-    print "NONO!"
-    return jsonify({"success": False, "data": form.errors})
-
-  if form.validate_on_submit():
     # Update artist items
     artist.pName = form.pName.data
     artist.fName = form.fName.data
@@ -310,10 +302,10 @@ def artist_edit(artist_id):
     db.session.add(artist)
     db.session.commit()
     # FUTURE: Return OK message via AJAX
+    return jsonify({"success": True, "data": form.data})
   else:
-    print form.errors
-    # FUTURE: Return Error messages via AJAX
-  return redirect(url_for('artist', artist_id = artist.id))
+    print "Artist"
+    return jsonify({"success": False, "data": form.errors})
 
 
 @app.route('/artists/<int:artist_id>/delete', methods=['GET', 'POST'])

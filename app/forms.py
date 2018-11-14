@@ -11,6 +11,7 @@ class Form_artist(FlaskForm):
   phone = StringField('Phone')
   website = StringField('Website')
   artworks = FieldList(StringField('Artwork'), min_entries=1)
+  # FUTURE: custom validation for artworks
 
 class Form_artwork(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
@@ -67,4 +68,4 @@ class Form_exhibition(FlaskForm):
   organizations = FieldList(StringField('Organization', min_entries=0))
 
 class Form_org(FlaskForm):
-  pass
+  name = StringField('Name', validators=[DataRequired()])

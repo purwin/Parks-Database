@@ -15,8 +15,10 @@
 /* label */
 
 
-
-
+/* Class applied to required form labels */
+.required {
+  font-weight: bold;
+}
 
 
 

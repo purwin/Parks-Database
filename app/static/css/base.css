@@ -1,0 +1,122 @@
+/*
+ *
+ * Parks DB Layout CSS
+ *
+ */
+
+
+/* - Featuring Base elements: Body, link, headings, resets, etc. */
+
+
+
+
+
+
+/*
+ *
+ * Body
+ *
+ */
+
+body {
+	color: #58595b;
+	max-width: 100%;
+	font-size: 18px;
+}
+
+
+
+/*
+ *
+ * Text
+ *
+ */
+
+h1 {}
+
+h2 { color:  #b8dd9b; }
+
+h3 {}
+
+h4 {}
+
+h5 {}
+
+h6 {}
+
+p {}
+
+
+
+/*
+ *
+ * Links
+ *
+ */
+
+a {}
+
+a:hover {}
+
+a:active {}
+
+
+
+/*
+ *
+ * Lists
+ *
+ */
+
+ul {}
+
+ol {}
+
+ul li {}
+
+ol li {}
+
+
+
+/*
+ *
+ * Resets
+ *
+ */
+
+
+
+/*
+ *
+ * Bootstrap Overrides
+ *
+ */
+
+
+
+/*
+ *
+ * Media Queries
+ *
+ */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+}
+
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}

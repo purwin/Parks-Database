@@ -26,12 +26,7 @@ def create():
 
     # Create exhibition
     if request.form['create_item'] == 'exhibition':
-      newItem = Exhibition(name=request.form['exh_name'],
-                           startDate=request.form['exh_startDate'],
-                           endDate=request.form['exh_endDate'],
-                           installStart=request.form['exh_installStart'],
-                           installEnd=request.form['exh_installEnd'],
-                           deinstallDate=request.form['exh_deinstallDate'])
+      newItem = Exhibition(name=request.form['exh_name'], startDate=request.form['exh_startDate'], endDate=request.form['exh_endDate'], installStart=request.form['exh_installStart'], installEnd=request.form['exh_installEnd'], deinstallDate=request.form['exh_deinstallDate'])
       db.session.add(newItem)
       db.session.flush()
       try:
@@ -43,8 +38,7 @@ def create():
         exh_park = filter(None, exh_park)
         for x, y in zip(exh_art, exh_park):
           # add exhibition, art, park ref to database
-          exh_rel = Exh_art_park(exhibition_id=newItem.id, artwork_id=x,
-                                 park_id=y)
+          exh_rel = Exh_art_park(exhibition_id=newItem.id, artwork_id=x, park_id=y)
           db.session.add(exh_rel)
 
         exh_org = request.form.getlist('exh_org')
@@ -65,25 +59,15 @@ def create():
 
     # Create park
     elif request.form['create_item'] == 'park':
-      db.session.add(Park(name=request.form['park_name'],
-                          park_id=request.form['park_park_id'],
-                          borough=request.form['park_borough'],
-                          address=request.form['park_address'],
-                          cb=request.form['park_cb']))
+      db.session.add(Park(name=request.form['park_name'], park_id=request.form['park_park_id'], borough=request.form['park_borough'], address=request.form['park_address'], cb=request.form['park_cb']))
 
     # Create artist
     elif request.form['create_item'] == 'artist':
-      db.session.add(Artist(pName=request.form['artist_pName'],
-                            fName=request.form['artist_fName'],
-                            email=request.form['artist_email'],
-                            phone=request.form['artist_phone'],
-                            website=request.form['artist_website']))
+      db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
 
     # Create organization
     elif request.form['create_item'] == 'organization':
-      db.session.add(Org(name=request.form['org_name'],
-                         website=request.form['org_website'],
-                         phone=request.form['org_phone']))
+      db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
 
     # Create event
 
@@ -97,12 +81,17 @@ def create():
     orgs = Org.query.all()
     artists = Artist.query.all()
 
-    return render_template('create.html', artworks = artworks, parks = parks,
-                           orgs = orgs, artists = artists,
-                           form_artist = form_artist,
-                           form_artwork = form_artwork, form_park = form_park,
-                           form_exhibition = form_exhibition,
-                           form_org = form_org)
+    form_artist = Form_artist()
+    form_artwork = Form_artwork()
+    form_park = Form_park()
+    form_exhibition = Form_exhibition()
+    form_org = Form_org()
+
+    return render_template('create.html',
+      artworks = artworks, parks = parks, orgs = orgs, artists = artists,
+      form_artist = form_artist, form_artwork = form_artwork,
+      form_park = form_park, form_exhibition = form_exhibition,
+      form_org = form_org)
 
 
 # Route: Create Artist via AJAX request

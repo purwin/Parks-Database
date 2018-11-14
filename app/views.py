@@ -107,7 +107,7 @@ def create():
 
 # Route: Create Artist via AJAX request
 @app.route('/createArtist', methods=['GET', 'POST'])
-def artist_create():
+def createArtist():
   if request.method == 'POST':
     db.session.add(Artist(pName=request.form['artist_pName'],
                           fName=request.form['artist_fName'],
@@ -254,6 +254,38 @@ def artist(artist_id):
   return render_template('artist.html', artist = artist, artworks = artworks,
                          exhibitions = exhibitions, parks = parks,
                          artist_join = artist_join, form = form)
+
+
+@app.route('/artists/create', methods=['GET', 'POST'])
+def artist_create():
+  pass
+  form = Form_artist()
+  if form.validate_on_submit():
+    # Create artist
+    artist = Artist()
+    # Add form items
+    artist.pName = form.pName.data
+    artist.fName = form.fName.data
+    artist.email = form.email.data
+    artist.phone = form.phone.data
+    artist.website = form.website.data
+    # Add artists to 1-to-many relationship
+    try:
+      # Clear artist artworks
+      artist.artworks = []
+      artist_art = request.form.getlist('artworks')
+      # Remove any empty form items from artworks list
+      artist_art = filter(None, artist_art)
+      # Add latest artworks to artist, removing duplicates
+      for x in list(set(artist_art)):
+        artwork = Artwork.query.filter_by(id = x).one()
+        artist.artworks.append(artwork)
+    except Exception as e:
+      raise e
+    db.session.add(artist)
+    db.session.commit()
+  # Return message/error via AJAX?
+  return redirect(url_for('artist', artist_id = artist.id))
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])

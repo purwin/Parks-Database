@@ -111,7 +111,7 @@
 								{{ form_exhibition.opening.label }}
 							</div>
 							<div class="[ col-md-6 ]">
-								{{ form_exhibition.opening(class="form-control") }}
+								{{ form_exhibition.opening(class="form-control", placeholder="Opening Date") }}
 							</div>
 						</li>
 
@@ -414,8 +414,8 @@
 			<ul class="exhibition__ul">
 
 					<li class="exhibition__li--artworks [ row mb-3 align-items-center ]">
-						<div class="[ col-md-4 ]">
-							<label for="art_name">form_exhibition.artworks.label</label>
+						<div class="[ col-md-4 text-md-right ]">
+							<label for="art_name">{{ form_exhibition.artworks.label }}</label>
 						</div>
 						<div class="[ col-md-6 ]">
 							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_art [ form-control-plaintext d-none ]">
@@ -482,7 +482,8 @@
 
 		</section>
 
-<section id="section--create--artist">
+		<section id="section--create--artist">
+			{{ form_artist.csrf_token }}
 
 			<h2 class="text-center">Artist</h2>
 
@@ -494,43 +495,74 @@
 
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-10">
+
 					<ul>
-						<li class="row mb-3">
-							<div class="col-md-4 text-md-right">
-								<label for="artist_pName" style="height: 100%; vertical-align: text-top;">Name</label>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								Name
 							</div>
-							<div class="col-md-6">
-								<input type="text" name="artist_pName" placeholder="Primary/Last Name" class="form-control mb-1">
-								<input type="text" name="artist_fName" placeholder="First Name" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-4 text-md-right">
-								<label for="artist_email" style="height: 100%; vertical-align: text-top;">Email</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="artist_email" placeholder="you@pizza.com" class="form-control">
+							<div class="[ col-md-6 ]">
+								{{ form_artist.fName(class="form-control", placeholder="First Name") }}
 							</div>
 						</li>
-						<li class="row mb-3">
-							<div class="col-md-4 text-md-right">
-								<label for="artist_phone">Phone</label>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								
 							</div>
-							<div class="col-md-6">
-								<input type="text" name="artist_phone" placeholder="###-###-####" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-4 text-md-right">
-								<label for="artist_website">Website</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="artist_website" placeholder="www.pizza.org" class="form-control">
+							<div class="[ col-md-6 ]">
+								{{ form_artist.pName(class="form-control", placeholder="Primary/Last Name") }}
 							</div>
 						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ form_artist.email.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form_artist.email(class="form-control", placeholder="you@pizza.com") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ form_artist.phone.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form_artist.phone(class="form-control", placeholder="###-###-####") }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 text-md-right ]">
+								{{ form_artist.website.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form_artist.website(class="form-control", placeholder="www.pizza.org") }}
+							</div>
+						</li>
+
 					</ul>
+
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-6 pb-4 offset-1">
+					<h3 class="section__head display-4 p-1">Artworks</h3>
+				</div>
+			</div>
+
+			<li class="[ row mb-3 ]">
+				<div class="[ col-md-6 text-md-right ]">
+					{{ form_artist.artworks.label }}
+				</div>
+
+				<div class="[ col-md-6 ]">
+					TK!
+				</div>
+			</li>
 
 		</section>
 
@@ -659,6 +691,22 @@
 	</form>
 
 </div>
+
+<!-- Empty artwork template -->
+<script id="template_artwork" type="text/template">
+	<li class="artist__li--artworks [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-4 ]">
+			<label for="name">Artwork</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art [ form-control ]">
+			{{ datalist("artworks", artworks) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button type="button" class="butt butt--delete-icon form_remove"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
 
 <!-- Create artwork modal -->
 <div id="modal_art" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -1,0 +1,183 @@
+/*
+ *
+ * Parks DB Button CSS
+ *
+ */
+
+
+/*
+COLORS
+general		- grey
+create 		- green
+delete  	- red
+edit			- yellow
+add				- blue
+*/
+
+
+
+/* .butt: Base button styling */
+.butt {
+	cursor: pointer;
+	border-width: 1.5px;
+	border-style: solid;
+	border-color: #bcbdbd;
+	border-radius: 4px;
+	background-color: #fff;
+	color: #58595b;
+}
+
+	.butt a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.butt:hover {
+		border-color: #58595b;
+	}
+
+	.butt:active {
+		border-color: #bcbdbd;
+		background-color: #58595b;
+		color: #f4f4f4;
+	}
+
+
+
+/* .butt--create: Used for submit/create buttons */
+.butt--create {
+	border-color: #b8dd9b;
+	color: #88c659;
+}
+
+	.butt--create:hover {
+		border-color: #88c659;
+	}
+
+	.butt--create:active {
+		border-color: #b8dd9b;
+		background-color: #88c659;
+	}
+
+
+
+/* .butt--delete: Used for delete/cancel buttons */
+.butt--delete, .butt--delete a {
+	border-color: #f1a69b;
+	color: #e76a58;
+	vertical-align: inherit;
+}
+
+	.butt--delete:hover, .butt--delete a:hover {
+		color: #e76a58;
+		border-color: #e76a58;
+	}
+
+	.butt--delete:active {
+		border-color: #f1a69b;
+		background-color: #e76a58;
+	}
+
+
+
+/* .butt--delete-icon: Used for X icon for delete/remove buttons */
+.butt--delete-icon {
+	color: #f1a69b;
+	border: none;
+}
+
+	.butt--delete-icon:hover {
+		color: #e76a58;
+		border: none;
+	}
+
+	.butt--delete-icon:active {
+		border-color: #f1a69b;
+		border: none;
+	}
+
+
+
+/* .butt--edit: Used for edit buttons */
+.butt--edit {
+	border-color: #ffe491;
+	color: #ffd248;
+}
+
+	.butt--edit:hover {
+		border-color: #ffd248;
+	}
+
+	.butt--edit:active {
+		border-color: #ffe491;
+		background-color: #ffd248;
+	}
+
+
+
+/* .butt--add: Used for add buttons */
+.butt--add {
+	border-color: #a1d3ff;
+	color: #62b5ff;
+}
+
+	.butt--add:hover {
+		border-color: #62b5ff;
+	}
+
+	.butt--add:active {
+		border-color: #a1d3ff;
+		background-color: #62b5ff;
+	}
+
+
+
+/* .butt--add-icon: Used for + icon for add buttons */
+.butt--add-icon {
+	color: #a1d3ff;
+	border: none;
+}
+
+	.butt--add-icon:hover {
+		color: #62b5ff;
+		border: none;
+	}
+
+	.butt--add-icon:active {
+		border-color: #a1d3ff;
+		border: none;
+	}
+
+
+
+/*
+ *
+ * Media Queries
+ *
+ */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+}
+
+
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}

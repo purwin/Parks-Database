@@ -7,48 +7,50 @@
 {% block title %}NYC Parks Database – Create{% endblock %}
 {% block content %}
 
-<div class="container-fluid pb-5">
+<div class="[ container-fluid pb-5 ]">
 
 	{% include "include/nav.html" %}
 
-	<form id="form_create" action="{{ url_for('create') }}" method="post">
+	<section id="section--head">
 
-		<section id="section--head">
-
-			<div class="head [ row justify-content-center align-items-center ]">
-				<div class="col-sm-12 col-md-8">
-					<h1 class="display-3 text-center">
-						<label for="create_item">New</label>&#x2009;
-						<select id="create_type" class="display-4" name="create_item">
-							<option value="" disabled selected></option>
-							<option value="exhibition">Exhibition</option>
-							<option value="artwork">Artwork</option>
-							<option value="artist">Artist</option>
-							<option value="park">Park</option>
-							<option value="event">Event</option>
-							<option value="organization">Organization</option>
-							<option value="organizer">Organizer</option>
-							<option value="employee">Employee</option>
-						</select>
-					</h1>
-				</div>
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-sm-12 col-md-8 ]">
+				<h1 class="[ display-3 text-center ]">
+					<label for="create_object">New</label>&#x2009;
+					<select id="js-create_object" class="[ display-4 ]" name="create_object">
+						<option value="" disabled selected></option>
+						<option value="exhibition">Exhibition</option>
+						<option value="artwork">Artwork</option>
+						<option value="artist">Artist</option>
+						<option value="park">Park</option>
+						<option value="org">Organization</option>
+						<!-- <option value="event">Event</option> -->
+						<!-- <option value="organizer">Organizer</option> -->
+						<!-- <option value="employee">Employee</option> -->
+					</select>
+				</h1>
 			</div>
+		</div>
 
-		</section>
+	</section>
 
-		<section id="section--create--exhibition">
+
+
+	<section id="section--create--exhibition">
+		<div id="js-div_exhibition" class="js-create-div">
+			<form id="js-form_exhibition" action="" method="POST">
 			{{ form_exhibition.csrf_token }}
 
-			<h2 class="text-center">Exhibition</h2>
+			<h2 class="[ text-center ]">Exhibition</h2>
 
-			<div class="row">
-				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
-					<h3 class="section__head display-4 p-1">Bio</h3>
+			<div class="[ row ]">
+				<div class="[ col-sm-12 col-md-6 pb-4 offset-md-1 ]">
+					<h3 class="section__head [ display-4 p-1 ]">Bio</h3>
 				</div>
 			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-10 py-4 ]">
 
 					<ul>
 
@@ -61,7 +63,7 @@
 							</div>
 						</li>
 
-<!-- 						<li class="row mb-3">
+	<!-- 						<li class="row mb-3">
 							<div class="col-md-6 text-md-right">
 								<label for="exh_name">Name</label>
 							</div>
@@ -79,7 +81,7 @@
 							</div>
 						</li>
 
-<!-- 						<li class="row mb-3">
+	<!-- 						<li class="row mb-3">
 							<div class="col-md-6 text-md-right">
 								<label for="exh_startDate">Exhibition Start</label>
 							</div>
@@ -97,7 +99,7 @@
 							</div>
 						</li>
 
-<!-- 						<li class="row mb-3">
+	<!-- 						<li class="row mb-3">
 							<div class="col-md-6 text-md-right">
 								<label for="exh_endDate">Exhibition End</label>
 							</div>
@@ -129,14 +131,14 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
-					<h3 class="section__head display-4 p-1">Install Details</h3>
+			<div class="[ row ]">
+				<div class="[ col-sm-12 col-md-6 pb-4 offset-md-1 ]">
+					<h3 class="section__head [ display-4 p-1 ]">Install Details</h3>
 				</div>
 			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-10 py-4 ]">
 
 					<ul>
 
@@ -307,14 +309,14 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
-					<h3 class="section__head display-4 p-1">De-Install Details</h3>
+			<div class="[ row ]">
+				<div class="[ col-sm-12 col-md-6 pb-4 offset-md-1 ]">
+					<h3 class="section__head [ display-4 p-1 ]">De-Install Details</h3>
 				</div>
 			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-10 py-4 ]">
 
 					<ul>
 
@@ -359,21 +361,21 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Organizations</h3>
+			<div class="[ row ]">
+				<div class="[ col-6 pb-4 offset-1 ]">
+					<h3 class="section__head [ display-4 p-1 ]">Organizations</h3>
 				</div>
 			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
-					<div class="row">
-						<div class="col-md-6 text-md-right">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-10 py-4 ]">
+					<div class="[ row ]">
+						<div class="[ col-md-6 text-md-right ]">
 							<p>Related Organizations</p>
 						</div>
-						<div class="col-md-6">
-							<button type="button" id="createModal_org" class="org_create btn__parks mb-3" data-toggle="modal" data-target="#modal_org">Create</button>
-							<button id="add_org" type="button" class="btn__parks btn__parks--edit org_add">+</button>
+						<div class="[ col-md-6 ]">
+							<button id="js-create_org" class="js-create-modal butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_org">Create</button>
+							<button id="js-add_org" class="js-add-li butt butt--add" type="button">Add</button>
 							<ul class="ul_org">
 								{% include "include/org_list.html" ignore missing with context %}
 							</ul>
@@ -382,394 +384,646 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Artworks</h3>
+			<div class="[ row ]">
+				<div class="[ col-6 pb-4 offset-1 ]">
+					<h3 class="section__head [ display-4 p-1 ]">Artworks</h3>
 				</div>
 			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-12 py-4">
-					<div class="row">
-						<div class="col-md-6 text-md-right">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-12 py-4 ]">
+					<div class="[ row ]">
+
+						<div class="[ col-md-6 text-md-right ]">
 							<p>Exhibition Artworks</p>
 						</div>
-						<div class="col-md-6">
-							<button type="button" id="createModal_art" class="art_create btn__parks mb-3" data-toggle="modal" data-target="#modal_art">Create</button>
-							<button id="add_art" type="button" class="btn__parks btn__parks--edit art_add">+</button>
+
+						<div class="[ col-md-6 ]">
+							<button id="js-create_artwork" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
+							<button id="js-add_exhibition" class="js-add-li butt butt--add" type="button">Add</button>
 							<ul class="ul_art">
-								{% include "include/art_list.html" ignore missing with context %}
+
+								<li class="js-li_exhibition [ row mb-4 ]">
+									<div class="[ col ]">
+										<div class="[ form-row mb-1 ]">
+											<div class="col-10">
+												<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
+												{{ datalist("artworks", artworks) }}
+											</div>
+											<div class="col">
+												<span class="align-middle px-1">@</span>
+												<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="col-10">
+												<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" class="datalist_park [ form-control ]">
+												{{ datalist("parks", parks) }}
+											</div>
+										</div>
+									</div>
+								</li>
+
+								<!-- {% include "include/art_list.html" ignore missing with context %} -->
 							</ul>
-						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-12 text-right p-4 ]">
-					<button type="button" class="form_add butt butt--add [ d-none ml-2 ]" id="add_artist">Add</button>
-				</div>
-			</div>
+				<div class="[ col-12 py-4 ]">
+					<div class="[ row ]">
 
-			<ul class="exhibition__ul">
-
-					<li class="exhibition__li--artworks [ row mb-3 align-items-center ]">
-						<div class="[ col-md-4 text-md-right ]">
-							<label for="art_name">{{ form_exhibition.artworks.label }}</label>
+						<div class="[ col-md-6 text-md-right ]">
+							<p>Exhibition Artworks</p>
 						</div>
+
 						<div class="[ col-md-6 ]">
-							<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_art [ form-control-plaintext d-none ]">
-							<!-- Call datalist macro function -->
-							{{ datalist("artworks", artworks) }}
+
+							<button id="js-create_artwork" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
+							<button id="js-add_artwork" class="js-add-li butt butt--add" type="button">Add</button>
+
 						</div>
-						<div class="[ col-md-2 ]">
-							<button type="button" class="butt butt--delete-icon form_remove"><i class="far fa-times-circle"></i></button>
-						</div>
-					</li>
 
-			</ul>
+	<!-- 							<ul class="ul_art">
+								{% include "include/art_list.html" ignore missing with context %}
+							</ul> -->
 
-		</section>
+						<div class="[ row ]">
 
-		<section id="section--create--art">
-			{{ form_artwork.csrf_token }}
+							<ul class="exhibition__ul">
 
-			<h2 class="text-center">Artwork</h2>
+									<li class="js-li_artwork [ row mb-3 align-items-center ]">
+										<div class="[ col-md-4 text-md-right ]">
+											{{ form_exhibition.artworks.label }}
+										</div>
+										<div class="[ col-md-6 ]">
+											<input id="js-datalist_artwork" type="text" name="artworks-0" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
+											<!-- Call datalist macro function -->
+											{{ datalist("artworks", artworks) }}
+										</div>
+										<div class="[ col-md-2 ]">
+											<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+										</div>
+									</li>
 
-			<div class="row">
-				<div class="col-sm-12 col-md-6 pb-4 offset-md-1">
-					<h3 class="section__head display-4 p-1">Artwork Bio</h3>
-				</div>
-			</div>
-
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
-					<ul>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="art_name">Name</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="art_name" placeholder="Artwork Name" class="form-control">
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Artists</h3>
-				</div>
-			</div>
-
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
-					<div class="row">
-						<div class="col-md-6 text-md-right">
-							<p>Related Artists</p>
-						</div>
-						<div class="col-md-6">
-							<button type="button" id="createModal_artist" class="artist_create btn__parks mb-3" data-toggle="modal" data-target="#modal_artist">Create</button>
-							<button id="add_artist" type="button" class="artist_add btn__parks btn__parks--edit mb-3">+</button>
-							<ul class="ul_artist">
-								{% include "include/artist_list.html" ignore missing with context %}
 							</ul>
+
 						</div>
+
 					</div>
 				</div>
 			</div>
 
-		</section>
+			</form>
+		</div>
+	</section>
 
-		<section id="section--create--artist">
-			{{ form_artist.csrf_token }}
 
-			<h2 class="text-center">Artist</h2>
 
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Artist Bio</h3>
+	<section id="section--create--art">
+		<div id="js-div_artwork" class="js-create-div">
+			<form id="js-form_artwork" action="" method="POST">
+				{{ form_artwork.csrf_token }}
+
+				<h2 class="[ text-center ]">Artwork</h2>
+
+				<div class="[ row ]">
+					<div class="[ col-sm-12 col-md-6 pb-4 offset-md-1 ]">
+						<h3 class="section__head [ display-4 p-1 ]">Artwork Bio</h3>
+					</div>
 				</div>
-			</div>
 
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10">
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-10 py-4 ]">
 
-					<ul>
+						<ul>
 
-						<li class="[ row mb-3 ]">
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_artwork.name.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_artwork.name(class="form-control", placeholder="Artwork Name") }}
+								</div>
+							</li>
+
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="[ row ]">
+					<div class="[ col-6 pb-4 offset-1 ]">
+						<h3 class="section__head [ display-4 p-1 ]">Artists</h3>
+					</div>
+				</div>
+
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-10 py-4 ]">
+						<div class="[ row ]">
+
 							<div class="[ col-md-6 text-md-right ]">
-								Name
+								<p>Related Artists</p>
 							</div>
-							<div class="[ col-md-6 ]">
-								{{ form_artist.fName(class="form-control", placeholder="First Name") }}
-							</div>
-						</li>
 
-						<li class="[ row mb-3 ]">
+							<div class="[ col-md-6 ]">
+
+								<button id="js-create_artist" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artist">Create</button>
+								<button id="js-add_artist" class="js-add-li butt butt--add" type="button">Add</button>
+
+	<!-- 							<ul class="ul_art">
+									{% include "include/art_list.html" ignore missing with context %}
+								</ul> -->
+
+								<ul class="artwork__ul">
+
+										<li class="js-li_artist [ row mb-3 align-items-center ]">
+											<div class="[ col-md-4 text-md-right ]">
+												{{ form_artwork.artists.label }}
+											</div>
+											<div class="[ col-md-6 ]">
+												<input id="js-datalist_artist" type="text" name="artists-0" list="artists" data-value="" value="" class="datalist_artist [ form-control ]">
+												<!-- Call datalist macro function -->
+												{{ datalist("artists", artists) }}
+											</div>
+											<div class="[ col-md-2 ]">
+												<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+											</div>
+										</li>
+
+								</ul>
+
+							</div>
+
+							<!-- <div class="[ col-md-6 ]">
+								<button id="js-create_artist" class="artist_create butt [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artist">Create</button>
+								<button id="js-add_artist" class="js-add-li butt butt--add [ mb-3 ]" type="button">Add</button>
+								<ul class="ul_artist">
+									{% include "include/artist_list.html" ignore missing with context %}
+								</ul>
+							</div> -->
+
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</section>
+
+
+
+	<section id="section--create--artist">
+		<div id="js-div_artist" class="js-create-div">
+			<form id="js-form_artist" action="" method="POST">
+				{{ form_artist.csrf_token }}
+
+				<h2 class="text-center">Artist</h2>
+
+				<div class="[ row ]">
+					<div class="[ col-6 pb-4 offset-1 ]">
+						<h3 class="section__head [ display-4 p-1">Artist Bio</h3>
+					</div>
+				</div>
+
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-10 ]">
+
+						<ul>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_artist.fName.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_artist.fName(class="form-control", placeholder="First Name") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_artist.pName.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_artist.pName(class="form-control", placeholder="Primary/Last Name") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_artist.email.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_artist.email(class="form-control", placeholder="you@pizza.com") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_artist.phone.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_artist.phone(class="form-control", placeholder="###-###-####") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_artist.website.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_artist.website(class="form-control", placeholder="www.pizza.org") }}
+								</div>
+							</li>
+
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6 pb-4 offset-1">
+						<h3 class="section__head display-4 p-1">Artworks</h3>
+					</div>
+				</div>
+
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-10 py-4 ]">
+						<div class="[ row ]">
+
 							<div class="[ col-md-6 text-md-right ]">
-								
+								<p>Related Artworks</p>
 							</div>
+
 							<div class="[ col-md-6 ]">
-								{{ form_artist.pName(class="form-control", placeholder="Primary/Last Name") }}
-							</div>
-						</li>
 
-						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
-								{{ form_artist.email.label }}
-							</div>
-							<div class="[ col-md-6 ]">
-								{{ form_artist.email(class="form-control", placeholder="you@pizza.com") }}
-							</div>
-						</li>
+								<button id="js-create_artwork" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
+								<button id="js-add_artwork" class="js-add-li butt butt--add" type="button">Add</button>
 
-						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
-								{{ form_artist.phone.label }}
-							</div>
-							<div class="[ col-md-6 ]">
-								{{ form_artist.phone(class="form-control", placeholder="###-###-####") }}
-							</div>
-						</li>
+								<ul class="object__ul object__ul--artworks">
 
-						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
-								{{ form_artist.website.label }}
-							</div>
-							<div class="[ col-md-6 ]">
-								{{ form_artist.website(class="form-control", placeholder="www.pizza.org") }}
-							</div>
-						</li>
+										<li class="js-li_artwork [ row mb-3 align-items-center ]">
+											<div class="[ col-md-4 text-md-right ]">
+												{{ form_artist.artworks.label }}
+											</div>
+											<div class="[ col-md-6 ]">
+												<input id="js-datalist_artwork" type="text" name="artworks-0" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
+												<!-- Call datalist macro function -->
+												{{ datalist("artworks", artworks) }}
+											</div>
+											<div class="[ col-md-2 ]">
+												<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+											</div>
+										</li>
 
-					</ul>
+								</ul>
 
+							</div>
+
+						</div>
+					</div>
 				</div>
+
+			</form>
+		</div>
+	</section>
+
+
+
+	<section id="section--create--park" class="py-5">
+		<div id="js-div_park" class="js-create-div">
+			<form id="js-form_park" action="" method="POST">
+				{{ form_park.csrf_token }}
+
+				<h2 class="[ text-center ]">Park</h2>
+
+				<div class="[ row ]">
+					<div class="[ col-6 pb-4 offset-1 ]">
+						<h3 class="section__head [ display-4 p-1 ]">Park Bio</h3>
+					</div>
+				</div>
+
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-10 py-4 ]">
+
+						<ul>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_park.name.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_park.name(class="form-control", placeholder="Park Name") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_park.park_id.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_park.park_id(class="form-control", placeholder="ID ###") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_park.borough.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_park.borough(class="form-control") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_park.address.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_park.address(class="form-control") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_park.cb.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_park.cb(class="form-control", placeholder="Board #") }}
+								</div>
+							</li>
+
+	<!-- 							<li class="row mb-3">
+								<div class="col-md-6 text-md-right">
+									<label for="park_borough" style="height: 100%; vertical-align: text-top;">Borough</label>
+								</div>
+								<div class="col-md-6">
+									<select name="park_borough" class="form-control">
+										<option value="" selected disabled>Select a Borough</option>
+										<option value="Manhattan">Manhattan</option>
+										<option value="Brooklyn">Brooklyn</option>
+										<option value="Queens">Queens</option>
+										<option value="Bronx">Bronx</option>
+										<option value="Staten Island">Staten Island</option>
+									</select>
+								</div>
+							</li> -->
+
+						</ul>
+
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</section>
+
+
+
+	<section id="section--create--org">
+		<div id="js-div_org" class="js-create-div">
+			<form id="js-form_org" action="" method="POST">
+				{{ form_org.csrf_token }}
+
+				<h2 class="[ text-center ]">Organization</h2>
+
+				<div class="[ row ]">
+					<div class="[ col-6 pb-4 offset-1 ]">
+						<h3 class="section__head [ display-4 p-1 ]">Organization Bio</h3>
+					</div>
+				</div>
+
+				<div class="[ row justify-content-center ]">
+					<div class="[ col-sm-12 col-md-10 py-4 ]">
+
+						<ul>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_org.name.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_org.name(class="form-control", placeholder="Organization Name") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_org.website.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_org.website(class="form-control", placeholder="www.pizza.org") }}
+								</div>
+							</li>
+
+							<li class="[ row mb-3 ]">
+								<div class="[ col-md-6 text-md-right ]">
+									{{ form_org.phone.label }}
+								</div>
+								<div class="[ col-md-6 ]">
+									{{ form_org.phone(class="form-control", placeholder="###-###-####") }}
+								</div>
+							</li>
+
+						</ul>
+
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</section>
+
+
+
+	<section id="section--submit">
+	<div class="js-submit-div">
+		<div class="row justify-content-center">
+			<div class="col-sm-12 col-md-10 text-right">
+				<button id="js-cancel_create" class="js-cancel-form butt butt--delete" type="button"><a href="{{ url_for('home') }}">Cancel</a></button>
+				<button id="js-post_create" class="js-post-form butt butt--create [ ml-2 ]" type="button" value="Create">Create</button>
 			</div>
-
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Artworks</h3>
-				</div>
-			</div>
-
-			<li class="[ row mb-3 ]">
-				<div class="[ col-md-6 text-md-right ]">
-					{{ form_artist.artworks.label }}
-				</div>
-
-				<div class="[ col-md-6 ]">
-					TK!
-				</div>
-			</li>
-
-		</section>
-
-		<section id="section--create--park" class="py-5">
-
-			<h2 class="text-center">Park</h2>
-
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Park Bio</h3>
-				</div>
-			</div>
-
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
-					<ul>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="park_name" style="height: 100%; vertical-align: text-top;">Name</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="park_name" placeholder="Park Name" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="park_park_id" style="height: 100%; vertical-align: text-top;">Park ID</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="park_park_id" placeholder="ID ###" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="park_borough" style="height: 100%; vertical-align: text-top;">Borough</label>
-							</div>
-							<div class="col-md-6">
-								<select name="park_borough" class="form-control">
-									<option value="" selected disabled>Select a Borough</option>
-									<option value="Manhattan">Manhattan</option>
-									<option value="Brooklyn">Brooklyn</option>
-									<option value="Queens">Queens</option>
-									<option value="Bronx">Bronx</option>
-									<option value="Staten Island">Staten Island</option>
-								</select>
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="park_address" style="height: 100%; vertical-align: text-top;">Address</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="park_address" placeholder="Park Address" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="park_cb" style="height: 100%; vertical-align: text-top;">Community Board</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="park_cb" placeholder="##" class="form-control">
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-		</section>
-
-		<section id="section--create--org">
-
-			<h2 class="text-center">Organization</h2>
-
-			<div class="row">
-				<div class="col-6 pb-4 offset-1">
-					<h3 class="section__head display-4 p-1">Organization Bio</h3>
-				</div>
-			</div>
-
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 py-4">
-					<ul>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="org_name" style="height: 100%; vertical-align: text-top;">Name</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="org_name" placeholder="Organization Name" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="org_website" style="height: 100%; vertical-align: text-top;">Website</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="org_website" placeholder="www.pizza.org" class="form-control">
-							</div>
-						</li>
-						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
-								<label for="org_phone" style="height: 100%; vertical-align: text-top;">Phone</label>
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="org_phone" placeholder="###-###-####" class="form-control">
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-		</section>
-
-		<section id="section--submit">
-
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-10 text-right">
-					<button type="button" class="btn__parks btn__parks--no"><a href="{{ url_for('home') }}">Cancel</a></button>
-					<!-- <button type="button" class="btn__parks btn__parks--add">Create</button> -->
-					<!-- <input type="submit" class="btn__parks btn__parks--add ml-2" value="Create" id="post_create"> -->
-					<button type="button" class="btn__parks btn__parks--add ml-2" value="Create" id="post_create">Create</button>
-				</div>
-			</div>
-
-		</section>
-
-	</form>
+		</div>
+	</div>
+	</section>
 
 </div>
 
+
+
+<!-- Empty exhibition template -->
+<script id="js-template_exhibition" type="text/template">
+	<li class="js-li_exhibition [ row mb-4 ]">
+		<div class="[ col ]">
+			<div class="[ form-row mb-1 ]">
+				<div class="col-10">
+					<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
+					{{ datalist("artworks", artworks) }}
+				</div>
+				<div class="col">
+					<span class="align-middle px-1">@</span>
+					<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-10">
+					<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" class="datalist_park [ form-control ]">
+					{{ datalist("parks", parks) }}
+				</div>
+			</div>
+		</div>
+	</li>
+</script>
+
 <!-- Empty artwork template -->
-<script id="template_artwork" type="text/template">
-	<li class="artist__li--artworks [ row mb-3 align-items-baseline ]">
+<script id="js-template_artwork" type="text/template">
+	<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
 		<div class="[ col-md-4 ]">
-			<label for="name">Artwork</label>
+			<label for="artworks">Artwork</label>
 		</div>
 		<div class="[ col-md-6 ]">
-			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art [ form-control ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
 		<div class="[ col-md-2 ]">
-			<button type="button" class="butt butt--delete-icon form_remove"><i class="far fa-times-circle"></i></button>
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+<!-- Empty artist template -->
+<script id="js-template_artist" type="text/template">
+	<li class="js-li_artist [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-4 ]">
+			<label for="artists">Artist</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="js-datalist_artist" type="text" name="artists" list="artists" data-value="" value="" placeholder="Artist Name" class="datalist_artist [ form-control ]">
+			{{ datalist("artists", artists) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+<!-- Empty park template -->
+<script id="js-template_park" type="text/template">
+	<li class="js-li_park [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-4 ]">
+			<label for="parks">park</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="park Name" class="datalist_park [ form-control ]">
+			{{ datalist("parks", parks) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+<!-- Empty org template -->
+<script id="js-template_org" type="text/template">
+	<li class="js-li_org [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-4 ]">
+			<label for="orgs">Organization</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="datalist_org [ form-control ]">
+			{{ datalist("orgs", orgs) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
 </script>
 
 <!-- Create artwork modal -->
-<div id="modal_art" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-green">
-        <h5 class="modal-title" id="">CREATE AN ARTWORK</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div id="js-modal_artwork" class="[ modal fade ]" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="[ modal-dialog ]" role="document">
+		<div class="[ modal-content ]">
+			<div class="bg-green [ modal-header ]">
+				<h5 class="[ modal-title ]">CREATE AN ARTWORK</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="[ modal-body ]">
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn__parks btn__parks--no post_cancel" data-dismiss="modal">Cancel</button>
-        <button type="button" id="post_art" class="btn__parks btn__parks--add post_data">Add</button>
-      </div>
-    </div>
-  </div>
+			</div>
+			<div class="[ modal-footer ]">
+				<button id="js-modal-cancel_artwork" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-post_artwork" class="js-post-form butt butt--create" type="button">Create</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Create artist modal -->
-<div id="modal_artist" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-green">
-        <h5 class="modal-title" id="">CREATE AN ARTIST</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div id="js-modal_artist" class="[ modal fade ]" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="[ modal-dialog ]" role="document">
+		<div class="[ modal-content ]">
+			<div class="bg-green [ modal-header ]">
+				<h5 class="modal-title" id="">CREATE AN ARTIST</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn__parks btn__parks--no post_cancel" data-dismiss="modal">Cancel</button>
-        <button type="button" id="post_artist" class="btn__parks btn__parks--add post_data">Add</button>
-      </div>
-    </div>
-  </div>
+			</div>
+			<div class="modal-footer">
+				<button id="js-modal-cancel_artist" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-post_artist" class="butt butt--create post_data" type="button">Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Create park modal -->
+<div id="js-modal_park" class="[ modal fade ]" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="[ modal-dialog ]" role="document">
+		<div class="[ modal-content ]">
+			<div class="bg-green [ modal-header ]">
+				<h5 class="modal-title" id="">CREATE A PARK</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+			</div>
+			<div class="modal-footer">
+				<button id="js-modal-cancel_park" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-post_park" class="butt butt--create post_data" type="button">Create</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Create org modal -->
-<div id="modal_org" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-green">
-        <h5 class="modal-title" id="">CREATE AN ORGANIZATION</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div id="js-modal_org" class="[ modal fade ]" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="[ modal-dialog ]" role="document">
+		<div class="[ modal-content ]">
+			<div class="bg-green [ modal-header ]">
+				<h5 class="modal-title" id="">CREATE AN ORGANIZATION</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn__parks btn__parks--no post_cancel" data-dismiss="modal">Cancel</button>
-        <button type="button" id="post_org" class="btn__parks btn__parks--add post_data">Add</button>
-      </div>
-    </div>
-  </div>
+			</div>
+			<div class="modal-footer">
+				<button id="js-modal-cancel_org" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-post_org" class="js-post-form butt butt--create" type="button">Create</button>
+			</div>
+		</div>
+	</div>
 </div>
+
 <script src="{{ url_for('static', filename='js/create.js') }}"></script>
 
 {% endblock %}

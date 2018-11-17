@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, TextAreaField, FieldList
+from wtforms import StringField, DateField, TextAreaField, FieldList, SelectField
 from wtforms.validators import DataRequired
 # from wtforms.fields.html5 import DateField
 
@@ -10,11 +10,15 @@ class Form_artist(FlaskForm):
   email = StringField('Email', validators=[DataRequired()])
   phone = StringField('Phone')
   website = StringField('Website')
+
+  # Related
   artworks = FieldList(StringField('Artwork'), min_entries=1)
   # FUTURE: custom validation for artworks
 
 class Form_artwork(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
+
+  # Related
   exhibitions = FieldList(StringField('Exhibition'))
   parks = FieldList(StringField('Park'))
   artists = FieldList(StringField('Artist'))
@@ -22,9 +26,12 @@ class Form_artwork(FlaskForm):
 
 class Form_park(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
-  borough = StringField('Borough', validators=[DataRequired()])
+  park_id = StringField('Borough', validators=[DataRequired()])
+  borough = SelectField('Borough',  choices=[('Bronx', 'Bronx'), ('Brooklyn', 'Brooklyn'), ('Manhattan', 'Manhattan'), ('Queens', 'Queens'), ('Staten Island', 'Staten Island')], validators=[DataRequired()])
   address = StringField('Address', validators=[DataRequired()])
   cb = StringField('Community Board', validators=[DataRequired()])
+
+  # Related
   exhibitions = FieldList(StringField('Exhibition'))
   artworks = FieldList(StringField('Artwork'))
 
@@ -69,3 +76,5 @@ class Form_exhibition(FlaskForm):
 
 class Form_org(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
+  website = StringField('Website')
+  phone = StringField('Phone')

@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block head_extras %}
+{% endblock %}
+{% block title %}Parks Database – Delete {{ artwork.name|capitalize }}{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+	<section id="section--head">
+		{% include "include/nav.html" %}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-sm-12 col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>{{ artwork.name|upper }}</b></h1>
+			</div>
+		</div>
+	</section>
+
+	<form action="" id="" method="post">
+
+		<div class="[ row justify-content-center py-4 ]">
+			<p>Are you sure you want to delete <b>{{ artwork.name }}</b> from the database?</p>
+		</div>
+
+		<section id="section--submit">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
+					<a href="{{ url_for('artwork', artwork_id=artwork.id) }}" role="button" class="butt butt--edit [ btn btn-sm ]">Cancel</a>
+					<input type="submit" class="butt butt--delete [ ml-2 btn btn-sm ]" value="Delete">
+				</div>
+			</div>
+		</section>
+
+	</form>
+
+</div>
+
+{% endblock %}

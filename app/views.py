@@ -272,8 +272,11 @@ def artist_create():
       raise e
     db.session.add(artist)
     db.session.commit()
-  # Return message/error via AJAX?
-  return redirect(url_for('artist', artist_id = artist.id))
+    # FUTURE: Return OK message via AJAX
+    return jsonify({"success": True, "data": form.data})
+  else:
+    print "Artist failed"
+    return jsonify({"success": False, "data": form.errors})
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
@@ -331,13 +334,76 @@ def artwork(artwork_id):
   return render_template('artwork.html', artwork = artwork)
 
 
-@app.route('/organizations')
+@app.route('/orgs')
 def orgs():
   orgs = Org.query.all()
   return render_template('orgs.html', orgs = orgs)
 
 
-@app.route('/organizations/<int:organization_id>')
+@app.route('/orgs/<int:organization_id>')
 def org(organization_id):
   org = Org.query.filter_by(id=organization_id).one()
   return render_template('org.html', org = org)
+
+
+@app.route('/orgs/create', methods=['POST'])
+def org_create():
+  form = Form_org()
+  if form.validate_on_submit():
+    # Create organization
+    org = Org()
+    # Add form items
+    org.name = form.name.data
+    org.phone = form.phone.data
+    org.website = form.website.data
+    # Add exhibitions to 1-to-many relationship
+    try:
+      # Clear org exhibitions
+      org.exhibitions = []
+      org_exh = request.form.getlist('exhibitions')
+      # Remove any empty form items from exhibitions list
+      org_exh = filter(None, org_exh)
+      # Add latest artworks to artist, removing duplicates
+      for x in list(set(org_exh)):
+        exhibition = Exhibition.query.filter_by(id = x).one()
+        org.exhibitions.append(exhibition)
+    except Exception as e:
+      raise e
+    db.session.add(org)
+    db.session.commit()
+    # FUTURE: Return OK message via AJAX
+    return jsonify({"success": True, "data": form.data})
+  else:
+    print "Artist"
+    return jsonify({"success": False, "data": form.errors})
+
+
+@app.route('/orgs/<int:org_id>/edit', methods=['POST'])
+def org_edit(org_id):
+  org = Org.query.filter_by(id=org_id).one()
+  form = Form_org()
+  if form.validate_on_submit():
+    # Update org items
+    org.name = form.name.data
+    org.phone = form.phone.data
+    org.website = form.website.data
+    # Add exhibitions to 1-to-many relationship
+    try:
+      # Clear org exhibitions
+      org.exhibitions = []
+      org_exh = request.form.getlist('exhibitions')
+      # Remove any empty form items from exhibitions list
+      org_exh = filter(None, org_exh)
+      # Add latest artworks to artist, removing duplicates
+      for x in list(set(org_exh)):
+        exhibition = Exhibition.query.filter_by(id = x).one()
+        org.exhibitions.append(exhibition)
+    except Exception as e:
+      raise e
+    db.session.add(org)
+    db.session.commit()
+    # FUTURE: Return OK message via AJAX
+    return jsonify({"success": True, "data": form.data})
+  else:
+    print "Artist"
+    return jsonify({"success": False, "data": form.errors})

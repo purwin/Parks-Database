@@ -79,7 +79,7 @@ function postArtist() {
 
   // send AJAX request to artist_edit function
   $.ajax({
-    url: '/artists/1/edit',
+    url: $('#formArtist').attr('action'),
     type: 'POST',
     // contentType: 'application/json; charset=utf-8',
     // dataType: 'json',
@@ -98,7 +98,9 @@ function postArtist() {
       // Add errors to page
     } else {
       // If no form errors, reload page
-      window.location.reload(true);
+      // window.location.reload(true);
+      console.log("Form success!");
+      console.dir(data)
     }
   });
 }

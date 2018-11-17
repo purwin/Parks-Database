@@ -1,7 +1,7 @@
 {% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}"> -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 {% endblock %}
 {% block title %}NYC Parks Database – Create{% endblock %}
@@ -50,12 +50,12 @@
 			</div>
 
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-sm-12 col-md-10 py-4 ]">
+				<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
 					<ul>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.name.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -64,7 +64,7 @@
 						</li>
 
 	<!-- 						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
+							<div class="col-md-4">
 								<label for="exh_name">Name</label>
 							</div>
 							<div class="col-md-6">
@@ -73,7 +73,7 @@
 						</li> -->
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.start_date.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -82,7 +82,7 @@
 						</li>
 
 	<!-- 						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
+							<div class="col-md-4">
 								<label for="exh_startDate">Exhibition Start</label>
 							</div>
 							<div class="col-md-6">
@@ -91,7 +91,7 @@
 						</li> -->
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.end_date.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -100,7 +100,7 @@
 						</li>
 
 	<!-- 						<li class="row mb-3">
-							<div class="col-md-6 text-md-right">
+							<div class="col-md-4">
 								<label for="exh_endDate">Exhibition End</label>
 							</div>
 							<div class="col-md-6">
@@ -109,7 +109,7 @@
 						</li> -->
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.opening.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -118,7 +118,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.comments.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -143,7 +143,7 @@
 					<ul>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.install_start.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -152,7 +152,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.install_end.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -161,7 +161,7 @@
 						</li>
 
 						<!-- <li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.prm.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -170,7 +170,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.approval.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -179,7 +179,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.walkthrough.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -188,7 +188,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.cb_presentation.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -197,7 +197,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.license_mailed.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -206,7 +206,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.license_signed.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -215,7 +215,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.license_borough.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -224,7 +224,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.bond.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -233,7 +233,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.coi.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -242,7 +242,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.coi_renewal.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -251,7 +251,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.signage_submit.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -260,7 +260,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.signage_received.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -269,7 +269,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.press_draft.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -278,7 +278,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.press_approved.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -287,7 +287,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.web_text.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -296,7 +296,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.work_images.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -321,7 +321,7 @@
 					<ul>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.deinstall_date.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -330,7 +330,7 @@
 						</li>
 
 						<!-- <li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.deinstall_check.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -339,7 +339,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.bond_return.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -348,7 +348,7 @@
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-6 text-md-right ]">
+							<div class="[ col-md-4 ]">
 								{{ form_exhibition.press_clippings.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -368,16 +368,28 @@
 			</div>
 
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-sm-12 col-md-10 py-4 ]">
+				<div class="[ col-12 py-4 ]">
 					<div class="[ row ]">
-						<div class="[ col-md-6 text-md-right ]">
+
+						<div class="[ col-md-4 ]">
 							<p>Related Organizations</p>
 						</div>
+
 						<div class="[ col-md-6 ]">
 							<button id="js-create_org" class="js-create-modal butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_org">Create</button>
 							<button id="js-add_org" class="js-add-li butt butt--add" type="button">Add</button>
 							<ul class="ul_org">
-								{% include "include/org_list.html" ignore missing with context %}
+
+								<li class="js-li_org [ row mb-3 align-items-baseline ]">
+									<div class="[ col-md-10 ]">
+										<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="datalist_org [ form-control ]">
+										{{ datalist("orgs", orgs) }}
+									</div>
+									<div class="[ col-md-2 ]">
+										<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+									</div>
+								</li>
+
 							</ul>
 						</div>
 					</div>
@@ -394,20 +406,20 @@
 				<div class="[ col-12 py-4 ]">
 					<div class="[ row ]">
 
-						<div class="[ col-md-6 text-md-right ]">
+						<div class="[ col-md-4 ]">
 							<p>Exhibition Artworks</p>
 						</div>
 
 						<div class="[ col-md-6 ]">
-							<button id="js-create_artwork" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
+							<button id="js-create_artwork" class="js-create-modal butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
 							<button id="js-add_exhibition" class="js-add-li butt butt--add" type="button">Add</button>
 							<ul class="ul_art">
 
 								<li class="js-li_exhibition [ row mb-4 ]">
-									<div class="[ col ]">
+									<div class="[ col p-0 ]">
 										<div class="[ form-row mb-1 ]">
 											<div class="col-10">
-												<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
+												<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="datalist_artwork [ form-control ]">
 												{{ datalist("artworks", artworks) }}
 											</div>
 											<div class="col">
@@ -417,7 +429,7 @@
 										</div>
 										<div class="form-row">
 											<div class="col-10">
-												<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" class="datalist_park [ form-control ]">
+												<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="datalist_park [ form-control ]">
 												{{ datalist("parks", parks) }}
 											</div>
 										</div>
@@ -426,51 +438,6 @@
 
 								<!-- {% include "include/art_list.html" ignore missing with context %} -->
 							</ul>
-					</div>
-				</div>
-			</div>
-
-			<div class="[ row justify-content-center ]">
-				<div class="[ col-12 py-4 ]">
-					<div class="[ row ]">
-
-						<div class="[ col-md-6 text-md-right ]">
-							<p>Exhibition Artworks</p>
-						</div>
-
-						<div class="[ col-md-6 ]">
-
-							<button id="js-create_artwork" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
-							<button id="js-add_artwork" class="js-add-li butt butt--add" type="button">Add</button>
-
-						</div>
-
-	<!-- 							<ul class="ul_art">
-								{% include "include/art_list.html" ignore missing with context %}
-							</ul> -->
-
-						<div class="[ row ]">
-
-							<ul class="exhibition__ul">
-
-									<li class="js-li_artwork [ row mb-3 align-items-center ]">
-										<div class="[ col-md-4 text-md-right ]">
-											{{ form_exhibition.artworks.label }}
-										</div>
-										<div class="[ col-md-6 ]">
-											<input id="js-datalist_artwork" type="text" name="artworks-0" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
-											<!-- Call datalist macro function -->
-											{{ datalist("artworks", artworks) }}
-										</div>
-										<div class="[ col-md-2 ]">
-											<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
-										</div>
-									</li>
-
-							</ul>
-
-						</div>
-
 					</div>
 				</div>
 			</div>
@@ -489,18 +456,18 @@
 				<h2 class="[ text-center ]">Artwork</h2>
 
 				<div class="[ row ]">
-					<div class="[ col-sm-12 col-md-6 pb-4 offset-md-1 ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 pb-4 offset-md-1 ]">
 						<h3 class="section__head [ display-4 p-1 ]">Artwork Bio</h3>
 					</div>
 				</div>
 
 				<div class="[ row justify-content-center ]">
-					<div class="[ col-sm-12 col-md-10 py-4 ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
 						<ul>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_artwork.name.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -520,53 +487,34 @@
 				</div>
 
 				<div class="[ row justify-content-center ]">
-					<div class="[ col-sm-12 col-md-10 py-4 ]">
-						<div class="[ row ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
-							<div class="[ col-md-6 text-md-right ]">
-								<p>Related Artists</p>
-							</div>
+						<div class="[ col p-0 ]">
+							<button id="js-create_artist" class="js-create-modal butt butt--create [ m-1 mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artist">Create</button>
+							<button id="js-add_artist" class="js-add-li butt butt--add  [ m-1 mb-3 ]" type="button">Add</button>
 
-							<div class="[ col-md-6 ]">
+							<ul class="artwork__ul">
 
-								<button id="js-create_artist" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artist">Create</button>
-								<button id="js-add_artist" class="js-add-li butt butt--add" type="button">Add</button>
+									<li class="js-li_artist [ row mb-3 align-items-baseline ]">
+										<div class="[ col-md-4 ]">
+											<label for="artists">Artist</label>
+										</div>
+										<div class="[ col-md-6 ]">
+											<input id="js-datalist_artist" type="text" name="artists-0" list="artists" data-value="" value="" placeholder="Artist Name" class="datalist_artist [ form-control ]">
+											<!-- Call datalist macro function -->
+											{{ datalist("artists", artists) }}
+										</div>
+										<div class="[ col-md-2 ]">
+											<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+										</div>
+									</li>
 
-	<!-- 							<ul class="ul_art">
-									{% include "include/art_list.html" ignore missing with context %}
-								</ul> -->
+							</ul>
 
-								<ul class="artwork__ul">
-
-										<li class="js-li_artist [ row mb-3 align-items-center ]">
-											<div class="[ col-md-4 text-md-right ]">
-												{{ form_artwork.artists.label }}
-											</div>
-											<div class="[ col-md-6 ]">
-												<input id="js-datalist_artist" type="text" name="artists-0" list="artists" data-value="" value="" class="datalist_artist [ form-control ]">
-												<!-- Call datalist macro function -->
-												{{ datalist("artists", artists) }}
-											</div>
-											<div class="[ col-md-2 ]">
-												<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
-											</div>
-										</li>
-
-								</ul>
-
-							</div>
-
-							<!-- <div class="[ col-md-6 ]">
-								<button id="js-create_artist" class="artist_create butt [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artist">Create</button>
-								<button id="js-add_artist" class="js-add-li butt butt--add [ mb-3 ]" type="button">Add</button>
-								<ul class="ul_artist">
-									{% include "include/artist_list.html" ignore missing with context %}
-								</ul>
-							</div> -->
+						</div>
 
 						</div>
 					</div>
-				</div>
 
 			</form>
 		</div>
@@ -588,12 +536,12 @@
 				</div>
 
 				<div class="[ row justify-content-center ]">
-					<div class="[ col-sm-12 col-md-10 ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
 						<ul>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_artist.fName.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -602,7 +550,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_artist.pName.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -611,7 +559,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_artist.email.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -620,7 +568,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_artist.phone.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -629,7 +577,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_artist.website.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -649,39 +597,33 @@
 				</div>
 
 				<div class="[ row justify-content-center ]">
-					<div class="[ col-sm-12 col-md-10 py-4 ]">
-						<div class="[ row ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
-							<div class="[ col-md-6 text-md-right ]">
-								<p>Related Artworks</p>
-							</div>
+						<div class="[ col p-0 ]">
 
-							<div class="[ col-md-6 ]">
+							<button id="js-create_artwork" class="js-create-modal butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
+							<button id="js-add_artwork" class="js-add-li butt butt--add" type="button">Add</button>
 
-								<button id="js-create_artwork" class="js-butt--create butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
-								<button id="js-add_artwork" class="js-add-li butt butt--add" type="button">Add</button>
+							<ul class="object__ul object__ul--artworks">
 
-								<ul class="object__ul object__ul--artworks">
+									<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
+										<div class="[ col-md-4 ]">
+											<label for="artworks">Artwork</label>
+										</div>
+										<div class="[ col-md-6 ]">
+											<input id="js-datalist_artwork" type="text" name="artworks-0" list="artworks" data-value="" value="" placeholder="Artwork Name" class="datalist_artwork [ form-control ]">
+											<!-- Call datalist macro function -->
+											{{ datalist("artworks", artworks) }}
+										</div>
+										<div class="[ col-md-2 ]">
+											<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+										</div>
+									</li>
 
-										<li class="js-li_artwork [ row mb-3 align-items-center ]">
-											<div class="[ col-md-4 text-md-right ]">
-												{{ form_artist.artworks.label }}
-											</div>
-											<div class="[ col-md-6 ]">
-												<input id="js-datalist_artwork" type="text" name="artworks-0" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
-												<!-- Call datalist macro function -->
-												{{ datalist("artworks", artworks) }}
-											</div>
-											<div class="[ col-md-2 ]">
-												<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
-											</div>
-										</li>
-
-								</ul>
-
-							</div>
+							</ul>
 
 						</div>
+
 					</div>
 				</div>
 
@@ -705,12 +647,12 @@
 				</div>
 
 				<div class="[ row justify-content-center ]">
-					<div class="[ col-sm-12 col-md-10 py-4 ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
 						<ul>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_park.name.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -719,7 +661,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_park.park_id.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -728,7 +670,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_park.borough.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -737,7 +679,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_park.address.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -746,7 +688,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_park.cb.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -755,7 +697,7 @@
 							</li>
 
 	<!-- 							<li class="row mb-3">
-								<div class="col-md-6 text-md-right">
+								<div class="col-md-4">
 									<label for="park_borough" style="height: 100%; vertical-align: text-top;">Borough</label>
 								</div>
 								<div class="col-md-6">
@@ -795,12 +737,12 @@
 				</div>
 
 				<div class="[ row justify-content-center ]">
-					<div class="[ col-sm-12 col-md-10 py-4 ]">
+					<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
 
 						<ul>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_org.name.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -809,7 +751,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_org.website.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -818,7 +760,7 @@
 							</li>
 
 							<li class="[ row mb-3 ]">
-								<div class="[ col-md-6 text-md-right ]">
+								<div class="[ col-md-4 ]">
 									{{ form_org.phone.label }}
 								</div>
 								<div class="[ col-md-6 ]">
@@ -858,7 +800,7 @@
 		<div class="[ col ]">
 			<div class="[ form-row mb-1 ]">
 				<div class="col-10">
-					<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" class="datalist_artwork [ form-control ]">
+					<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="datalist_artwork [ form-control ]">
 					{{ datalist("artworks", artworks) }}
 				</div>
 				<div class="col">
@@ -868,7 +810,7 @@
 			</div>
 			<div class="form-row">
 				<div class="col-10">
-					<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" class="datalist_park [ form-control ]">
+					<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="datalist_park [ form-control ]">
 					{{ datalist("parks", parks) }}
 				</div>
 			</div>
@@ -915,7 +857,7 @@
 			<label for="parks">park</label>
 		</div>
 		<div class="[ col-md-6 ]">
-			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="park Name" class="datalist_park [ form-control ]">
+			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="datalist_park [ form-control ]">
 			{{ datalist("parks", parks) }}
 		</div>
 		<div class="[ col-md-2 ]">
@@ -927,10 +869,7 @@
 <!-- Empty org template -->
 <script id="js-template_org" type="text/template">
 	<li class="js-li_org [ row mb-3 align-items-baseline ]">
-		<div class="[ col-md-4 ]">
-			<label for="orgs">Organization</label>
-		</div>
-		<div class="[ col-md-6 ]">
+		<div class="[ col-md-10 ]">
 			<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="datalist_org [ form-control ]">
 			{{ datalist("orgs", orgs) }}
 		</div>
@@ -946,7 +885,7 @@
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
 				<h5 class="[ modal-title ]">CREATE AN ARTWORK</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="js-cancel-form [ close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -954,7 +893,7 @@
 
 			</div>
 			<div class="[ modal-footer ]">
-				<button id="js-modal-cancel_artwork" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-cancel_artwork" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
 				<button id="js-modal-post_artwork" class="js-post-form butt butt--create" type="button">Create</button>
 			</div>
 		</div>
@@ -966,17 +905,17 @@
 	<div class="[ modal-dialog ]" role="document">
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
-				<h5 class="modal-title" id="">CREATE AN ARTIST</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="[ modal-title ]" id="">CREATE AN ARTIST</h5>
+				<button type="button" class="js-cancel-form [ close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="[ modal-body ]">
 
 			</div>
-			<div class="modal-footer">
-				<button id="js-modal-cancel_artist" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
-				<button id="js-modal-post_artist" class="butt butt--create post_data" type="button">Create</button>
+			<div class="[ modal-footer ]">
+				<button id="js-modal-cancel_artist" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-post_artist" class="js-post-form butt butt--create" type="button">Create</button>
 			</div>
 		</div>
 	</div>
@@ -987,17 +926,17 @@
 	<div class="[ modal-dialog ]" role="document">
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
-				<h5 class="modal-title" id="">CREATE A PARK</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="[ modal-title ]" id="">CREATE A PARK</h5>
+				<button type="button" class="js-cancel-form [close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="[ modal-body ]">
 
 			</div>
-			<div class="modal-footer">
-				<button id="js-modal-cancel_park" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
-				<button id="js-modal-post_park" class="butt butt--create post_data" type="button">Create</button>
+			<div class="[ modal-footer ]">
+				<button id="js-modal-cancel_park" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-post_park" class="js-post-form butt butt--create" type="button">Create</button>
 			</div>
 		</div>
 	</div>
@@ -1008,16 +947,16 @@
 	<div class="[ modal-dialog ]" role="document">
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
-				<h5 class="modal-title" id="">CREATE AN ORGANIZATION</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<h5 class="[ modal-title ]" id="">CREATE AN ORGANIZATION</h5>
+				<button type="button" class="js-cancel-form [ close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="[ modal-body ]">
 
 			</div>
-			<div class="modal-footer">
-				<button id="js-modal-cancel_org" class="js-cancel-post butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+			<div class="[ modal-footer ]">
+				<button id="js-modal-cancel_org" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
 				<button id="js-modal-post_org" class="js-post-form butt butt--create" type="button">Create</button>
 			</div>
 		</div>

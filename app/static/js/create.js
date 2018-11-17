@@ -82,7 +82,7 @@ $( document ).ready(function() {
       datalist: "js-datalist_artwork",
       modal: {
         id: "#js-modal_artwork", // modal ID ref
-        html: $('#js-form_artwork').html() // modal body HTML
+        html: '<form id="js-form-modal_artwork" action="" method="POST">\n' + $('#js-form_artwork').html() + '</form>\n' // modal body HTML
       },
       modalUL: "js-modal-ul_artwork",
       modalLI: "js-modal-li_artwork",
@@ -109,7 +109,7 @@ $( document ).ready(function() {
       datalist: "js-datalist_artist",
       modal: {
         id: "#js-modal_artist", // modal ID ref
-        html: $('#js-form_artist').html() // modal body HTML
+        html: '<form id="js-form-modal_artist" action="" method="POST">\n' + $('#js-form_artist').html() + '</form>\n' // modal body HTML
       },
       modalUL: "js-modal-ul_artist",
       modalLI: "js-modal-li_artist",
@@ -135,7 +135,7 @@ $( document ).ready(function() {
       datalist: "js-datalist_park",
       modal: {
         id: "#js-modal_park", // modal ID ref
-        html: '<form id="js-form-modal_artist" action="" method="POST">\n' + $('#js-form_park').html() + '</form>\n' // modal body HTML
+        html: '<form id="js-form-modal_park" action="" method="POST">\n' + $('#js-form_park').html() + '</form>\n' // modal body HTML
       },
       modalUL: "js-modal-ul_park",
       modalLI: "js-modal-li_park",
@@ -162,7 +162,7 @@ $( document ).ready(function() {
       datalist: "js-datalist_org",
       modal: {
         id: "#js-modal_org", // modal ID ref
-        html: '<form id="js-form-modal_artist" action="" method="POST">\n' + $('#js-form_org').html() + '</form>\n' // modal body HTML
+        html: '<form id="js-form-modal_org" action="" method="POST">\n' + $('#js-form_org').html() + '</form>\n' // modal body HTML
       },
       modalUL: "js-modal-ul_org",
       modalLI: "js-modal-li_org",
@@ -259,7 +259,8 @@ $( document ).ready(function() {
       // Add modal ID to array of active modals
       model.createButton.push(x);
 
-      console.log(model.createButton)
+      console.log("createbutton: ");
+      console.dir(model.createButton);
 
       // Get object type from argument's ID
       var obj = this.determineObject(x);
@@ -294,12 +295,13 @@ $( document ).ready(function() {
     // Pop most recent addition to modal list
     popModalList: function() {
       let x = model.createButton.pop();
-      console.log("Current modalList: " + model.createButton);
+      console.log("createbutton: ");
+      console.dir(model.createButton);
       return x;
     },
 
     // Remove modal ref from list when a modal is cancelled
-    cancelPost: function(x) {
+    removeModal: function(x) {
       this.popModalList();
     },
 
@@ -318,7 +320,7 @@ $( document ).ready(function() {
       // Set formID to general form ID if no modals are active, otherwise set to modal form ID
       var formID = (model.createButton.length == 1) ? model[obj].form.id : model[obj].form.modalID;
 
-      console.log("Form ID: " + formID)
+      console.log("Form ID: " + formID);
 
       // Store input name value to pass to new LI for modals
       var tempName = $(formID + " [id^='js-datalist_'] input[name$='name']").val();
@@ -330,6 +332,8 @@ $( document ).ready(function() {
       // to include -##, accounting for wtforms validation
 
       console.log("Post data: " + $(formID).serialize());
+
+      console.log("Post route: " + model[obj].post);
 
       // Post data
       $.ajax({
@@ -399,9 +403,9 @@ $( document ).ready(function() {
 
       this.createModal();
 
-      this.postForm();
+      this.cancelModal();
 
-      this.cancelPost();
+      this.postForm();
     },
 
     hideDivs: function() {
@@ -462,6 +466,16 @@ $( document ).ready(function() {
       });
     },
 
+    // Cancel modal, using Bootstrap's hide.bs.modal call
+    // Accounts for all variations of closing a modal
+    cancelModal: function() {
+      $('.modal').on('hide.bs.modal', function (e) {
+
+        // Call controller function to cancel modal POST and remove modal
+        controller.removeModal(this);
+      });
+    },
+
 
     // Add click listener to .js-post-form buttons to post forms via AJAX
     // TARGET CLASS: .js-post-form
@@ -473,21 +487,7 @@ $( document ).ready(function() {
         // Call controller function to POST data via AJAX
         controller.postData(this);
       });
-    },
-
-
-    // Cancel form submit, accounting for active modals
-    // TARGET CLASS: .js-cancel-form
-    // GET ID EXAMPLE: .js-cancel_artist
-    cancelPost: function() {
-      $('body').on('click', '.js-cancel-form', function(e) {
-        e.preventDefault();
-
-        // Call controller function to cancel modal POST and remove modal
-        controller.postData(this);
-      });
-    },
-
+    }
 
 
 

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, TextAreaField, FieldList, SelectField
-from wtforms.validators import DataRequired
-# from wtforms.fields.html5 import DateField
+from wtforms import StringField, TextAreaField, FieldList, SelectField
+from wtforms.validators import DataRequired, Optional
+from wtforms.fields.html5 import DateField
 
 
 class Form_artist(FlaskForm):
@@ -39,13 +39,13 @@ class Form_exhibition(FlaskForm):
   # Bio
   name = StringField('Name')
   start_date = DateField('Start Date', validators=[DataRequired()], format='%Y-%m-%d')
-  end_date = DateField('End Date', validators=[DataRequired()])
-  opening = DateField('Opening')
+  end_date = DateField('End Date', validators=[DataRequired()], format='%Y-%m-%d')
+  opening = DateField('Opening', validators=[Optional()])
   comments = TextAreaField('Comments')
 
   # Install
-  install_start = DateField('Install Start', validators=[DataRequired()])
-  install_end = DateField('Install End')
+  install_start = DateField('Install Start', validators=[DataRequired()], format='%Y-%m-%d')
+  install_end = DateField('Install End', validators=[Optional()])
   prm = StringField('PRM Review')
   approval = StringField('Borough Approval')
   walkthrough = StringField('Walk-Thru PRM')
@@ -64,15 +64,15 @@ class Form_exhibition(FlaskForm):
   work_images = StringField('Images of Installed Work')
 
   # De-Install
-  deinstall_date = StringField('De-Install Due Date', validators=[DataRequired()])
-  deinstall_check = StringField('De-Install Site Check')
+  deinstall_date = DateField('De-Install Due Date', validators=[DataRequired()], format='%Y-%m-%d')
+  deinstall_check = DateField('De-Install Site Check', format='%Y-%m-%d', validators=[Optional()])
   bond_return = StringField('Bond returned')
   press_clippings = StringField('Press Clippings Saved')
 
   # Related
-  parks = FieldList(StringField('Park', min_entries=0))
-  artworks = FieldList(StringField('Artwork', min_entries=0))
-  organizations = FieldList(StringField('Organization', min_entries=0))
+  parks = FieldList(StringField('Park'))
+  artworks = FieldList(StringField('Artwork'))
+  orgs = FieldList(StringField('Organization'))
 
 class Form_org(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])

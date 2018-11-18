@@ -152,6 +152,82 @@ def exhibition(exhibition_id):
                          exhib = exhib, form = form)
 
 
+@app.route('/exhibitions/create', methods=['POST'])
+def exhibition_create():
+  form = Form_exhibition()
+  if form.validate_on_submit():
+    # Update exhibition items
+    exhibition = Exhibition()
+    # Add form items
+
+    print "Form data: {}".format(jsonify(form.data))
+
+    # Bio
+    exhibition.name = form.name.data
+    exhibition.start_date = form.start_date.data
+    exhibition.end_date = form.end_date.data
+    exhibition.opening = form.opening.data
+    exhibition.comments = form.comments.data
+
+    # Install
+    exhibition.install_start = form.install_start.data
+    exhibition.install_end = form.install_end.data
+    exhibition.prm = form.prm.data
+    exhibition.approval = form.approval.data
+    exhibition.walkthrough = form.walkthrough.data
+    exhibition.cb_presentation = form.cb_presentation.data
+    exhibition.license_mailed = form.license_mailed.data
+    exhibition.license_signed = form.license_signed.data
+    exhibition.license_borough = form.license_borough.data
+    exhibition.bond = form.bond.data
+    exhibition.coi = form.coi.data
+    exhibition.coi_renewal = form.coi_renewal.data
+    exhibition.signage_submit = form.signage_submit.data
+    exhibition.signage_received = form.signage_received.data
+    exhibition.press_draft = form.press_draft.data
+    exhibition.press_approved = form.press_approved.data
+    exhibition.web_text = form.web_text.data
+    exhibition.work_images = form.work_images.data
+
+    # De-Install
+    exhibition.deinstall_date = form.deinstall_date.data
+    exhibition.deinstall_check = form.deinstall_check.data
+    exhibition.bond_return = form.bond_return.data
+    exhibition.press_clippings = form.press_clippings.data
+
+    # Add exhibition to database
+    db.session.add(exhibition)
+    # Flush session to get and use exhibition ID
+    db.session.flush()
+
+    # Add artwork/park children to Exh_art_park table
+    artworks = filter(None, form.artworks.data)
+    parks = filter(None, form.parks.data)
+
+    if len(artworks) == len(parks):
+      try:
+        for x, y in zip(artworks, parks):
+          exh_art_park = Exh_art_park(exhibition_id=exhibition.id, artwork_id=x, park_id=y)
+          db.session.add(exh_art_park)
+      except Exception as e:
+        raise e
+
+    print "ORGS DATA: {}".format(form.orgs.data)
+    # Add exhibition.orgs children
+    orgs = filter(None, form.orgs.data)
+    print "ORGS: {}".format(orgs)
+    for item in list(set(orgs)):
+      org = Org.query.filter_by(id = item).one()
+      print "Adding {} to {}".format(org.name, exhibition.name)
+      exhibition.organizations.append(org)
+
+    db.session.commit()
+    return jsonify({"success": True, "data": form.data})
+  else:
+    print "Artist"
+    return jsonify({"success": False, "data": form.errors})
+
+
 @app.route('/exhibitions/<int:exhibition_id>/edit', methods=['GET', 'POST'])
 def exhibition_edit(exhibition_id):
   exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
@@ -332,6 +408,35 @@ def artworks():
 def artwork(artwork_id):
   artwork = Artwork.query.filter_by(id=artwork_id).one()
   return render_template('artwork.html', artwork = artwork)
+
+
+@app.route('/artworks/create', methods=['POST'])
+def artwork_create():
+  form = Form_artwork()
+  if form.validate_on_submit():
+    # Create artwork
+    artwork = Artwork()
+    # Add form items
+    artwork.name = form.name.data
+    # Add artists to 1-to-many relationship
+    try:
+      # Clear artwork artists
+      artwork.artists = []
+      artwork_artists = request.form.getlist('artists')
+      # Remove any empty form items from exhibitions list
+      artwork_artists = filter(None, artwork_artists)
+      # Add latest artworks to artist, removing duplicates
+      for x in list(set(artwork_artists)):
+        artist = Artist.query.filter_by(id = x).one()
+        artwork.artists.append(artist)
+    except Exception as e:
+      raise e
+    db.session.add(artwork)
+    db.session.commit()
+    # FUTURE: Return OK message via AJAX
+    return jsonify({"success": True, "data": form.data})
+  else:
+    return jsonify({"success": False, "data": form.errors})
 
 
 @app.route('/orgs')

@@ -21,6 +21,10 @@ $( document ).ready(function() {
         html:  $('#js-template_' + arg).html()
       },
 
+      // Declare class names for object children (exhibition.artworks, etc.)
+      this.children = {
+      },
+
       // Declare object modal ID and body HTML
       this.modal = {
         id: "#js-modal_" + arg, // modal ID ref
@@ -50,9 +54,13 @@ $( document ).ready(function() {
         html: ""
       },
       li: {
-        count: 0,
         class: ".js-li_exhibition",
         html:  $('#js-template_exhibition').html()
+      },
+      children: {
+        "org": ".js-datalist_org",
+        "artwork": ".js-datalist_artwork",
+        "park": ".js-datalist_park"
       },
       datalist: "js-datalist_exhibition",
       modal: {
@@ -75,9 +83,11 @@ $( document ).ready(function() {
       },
       ul: "js-ul_artwork",
       li: {
-        count: 0,
         class: "#js-li_artwork",
         html: $('#js-template_artwork').html(),
+      },
+      children: {
+        "artist": ".js-datalist_artist"
       },
       datalist: "js-datalist_artwork",
       modal: {
@@ -102,9 +112,11 @@ $( document ).ready(function() {
       },
       ul: "js-ul_artist",
       li: {
-        count: 0,
         class: ".js-li_artist",
         html: $('#js-template_artist').html(),
+      },
+      children: {
+        "artwork": ".js-datalist_artwork"
       },
       datalist: "js-datalist_artist",
       modal: {
@@ -185,6 +197,7 @@ $( document ).ready(function() {
       model.exhibition = new model.Obj("exhibition");
       model.artwork = new model.Obj("artwork");
       model.artist = new model.Obj("artist");
+      model.park = new model.Obj("park");
       model.org = new model.Obj("org");
     }
 
@@ -265,12 +278,10 @@ $( document ).ready(function() {
       // Get object type from argument's ID
       var obj = this.determineObject(x);
 
-      // Set active object
-      this.selectActiveObject(obj);
-
       // Show object modal and add object.modal HTML to modal body
-      $(model.activeObject.modal.id).modal('show').find('div.modal-body').html(model.activeObject.modal.html);
+      $(model[obj].modal.id).modal('show').find('div.modal-body').html(model[obj].modal.html);
     },
+
 
     // Switch datalist values with data-values, passing in form ID
     valSwitch: function(formID) {
@@ -292,6 +303,16 @@ $( document ).ready(function() {
       }
     },
 
+
+    // Update input name value before posting forms for wtforms Fieldlist keys
+    iterateFieldlists: function(formID, childClass) {
+      // console.log("ITERATE: " + formID + " " + childClass);
+      $.each($(formID + " " + childClass), function(index, value) {
+          value.name = value.name + '-' + (index + 1);
+      });
+    },
+
+
     // Pop most recent addition to modal list
     popModalList: function() {
       let x = model.createButton.pop();
@@ -300,44 +321,60 @@ $( document ).ready(function() {
       return x;
     },
 
+
     // Remove modal ref from list when a modal is cancelled
     removeModal: function(x) {
       this.popModalList();
     },
 
 
-    // Determine whether form or modal form should be sent
-    determineForm: function(x) {
-      // FUTURE
+    // Post modal form
+    submitModal: function(x) {
+      // Get object type from argument's ID
+      var obj = this.determineObject(x);
+
+      console.log("submitModal form ID: " + model[obj].form.modalID);
+      console.log("submitModal form ID: " + model[obj].post);
+
+      // Call post data function, get response
+      this.postData(model[obj], model[obj].form.modalID);
+    },
+
+
+    // Post main form
+    submitForm: function(x) {
+
+      console.log("submitForm form ID: " + model.activeObject.form.id);
+      console.log("submitForm form ID: " + model.activeObject.post);
+
+      // Call post data function, get response
+      this.postData(model.activeObject, model.activeObject.form.id);
     },
 
 
     // Post form
-    postData: function(x) {
-      // Get object type from argument's ID
-      var obj = this.determineObject(x);
-
-      // Set formID to general form ID if no modals are active, otherwise set to modal form ID
-      var formID = (model.createButton.length == 1) ? model[obj].form.id : model[obj].form.modalID;
+    postData: function(obj, formID) {
 
       console.log("Form ID: " + formID);
 
       // Store input name value to pass to new LI for modals
-      var tempName = $(formID + " [id^='js-datalist_'] input[name$='name']").val();
+      var tempName = $(formID + " [class^='js-datalist_'] input[name$='name']").val();
 
       // Change selected datalist values to IDs
       this.valSwitch(formID);
 
-      // FUTURE: Update name attributes for [artists, artworks, parks, orgs]
-      // to include -##, accounting for wtforms validation
+      // For each object child class, add number suffix for wtforms Datalist
+      for (child in obj.children) {
+        this.iterateFieldlists(formID, obj.children[child]);
+      }
 
       console.log("Post data: " + $(formID).serialize());
 
-      console.log("Post route: " + model[obj].post);
+      console.log("Post route: " + obj.post);
 
       // Post data
       $.ajax({
-        url: model[obj].post,
+        url: obj.post,
         data: $(formID).serialize(),
         type: 'POST',
         success: function(response) {
@@ -350,6 +387,7 @@ $( document ).ready(function() {
           } else {
             console.log("Full Sucess!");
             console.dir(response);
+            view.closeModal();
 
             // FUTURE: Add new data to page
           }
@@ -360,16 +398,17 @@ $( document ).ready(function() {
       });
 
       // hide post modal
-      $(model[obj].form.modalID).modal('hide');
+      // $(model[obj].form.modalID).modal('hide');
 
       // add new li, pop most recent modal from modal array
-      this.appendUL(this.popModalList());
+      // this.appendUL(this.popModalList());
 
       // FUTURE: update template HTML
 
+      // FUTURE: add stored values to all LIs if modal
+
       // $('#select').append($('<option>', {value:1, text:'One'}));
 
-      // FUTURE: add stored values to all LIs if modal
       // FUTURE: split postData into multiple functions to account for form and modal form differences
 
     },
@@ -406,6 +445,8 @@ $( document ).ready(function() {
       this.cancelModal();
 
       this.postForm();
+
+      this.postModal();
     },
 
     hideDivs: function() {
@@ -466,13 +507,35 @@ $( document ).ready(function() {
       });
     },
 
-    // Cancel modal, using Bootstrap's hide.bs.modal call
+    // Close modal, using Bootstrap's hide.bs.modal call
     // Accounts for all variations of closing a modal
     cancelModal: function() {
       $('.modal').on('hide.bs.modal', function (e) {
 
+        console.log("Removing modal!");
+
         // Call controller function to cancel modal POST and remove modal
         controller.removeModal(this);
+      });
+    },
+
+    closeModal: function() {
+      // Close modal
+      $('.modal').modal('hide');
+
+      // Call controller function to cancel modal POST and remove modal
+      controller.removeModal(this);
+    },
+
+    // Add click listener to .js-post-modal buttons to post modal forms via AJAX
+    // TARGET CLASS: .js-post-modal
+    // GET ID EXAMPLE: .js-post_artist
+    postModal: function() {
+      $('body').on('click', '.js-post-modal', function(e) {
+        e.preventDefault();
+
+        // Call controller function to POST data via AJAX
+        controller.submitModal(this);
       });
     },
 
@@ -485,7 +548,7 @@ $( document ).ready(function() {
         e.preventDefault();
 
         // Call controller function to POST data via AJAX
-        controller.postData(this);
+        controller.submitForm(this);
       });
     }
 

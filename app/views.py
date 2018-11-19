@@ -419,18 +419,19 @@ def artwork_create():
     # Add form items
     artwork.name = form.name.data
     # Add artists to 1-to-many relationship
+
     try:
-      # Clear artwork artists
       artwork.artists = []
-      artwork_artists = request.form.getlist('artists')
-      # Remove any empty form items from exhibitions list
-      artwork_artists = filter(None, artwork_artists)
-      # Add latest artworks to artist, removing duplicates
-      for x in list(set(artwork_artists)):
-        artist = Artist.query.filter_by(id = x).one()
+      # Remove any empty form items from artists list
+      artists = filter(None, form.artists.data)
+      # Add latest artists to artwork, removing duplicates
+      for item in list(set(artists)):
+        artist = Artist.query.filter_by(id = item).one()
+        print "Adding {} to {}".format(artist.name, artwork.name)
         artwork.artists.append(artist)
     except Exception as e:
       raise e
+
     db.session.add(artwork)
     db.session.commit()
     # FUTURE: Return OK message via AJAX

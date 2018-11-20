@@ -75,6 +75,14 @@ class Exhibition(db.Model):
   def __repr__(self):
     return "<Exhibition: (%s)>"
 
+  @property
+  def serialize(self):
+
+    return {
+      'id': self.id,
+      'name': self.name
+    }
+
 
 class Park(db.Model):
   # __tablename__ = 'park'
@@ -95,6 +103,18 @@ class Park(db.Model):
 
   def __repr__(self):
     return "<Park: (%s)>"
+
+  @property
+  def serialize(self):
+
+    return {
+      'id': self.id,
+      'name': self.name,
+      'park_id': self.park_id,
+      'borough': self.borough,
+      'address': self.address,
+      'cb': self.cb
+    }
 
 
 class Artwork(db.Model):
@@ -121,7 +141,7 @@ class Artwork(db.Model):
   def serialize(self):
     return {
       'id': self.id,
-      'name': self.name,
+      'name': self.name
     }
 
 

@@ -422,9 +422,8 @@ def artwork_create():
 
     try:
       artwork.artists = []
-      # Remove any empty form items from artists list
       artists = filter(None, form.artists.data)
-      # Add latest artists to artwork, removing duplicates
+      # Add artists to artwork, removing duplicates
       for item in list(set(artists)):
         artist = Artist.query.filter_by(id = item).one()
         print "Adding {} to {}".format(artist.name, artwork.name)
@@ -477,8 +476,10 @@ def org_create():
       raise e
     db.session.add(org)
     db.session.commit()
+    print "Added ORG: {}".format(org.name)
+    print "Added ORG ID: {}".format(org.id)
     # FUTURE: Return OK message via AJAX
-    return jsonify({"success": True, "data": form.data})
+    return jsonify({"success": True, "data": org.serialize})
   else:
     print "Artist"
     return jsonify({"success": False, "data": form.errors})

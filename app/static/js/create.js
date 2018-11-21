@@ -336,9 +336,6 @@ $( document ).ready(function() {
       // Get object type from argument's ID
       var obj = this.determineObject(x);
 
-      console.log("submitModal form ID: " + model[obj].form.modalID);
-      console.log("submitModal form ID: " + model[obj].post);
-
       // Call post data function, get response
       var postPromise = this.postData(model[obj], model[obj].form.modalID);
 
@@ -355,15 +352,12 @@ $( document ).ready(function() {
           console.log("Form Sucess!");
           console.dir(response);
 
-          // FUTURE: update model object datalist
-          // console.log("LI HTML: " + model[obj].li.html);
-
-          controller.updateTemplate(model[obj].li.html, response.data);
+          // Update model object datalist
+          model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
 
           // FUTURE: set all [obj] datalists to updated model object datalist
           try {
             $('#' + model[obj].name + 's').each(function(index) {
-              console.log("ID this: " + $(this));
               $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
             });
           }
@@ -450,18 +444,17 @@ $( document ).ready(function() {
 
     // Update template with created object data from server
     updateTemplate: function(template, update) {
-      var tempDIV = $('<div/>').html(template);
+      // Create temp div
+      var div = document.createElement("div");
 
-      tempDIV.find().append();
+      // Set inner HTML to received LI template
+      $(div).html(template);
 
+      // Append template datalist with new object data
+      $(div).find('datalist').append('\t<option data-value="' + update.id + '" value="' + update.name + '"></option>')
 
-      console.log("DIV TEMP: " + tempDIV.html());
-      console.dir(container);
-      // var t = document.getElementById("login-popup");
-      // var div = document.createElement("div");
-      // div.innerHTML = t.innerHTML;
-      // $(div).find("h3").addClass("title");
-      // t.innerHTML = div.innerHTML;
+      // Return template
+      return $(div).html();
     }
 
 

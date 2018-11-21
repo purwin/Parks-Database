@@ -16,7 +16,6 @@ $( document ).ready(function() {
 
       // Declare object LI class and HTML
       this.li = {
-        count: 0,
         class: ".js-li_" + arg,
         html:  $('#js-template_' + arg).html()
       },
@@ -24,6 +23,8 @@ $( document ).ready(function() {
       // Declare class names for object children (exhibition.artworks, etc.)
       this.children = {
       },
+
+      this.datalist = 'js-datalist_' + arg,
 
       // Declare object modal ID and body HTML
       this.modal = {
@@ -279,7 +280,9 @@ $( document ).ready(function() {
       var obj = this.determineObject(x);
 
       // Show object modal and add object.modal HTML to modal body
-      $(model[obj].modal.id).modal('show').find('div.modal-body').html(model[obj].modal.html);
+      $(model[obj].modal.id).modal('show')
+        .find('div.modal-body')
+        .html(model[obj].modal.html);
     },
 
 
@@ -337,7 +340,52 @@ $( document ).ready(function() {
       console.log("submitModal form ID: " + model[obj].post);
 
       // Call post data function, get response
-      this.postData(model[obj], model[obj].form.modalID);
+      var postPromise = this.postData(model[obj], model[obj].form.modalID);
+
+      postPromise.done(function(response) {
+        // If form POST doesn't validate with wtforms, add errors to page
+        if (response.success == false) {
+          console.log("Form Error(s)!");
+          console.dir(response);
+
+          // FUTURE: Call addErrors() for each error
+        }
+        // ...Otherwise, return object sent from POST route
+        else {
+          console.log("Form Sucess!");
+          console.dir(response);
+
+          // FUTURE: update model object datalist
+          // console.log("LI HTML: " + model[obj].li.html);
+
+          controller.updateTemplate(model[obj].li.html, response.data);
+
+          // FUTURE: set all [obj] datalists to updated model object datalist
+          try {
+            $('#' + model[obj].name + 's').each(function(index) {
+              console.log("ID this: " + $(this));
+              $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
+            });
+          }
+          catch (e) {
+            console.log("Catch: " + e);
+          }
+
+          // FUTURE: Add empty LI
+
+          // FUTURE: Select LI input value to created object
+
+          // Hide modal
+          view.closeModal();
+
+        }
+
+      }).fail(function(error) {
+        console.log("AJAX error!");
+        console.dir(error);
+      })
+
+      // FUTURE: get response from postData function
     },
 
 
@@ -345,7 +393,7 @@ $( document ).ready(function() {
     submitForm: function(x) {
 
       console.log("submitForm form ID: " + model.activeObject.form.id);
-      console.log("submitForm form ID: " + model.activeObject.post);
+      console.log("submitForm form post route: " + model.activeObject.post);
 
       // Call post data function, get response
       this.postData(model.activeObject, model.activeObject.form.id);
@@ -357,13 +405,11 @@ $( document ).ready(function() {
 
       console.log("Form ID: " + formID);
 
-      // Store input name value to pass to new LI for modals
-      var tempName = $(formID + " [class^='js-datalist_'] input[name$='name']").val();
-
-      // Change selected datalist values to IDs
+      // Change selected datalist values to IDs for adding via SQLAlchemy
       this.valSwitch(formID);
 
-      // For each object child class, add number suffix for wtforms Datalist
+      // For each object child class (artwork.artists, exhibition.orgs, etc.),
+      // add number suffix for wtforms Datalist
       for (child in obj.children) {
         this.iterateFieldlists(formID, obj.children[child]);
       }
@@ -373,55 +419,49 @@ $( document ).ready(function() {
       console.log("Post route: " + obj.post);
 
       // Post data
-      $.ajax({
+      return $.ajax({
         url: obj.post,
         data: $(formID).serialize(),
-        type: 'POST',
-        success: function(response) {
-          // If the form has errors...
-          if (response.success == false) {
-            console.log("Errors!");
-            console.dir(response);
-
-            // FUTURE: Add errors to page
-          } else {
-            console.log("Full Sucess!");
-            console.dir(response);
-            view.closeModal();
-
-            // FUTURE: Add new data to page
-          }
-        },
-        error: function(error) {
-          console.log(error);
-        }
+        type: 'POST'
       });
-
-      // hide post modal
-      // $(model[obj].form.modalID).modal('hide');
-
-      // add new li, pop most recent modal from modal array
-      // this.appendUL(this.popModalList());
-
-      // FUTURE: update template HTML
-
-      // FUTURE: add stored values to all LIs if modal
-
-      // $('#select').append($('<option>', {value:1, text:'One'}));
-
-      // FUTURE: split postData into multiple functions to account for form and modal form differences
 
     },
 
-    // Add created object (artwork, artist, org) to LI options
-    addCreatedItem: function(x) {
+
+    // Add form/AJAX errors to page
+    addErrors: function(errors) {
       // FUTURE
+    },
+
+
+    // Add created object (artwork, artist, org) to LI options
+    addCreatedItem: function(item) {
+      // FUTURE
+
+      // FUTURE: Call selectCreatedItem() to add item to page
     },
 
 
     // Add value of created object to newest LI
     selectCreatedItem: function(x) {
       // FUTURE
+    },
+
+
+    // Update template with created object data from server
+    updateTemplate: function(template, update) {
+      var tempDIV = $('<div/>').html(template);
+
+      tempDIV.find().append();
+
+
+      console.log("DIV TEMP: " + tempDIV.html());
+      console.dir(container);
+      // var t = document.getElementById("login-popup");
+      // var div = document.createElement("div");
+      // div.innerHTML = t.innerHTML;
+      // $(div).find("h3").addClass("title");
+      // t.innerHTML = div.innerHTML;
     }
 
 
@@ -448,6 +488,7 @@ $( document ).ready(function() {
 
       this.postModal();
     },
+
 
     hideDivs: function() {
       // Hide all object DIVs
@@ -507,6 +548,7 @@ $( document ).ready(function() {
       });
     },
 
+
     // Close modal, using Bootstrap's hide.bs.modal call
     // Accounts for all variations of closing a modal
     cancelModal: function() {
@@ -519,6 +561,7 @@ $( document ).ready(function() {
       });
     },
 
+
     closeModal: function() {
       // Close modal
       $('.modal').modal('hide');
@@ -526,6 +569,7 @@ $( document ).ready(function() {
       // Call controller function to cancel modal POST and remove modal
       controller.removeModal(this);
     },
+
 
     // Add click listener to .js-post-modal buttons to post modal forms via AJAX
     // TARGET CLASS: .js-post-modal
@@ -551,7 +595,6 @@ $( document ).ready(function() {
         controller.submitForm(this);
       });
     }
-
 
 
   };

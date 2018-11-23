@@ -201,6 +201,7 @@ class Artist(db.Model):
       'id': self.id,
       'pName': self.pName,
       'fName': self.fName,
+      'name': self.name,
       'email': self.email,
       'phone': self.phone,
       'website': self.website

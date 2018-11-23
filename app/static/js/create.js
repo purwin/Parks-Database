@@ -351,6 +351,7 @@ $( document ).ready(function() {
         else {
           console.log("Form Sucess!");
           console.dir(response);
+          controller.addSuccess("Success! Created " + response.data.name + "!");
 
           // Update model object datalist
           model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
@@ -404,11 +405,12 @@ $( document ).ready(function() {
         else {
           console.log("Form Sucess!");
           console.dir(response);
+          controller.addSuccess("Success! Created " + response.data.name + "!");
 
           // Update model object datalist
           model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
 
-          // FUTURE: set all [obj] datalists to updated model object datalist
+          // Set all [obj] datalists to updated model object datalist
           try {
             $('#' + model[obj].name + 's').each(function(index) {
               $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
@@ -417,8 +419,9 @@ $( document ).ready(function() {
           catch (e) {
             console.log("Catch: " + e);
           }
+
         }
-      }
+      });
     },
 
 
@@ -452,7 +455,7 @@ $( document ).ready(function() {
 
     retrieveResponse: function(response) {
 
-    }
+    },
 
 
     // Add form/AJAX errors to page
@@ -463,8 +466,15 @@ $( document ).ready(function() {
 
     // Add success message to page
     addSuccess: function(message) {
-      // FUTURE
-    }
+      // Create temporary DIV
+      var div = $('<div/>');
+
+      // Add success template HTML to DIV, add success message to inner DIV
+      $(div).html($('#js-template_success').html()).find('.js-success-message').append(message);
+
+      // Add new DIV to body
+      $('body').append($(div).html());
+    },
 
 
     // Add created object (artwork, artist, org) to LI options

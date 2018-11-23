@@ -222,9 +222,10 @@ def exhibition_create():
       exhibition.organizations.append(org)
 
     db.session.commit()
-    return jsonify({"success": True, "data": form.data})
+    # Return success message, exhibition object via AJAX
+    return jsonify({"success": True, "data": exhibition.serialize})
   else:
-    print "Artist"
+    # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
 
 
@@ -248,8 +249,11 @@ def exhibition_edit(exhibition_id):
       raise e
     db.session.add(artist)
     db.session.commit()
-  # Return message/error via AJAX?
-  return redirect(url_for('exhibition', exhibition_id = exhibition.id))
+    # Return success message, exhibition object via AJAX
+    return jsonify({"success": True, "data": exhibition.serialize})
+  else:
+    # Return errors if form doesn't validate
+    return jsonify({"success": False, "data": form.errors})
 
 
 @app.route('/exhibitions/<int:exhibition_id>/delete', methods=['GET', 'POST'])
@@ -337,9 +341,8 @@ def artist_create():
     try:
       # Clear artist artworks
       artist.artworks = []
-      artist_art = request.form.getlist('artworks')
       # Remove any empty form items from artworks list
-      artist_art = filter(None, artist_art)
+      artist_art = filter(None, form.artworks.data)
       # Add latest artworks to artist, removing duplicates
       for x in list(set(artist_art)):
         artwork = Artwork.query.filter_by(id = x).one()
@@ -348,10 +351,10 @@ def artist_create():
       raise e
     db.session.add(artist)
     db.session.commit()
-    # FUTURE: Return OK message via AJAX
-    return jsonify({"success": True, "data": form.data})
+    # Return success message, artist object via AJAX
+    return jsonify({"success": True, "data": artist.serialize})
   else:
-    print "Artist failed"
+    # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
 
 
@@ -380,10 +383,10 @@ def artist_edit(artist_id):
       raise e
     db.session.add(artist)
     db.session.commit()
-    # FUTURE: Return OK message via AJAX
-    return jsonify({"success": True, "data": form.data})
+    # Return success message, artist object via AJAX
+    return jsonify({"success": True, "data": artist.serialize})
   else:
-    print "Artist"
+    # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
 
 
@@ -433,9 +436,10 @@ def artwork_create():
 
     db.session.add(artwork)
     db.session.commit()
-    # FUTURE: Return OK message via AJAX
-    return jsonify({"success": True, "data": form.data})
+    # Return success message, artwork object via AJAX
+    return jsonify({"success": True, "data": artwork.serialize})
   else:
+    # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
 
 
@@ -476,12 +480,10 @@ def org_create():
       raise e
     db.session.add(org)
     db.session.commit()
-    print "Added ORG: {}".format(org.name)
-    print "Added ORG ID: {}".format(org.id)
-    # FUTURE: Return OK message via AJAX
+    # Return success message, org object via AJAX
     return jsonify({"success": True, "data": org.serialize})
   else:
-    print "Artist"
+    # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
 
 
@@ -509,8 +511,8 @@ def org_edit(org_id):
       raise e
     db.session.add(org)
     db.session.commit()
-    # FUTURE: Return OK message via AJAX
-    return jsonify({"success": True, "data": form.data})
+    # Return success message, org object via AJAX
+    return jsonify({"success": True, "data": org.serialize})
   else:
-    print "Artist"
+    # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})

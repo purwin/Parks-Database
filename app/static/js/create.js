@@ -355,7 +355,7 @@ $( document ).ready(function() {
           // Update model object datalist
           model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
 
-          // FUTURE: set all [obj] datalists to updated model object datalist
+          // Set all [obj] datalists to updated model object datalist
           try {
             $('#' + model[obj].name + 's').each(function(index) {
               $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
@@ -390,7 +390,35 @@ $( document ).ready(function() {
       console.log("submitForm form post route: " + model.activeObject.post);
 
       // Call post data function, get response
-      this.postData(model.activeObject, model.activeObject.form.id);
+      var postPromise = this.postData(model.activeObject, model.activeObject.form.id);
+
+      postPromise.done(function(response) {
+        // If form POST doesn't validate with wtforms, add errors to page
+        if (response.success == false) {
+          console.log("Form Error(s)!");
+          console.dir(response);
+
+          // FUTURE: Call addErrors() for each error
+        }
+        // ...Otherwise, reload page
+        else {
+          console.log("Form Sucess!");
+          console.dir(response);
+
+          // Update model object datalist
+          model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
+
+          // FUTURE: set all [obj] datalists to updated model object datalist
+          try {
+            $('#' + model[obj].name + 's').each(function(index) {
+              $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
+            });
+          }
+          catch (e) {
+            console.log("Catch: " + e);
+          }
+        }
+      }
     },
 
 
@@ -422,10 +450,21 @@ $( document ).ready(function() {
     },
 
 
+    retrieveResponse: function(response) {
+
+    }
+
+
     // Add form/AJAX errors to page
     addErrors: function(errors) {
       // FUTURE
     },
+
+
+    // Add success message to page
+    addSuccess: function(message) {
+      // FUTURE
+    }
 
 
     // Add created object (artwork, artist, org) to LI options

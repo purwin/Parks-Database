@@ -408,17 +408,20 @@ $( document ).ready(function() {
           controller.addSuccess("Success! Created " + response.data.name + "!");
 
           // Update model object datalist
-          model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
+          model.activeObject.li.html = controller.updateTemplate(model.activeObject.li.html, response.data);
 
           // Set all [obj] datalists to updated model object datalist
           try {
-            $('#' + model[obj].name + 's').each(function(index) {
+            $('#' + model.activeObject.name + 's').each(function(index) {
               $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
             });
           }
           catch (e) {
             console.log("Catch: " + e);
           }
+
+          // Refresh form
+          $(model.activeObject.form.id).trigger('reset');
 
         }
       });

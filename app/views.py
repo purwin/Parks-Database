@@ -281,6 +281,29 @@ def park(park_id):
   return render_template('park.html', park = park, park_art = park_art)
 
 
+@app.route('/parks/create', methods=['POST'])
+def park_create():
+  form = Form_park()
+  if form.validate_on_submit():
+    # Create park
+    park = Park()
+    # Add form items
+    park.name = form.name.data
+    park.park_id = form.park_id.data
+    park.borough = form.borough.data
+    park.address = form.address.data
+    park.cb = form.cb.data
+
+    # Add park to database
+    db.session.add(park)
+    db.session.commit()
+    # Return success message, park object via AJAX
+    return jsonify({"success": True, "data": park.serialize})
+  else:
+    # Return errors if form doesn't validate
+    return jsonify({"success": False, "data": form.errors})
+
+
 @app.route('/artists')
 def artists():
   artists = Artist.query.all()

@@ -64,15 +64,6 @@
 										</div>
 									</li>
 
-				<!-- 						<li class="row mb-3 align-items-baseline">
-										<div class="col-md-3">
-											<label for="exh_name">Name</label>
-										</div>
-										<div class="col-md-6">
-											<input type="text" name="exh_name" placeholder="Exhibition Name" class="form-control">
-										</div>
-									</li> -->
-
 									<li class="[ row mb-3 align-items-baseline ]">
 										<div class="[ col-md-3 ]">
 											{{ form_exhibition.start_date.label }}
@@ -82,15 +73,6 @@
 										</div>
 									</li>
 
-				<!-- 						<li class="row mb-3 align-items-baseline">
-										<div class="col-md-3">
-											<label for="exh_startDate">Exhibition Start</label>
-										</div>
-										<div class="col-md-6">
-											<input type="date" name="exh_startDate" class="form-control">
-										</div>
-									</li> -->
-
 									<li class="[ row mb-3 align-items-baseline ]">
 										<div class="[ col-md-3 ]">
 											{{ form_exhibition.end_date.label }}
@@ -99,15 +81,6 @@
 											{{ form_exhibition.end_date(class="form-control") }}
 										</div>
 									</li>
-
-				<!-- 						<li class="row mb-3 align-items-baseline">
-										<div class="col-md-3">
-											<label for="exh_endDate">Exhibition End</label>
-										</div>
-										<div class="col-md-6">
-											<input type="date" name="exh_endDate" class="form-control">
-										</div>
-									</li> -->
 
 									<li class="[ row mb-3 align-items-baseline ]">
 										<div class="[ col-md-3 ]">
@@ -421,8 +394,8 @@
 													<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 													{{ datalist("artworks", artworks) }}
 												</div>
-												<div class="[ col-2 col-md-3 ]">
-													<span class="[ align-text-bottom px-2 ]">@</span>
+												<div class="[ col-2 col-md-3 align-items-baseline ]">
+													<span class="[ px-2 ]">@</span>
 												</div>
 												<div class="[ col-10 col-md-8 ]">
 													<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control ]">
@@ -433,7 +406,6 @@
 												</div>
 											</li>
 
-											<!-- {% include "include/art_list.html" ignore missing with context %} -->
 										</ul>
 								</div>
 							</div>
@@ -453,18 +425,18 @@
 							<h2 class="[ text-center ]">Artwork</h2>
 
 							<div class="[ row ]">
-								<div class="[ col-12 pb-4 offset-md-1 ]">
-									<h3 class="section__head [ display-4 p-1 ]">Artwork Bio</h3>
+								<div class="[ col-sm-12 col-md-8 pb-4 ]">
+									<h3 class="section__head [ display-4 ]">Artwork Bio</h3>
 								</div>
 							</div>
 
 							<div class="[ row justify-content-center ]">
 								<div class="[ col-12 py-4 ]">
 
-									<ul>
+									<ul class="[ pl-0 ]">
 
 										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+											<div class="[ col-md-3 ]">
 												{{ form_artwork.name.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -478,7 +450,7 @@
 							</div>
 
 							<div class="[ row ]">
-								<div class="[ col-6 pb-4 offset-1 ]">
+								<div class="[ col-sm-12 col-md-8 pb-4 ]">
 									<h3 class="section__head [ display-4 p-1 ]">Artists</h3>
 								</div>
 							</div>
@@ -490,10 +462,10 @@
 										<button id="js-create_artist" class="js-create-modal butt butt--create [ m-1 mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artist">Create</button>
 										<button id="js-add_artist" class="js-add-li butt butt--add  [ m-1 mb-3 ]" type="button">Add</button>
 
-										<ul class="artwork__ul">
+										<ul class="artwork__ul [ pl-0 ]">
 
 												<li class="js-li_artist [ row mb-3 align-items-baseline ]">
-													<div class="[ col-md-4 ]">
+													<div class="[ col-md-3 ]">
 														<label for="artists">Artist</label>
 													</div>
 													<div class="[ col-md-6 ]">
@@ -527,18 +499,18 @@
 							<h2 class="text-center">Artist</h2>
 
 							<div class="[ row ]">
-								<div class="[ col-6 pb-4 offset-1 ]">
-									<h3 class="section__head [ display-4 p-1">Artist Bio</h3>
+								<div class="[ col-sm-12 col-md-8 pb-4 ]">
+									<h3 class="section__head [ display-4 ]">Artist Bio</h3>
 								</div>
 							</div>
 
 							<div class="[ row justify-content-center ]">
 								<div class="[ col-12 py-4 ]">
 
-									<ul>
+									<ul class="[ pl-0 ]">
 
 										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+											<div class="[ col-md-3 ]">
 												{{ form_artist.fName.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -547,7 +519,7 @@
 										</li>
 
 										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+											<div class="[ col-md-3 ]">
 												{{ form_artist.pName.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -556,7 +528,7 @@
 										</li>
 
 										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+											<div class="[ col-md-3 ]">
 												{{ form_artist.email.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -565,7 +537,7 @@
 										</li>
 
 										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+											<div class="[ col-md-3 ]">
 												{{ form_artist.phone.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -574,7 +546,7 @@
 										</li>
 
 										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+											<div class="[ col-md-3 ]">
 												{{ form_artist.website.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -588,7 +560,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-6 pb-4 offset-1">
+								<div class="col-sm-12 col-md-8 pb-4">
 									<h3 class="section__head display-4 p-1">Artworks</h3>
 								</div>
 							</div>
@@ -601,10 +573,10 @@
 										<button id="js-create_artwork" class="js-create-modal butt butt--create [ mb-3 ]" type="button" data-toggle="modal" data-target="#js-modal_artwork">Create</button>
 										<button id="js-add_artwork" class="js-add-li butt butt--add" type="button">Add</button>
 
-										<ul class="object__ul object__ul--artworks">
+										<ul class="object__ul object__ul--artworks [ pl-0 ]">
 
 												<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
-													<div class="[ col-md-4 ]">
+													<div class="[ col-md-3 ]">
 														<label for="artworks">Artwork</label>
 													</div>
 													<div class="[ col-md-6 ]">
@@ -638,7 +610,7 @@
 							<h2 class="[ text-center ]">Park</h2>
 
 							<div class="[ row ]">
-								<div class="[ col-6 pb-4 offset-1 ]">
+								<div class="[ col-sm-12 col-md-8 pb-4 ]">
 									<h3 class="section__head [ display-4 p-1 ]">Park Bio</h3>
 								</div>
 							</div>
@@ -646,10 +618,10 @@
 							<div class="[ row justify-content-center ]">
 								<div class="[ col-12 py-4 ]">
 
-									<ul>
+									<ul class="[ pl-0 ]">
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_park.name.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -657,8 +629,8 @@
 											</div>
 										</li>
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_park.park_id.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -666,8 +638,8 @@
 											</div>
 										</li>
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_park.borough.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -675,8 +647,8 @@
 											</div>
 										</li>
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_park.address.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -684,8 +656,8 @@
 											</div>
 										</li>
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_park.cb.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -728,18 +700,18 @@
 							<h2 class="[ text-center ]">Organization</h2>
 
 							<div class="[ row ]">
-								<div class="[ col-6 pb-4 offset-1 ]">
+								<div class="[ col-sm-12 col-md-8 pb-4 ]">
 									<h3 class="section__head [ display-4 p-1 ]">Organization Bio</h3>
 								</div>
 							</div>
 
 							<div class="[ row justify-content-center ]">
-								<div class="[ col-sm-12 col-md-10 col-lg-8 py-4 ]">
+								<div class="[ col-12 py-4 ]">
 
-									<ul>
+									<ul class="[ pl-0 ]">
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_org.name.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -747,8 +719,8 @@
 											</div>
 										</li>
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_org.website.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -756,8 +728,8 @@
 											</div>
 										</li>
 
-										<li class="[ row mb-3 ]">
-											<div class="[ col-md-4 ]">
+										<li class="[ row mb-3 align-items-baseline ]">
+											<div class="[ col-md-3 ]">
 												{{ form_org.phone.label }}
 											</div>
 											<div class="[ col-md-6 ]">
@@ -796,24 +768,20 @@
 
 <!-- Empty exhibition template -->
 <script id="js-template_exhibition" type="text/template">
-	<li class="js-li_exhibition [ row mb-4 ]">
-		<div class="[ col ]">
-			<div class="[ form-row mb-1 ]">
-				<div class="col-10">
-					<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
-					{{ datalist("artworks", artworks) }}
-				</div>
-				<div class="col">
-					<span class="align-middle px-1">@</span>
-					<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col-10">
-					<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control ]">
-					{{ datalist("parks", parks) }}
-				</div>
-			</div>
+	<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
+		<div class="[ col-10 col-md-8 mb-1 ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
+			{{ datalist("artworks", artworks) }}
+		</div>
+		<div class="[ col-2 col-md-3 align-items-baseline ]">
+			<span class="[ px-2 ]">@</span>
+		</div>
+		<div class="[ col-10 col-md-8 ]">
+			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control ]">
+			{{ datalist("parks", parks) }}
+		</div>
+		<div class="[ col-2 col-md-3 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
 </script>
@@ -821,7 +789,7 @@
 <!-- Empty artwork template -->
 <script id="js-template_artwork" type="text/template">
 	<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
-		<div class="[ col-md-4 ]">
+		<div class="[ col-md-3 ]">
 			<label for="artworks">Artwork</label>
 		</div>
 		<div class="[ col-md-6 ]">
@@ -837,7 +805,7 @@
 <!-- Empty artist template -->
 <script id="js-template_artist" type="text/template">
 	<li class="js-li_artist [ row mb-3 align-items-baseline ]">
-		<div class="[ col-md-4 ]">
+		<div class="[ col-md-3 ]">
 			<label for="artists">Artist</label>
 		</div>
 		<div class="[ col-md-6 ]">
@@ -853,7 +821,7 @@
 <!-- Empty park template -->
 <script id="js-template_park" type="text/template">
 	<li class="js-li_park [ row mb-3 align-items-baseline ]">
-		<div class="[ col-md-4 ]">
+		<div class="[ col-md-3 ]">
 			<label for="parks">park</label>
 		</div>
 		<div class="[ col-md-6 ]">
@@ -869,11 +837,11 @@
 <!-- Empty org template -->
 <script id="js-template_org" type="text/template">
 	<li class="js-li_org [ row mb-3 align-items-baseline ]">
-		<div class="[ col-md-10 ]">
+		<div class="[ col-10 col-md-8 ]">
 			<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="js-datalist-child js-datalist_org [ form-control ]">
 			{{ datalist("orgs", orgs) }}
 		</div>
-		<div class="[ col-md-2 ]">
+		<div class="[ col-2 col-md-3 ]">
 			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>

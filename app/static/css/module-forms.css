@@ -12,6 +12,19 @@
 
 /* input */
 
+.select--create {
+  color: inherit;
+  border:none;
+  border-radius: 0px;
+  border-bottom: 5px dashed;
+  -webkit-appearance:none;
+  background-color: transparent;
+  padding:  0 1rem;
+}
+
+.select--create option[value="exhibition"] { border-bottom: 5px dashed red; }
+.select--create option[value="park"] { border-bottom: 5px dashed green; }
+
 /* label */
 
 

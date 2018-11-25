@@ -345,12 +345,20 @@ $( document ).ready(function() {
           console.log("Form Error(s)!");
           console.dir(response);
 
-          // FUTURE: Call addErrors() for each error
+          // For each received error...
+          for (var itemName in response.data) {
+            console.log("ITEM: " + itemName);
+            // Notify user of alert error with alert DIV
+            controller.addErrors(itemName + ": " + response.data[itemName]);
+          }
+
         }
         // ...Otherwise, return object sent from POST route
         else {
           console.log("Form Sucess!");
           console.dir(response);
+
+          // Notify user of item successfully added with alert DIV
           controller.addSuccess("Success! Created " + response.data.name + "!");
 
           // Update model object datalist
@@ -399,7 +407,13 @@ $( document ).ready(function() {
           console.log("Form Error(s)!");
           console.dir(response);
 
-          // FUTURE: Call addErrors() for each error
+          // For each received error...
+          for (var item in response.data) {
+            console.log("ITEM: " + item);
+            // Notify user of alert error with alert DIV
+            controller.addErrors(item + ": " + response.data[item]);
+          }
+
         }
         // ...Otherwise, reload page
         else {
@@ -461,9 +475,16 @@ $( document ).ready(function() {
     },
 
 
-    // Add form/AJAX errors to page
-    addErrors: function(errors) {
-      // FUTURE
+    // Add form/AJAX error to page
+    addErrors: function(error) {
+      // Create temporary DIV
+      var div = $('<div/>');
+
+      // Add error template HTML to DIV, add error message to inner DIV SPAN
+      $(div).html($('#js-template_error').html()).find('.js-error-notice').append(error);
+
+      // Add new DIV to body
+      $('.js-alert').append($(div).html());
     },
 
 
@@ -476,7 +497,7 @@ $( document ).ready(function() {
       $(div).html($('#js-template_success').html()).find('.js-success-message').append(message);
 
       // Add new DIV to body
-      $('body').append($(div).html());
+      $('.js-alert').append($(div).html());
     },
 
 

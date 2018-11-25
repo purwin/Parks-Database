@@ -17,7 +17,7 @@
 			<div class="[ col-sm-12 col-md-8 ]">
 				<h1 class="[ display-3 text-center ]">
 					<label for="create_object">New</label>&#x2009;
-					<select id="js-create_object" class="[ display-4 ]" name="create_object">
+					<select id="js-create_object" class="select--create [ display-4 ]" name="create_object">
 						<option value="" disabled selected></option>
 						<option value="exhibition">Exhibition</option>
 						<option value="artwork">Artwork</option>
@@ -44,11 +44,9 @@
 					<form id="js-form_exhibition" action="" method="POST">
 					{{ form_exhibition.csrf_token }}
 
-					<h2 class="[ text-center ]">Exhibition</h2>
-
 					<div class="[ row ]">
-						<div class="[ col-sm-12 col-md-6 pb-4 ]">
-							<h3 class="section__head [ display-4 ]">Bio</h3>
+						<div class="[ col-sm-12 col-md-6 pt-5 pb-4 ]">
+							<h3 class="section__head [ display-4 ]">Exhibition Bio</h3>
 						</div>
 					</div>
 
@@ -108,7 +106,7 @@
 					</div>
 
 					<div class="[ row ]">
-						<div class="[ col-sm-12 col-md-8 pb-4 ]">
+						<div class="[ col-sm-12 col-md-6 py-4 ]">
 							<h3 class="section__head [ display-4 ]">Install Details</h3>
 						</div>
 					</div>
@@ -286,7 +284,7 @@
 					</div>
 
 					<div class="[ row ]">
-						<div class="[ col-sm-12 col-md-8 pb-4 ]">
+						<div class="[ col-sm-12 col-md-8 py-4 ]">
 							<h3 class="section__head [ display-4 ]">De-Install Details</h3>
 						</div>
 					</div>
@@ -338,7 +336,7 @@
 					</div>
 
 					<div class="[ row ]">
-						<div class="[ col-sm-12 col-md-8 pb-4 ]">
+						<div class="[ col-sm-12 col-md-8 py-4 ]">
 							<h3 class="section__head [ display-4 ]">Organizations</h3>
 						</div>
 					</div>
@@ -373,7 +371,7 @@
 					</div>
 
 					<div class="[ row ]">
-						<div class="[ col-sm-12 col-md-8 pb-4 ]">
+						<div class="[ col-sm-12 col-md-8 py-4 ]">
 							<h3 class="section__head [ display-4 ]">Artworks</h3>
 						</div>
 					</div>
@@ -424,10 +422,8 @@
 					<form id="js-form_artwork" action="" method="POST">
 						{{ form_artwork.csrf_token }}
 
-						<h2 class="[ text-center ]">Artwork</h2>
-
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pb-4 ]">
+							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
 								<h3 class="section__head [ display-4 ]">Artwork Bio</h3>
 							</div>
 						</div>
@@ -452,8 +448,8 @@
 						</div>
 
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pb-4 ]">
-								<h3 class="section__head [ display-4 p-1 ]">Artists</h3>
+							<div class="[ col-sm-12 col-md-8 py-4 ]">
+								<h3 class="section__head [ display-4 ]">Artists</h3>
 							</div>
 						</div>
 
@@ -498,10 +494,8 @@
 					<form id="js-form_artist" action="" method="POST">
 						{{ form_artist.csrf_token }}
 
-						<h2 class="text-center">Artist</h2>
-
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pb-4 ]">
+							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
 								<h3 class="section__head [ display-4 ]">Artist Bio</h3>
 							</div>
 						</div>
@@ -561,9 +555,9 @@
 							</div>
 						</div>
 
-						<div class="row">
-							<div class="col-sm-12 col-md-8 pb-4">
-								<h3 class="section__head display-4 p-1">Artworks</h3>
+						<div class="[ row ]">
+							<div class="[ col-sm-12 col-md-8 py-4 ]">
+								<h3 class="section__head [ display-4 ]">Artworks</h3>
 							</div>
 						</div>
 
@@ -609,11 +603,9 @@
 					<form id="js-form_park" action="" method="POST">
 						{{ form_park.csrf_token }}
 
-						<h2 class="[ text-center ]">Park</h2>
-
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pb-4 ]">
-								<h3 class="section__head [ display-4 p-1 ]">Park Bio</h3>
+							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
+								<h3 class="section__head [ display-4 ]">Park Bio</h3>
 							</div>
 						</div>
 
@@ -683,11 +675,9 @@
 					<form id="js-form_org" action="" method="POST">
 						{{ form_org.csrf_token }}
 
-						<h2 class="[ text-center ]">Organization</h2>
-
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pb-4 ]">
-								<h3 class="section__head [ display-4 p-1 ]">Organization Bio</h3>
+							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
+								<h3 class="section__head [ display-4 ]">Organization Bio</h3>
 							</div>
 						</div>
 
@@ -736,8 +726,8 @@
 
 			<section id="section--submit">
 				<div class="js-submit-div">
-					<div class="row justify-content-center">
-						<div class="col-sm-12 col-md-10 text-right">
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-sm-12 col-md-10 text-right py-4 ]">
 							<button id="js-cancel_create" class="js-cancel-form butt butt--delete" type="button"><a href="{{ url_for('home') }}">Cancel</a></button>
 							<button id="js-post_create" class="js-post-form butt butt--create [ ml-2 ]" type="button" value="Create">Create</button>
 						</div>

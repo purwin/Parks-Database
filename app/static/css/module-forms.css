@@ -15,7 +15,7 @@
 .select--create {
   color: inherit;
   border:none;
-  border-radius: 0px;
+  border-radius: 0;
   border-bottom: 5px dashed;
   -webkit-appearance:none;
   background-color: transparent;

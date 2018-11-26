@@ -1,16 +1,33 @@
+{% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
+{% block head_extras %}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+	<meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock %}
 {% block title %}NYC Parks Database – {{ org.name|capitalize }}{% endblock %}
 {% block content %}
 
-	<div class="container-fluid">
-		<section id="section--head">
-			{% include "include/nav.html" %}
-			<div class="head [ row justify-content-center align-items-center ]">
-				<div class="col-sm-12 col-md-8">	
-					<h1 class="text-center display-3"><b>{{ org.name|upper }}</b></h1>
-				</div>
+<div class="container-fluid">
+
+	<section id="section--head">
+		{% include "include/nav.html" %}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-sm-12 col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>{{ org.name|upper }}</b></h1>
 			</div>
-		</section>
+		</div>
+	</section>
+
+	<form id="js-form_org" action="" method="POST">
+		{{ form.csrf_token }}
+
+		<div class="[ row justify-content-center ]">
+			<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
+				<button type="button" class="butt butt--edit" id="form_edit">Edit</button>
+				<a href="{{ url_for('artist_delete', artist_id=artist.id) }}" role="button" class="butt butt--delete [ btn btn-sm ]">Delete</a>
+			</div>
+		</div>
+
 		<section id="section--bio">
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-8">
@@ -23,6 +40,9 @@
 				</div>
 			</div>
 		</section>
+
+
+
 		<section id="section--exhbitions">
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-8">
@@ -39,6 +59,37 @@
 				</div>
 			</div>
 		</section>
+
+	</form>
+
+</div>
+
+
+
+<!-- Empty error template -->
+<script id="js-template_error" type="text/template">
+	<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+		<div class="js-error-body">
+			<strong>Error!</strong> <span class="js-error-notice"></span>
+		</div>
+		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
 	</div>
+</script>
+
+<!-- Empty success template -->
+<script id="js-template_success" type="text/template">
+	<div class="bg-green [ alert alert-secondary alert-dismissible fade show mb-0 ]" role="alert">
+		<div class="js-success-body">
+			<h3 class="js-success-message [ text-light text-center ]"></h3>
+		</div>
+		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+</script>
+
+<script src="{{ url_for('static', filename='js/create.js') }}"></script>
 
 {% endblock %}

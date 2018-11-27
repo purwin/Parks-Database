@@ -78,3 +78,6 @@ class Form_org(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   website = StringField('Website')
   phone = StringField('Phone')
+
+  # Related
+  exhibitions = FieldList(StringField('Exhibition'))

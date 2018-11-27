@@ -499,7 +499,12 @@ def orgs():
 @app.route('/orgs/<int:organization_id>')
 def org(organization_id):
   org = Org.query.filter_by(id=organization_id).one()
-  return render_template('org.html', org = org)
+  exhibitions = Exhibition.query.all()
+  form = Form_org()
+  for exh in org.exhibition:
+    form.exhibitions.append_entry(exh)
+  return render_template('org.html', org = org, exhibitions = exhibitions,
+                         form = form)
 
 
 @app.route('/orgs/create', methods=['POST'])
@@ -563,3 +568,14 @@ def org_edit(org_id):
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
+
+
+@app.route('/orgs/<int:org_id>/delete', methods=['GET', 'POST'])
+def org_delete(org_id):
+  org = Org.query.filter_by(id=org_id).one()
+  if request.method == 'POST':
+      db.session.delete(org)
+      db.session.commit()
+      return redirect(url_for('orgs'))
+  else:
+      return render_template('org_delete.html', org=org)

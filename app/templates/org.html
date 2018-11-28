@@ -25,7 +25,7 @@
 		<div class="[ row justify-content-center ]">
 			<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
 				<button id="js-edit_org" class="js-form-edit butt butt--edit" type="button">Edit</button>
-				<a href="{{ url_for('org_delete', org_id=org.id) }}" role="button" class="butt butt--delete [ btn btn-sm ]">Delete</a>
+				<a href="{{ url_for('org_delete', org_id=org.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 			</div>
 		</div>
 
@@ -52,7 +52,7 @@
 								{{ form.website.label }}
 							</div>
 							<div class="[ col-md-6 ]">
-								<a href="http://{{ org.website }}" class="[ d-inline ]">{{ org.website }}</a>
+								<a href="http://{{ org.website }}" class="[ d-inline ]" target="_blank">{{ org.website }}</a>
 								{{ form.website(class="form-control-plaintext d-none", value=org.website) }}
 							</div>
 						</li>
@@ -81,7 +81,7 @@
 
 					<div class="[ row justify-content-center ]">
 						<div class="[ col-12 text-right py-4 ]">
-							<button type="button" class="form_add butt butt--add [ d-none ml-2 ]" id="add_exhibition">Add</button>
+							<button id="js-add_exhibition" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
@@ -105,7 +105,7 @@
 										{{ datalist("exhibitions", exhibitions) }}
 									</div>
 									<div class="[ col-md-2 ]">
-										<button type="button" class="butt butt--delete-icon form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
+										<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 									</div>
 
 								</li>
@@ -181,7 +181,9 @@
 </script>
 
 
-<script src="{{ url_for('static', filename='js/create-org.js') }}"></script>
+<script src="{{ url_for('static', filename='js/create-org.js') }}">
+	// controller.selectActiveObject('org');
+</script>
 
 
 {% endblock %}

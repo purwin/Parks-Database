@@ -62,7 +62,8 @@
 								{{ form.borough.label }}
 							</div>
 							<div class="[ col-md-6 ]">
-								{{ form.borough(class="form-control-plaintext", value=park.borough, readonly=true) }}
+								<p class="is-active [ m-0 ]">{{ park.borough }}</p>
+								{{ form.borough(class="form-control-plaintext d-none", value=park.borough, readonly=true) }}
 							</div>
 						</li>
 

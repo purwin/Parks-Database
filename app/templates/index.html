@@ -2,64 +2,82 @@
 {% block title %}NYC Parks Database{% endblock %}
 {% block content %}
 
-	<div class="container-fluid head">
+<div class="container-fluid">
+
+	<section class="section--head">
 		{% include "include/nav.html" %}
-		<div class="row justify-content-center">
-			<div class="col-sm-12 col-md-8">
-				<h1 class="text-center display-3"><b>NYC PARKS</b></h1>
+
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>NYC PARKS</b></h1>
 			</div>
 		</div>
-	</div>
+	</section>
+
+
+
 	<section id="section--featured">
-		<div class="container-fluid exhibitions">
-			<div class="row pt-4 pb-3">
-				<div class="col-md-4 order-1 order-md-2">
-					<h3 class="text-center pb-3">Today</h3>
-					<ul>
-						<li>item 1</li>
-						<li>item 2</li>
-						<li>item 3</li>
-					</ul>
-				</div>
-				<div class="col-md-4 order-2 order-md-3">
-					<h3 class="text-center pb-3">Upcoming</h3>
-					<ul>
-						<li>item 1</li>
-						<li>item 2</li>
-						<li>item 3</li>
-					</ul>
-				</div>
-				<div class="col-md-4 order-3 order-md-1">
-					<h3 class="text-center pb-3">Active</h3>
-					<ul>
-						<li>item 1</li>
-						<li>item 2</li>
-						<li>item 3</li>
-					</ul>
-				</div>
+		<div class="[ row py-4 ]">
+
+			<div class="[ col-md-4 order-1 order-md-2 ]">
+				<h3 class="[ text-center pb-3 ]">Today</h3>
+				<ul>
+					<li>item 1</li>
+					<li>item 2</li>
+					<li>item 3</li>
+				</ul>
 			</div>
+
+			<div class="[ col-md-4 order-2 order-md-3 ]">
+				<h3 class="[ text-center pb-3 ]">Upcoming</h3>
+				<ul>
+					<li>item 1</li>
+					<li>item 2</li>
+					<li>item 3</li>
+				</ul>
+			</div>
+
+			<div class="[ col-md-4 order-3 order-md-1 ]">
+				<h3 class="[ text-center pb-3 ]">Active</h3>
+				<ul>
+					<li>item 1</li>
+					<li>item 2</li>
+					<li>item 3</li>
+				</ul>
+			</div>
+
 		</div>
 	</section>
+
+
+
 	<section id="section--exhibitions">
-		<div class="container-fluid exhibitions">
+		<div class="[ row justify-content-center py-4 ]">
+
+			<div class="[ col-md-8 ]">
 				<h2 class="text-center display-4 p-4">Exhibitions</h2>
-			{% if exhibitions %}
-			{% for x in exhibitions %}
-				<div class="row">
-					<div class="col">
-						<h3><a href="{{ url_for('exhibition', exhibition_id=x.id) }}">{{ x.name }}</a></h3>
-						<ul>
-							<li>ID: {{ x.id }}</li>
-							<li>Exhibition Dates: {{ x.startDate }} to {{ x.endDate }}</li>
-							<li>Install Date(s): {{ x.installStart }}{%if x.installEnd %} to {{ x.installEnd }}{% endif %}</li>
-							<li>De-Install Due Date: {{ x.deinstallDate }}</li>
-						</ul>
-					</div>
-				</div>
-			{% endfor %}
-			{% endif %}
+			</div>
+
+			<div class="[ col-md-8 ]">
+
+				{% for exhibition in exhibitions %}
+					<h3><a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
+					<ul class="[ p-0 ]">
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date }}</li>
+						<li>Install Date(s): {{ exhibition.install_start }}{%if exhibition.install_end %} to {{ exhibition.install_end }}{% endif %}</li>
+						<li>De-Install Due Date: {{ exhibition.deinstall_date }}</li>
+					</ul>
+				{% else %}
+					<p><i>There are no exhibitions in the database yet.</i></p>
+				{% endfor %}
+
+			</div>
+
 		</div>
 	</section>
+
+
+
 	<section id="section--parks">
 		<div class="container-fluid parks">
 			<h2 class="text-center display-4 p-4">Parks</h2>
@@ -81,4 +99,6 @@
 			{% endif %}
 		</div>
 	</section>
+
+</div>
 {% endblock %}

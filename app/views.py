@@ -510,6 +510,7 @@ def org(organization_id):
 @app.route('/orgs/create', methods=['POST'])
 def org_create():
   form = Form_org()
+
   if form.validate_on_submit():
     # Create organization
     org = Org()
@@ -517,23 +518,28 @@ def org_create():
     org.name = form.name.data
     org.phone = form.phone.data
     org.website = form.website.data
+
     # Add exhibitions to 1-to-many relationship
     try:
       # Clear org exhibitions
       org.exhibitions = []
-      org_exh = request.form.getlist('exhibitions')
-      # Remove any empty form items from exhibitions list
-      org_exh = filter(None, org_exh)
-      # Add latest artworks to artist, removing duplicates
-      for x in list(set(org_exh)):
-        exhibition = Exhibition.query.filter_by(id = x).one()
+      # Get list of exhibitions, removing empty form items
+      exhibitions = filter(None, form.exhibitions.data)
+      # Add latest exhibitions to org, removing duplicates
+      for item in list(set(exhibitions)):
+        exhibition = Exhibition.query.filter_by(id = item).one()
         org.exhibitions.append(exhibition)
+      # Add org to database
+      db.session.add(org)
+      db.session.commit()
+      # Return success message, org object via AJAX
+      return jsonify({"success": True, "data": org.serialize})
+
     except Exception as e:
       raise e
-    db.session.add(org)
-    db.session.commit()
-    # Return success message, org object via AJAX
-    return jsonify({"success": True, "data": org.serialize})
+      # Return errors if error is raised
+      return jsonify({"success": False, "data": e})
+
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
@@ -543,28 +549,36 @@ def org_create():
 def org_edit(org_id):
   org = Org.query.filter_by(id=org_id).one()
   form = Form_org()
+
   if form.validate_on_submit():
     # Update org items
     org.name = form.name.data
     org.phone = form.phone.data
     org.website = form.website.data
+
     # Add exhibitions to 1-to-many relationship
     try:
       # Clear org exhibitions
-      org.exhibitions = []
-      org_exh = request.form.getlist('exhibitions')
-      # Remove any empty form items from exhibitions list
-      org_exh = filter(None, org_exh)
-      # Add latest artworks to artist, removing duplicates
-      for x in list(set(org_exh)):
-        exhibition = Exhibition.query.filter_by(id = x).one()
-        org.exhibitions.append(exhibition)
+      org.exhibition = []
+      # Get list of exhibitions, removing empty form items
+      exhibitions = filter(None, form.exhibitions.data)
+      # Add latest exhibitions to org, removing duplicates
+      for item in list(set(exhibitions)):
+        exhibition = Exhibition.query.filter_by(id = item).one()
+        org.exhibition.append(exhibition)
+        print "Added {} exhibition to {}".format(exhibition.name, org.name)
+
     except Exception as e:
       raise e
+      # Return errors if error is raised
+      return jsonify({"success": False, "data": e})
+
+    # Add org to database
     db.session.add(org)
     db.session.commit()
     # Return success message, org object via AJAX
     return jsonify({"success": True, "data": org.serialize})
+
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})

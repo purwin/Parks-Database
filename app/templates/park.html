@@ -1,62 +1,190 @@
+{% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
+{% block head_extras %}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+	<!-- <meta name="csrf-token" content="{{ csrf_token }}"> -->
+{% endblock %}
 {% block title %}NYC Parks Database – {{ park.name|capitalize }}{% endblock %}
 {% block content %}
 
-	<div class="container-fluid">
-		<section id="section--head">
-			{% include "include/nav.html" %}
-			<div class="head [ row justify-content-center align-items-center ]">
-				<div class="col-sm-12 col-md-8">	
-					<h1 class="text-center display-3"><b>{{ park.name|upper }}</b></h1>
-				</div>
+<div class="container-fluid">
+
+	<section id="section--head">
+		{% include "include/nav.html" %}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-sm-12 col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>{{ park.name|upper }}</b></h1>
 			</div>
-		</section>
+		</div>
+	</section>
+
+	<div class="js-alert [ fixed-top ]"></div>
+
+
+	<form id="js-form_park" action="/parks/{{ park.id }}/edit" method="POST">
+		{{ form.csrf_token }}
+
+		<div class="[ row justify-content-center ]">
+			<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
+				<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
+				<a href="{{ url_for('park_delete', park_id=park.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+			</div>
+		</div>
+
+
 		<section id="section--bio">
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Bio</h2>
-					<ul>
-						<li>ID: {{ park.id }}</li>
-						<li>Park ID: {{ park.park_id }}</li>
-						<li>Address: {{ park.address }}</li>
-						<li>Community Board: {{ park.cb }}</li>
+					<h2 class="[ display-4 py-4 ]">Bio</h2>
+
+					<ul class="js-ul_park [ p-0 ]">
+
+						<li class="[ row mb-3 d-none align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.name.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form.name(class="form-control-plaintext", value=park.name) }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.park_id.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form.park_id(class="form-control-plaintext", value=park.park_id, readonly=true) }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.borough.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form.borough(class="form-control-plaintext", value=park.borough, readonly=true) }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.address.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form.address(class="form-control-plaintext", value=park.address, readonly=true) }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.cb.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form.cb(class="form-control-plaintext", value=park.cb, readonly=true) }}
+							</div>
+						</li>
+
 					</ul>
+
 				</div>
 			</div>
 		</section>
+
+
 		<section id="section--exhibitions">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Exhibitions</h2>
-					<ul>
-						{% if park.exhibitions %}
-							{% for x in park.exhibitions %}
-								<li>ID: {{ x.id }}</li>
-								<li><a href="{{ url_for('exhibition', exhibition_id=x.id) }}">{{ x.name }}</a></li>
+			<div class="[ row justify-content-center py-4 ]">
+				<div class="[ col-sm-12 col-md-8 ]">
+					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
+
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-12 text-right py-4 ]">
+							<button id="js-add_exhibition" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+						</div>
+					</div>
+
+					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
+
+					{% if park.exhibition %}
+
+							{% for exh in park.exhibitions %}
+								<li class="[ row mb-3 align-items-baseline ]">
+
+									<div class="[ col-md-3 ]">
+										<label for="art_name">Exhibition</label>
+									</div>
+
+									<div class="[ col-md-6 ]">
+										<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ d-inline ]">{{ exh.name }}</a>
+
+										<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exh.id }}" value="{{ exh.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+										<!-- Call datalist macro function -->
+										{{ datalist("exhibitions", exhibitions) }}
+									</div>
+									<div class="[ col-md-2 ]">
+										<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+									</div>
+
+								</li>
 							{% endfor %}
-						{% else %}
-							<li><i>This park has no related exhibitions.</i></li>
-						{% endif %}
+
+					{% else %}
+
+						<p><i>There are no exhibitions connected with {{ park.name }}.</i></p>
+
+					{% endif %}
+
 					</ul>
+
 				</div>
 			</div>
 		</section>
-		<section id="section--art">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Artworks</h2>
-					<ul>
-						{% if park_art %}
-							{% for y in park_art %}
-								<li><a href="{{ url_for('artwork', artwork_id=y.artw.id) }}">{{ y.artw.name }}</a> (<a href="{{ url_for('exhibition', exhibition_id=y.exhib.id) }}">{{ y.exhib.name }}</a>)</li>
-							{% endfor %}
-						{% else %}
-							<li><i>This park has no related artworks.</i></li>
-						{% endif %}
-					</ul>
+
+
+
+		<section id="section--submit">
+			<div class="[ row justify-content-center d-none ]">
+				<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
+					<button id="js-cancel_park" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+					<button id="js-post_park" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 				</div>
 			</div>
 		</section>
+
+	</form>
+
+</div>
+
+
+<script id="js-template_exhibition" type="text/template">
+	<li class="js-li_exhibition [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-3 ]">
+			<label for="exhibitions">Exhibition</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
+			{{ datalist("exhibitions", exhibitions) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+
+<!-- Empty error template -->
+<script id="js-template_error" type="text/template">
+	<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+		<div class="js-error-body">
+			<strong>Error!</strong> <span class="js-error-notice"></span>
+		</div>
+		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
 	</div>
+</script>
+
+
+<script src="{{ url_for('static', filename='js/create-org.js') }}"></script>
+
 
 {% endblock %}

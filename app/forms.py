@@ -26,7 +26,7 @@ class Form_artwork(FlaskForm):
 
 class Form_park(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
-  park_id = StringField('Borough', validators=[DataRequired()])
+  park_id = StringField('Park ID No.', validators=[DataRequired()])
   borough = SelectField('Borough',  choices=[('Bronx', 'Bronx'), ('Brooklyn', 'Brooklyn'), ('Manhattan', 'Manhattan'), ('Queens', 'Queens'), ('Staten Island', 'Staten Island')], validators=[DataRequired()])
   address = StringField('Address', validators=[DataRequired()])
   cb = StringField('Community Board', validators=[DataRequired()])

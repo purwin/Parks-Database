@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 {% block head_extras %}
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-	<meta name="csrf-token" content="{{ csrf_token }}">
+	<!-- <meta name="csrf-token" content="{{ csrf_token }}"> -->
 {% endblock %}
 {% block title %}NYC Parks Database – {{ org.name|capitalize }}{% endblock %}
 {% block content %}
@@ -18,8 +18,10 @@
 		</div>
 	</section>
 
+	<div class="js-alert [ fixed-top ]"></div>
 
-	<form id="js-form_org" action="" method="POST">
+
+	<form id="js-form_org" action="/orgs/{{ org.id }}/edit" method="POST">
 		{{ form.csrf_token }}
 
 		<div class="[ row justify-content-center ]">
@@ -36,7 +38,7 @@
 				<div class="col-sm-12 col-md-8">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="js-ul_org [ p-0 ]">
 
 						<li class="[ row mb-3 d-none align-items-baseline ]">
 							<div class="[ col-md-3 ]">
@@ -85,37 +87,35 @@
 						</div>
 					</div>
 
-					<ul class="ul_exhibitions [ p-0 ]">
+					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
 
-					{% if org.exhibition %}
+						{% for exh in org.exhibition %}
 
-							{% for exh in org.exhibition %}
-								<li class="org__li--artworks [ row mb-3 align-items-baseline ]">
+							<li class="org__li--artworks [ row mb-3 align-items-baseline ]">
 
-									<div class="[ col-md-3 ]">
-										<label for="art_name">Exhibition</label>
-									</div>
+								<div class="[ col-md-3 ]">
+									<label for="art_name">Exhibition</label>
+								</div>
 
 
-									<div class="[ col-md-6 ]">
-										<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ d-inline ]">{{ exh.name }}</a>
+								<div class="[ col-10 col-md-6 ]">
+									<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ d-inline ]">{{ exh.name }}</a>
 
-										<input id="datalist_art" type="text" name="exhibitions" list="exhibitions" data-value="{{ exh.id }}" value="{{ exh.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
-										<!-- Call datalist macro function -->
-										{{ datalist("exhibitions", exhibitions) }}
-									</div>
-									<div class="[ col-md-2 ]">
-										<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
-									</div>
+									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exh.id }}" value="{{ exh.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<!-- Call datalist macro function -->
+									{{ datalist("exhibitions", exhibitions) }}
+								</div>
+								<div class="[ col-2 ]">
+									<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+								</div>
 
-								</li>
-							{% endfor %}
+							</li>
 
-					{% else %}
+						{% else %}
 
-						<p><i>There are no exhibitions connected with {{ org.name }}.</i></p>
+							<p><i>There are no exhibitions connected with {{ org.name }}.</i></p>
 
-					{% endif %}
+						{% endfor %}
 
 					</ul>
 
@@ -129,7 +129,7 @@
 			<div class="[ row justify-content-center d-none ]">
 				<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
 					<button id="js-cancel_org" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
-					<button id="js-post_org" class="butt butt--add js-post-form [ ml-2 ]" value="Create" type="button">Update</button>
+					<button id="js-post_org" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 				</div>
 			</div>
 		</section>
@@ -160,19 +160,6 @@
 	<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
 		<div class="js-error-body">
 			<strong>Error!</strong> <span class="js-error-notice"></span>
-		</div>
-		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
-</script>
-
-
-<!-- Empty success template -->
-<script id="js-template_success" type="text/template">
-	<div class="bg-green [ alert alert-secondary alert-dismissible fade show mb-0 ]" role="alert">
-		<div class="js-success-body">
-			<h3 class="js-success-message [ text-light text-center ]"></h3>
 		</div>
 		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">&times;</span>

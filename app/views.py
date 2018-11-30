@@ -277,8 +277,16 @@ def parks():
 @app.route('/parks/<int:park_id>')
 def park(park_id):
   park = Park.query.filter_by(id=park_id).one()
-  park_art = Exh_art_park.query.filter_by(park_id = park_id).all()
-  return render_template('park.html', park = park, park_art = park_art)
+  exhibitions = Exhibition.query.all()
+  artworks = Artwork.query.all()
+  form = Form_park()
+  for exhibition in form.exhibitions:
+    form.exhibitions.append_entry(exhibition)
+  for artwork in form.artworks:
+    form.artworks.append_entry(artwork)
+  # park_art = Exh_art_park.query.filter_by(park_id = park_id).all()
+  return render_template('park.html', park = park, exhibitions = exhibitions,
+                         artworks = artworks, form = form)
 
 
 @app.route('/parks/create', methods=['POST'])
@@ -326,6 +334,17 @@ def park_edit(park_id):
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
+
+
+@app.route('/parks/<int:park_id>/delete', methods=['GET', 'POST'])
+def park_delete(park_id):
+  park = Park.query.filter_by(id=park_id).one()
+  if request.method == 'POST':
+      db.session.delete(park)
+      db.session.commit()
+      return redirect(url_for('parks'))
+  else:
+      return render_template('park_delete.html', park = park)
 
 
 @app.route('/artists')
@@ -457,7 +476,14 @@ def artworks():
 @app.route('/artworks/<int:artwork_id>')
 def artwork(artwork_id):
   artwork = Artwork.query.filter_by(id=artwork_id).one()
-  return render_template('artwork.html', artwork = artwork)
+  artists = Artist.query.all()
+  exhibitions = Exhibition.query.all()
+  parks = Park.query.all()
+  form = Form_artwork()
+  for artist in artwork.artists:
+    form.artists.append_entry(artist)
+  return render_template('artwork.html', artwork = artwork, artists = artists,
+                         exhibitions = exhibitions, parks = parks, form = form)
 
 
 @app.route('/artworks/create', methods=['POST'])
@@ -488,6 +514,17 @@ def artwork_create():
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
+
+
+@app.route('/artworks/<int:artwork_id>/delete', methods=['GET', 'POST'])
+def artwork_delete(artwork_id):
+  artwork = Artwork.query.filter_by(id=artwork_id).one()
+  if request.method == 'POST':
+      db.session.delete(artwork)
+      db.session.commit()
+      return redirect(url_for('artworks'))
+  else:
+      return render_template('artwork_delete.html', artwork = artwork)
 
 
 @app.route('/orgs')

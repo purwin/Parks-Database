@@ -1,55 +1,215 @@
+{% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
-{% block title %}NYC Parks Database – Artists{% endblock %}
+{% block head_extras %}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+{% endblock %}
+{% block title %}NYC Parks Database – {{ artwork.name|capitalize }}{% endblock %}
 {% block content %}
 
-	<div class="container-fluid">
-		<section id="section--head">
-			{% include "include/nav.html" %}
-			<div class="head [ row justify-content-center align-items-center ]">
-				<div class="col-sm-12 col-md-8">
-					<h1 class="text-center display-3"><b>{{ artwork.name|upper }}</b></h1>
-				</div>
+<div class="container-fluid">
+
+	<section id="section--head">
+		{% include "include/nav.html" %}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-sm-12 col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>{{ artwork.name|upper }}</b></h1>
 			</div>
-		</section>
+		</div>
+	</section>
+
+	<div class="js-alert [ fixed-top ]"></div>
+
+
+	<form id="js-form_artwork" action="/artworks/{{ artwork.id }}/edit" method="POST">
+		{{ form.csrf_token }}
+
+		<div class="[ row justify-content-center ]">
+			<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
+				<button id="js-edit_artwork" class="js-form-edit butt butt--edit" type="button">Edit</button>
+				<a href="{{ url_for('artwork_delete', artwork_id=artwork.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+			</div>
+		</div>
+
+
+
 		<section id="section--bio">
 			<div class="row justify-content-center">
 				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Bio</h2>
-					<ul>
-						<li>ID: {{ artwork.id }}</li>
-						<li>Artists:
-							<ul>
-								{% if artwork.artists %}
-								{% for artist in artwork.artists %}
-									<li><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.name }}</a></li>
-								{% endfor %}
-								{% else %}
-								<li><i>This artwork doesn't have any artists yet.</i></li>
-								{% endif %}
-							</ul>
+					<h2 class="[ display-4 py-4 ]">Bio</h2>
+
+					<ul class="js-ul_artwork [ p-0 ]">
+
+						<li class="[ row mb-3 d-none align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.name.label }}
+							</div>
+							<div class="[ col-md-6 ]">
+								{{ form.name(class="form-control-plaintext", value=artwork.name) }}
+							</div>
 						</li>
+
 					</ul>
+
 				</div>
 			</div>
 		</section>
-		<section id="section--exhibitions">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					<h2 class="text-center display-4 p-4">Exhibitions</h2>
-					{% if artwork.exhibitions %}
-					{% for exhibition in artwork.exhibitions %}
-						<ul>
-							<li>ID: {{ exhibition.id }}</li>
-							<li>Name: <a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}">{{ exhibition.name }}</a></li>
-							<li>Exhibition Dates: {{ exhibition.startDate }} to {{ exhibition.endDate }}</li>
-						</ul>
-					{% endfor %}
+
+
+
+		<section id="section--artists">
+			<div class="[ row justify-content-center py-4 ]">
+				<div class="[ col-sm-12 col-md-8 ]">
+					<h2 class="[ display-4 py-4 ]">Artists</h2>
+
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-12 text-right py-4 ]">
+							<button id="js-add_artist" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+						</div>
+					</div>
+
+					<ul class="js-ul-child js-ul_artists [ p-0 ]">
+
+						{% for artist in artwork.artists %}
+							<li class="artwork__li--artworks [ row mb-3 align-items-baseline ]">
+
+								<div class="[ col-md-3 ]">
+									<label for="art_name">Artist</label>
+								</div>
+
+
+								<div class="[ col-md-6 ]">
+									<a href="{{ url_for('artist', artist_id=artist.id) }}" class="[ d-inline ]">{{ artist.name }}</a>
+
+									<input id="js-datalist_artist" type="text" name="artists" list="artists" data-value="{{ artist.id }}" value="{{ artist.name }}" class="js-datalist-child js-datalist_artist [ form-control-plaintext d-none ]" readonly>
+									<!-- Call datalist macro function -->
+									{{ datalist("artists", artists) }}
+								</div>
+								<div class="[ col-md-2 ]">
+									<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+								</div>
+
+							</li>
 					{% else %}
-					<p><i>This artwork has no connected exhibitions.</i></p>
-					{% endif %}
+
+						<p><i>There are no artists connected with {{ artwork.name }}.</i></p>
+
+					{% endfor %}
+
+					</ul>
+
 				</div>
 			</div>
 		</section>
+
+
+
+		<section id="section--exhibitions">
+			<div class="[ row justify-content-center py-4 ]">
+				<div class="[ col-sm-12 col-md-8 ]">
+					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
+
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-12 text-right py-4 ]">
+							<button id="js-add_exhibition" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+						</div>
+					</div>
+
+					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
+
+						{% for exhibition in artwork.exhibition %}
+							<li class="artwork__li--artworks [ row mb-3 align-items-baseline ]">
+
+								<div class="[ col-md-3 ]">
+									<label for="art_name">Exhibition</label>
+								</div>
+
+
+								<div class="[ col-md-6 ]">
+									<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" class="[ d-inline ]">{{ exhibition.name }}</a>
+
+									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<!-- Call datalist macro function -->
+									{{ datalist("exhibitions", exhibitions) }}
+								</div>
+								<div class="[ col-md-2 ]">
+									<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+								</div>
+
+							</li>
+					{% else %}
+
+						<p><i>There are no exhibitions connected with {{ artwork.name }}.</i></p>
+
+					{% endfor %}
+
+					</ul>
+
+				</div>
+			</div>
+		</section>
+
+
+
+		<section id="section--submit">
+			<div class="[ row justify-content-center d-none ]">
+				<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
+					<button id="js-cancel_artwork" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+					<button id="js-post_artwork" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
+				</div>
+			</div>
+		</section>
+
+	</form>
+
+</div>
+
+
+<script id="js-template_artist" type="text/template">
+	<li class="js-li_artist [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-3 ]">
+			<label for="artists">Artist</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="js-datalist_artist" type="text" name="artists" list="artists" data-value="" value="" placeholder="artist Name" class="js-datalist-child js-datalist_artist [ form-control ]">
+			{{ datalist("artists", artists) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+
+<script id="js-template_exhibition" type="text/template">
+	<li class="js-li_exhibition [ row mb-3 align-items-baseline ]">
+		<div class="[ col-md-3 ]">
+			<label for="exhibitions">Exhibition</label>
+		</div>
+		<div class="[ col-md-6 ]">
+			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
+			{{ datalist("exhibitions", exhibitions) }}
+		</div>
+		<div class="[ col-md-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+
+<!-- Empty error template -->
+<script id="js-template_error" type="text/template">
+	<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+		<div class="js-error-body">
+			<strong>Error!</strong> <span class="js-error-notice"></span>
+		</div>
+		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
 	</div>
+</script>
+
+
+<script src="{{ url_for('static', filename='js/create-org.js') }}"></script>
+
 
 {% endblock %}

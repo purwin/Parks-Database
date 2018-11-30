@@ -48,9 +48,9 @@
 		<section id="section--bio">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
-					<h2 class="[ display-4 p-4 ]">Bio</h2>
+					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
-					<ul>
+					<ul class="[ p-0 ]">
 
 						<li class="[ row mb-3 d-none align-items-baseline ]">
 							<div class="[ col-md-4 ]">
@@ -107,7 +107,7 @@
 		<section id="section--artworks">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
-					<h2 class="[ display-4 p-4 ]">Artworks</h2>
+					<h2 class="[ display-4 py-4 ]">Artworks</h2>
 
 					<div class="[ row justify-content-center ]">
 						<div class="[ col-12 text-right p-4 ]">
@@ -115,33 +115,30 @@
 						</div>
 					</div>
 
-					<ul class="ul_artworks">
+					<ul class="ul_artworks [ p-0 ]">
 
-					{% if artist.artworks %}
+						{% for artwork in artist.artworks %}
+							<li class="artist__li--artworks [ row mb-3 align-items-baseline ]">
+								<div class="[ col-md-4 ]">
+									<label for="art_name">Artwork</label>
+								</div>
+								<div class="[ col-md-6 ]">
+									<a href="{{ url_for('artwork', artwork_id=artwork.id) }}" class="[ d-inline ]">{{ artwork.name }}</a>
 
-							{% for artwork in artist.artworks %}
-								<li class="artist__li--artworks [ row mb-3 align-items-baseline ]">
-									<div class="[ col-md-4 ]">
-										<label for="art_name">Artwork</label>
-									</div>
-									<div class="[ col-md-6 ]">
-										<a href="{{ url_for('artwork', artwork_id=artwork.id) }}" class="[ d-inline ]">{{ artwork.name }}</a>
+									<input id="datalist_art" type="text" name="artworks-{{ loop.index0 }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="datalist_art [ form-control-plaintext d-none ]" readonly>
+									<!-- Call datalist macro function -->
+									{{ datalist("artworks", artworks) }}
+								</div>
+								<div class="[ col-md-2 ]">
+									<button type="button" class="butt butt--delete-icon form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
+								</div>
+							</li>
 
-										<input id="datalist_art" type="text" name="artworks-{{ loop.index0 }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="datalist_art [ form-control-plaintext d-none ]" readonly>
-										<!-- Call datalist macro function -->
-										{{ datalist("artworks", artworks) }}
-									</div>
-									<div class="[ col-md-2 ]">
-										<button type="button" class="butt butt--delete-icon form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
-									</div>
-								</li>
-							{% endfor %}
+						{% else %}
 
-					{% else %}
+							<p><i>There are no artworks connected with {{ artist.name }}.</i></p>
 
-						<p><i>There are no artworks connected with this artist.</i></p>
-
-					{% endif %}
+						{% endfor %}
 
 					</ul>
 

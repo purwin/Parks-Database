@@ -2,32 +2,42 @@
 {% block title %}NYC Parks Database – Organizations{% endblock %}
 {% block content %}
 
-	<div class="container-fluid">
-		<section id="section--head">
-			{% include "include/nav.html" %}
-			<div class="head [ row justify-content-center align-items-center ]">
-				<div class="col-sm-12 col-md-8">	
-					<h1 class="text-center display-3"><b>ORGANIZATIONS</b></h1>
-				</div>
+
+<div class="container-fluid">
+
+	<section id="section--head">
+		{% include "include/nav.html" %}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>ORGANIZATIONS</b></h1>
 			</div>
-		</section>
-		<section id="section--orgs">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					{% if orgs %}
-						{% for org in orgs %}
-							<h2 class="text-center display-4 p-4"><a href="{{ url_for('org', organization_id=org.id) }}">{{ org.name }}</a></h2>
-							<ul>
-								<li>ID: {{ org.id }}</li>
-								<li>Website: <a href="http://{{org.website}}" target="_blank">{{ org.website }}</a></li>
-								<li>Phone: {{ org.phone }}</li>
-							</ul>
-						{% endfor %}
-					{% else %}
-						<p><i>There are no organizations in the database.</i></p>
-					{% endif %}
-				</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--orgs">
+		<div class="[ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				{% for org in orgs %}
+
+					<h2 class="[ pt-3 ]"><a href="{{ url_for('org', organization_id=org.id) }}">{{ org.name }}</a></h2>
+					<ul class="[ p-0 ]">
+						<li>Website: {{ org.website }}</li>
+						<li>Phone: {{ org.phone }}</li>
+					</ul>
+
+				{% else %}
+
+				<p><i>There are no organizations in the database yet.</i></p>
+
+				{% endfor %}
+
 			</div>
-		</section>
+		</div>
+	</section>
+
+</div>
 
 {% endblock %}

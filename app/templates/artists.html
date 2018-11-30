@@ -2,34 +2,51 @@
 {% block title %}NYC Parks Database – Artists{% endblock %}
 {% block content %}
 
-	<div class="container-fluid">
-		<section id="section--head">
-			{% include "include/nav.html" %}
-			<div class="head [ row justify-content-center align-items-center ]">
-				<div class="col-sm-12 col-md-8">	
-					<h1 class="text-center display-3"><b>ARTISTS</b></h1>
-				</div>
+
+<div class="container-fluid">
+
+	<section id="section--head">
+		{% include "include/nav.html" %}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>ARTISTS</b></h1>
 			</div>
-		</section>
-		<section id="section--artists">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
-					{% if artists %}
-						{% for a in artists %}
-							<h2 class="text-center display-4 p-4"><a href="{{ url_for('artist', artist_id=a.id) }}">{{ a.name }}</a></h2>
+		</div>
+	</section>
+
+
+
+	<section id="section--artists">
+		<div class="[ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				{% for artist in artists %}
+
+					<h2 class="[ pt-3 ]"><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.name }}</a></h2>
+					<ul class="[ p-0 ]">
+						<li>Artworks:
 							<ul>
-								<li>ID: {{ a.id }}</li>
-								<li>Email: {{ a.email }}</li>
-								<li>Phone: {{ a.phone }}</li>
-								<li>Web site: <a href="http://{{ a.website }}" target="_blank">{{ a.website }}</a></li>
+
+								{% for artwork in artist.artworks %}
+									<li><a href="{{ url_for('artwork', artwork_id=artwork.id) }}">{{ artwork.name }}</a></li>
+								{% else %}
+									<li><i>{{ artist.name }} doesn't have any artworks yet.</i></li>
+								{% endfor %}
+
 							</ul>
-						{% endfor %}
-					{% else %}
-						<p><i>There are no artists in the database.</i></p>
-					{% endif %}
-				</div>
+						</li>
+					</ul>
+
+				{% else %}
+
+				<p><i>There are no artists in the database yet.</i></p>
+
+				{% endfor %}
+
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
+
+</div>
 
 {% endblock %}

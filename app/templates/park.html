@@ -33,8 +33,8 @@
 
 
 		<section id="section--bio">
-			<div class="row justify-content-center">
-				<div class="col-sm-12 col-md-8">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
 					<ul class="js-ul_park [ p-0 ]">
@@ -114,7 +114,7 @@
 									</div>
 
 									<div class="[ col-md-6 ]">
-										<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ d-inline ]">{{ exh.name }}</a>
+										<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ is-active ]">{{ exh.name }}</a>
 
 										<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exh.id }}" value="{{ exh.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 										<!-- Call datalist macro function -->
@@ -154,7 +154,7 @@
 
 </div>
 
-
+<!-- Empty exhibition template -->
 <script id="js-template_exhibition" type="text/template">
 	<li class="js-li_exhibition [ row mb-3 align-items-baseline ]">
 		<div class="[ col-md-3 ]">

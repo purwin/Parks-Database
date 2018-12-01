@@ -24,14 +24,14 @@ class Exhibition(db.Model):
   # Bio
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
-  start_date = db.Column(db.String(20))
-  end_date = db.Column(db.String(20))
-  opening = db.Column(db.String(20))
+  start_date = db.Column(db.Date())
+  end_date = db.Column(db.Date())
+  opening = db.Column(db.Date())
   comments = db.Column(db.String())
 
   # Install
-  install_start = db.Column(db.String(20))
-  install_end = db.Column(db.String(20))
+  install_start = db.Column(db.Date())
+  install_end = db.Column(db.Date())
   prm = db.Column(db.String(5))
   approval = db.Column(db.String(5))
   walkthrough = db.Column(db.String(10))
@@ -50,7 +50,7 @@ class Exhibition(db.Model):
   work_images = db.Column(db.String(5))
 
   # De-Install
-  deinstall_date = db.Column(db.String(20))
+  deinstall_date = db.Column(db.Date())
   deinstall_check = db.Column(db.String(5))
   bond_return = db.Column(db.String(5))
   press_clippings = db.Column(db.String(5))
@@ -58,16 +58,16 @@ class Exhibition(db.Model):
   # Related
   parks = db.relationship('Park',
                           secondary='exh_art_park',
-                          backref=db.backref('exhibition')
+                          backref=db.backref('exhibitions')
   )
   artworks = db.relationship('Artwork',
                              secondary='exh_art_park',
-                             backref=db.backref('exhibition')
+                             backref=db.backref('exhibitions')
   )
-  events = db.relationship('Event', backref='exhibition')
+  events = db.relationship('Event', backref='exhibitions')
   organizations = db.relationship('Org',
                                   secondary=exh_org,
-                                  backref=db.backref('exhibition',
+                                  backref=db.backref('exhibitions',
                                                      lazy='dynamic'
                                                     )
   )
@@ -92,14 +92,6 @@ class Park(db.Model):
   borough = db.Column(db.String(15))
   address = db.Column(db.String(100))
   cb = db.Column(db.String(10))
-  exhibitions = db.relationship('Exhibition',
-                                secondary='exh_art_park',
-                                backref=db.backref('park')
-  )
-  artworks = db.relationship('Artwork',
-                             secondary='exh_art_park',
-                             backref=db.backref('park')
-  )
 
   def __repr__(self):
     return "<Park: (%s)>"
@@ -121,13 +113,9 @@ class Artwork(db.Model):
   # __tablename__ = 'artwork'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
-  exhibitions = db.relationship('Exhibition',
-                                secondary='exh_art_park',
-                                backref=db.backref('artwork')
-  )
   parks = db.relationship('Park',
                           secondary='exh_art_park',
-                          backref=db.backref('artwork')
+                          backref=db.backref('artworks')
   )
   artists = db.relationship('Artist',
                              secondary='artist_artwork',

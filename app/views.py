@@ -19,6 +19,10 @@ def home():
   return render_template('index.html', exhibitions=exhibitions, parks=parks)
 
 
+@app.template_filter('date_format')
+def date_format(value, format='%m/%d/%y'):
+  return value.strftime(format)
+
 # Route: Create database items
 @app.route('/create', methods=['GET', 'POST'])
 def create():

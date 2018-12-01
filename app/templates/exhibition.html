@@ -43,7 +43,7 @@
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 d-block ]"><label>Exhibition Dates</label></div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.start_date }}–{{ exhibition.end_date }}</div>
+							<div class="[ col-md-6 d-block ]">{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">
@@ -58,7 +58,7 @@
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.start_date }}</div>
+							<div class="[ col-md-6 d-block ]">{{ exhibition.opening|date_format }}</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">
@@ -69,7 +69,7 @@
 						<li class="[ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.comments.label }}</div>
 							<div class="[ col-md-6 ]">
-								<p class="is-active">{{ exhibition.comments }}</p>
+								<p class="is-active [ m-0 ]">{{ exhibition.comments }}</p>
 								{{ form.comments(class="form-control-plaintext d-none", value=exhibition.comments, readonly=true) }}
 							</div>
 						</li>
@@ -186,102 +186,102 @@
 					<ul class="[ p-0 ]">
 
 						<li class="is-active [ row mb-3 ]">
-							<div class="[ col-md-4 d-block ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.install_start.data }}{% if exhibition.install_end %}–{{ exhibition.install_end.data }}{% endif %}</div>
+							<div class="[ col-md-3 d-block ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
+							<div class="[ col-md-6 d-block ]">{{ exhibition.install_start|date_format }}{% if exhibition.install_end %}–{{ exhibition.install_end|date_format }}{% endif %}</div>
 						</li>
 
 						<li class="[ row mb-3 d-none ]">
-							<div class="[ col-md-4 ]">{{ form.install_start.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.install_start.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.install_start(class="form-control-plaintext", value=exhibition.install_start, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 d-none ]">
-							<div class="[ col-md-4 ]">{{ form.install_end.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.install_end.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.install_end(class="form-control-plaintext", value=exhibition.install_end, readonly=true) }}</div>
 						</li>
 
 <!-- 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.prm.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.prm.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.prm(class="form-control-plaintext", value=exhibition.prm, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.approval.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.approval.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.approval(class="form-control-plaintext", value=exhibition.approval, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.walkthrough.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.walkthrough.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.walkthrough(class="form-control-plaintext", value=exhibition.walkthrough, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.cb_presentation.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.cb_presentation.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.cb_presentation(class="form-control-plaintext", value=exhibition.cb_presentation, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.license_mailed.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.license_mailed.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.license_mailed(class="form-control-plaintext", value=exhibition.license_mailed, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.license_signed.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.license_signed.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.license_signed(class="form-control-plaintext", value=exhibition.license_signed, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.license_borough.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.license_borough.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.license_borough(class="form-control-plaintext", value=exhibition.license_borough, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.bond.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.bond.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.bond(class="form-control-plaintext", value=exhibition.bond, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.coi.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.coi.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.coi(class="form-control-plaintext", value=exhibition.coi, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.coi_renewal.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.coi_renewal.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.coi_renewal.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.coi_renewal.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.signage_submit.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.signage_submit.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.signage_submit(class="form-control-plaintext", value=exhibition.signage_submit, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.signage_received.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.signage_received.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.signage_received(class="form-control-plaintext", value=exhibition.signage_received, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.press_draft.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.press_draft.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.press_draft(class="form-control-plaintext", value=exhibition.press_draft, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.press_approved.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.press_approved.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.press_approved(class="form-control-plaintext", value=exhibition.press_approved, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.web_text.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.web_text.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.web_text(class="form-control-plaintext", value=exhibition.web_text, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.work_images.label }}</div>
+							<div class="[ col-md-3 ]">{{ form.work_images.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.work_images(class="form-control-plaintext", value=exhibition.work_images, readonly=true) }}</div>
 						</li> -->
 
@@ -298,8 +298,13 @@
 
 					<ul class="[ p-0 ]">
 
-						<li class="[ row mb-3 ]">
-							<div class="[ col-md-4 ]">{{ form.deinstall_date.label }}</div>
+						<li class="is-active [ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
+							<div class="[ col-md-6 d-block ]">{{ exhibition.deinstall_date|date_format }}</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline d-none ]">
+							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
 							<div class="[ col-md-6 ]">{{ form.deinstall_date(class="form-control-plaintext", value=exhibition.deinstall_date, readonly=true) }}</div>
 						</li>
 

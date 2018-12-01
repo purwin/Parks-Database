@@ -89,7 +89,7 @@
 
 					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
 
-						{% for exh in org.exhibition %}
+						{% for exhibition in org.exhibitions %}
 
 							<li class="org__li--artworks [ row mb-3 align-items-baseline ]">
 
@@ -99,9 +99,9 @@
 
 
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ d-inline ]">{{ exh.name }}</a>
+									<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" class="[ d-inline ]">{{ exhibition.name }}</a>
 
-									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exh.id }}" value="{{ exh.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									<!-- Call datalist macro function -->
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>

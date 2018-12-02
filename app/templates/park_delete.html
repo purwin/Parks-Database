@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block head_extras %}
-<meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 {% block title %}Parks Database – Delete {{ park.name|capitalize }}{% endblock %}
 {% block content %}
@@ -16,7 +15,8 @@
 		</div>
 	</section>
 
-	<form action="" id="" method="post">
+	<form id="js-form_park" action="/parks/{{ park.id }}/delete" method="post">
+		{{ form.csrf_token }}
 
 		<div class="[ row justify-content-center py-4 ]">
 			<p>Are you sure you want to delete <b>{{ park.name }}</b> from the database?</p>
@@ -26,8 +26,7 @@
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 text-right p-4 ]">
 					<a id="js-cancel_park" class="js-cancel-form butt butt--edit [ btn btn-sm ]" href="{{ url_for('park', park_id=park.id) }}" role="button">Cancel</a>
-					<!-- <input id="js-delete_park" type="submit" class="butt butt--delete [ ml-2 btn btn-sm ]" value="Delete"> -->
-					<button id="js-delete_park" class="butt butt--delete js-delete-form [ ml-2 ]" type="button">Delete</button>
+					<input id="js-delete_park" type="submit" class="butt butt--delete js-delete-form [ ml-2 btn btn-sm ]" value="Delete">
 				</div>
 			</div>
 		</section>
@@ -35,5 +34,9 @@
 	</form>
 
 </div>
+
+
+<script src="{{ url_for('static', filename='js/dist/commons.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dist/park.bundle.js') }}"></script>
 
 {% endblock %}

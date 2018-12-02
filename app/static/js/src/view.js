@@ -146,6 +146,7 @@ export let view = {
   },
 
 
+  // Click event to submit [obj]_edit.html forms to database
   updateForm: function() {
     $('body').on('click', '.js-update-form', function(e) {
       e.preventDefault();

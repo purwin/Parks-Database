@@ -634,9 +634,10 @@ def org_edit(org_id):
 @app.route('/orgs/<int:org_id>/delete', methods=['GET', 'POST'])
 def org_delete(org_id):
   org = Org.query.filter_by(id=org_id).one()
+  form = Form_org()
   if request.method == 'POST':
       db.session.delete(org)
       db.session.commit()
       return redirect(url_for('orgs'))
   else:
-      return render_template('org_delete.html', org=org)
+      return render_template('org_delete.html', org = org, form = form)

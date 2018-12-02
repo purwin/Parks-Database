@@ -597,25 +597,25 @@ def org_edit(org_id):
     org.website = form.website.data
 
     # Add exhibitions to 1-to-many relationship
-    try:
-      # Clear org exhibitions
-      org.exhibitions = []
-      # Get list of exhibitions, removing empty form items
-      exhibitions = filter(None, form.exhibitions.data)
-      # Add latest exhibitions to org, removing duplicates
-      for item in list(set(exhibitions)):
+    # Clear org exhibitions
+    org.exhibitions = []
+    # Get list of exhibitions, removing empty form items
+    exhibitions = filter(None, form.exhibitions.data)
+    # Add latest exhibitions to org, removing duplicates
+    for item in list(set(exhibitions)):
+      try:
         exhibition = Exhibition.query.filter_by(id = item).one()
         org.exhibitions.append(exhibition)
+        # Add org to database
+        db.session.add(org)
+        db.session.commit()
         print "Added {} exhibition to {}".format(exhibition.name, org.name)
+      except Exception as e:
+        print "{} is not a known exhibition".format(item)
+        raise e
+        # Return errors if error is raised
+        return jsonify({"success": False, "data": e})
 
-    except Exception as e:
-      raise e
-      # Return errors if error is raised
-      return jsonify({"success": False, "data": e})
-
-    # Add org to database
-    db.session.add(org)
-    db.session.commit()
     # Return success message, org object via AJAX
     return jsonify({"success": True, "data": org.serialize})
 

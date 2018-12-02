@@ -18,13 +18,13 @@
 	<form id="js-form_artwork" action="/artworks/{{ artwork.id }}/delete" method="POST">
 		{{ form.csrf_token }}
 
-		<div class="[ row justify-content-center py-4 ]">
+		<div class="[ row justify-content-center py-5 ]">
 			<p>Are you sure you want to delete <b>{{ artwork.name }}</b> from the database?</p>
 		</div>
 
 		<section id="section--submit">
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-md-10 text-right p-4 ]">
+				<div class="[ col-md-8 text-right p-4 ]">
 					<a id="js-cancel_artwork" class="js-cancel-form butt butt--edit [ btn btn-sm ]" href="{{ url_for('artwork', artwork_id=artwork.id) }}" role="button">Cancel</a>
 					<input id="js-delete_artwork" type="submit" class="butt butt--delete js-delete-form [ ml-2 btn btn-sm ]" value="Delete">
 				</div>

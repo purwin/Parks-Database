@@ -15,7 +15,7 @@
 		</div>
 	</section>
 
-	<form id="js-form_park" action="/parks/{{ park.id }}/delete" method="post">
+	<form id="js-form_park" action="/parks/{{ park.id }}/delete" method="POST">
 		{{ form.csrf_token }}
 
 		<div class="[ row justify-content-center py-4 ]">
@@ -34,9 +34,5 @@
 	</form>
 
 </div>
-
-
-<script src="{{ url_for('static', filename='js/dist/commons.bundle.js') }}"></script>
-<script src="{{ url_for('static', filename='js/dist/park.bundle.js') }}"></script>
 
 {% endblock %}

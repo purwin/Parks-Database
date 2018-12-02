@@ -34,7 +34,7 @@
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="[ list-unstyled p-0 ]">
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.name.label }}</div>
@@ -58,7 +58,7 @@
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-md-6 d-block ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
+							<div class="[ col-md-6 ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">
@@ -86,7 +86,7 @@
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Parks</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="[ list-unstyled p-0 ]">
 						{% for park in exhibition.parks %}
 
 							<li><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></li>
@@ -109,7 +109,7 @@
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Organizations</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="[ list-unstyled p-0 ]">
 						{% for org in exhibition.orgs %}
 
 							<li><a href="{{ url_for('org', org_id=org.id) }}">{{ org.name }}</a></li>
@@ -138,7 +138,7 @@
 						</div>
 					</div>
 
-					<ul class="[ p-0 ]">
+					<ul class="[ list-unstyled p-0 ]">
 						{% for x in exhib %}
 
 							<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
@@ -183,7 +183,7 @@
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Install Details</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="[ list-unstyled p-0 ]">
 
 						<li class="is-active [ row mb-3 ]">
 							<div class="[ col-md-3 d-block ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
@@ -296,7 +296,7 @@
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">De-Install Details</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="[ list-unstyled p-0 ]">
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
@@ -393,7 +393,8 @@
 </script>
 
 
-<script src="{{ url_for('static', filename='js/create-org.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dist/commons.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dist/exhibition.bundle.js') }}"></script>
 
 
 {% endblock %}

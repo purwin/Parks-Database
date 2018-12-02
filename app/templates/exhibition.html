@@ -58,7 +58,7 @@
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.opening|date_format }}</div>
+							<div class="[ col-md-6 d-block ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">

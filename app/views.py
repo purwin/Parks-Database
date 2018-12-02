@@ -284,6 +284,7 @@ def park(park_id):
   exhibitions = Exhibition.query.all()
   artworks = Artwork.query.all()
   form = Form_park()
+  form.borough.data = park.borough
   for exhibition in form.exhibitions:
     form.exhibitions.append_entry(exhibition)
   for artwork in form.artworks:
@@ -321,16 +322,14 @@ def park_edit(park_id):
   park = Park.query.filter_by(id = park_id).one()
   form = Form_park()
   if form.validate_on_submit():
-    # Create park
-    park = Park()
-    # Add form items
+    # Update form items
     park.name = form.name.data
     park.park_id = form.park_id.data
     park.borough = form.borough.data
     park.address = form.address.data
     park.cb = form.cb.data
 
-    # Add park to database
+    # Update park data to database
     db.session.add(park)
     db.session.commit()
     # Return success message, park object via AJAX
@@ -542,7 +541,7 @@ def org(organization_id):
   org = Org.query.filter_by(id=organization_id).one()
   exhibitions = Exhibition.query.all()
   form = Form_org()
-  for exh in org.exhibition:
+  for exh in org.exhibitions:
     form.exhibitions.append_entry(exh)
   return render_template('org.html', org = org, exhibitions = exhibitions,
                          form = form)
@@ -600,13 +599,13 @@ def org_edit(org_id):
     # Add exhibitions to 1-to-many relationship
     try:
       # Clear org exhibitions
-      org.exhibition = []
+      org.exhibitions = []
       # Get list of exhibitions, removing empty form items
       exhibitions = filter(None, form.exhibitions.data)
       # Add latest exhibitions to org, removing duplicates
       for item in list(set(exhibitions)):
         exhibition = Exhibition.query.filter_by(id = item).one()
-        org.exhibition.append(exhibition)
+        org.exhibitions.append(exhibition)
         print "Added {} exhibition to {}".format(exhibition.name, org.name)
 
     except Exception as e:

@@ -9,23 +9,24 @@
 	<section id="section--head">
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
-			<div class="[ col-sm-12 col-md-8 ]">
+			<div class="[ col-md-8 ]">
 				<h1 class="[ text-center display-3 ]"><b>{{ org.name|upper }}</b></h1>
 			</div>
 		</div>
 	</section>
 
-	<form action="" id="" method="post">
+	<form id="js-form_org" action="/orgs/{{ org.id }}/delete" method="POST">
+		{{ form.csrf_token }}
 
-		<div class="[ row justify-content-center py-4 ]">
+		<div class="[ row justify-content-center py-5 ]">
 			<p>Are you sure you want to delete <b>{{ org.name }}</b> from the database?</p>
 		</div>
 
 		<section id="section--submit">
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
-					<a href="{{ url_for('org', organization_id=org.id) }}" role="button" class="butt butt--edit [ btn btn-sm ]">Cancel</a>
-					<input type="submit" class="butt butt--delete [ ml-2 btn btn-sm ]" value="Delete">
+				<div class="[ col-md-8 text-right p-4 ]">
+					<a id="js-cancel_org" class="js-cancel-form butt butt--edit [ btn btn-sm ]" href="{{ url_for('org', organization_id=org.id) }}" role="button">Cancel</a>
+					<input id="js-delete_org" type="submit" class="butt butt--delete js-delete-form [ ml-2 btn btn-sm ]" value="Delete">
 				</div>
 			</div>
 		</section>

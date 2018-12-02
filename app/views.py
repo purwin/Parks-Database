@@ -342,12 +342,13 @@ def park_edit(park_id):
 @app.route('/parks/<int:park_id>/delete', methods=['GET', 'POST'])
 def park_delete(park_id):
   park = Park.query.filter_by(id=park_id).one()
+  form = Form_park()
   if request.method == 'POST':
       db.session.delete(park)
       db.session.commit()
       return redirect(url_for('parks'))
   else:
-      return render_template('park_delete.html', park = park)
+      return render_template('park_delete.html', park = park, form = form)
 
 
 @app.route('/artists')

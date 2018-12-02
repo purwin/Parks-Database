@@ -9,13 +9,14 @@
 	<section id="section--head">
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
-			<div class="[ col-sm-12 col-md-8 ]">
+			<div class="[ col-md-8 ]">
 				<h1 class="[ text-center display-3 ]"><b>{{ exhibition.name|upper }}</b></h1>
 			</div>
 		</div>
 	</section>
 
-	<form action="" id="" method="post">
+	<form id="js-form_exhibition" action="/exhibitions/{{ exhibition.id }}/delete" method="post">
+		{{ form.csrf_token }}
 
 		<div class="[ row justify-content-center py-4 ]">
 			<p>Are you sure you want to delete <b>{{ exhibition.name }}</b> from the database?</p>
@@ -23,9 +24,9 @@
 
 		<section id="section--submit">
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
-					<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" role="button" class="btn__parks btn__parks--edit [ btn btn-sm ]">Cancel</a>
-					<input type="submit" class="btn__parks btn__parks--no [ ml-2 btn btn-sm ]" value="Delete">
+				<div class="[ col-md-10 text-right p-4 ]">
+					<a id="js-cancel_exhibition" class="js-cancel-form butt butt--edit [ btn btn-sm ]" href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" role="button">Cancel</a>
+					<input id="js-delete_exhibition" type="submit" class="butt butt--delete js-delete-form [ ml-2 btn btn-sm ]" value="Delete">
 				</div>
 			</div>
 		</section>

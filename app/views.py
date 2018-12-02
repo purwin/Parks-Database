@@ -211,7 +211,8 @@ def exhibition_create():
     if len(artworks) == len(parks):
       try:
         for x, y in zip(artworks, parks):
-          exh_art_park = Exh_art_park(exhibition_id=exhibition.id, artwork_id=x, park_id=y)
+          exh_art_park = Exh_art_park(exhibition_id = exhibition.id,
+                                      artwork_id = x, park_id = y)
           db.session.add(exh_art_park)
       except Exception as e:
         raise e
@@ -263,12 +264,14 @@ def exhibition_edit(exhibition_id):
 @app.route('/exhibitions/<int:exhibition_id>/delete', methods=['GET', 'POST'])
 def exhibition_delete(exhibition_id):
   exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
+  form = Form_exhibition()
   if request.method == 'POST':
       db.session.delete(exhibition)
       db.session.commit()
       return redirect(url_for('exhibitions'))
   else:
-      return render_template('exhibition_delete.html', exhibition = exhibition)
+      return render_template('exhibition_delete.html', exhibition = exhibition,
+                             form = form)
 
 
 @app.route('/parks')
@@ -463,12 +466,13 @@ def artist_edit(artist_id):
 @app.route('/artists/<int:artist_id>/delete', methods=['GET', 'POST'])
 def artist_delete(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
+  form = Form_artist()
   if request.method == 'POST':
       db.session.delete(artist)
       db.session.commit()
       return redirect(url_for('artists'))
   else:
-      return render_template('artist_delete.html', artist=artist)
+      return render_template('artist_delete.html', artist = artist, form = form)
 
 
 @app.route('/artworks')
@@ -523,12 +527,14 @@ def artwork_create():
 @app.route('/artworks/<int:artwork_id>/delete', methods=['GET', 'POST'])
 def artwork_delete(artwork_id):
   artwork = Artwork.query.filter_by(id=artwork_id).one()
+  form = Form_artwork()
   if request.method == 'POST':
       db.session.delete(artwork)
       db.session.commit()
       return redirect(url_for('artworks'))
   else:
-      return render_template('artwork_delete.html', artwork = artwork)
+      return render_template('artwork_delete.html', artwork = artwork,
+                             form = form)
 
 
 @app.route('/orgs')

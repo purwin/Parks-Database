@@ -105,34 +105,31 @@
 
 					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
 
-					{% if park.exhibition %}
+						{% for exhibition in park.exhibitions %}
+							<li class="[ row mb-3 align-items-baseline ]">
 
-							{% for exh in park.exhibitions %}
-								<li class="[ row mb-3 align-items-baseline ]">
+								<div class="[ col-md-3 ]">
+									<label for="art_name">Exhibition</label>
+								</div>
 
-									<div class="[ col-md-3 ]">
-										<label for="art_name">Exhibition</label>
-									</div>
+								<div class="[ col-md-6 ]">
+									<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" class="[ is-active ]">{{ exhibition.name }}</a>
 
-									<div class="[ col-md-6 ]">
-										<a href="{{ url_for('exhibition', exhibition_id=exh.id) }}" class="[ is-active ]">{{ exh.name }}</a>
+									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<!-- Call datalist macro function -->
+									{{ datalist("exhibitions", exhibitions) }}
+								</div>
+								<div class="[ col-md-2 ]">
+									<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+								</div>
 
-										<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exh.id }}" value="{{ exh.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
-										<!-- Call datalist macro function -->
-										{{ datalist("exhibitions", exhibitions) }}
-									</div>
-									<div class="[ col-md-2 ]">
-										<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
-									</div>
+							</li>
 
-								</li>
-							{% endfor %}
+						{% else %}
 
-					{% else %}
+							<p><i>There are no exhibitions connected with {{ park.name }}.</i></p>
 
-						<p><i>There are no exhibitions connected with {{ park.name }}.</i></p>
-
-					{% endif %}
+						{% endfor %}
 
 					</ul>
 
@@ -186,6 +183,7 @@
 
 
 <script src="{{ url_for('static', filename='js/create-org.js') }}"></script>
+<script src="{{ url_for('static', filename='js/park.js') }}"></script>
 
 
 {% endblock %}

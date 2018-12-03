@@ -611,7 +611,7 @@ def org_edit(org_id):
     # Add latest exhibitions to org, removing duplicates
     for item in list(set(exhibitions)):
       try:
-        exhibition = Exhibition.query.filter_by(id = item).one()
+        exhibition = Exhibition.query.filter_by(name = item).one()
         org.exhibitions.append(exhibition)
         # Add org to database
         db.session.add(org)
@@ -619,7 +619,7 @@ def org_edit(org_id):
         print "Added {} exhibition to {}".format(exhibition.name, org.name)
       except Exception as e:
         print "{} is not a known exhibition".format(item)
-        raise e
+        # raise e
         # Return errors if error is raised
         return jsonify({"success": False, "data": e})
 

@@ -8,7 +8,14 @@ model.park = new model.Obj("park");
 model.exhibition = new model.Obj("exhibition");
 
 // Set form POST route based on HTML's action attribute
-model.park.post.edit = $('form').attr('action');
+// model.park.post.edit = $('form').attr('action');
+
+// Set child datalist classnames
+model.park.children = {
+  "exhibition": ".js-datalist_exhibition",
+  "artwork": ".js-datalist_artwork",
+  "org": ".js-datalist_org"
+};
 
 // Init controller object
 controller.init();

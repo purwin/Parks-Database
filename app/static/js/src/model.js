@@ -43,7 +43,7 @@ export const model = {
     // Declare action route for AJAX POST functions
     this.post = {
       create: "/" + arg + "s/create",
-      edit:  "/" + arg + "s/edit",
+      edit: $('form').attr('action'),
     }
   },
 

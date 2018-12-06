@@ -12,9 +12,21 @@ model.exhibition = new model.Obj("exhibition");
 
 // Set child datalist classnames
 model.artwork.children = {
-  "artist": ".js-datalist_artist",
-  "exhibition": ".js-datalist_exhibition",
-  "park": ".js-datalist_park"
+  artist: {
+    count: $('.js-datalist_artist').length + 1,
+    class: ".js-datalist_artist",
+    id: "#js-datalist_artist"
+  },
+  exhibition: {
+    count: $('.js-datalist_exhibition').length + 1,
+    class: ".js-datalist_exhibition",
+    id: "#js-datalist_exhibition"
+  },
+  park: {
+    count: $('.js-datalist_park').length + 1,
+    class: ".js-datalist_park",
+    id: "#js-datalist_park"
+  }
 };
 
 // Init controller object

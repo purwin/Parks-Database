@@ -152,6 +152,28 @@
 
 </div>
 
+
+<!-- Empty artwork template -->
+<script id="js-template_artwork" type="text/template">
+	<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
+		<div class="[ col-10 col-md-8 mb-1 ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
+			{{ datalist("artworks", artworks) }}
+		</div>
+		<div class="[ col-2 col-md-3 align-items-baseline ]">
+			<span class="[ px-2 ]">@</span>
+		</div>
+		<div class="[ col-10 col-md-8 ]">
+			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
+			{{ datalist("exhibitions", exhibitions) }}
+		</div>
+		<div class="[ col-2 col-md-3 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+		</div>
+	</li>
+</script>
+
+
 <!-- Empty exhibition template -->
 <script id="js-template_exhibition" type="text/template">
 	<li class="js-li_exhibition [ row mb-3 align-items-baseline ]">

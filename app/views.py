@@ -5,6 +5,8 @@ from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import Form_artist, Form_exhibition, Form_artwork, Form_park, Form_org
 
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
 import sys
 
 @app.route('/home')
@@ -23,119 +25,28 @@ def home():
 def date_format(value, format='%m/%d/%y'):
   return value.strftime(format)
 
+
 # Route: Create database items
-@app.route('/create', methods=['GET', 'POST'])
+@app.route('/create', methods=['GET'])
 def create():
-  if request.method == 'POST':
+  # Query object classes
+  artists = Artist.query.all()
+  artworks = Artwork.query.all()
+  parks = Park.query.all()
+  orgs = Org.query.all()
 
-    # Create exhibition
-    if request.form['create_item'] == 'exhibition':
-      newItem = Exhibition(name=request.form['exh_name'], startDate=request.form['exh_startDate'], endDate=request.form['exh_endDate'], installStart=request.form['exh_installStart'], installEnd=request.form['exh_installEnd'], deinstallDate=request.form['exh_deinstallDate'])
-      db.session.add(newItem)
-      db.session.flush()
-      try:
-        exh_art = request.form.getlist('exh_art')
-        # Remove any empty items from artwork list
-        exh_art = filter(None, exh_art)
-        exh_park = request.form.getlist('exh_park')
-        # Remove any empty items from park list
-        exh_park = filter(None, exh_park)
-        for x, y in zip(exh_art, exh_park):
-          # add exhibition, art, park ref to database
-          exh_rel = Exh_art_park(exhibition_id=newItem.id, artwork_id=x, park_id=y)
-          db.session.add(exh_rel)
+  # Define form classes
+  form_artist = Form_artist()
+  form_artwork = Form_artwork()
+  form_park = Form_park()
+  form_exhibition = Form_exhibition()
+  form_org = Form_org()
 
-        exh_org = request.form.getlist('exh_org')
-        # Remove any empty items from org list
-        exh_org = filter(None, exh_org)
-        for z in exh_org:
-          # add org to exhibition
-          org = Org.query.filter_by(id=z).one()
-          newItem.organizations.append(org)
-
-      except:
-        e = sys.exc_info()[0]
-        print "error: {}".format(e)
-
-    # Create artwork
-    elif request.form['create_item'] == 'artwork':
-      db.session.add(Artwork(name=request.form['art_name']))
-
-    # Create park
-    elif request.form['create_item'] == 'park':
-      db.session.add(Park(name=request.form['park_name'], park_id=request.form['park_park_id'], borough=request.form['park_borough'], address=request.form['park_address'], cb=request.form['park_cb']))
-
-    # Create artist
-    elif request.form['create_item'] == 'artist':
-      db.session.add(Artist(pName=request.form['artist_pName'], fName=request.form['artist_fName'], email=request.form['artist_email'], phone=request.form['artist_phone'], website=request.form['artist_website']))
-
-    # Create organization
-    elif request.form['create_item'] == 'organization':
-      db.session.add(Org(name=request.form['org_name'], website=request.form['org_website'], phone=request.form['org_phone']))
-
-    # Create event
-
-    else: return redirect(url_for('home'))
-    db.session.commit()
-    return redirect(url_for('home'))
-
-  else:
-    artworks = Artwork.query.all()
-    parks = Park.query.all()
-    orgs = Org.query.all()
-    artists = Artist.query.all()
-
-    form_artist = Form_artist()
-    form_artwork = Form_artwork()
-    form_park = Form_park()
-    form_exhibition = Form_exhibition()
-    form_org = Form_org()
-
-    return render_template('create.html',
-      artworks = artworks, parks = parks, orgs = orgs, artists = artists,
-      form_artist = form_artist, form_artwork = form_artwork,
-      form_park = form_park, form_exhibition = form_exhibition,
-      form_org = form_org)
-
-
-# Route: Create Artwork via AJAX request
-@app.route('/createArt', methods=['GET', 'POST'])
-def createArt():
-  if request.method == 'POST':
-    # Create new artwork
-    newArtwork = Artwork(name=request.form['art_name'])
-    db.session.add(newArtwork)
-    try:
-      art_artist = request.form.getlist('art_artist')
-      # Remove any empty items from list
-      art_artist = filter(None, art_artist)
-      print "Adding artist ID to {}: {}".format(newArtwork.name, art_artist)
-      for x in art_artist:
-        creator = Artist.query.filter_by(id=x).one()
-        newArtwork.artists.append(creator)
-      db.session.commit()
-      db.session.flush()
-      artworks = Artwork.query.all()
-      parks = Park.query.all()
-      return jsonify({'data': render_template('include/art_list.html',
-                      artworks=artworks, parks=parks)})
-    except:
-      e = sys.exc_info()[0]
-      print "error: {}".format(e)
-
-
-# Route: Create Org via AJAX request
-@app.route('/createOrg', methods=['POST'])
-def createOrg():
-  if request.method == 'POST':
-    db.session.add(Org(name=request.form['org_name'],
-                       website=request.form['org_website'],
-                       phone=request.form['org_phone']))
-    db.session.commit()
-    db.session.flush()
-    orgs = Org.query.all()
-    return jsonify({'data': render_template('include/org_list.html',
-                    orgs=orgs)})
+  return render_template('create.html',
+    artworks = artworks, parks = parks, orgs = orgs, artists = artists,
+    form_artist = form_artist, form_artwork = form_artwork,
+    form_park = form_park, form_exhibition = form_exhibition,
+    form_org = form_org)
 
 
 @app.route('/exhibitions')
@@ -151,9 +62,13 @@ def exhibitions():
 def exhibition(exhibition_id):
   exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
   exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
+  exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
+  artworks = Artwork.query.all()
+  parks = Park.query.all()
   form = Form_exhibition()
   return render_template('exhibition.html', exhibition = exhibition,
-                         exhib = exhib, form = form)
+                         exhib = exhib, artworks = artworks, parks = parks,
+                         form = form)
 
 
 @app.route('/exhibitions/create', methods=['POST'])
@@ -240,19 +155,64 @@ def exhibition_edit(exhibition_id):
   form = Form_exhibition()
   if form.validate_on_submit():
     # Update exhibition items
+    # Bio
+    exhibition.name = form.name.data
+    exhibition.start_date = form.start_date.data
+    exhibition.end_date = form.end_date.data
+    exhibition.opening = form.opening.data
+    exhibition.comments = form.comments.data
+
+    # Install
+    exhibition.install_start = form.install_start.data
+    exhibition.install_end = form.install_end.data
+    exhibition.prm = form.prm.data
+    exhibition.approval = form.approval.data
+    exhibition.walkthrough = form.walkthrough.data
+    exhibition.cb_presentation = form.cb_presentation.data
+    exhibition.license_mailed = form.license_mailed.data
+    exhibition.license_signed = form.license_signed.data
+    exhibition.license_borough = form.license_borough.data
+    exhibition.bond = form.bond.data
+    exhibition.coi = form.coi.data
+    exhibition.coi_renewal = form.coi_renewal.data
+    exhibition.signage_submit = form.signage_submit.data
+    exhibition.signage_received = form.signage_received.data
+    exhibition.press_draft = form.press_draft.data
+    exhibition.press_approved = form.press_approved.data
+    exhibition.web_text = form.web_text.data
+    exhibition.work_images = form.work_images.data
+
+    # De-Install
+    exhibition.deinstall_date = form.deinstall_date.data
+    exhibition.deinstall_check = form.deinstall_check.data
+    exhibition.bond_return = form.bond_return.data
+    exhibition.press_clippings = form.press_clippings.data
+
     try:
       # Clear artist artworks
-      artist.artworks = []
-      artist_art = request.form.getlist('artworks')
+      # artist.artworks = []
+      # artist_art = request.form.getlist('artworks')
       # Remove any empty form items from artworks list
-      artist_art = filter(None, artist_art)
+      # artist_art = filter(None, artist_art)
       # Add latest artworks to artist, removing duplicates
-      for x in list(set(artist_art)):
-        artwork = Artwork.query.filter_by(id = x).one()
-        artist.artworks.append(artwork)
+      # for x in list(set(artist_art)):
+      #   artwork = Artwork.query.filter_by(id = x).one()
+      #   artist.artworks.append(artwork)
+
+      exhibition.artworks = []
+      exhibition.parks = []
+
+      parks = filter(None, form.parks.data)
+      artworks = filter(None, form.artworks.data)
+      for x, y in zip(artworks, parks):
+        # add exhibition, art, park ref to database
+        artwork = Artwork.query.filter_by(name = x).one()
+        park = Park.query.filter_by(name = y).one()
+        exh_rel = Exh_art_park(exhibition_id=exhibition.id, artwork_id=artwork.id, park_id=park.id)
+        db.session.add(exh_rel)
     except Exception as e:
       raise e
-    db.session.add(artist)
+    db.session.add(exhibition)
     db.session.commit()
     # Return success message, exhibition object via AJAX
     return jsonify({"success": True, "data": exhibition.serialize})
@@ -382,21 +342,6 @@ def artist(artist_id):
                          artist_join = artist_join, form = form)
 
 
-# Route: Create Artist via AJAX request
-@app.route('/createArtist', methods=['GET', 'POST'])
-def createArtist():
-  if request.method == 'POST':
-    db.session.add(Artist(pName=request.form['artist_pName'],
-                          fName=request.form['artist_fName'],
-                          email=request.form['artist_email'],
-                          phone=request.form['artist_phone'],
-                          website=request.form['artist_website']))
-    db.session.commit()
-    db.session.flush()
-    artists = Artist.query.all()
-    return jsonify({'data': render_template('include/artist_list.html',
-                    artists=artists)})
-
 @app.route('/artists/create', methods=['GET', 'POST'])
 def artist_create():
   pass
@@ -488,10 +433,18 @@ def artwork(artwork_id):
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   form = Form_artwork()
-  for artist in artwork.artists:
-    form.artists.append_entry(artist)
+  # for artist in artwork.artists:
+    # form.artists.append_entry(artist)
+  # for exhibition in artwork.exhibitions:
+  #   form.exhibitions.append_entry(exhibition)
+  # for park in artwork.parks:
+  #   form.parks.append_entry(park)
+  artwork_join = (db.session.query(Exh_art_park, Artwork)
+    .filter(Exh_art_park.artwork_id == Artwork.id)
+    .filter(Artwork.id == artwork_id)).all()
   return render_template('artwork.html', artwork = artwork, artists = artists,
-                         exhibitions = exhibitions, parks = parks, form = form)
+                         exhibitions = exhibitions, parks = parks, form = form,
+                         artwork_join = artwork_join)
 
 
 @app.route('/artworks/create', methods=['POST'])
@@ -502,8 +455,8 @@ def artwork_create():
     artwork = Artwork()
     # Add form items
     artwork.name = form.name.data
-    # Add artists to 1-to-many relationship
 
+    # Add artists to 1-to-many relationship
     try:
       artwork.artists = []
       artists = filter(None, form.artists.data)
@@ -514,6 +467,84 @@ def artwork_create():
         artwork.artists.append(artist)
     except Exception as e:
       raise e
+    # Return errors if error is raised
+    return jsonify({"success": False, "data": e})
+
+    db.session.add(artwork)
+    db.session.commit()
+    # Return success message, artwork object via AJAX
+    return jsonify({"success": True, "data": artwork.serialize})
+  else:
+    # Return errors if form doesn't validate
+    return jsonify({"success": False, "data": form.errors})
+
+
+@app.route('/artworks/<int:artwork_id>/edit', methods=['POST'])
+def artwork_edit(artwork_id):
+  artwork = Artwork.query.filter_by(id=artwork_id).one()
+  form = Form_artwork()
+  if form.validate_on_submit():
+    # Update artwork items
+    artwork.name = form.name.data
+
+    # Add artists to 1-to-many relationship
+    try:
+      artwork.artists = []
+      artists = filter(None, form.artists.data)
+      # Add artists to artwork, removing duplicates
+      for item in list(set(artists)):
+        artist = Artist.query.filter_by(name = item).one()
+        print "Adding {} to {}".format(artist.name, artwork.name)
+        artwork.artists.append(artist)
+    except Exception as e:
+      # raise e
+      # Return errors if error is raised
+      return jsonify({"success": False, "data": e})
+
+    # Add artwork/exhibition/park items
+    try:
+      artists = filter(None, form.artists.data)
+      # Add artists to artwork, removing duplicates
+      for item in list(set(artists)):
+        artist = Artist.query.filter_by(name = item).one()
+        print "Adding {} to {}".format(artist.name, artwork.name)
+        artwork.artists.append(artist)
+    except Exception as e:
+      # raise e
+      db.session.rollback()
+      # Return errors if error is raised
+      return jsonify({"success": False, "data": e})
+
+    print "***Exhibitions list!***!: {}".format(jsonify(form.exhibitions))
+    print "***Parks list!***!: {}".format(jsonify(form.parks))
+
+    # Add artwork/park children to Exh_art_park table
+    exhibitions = filter(None, form.exhibitions.data)
+    parks = filter(None, form.parks.data)
+
+    if len(exhibitions) == len(parks):
+      artwork.exhibitions = []
+      artwork.parks = []
+      try:
+        # Sort exhibitions data by key and add to temporary array
+        # for key in sorted(exhibitions.iterkeys()):
+          # exh_sorted.append(exhibitions[key])
+          # Sort parks data by key and add to temporary array
+        # for key in sorted(parks.iterkeys()):
+          # park_sorted.append(parks[key])
+        # Loop through sorted arrays and add to Exh_art_park table
+        for x, y in zip(exhibitions, parks):
+          exhibition = Exhibition.query.filter_by(name = x).one()
+          print "!!!EXHIBITION FOUND!: {}".format(exhibition.name)
+          park = Park.query.filter_by(name = y).one()
+          print "!!!PARK FOUND!: {}".format(park.name)
+          exh_rel = Exh_art_park(exhibition_id = exhibition.id,
+                                 artwork_id = artwork.id, park_id = park.id)
+          db.session.add(exh_rel)
+      except Exception as e:
+        db.session.rollback()
+        # Return errors if error is raised
+        return jsonify({"success": False, "data": e})
 
     db.session.add(artwork)
     db.session.commit()
@@ -543,9 +574,9 @@ def orgs():
   return render_template('orgs.html', orgs = orgs)
 
 
-@app.route('/orgs/<int:organization_id>')
-def org(organization_id):
-  org = Org.query.filter_by(id=organization_id).one()
+@app.route('/orgs/<int:org_id>')
+def org(org_id):
+  org = Org.query.filter_by(id=org_id).one()
   exhibitions = Exhibition.query.all()
   form = Form_org()
   for exh in org.exhibitions:

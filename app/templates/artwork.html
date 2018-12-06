@@ -59,11 +59,11 @@
 		<section id="section--artists">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 py-4 ]">Artists</h2>
+					<h2 class="[ display-4 pt-4 ]">Artists</h2>
 
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-12 text-right py-4 ]">
-							<button id="js-add_artist" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+					<div class="[ row justify-content-center d-none ]">
+						<div class="[ col-12 text-right pb-4 ]">
+							<button id="js-add_artist" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
@@ -80,7 +80,7 @@
 								<div class="[ col-10 col-md-6 ]">
 									<a href="{{ url_for('artist', artist_id=artist.id) }}" class="is-active">{{ artist.name }}</a>
 
-									<input id="js-datalist_artist" type="text" name="artists" list="artists" data-value="{{ artist.id }}" value="{{ artist.name }}" class="js-datalist-child js-datalist_artist [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_artist-{{ loop.index }}" type="text" name="artists-{{ loop.index }}" list="artists" data-value="{{ artist.id }}" value="{{ artist.name }}" class="js-datalist-child js-datalist_artist [ form-control-plaintext d-none ]" readonly>
 									<!-- Call datalist macro function -->
 									{{ datalist("artists", artists) }}
 								</div>
@@ -91,7 +91,7 @@
 							</li>
 					{% else %}
 
-						<p><i>There are no artists connected with {{ artwork.name }}.</i></p>
+						<p class="[ is-active ]"><i>There are no artists connected with {{ artwork.name }}.</i></p>
 
 					{% endfor %}
 
@@ -106,11 +106,11 @@
 		<section id="section--exhibitions">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
+					<h2 class="[ display-4 pt-4 ]">Exhibitions</h2>
 
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-12 text-right py-4 ]">
-							<button id="js-add_exhibition" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+					<div class="[ row justify-content-center d-none ]">
+						<div class="[ col-12 text-right pb-4 ]">
+							<button id="js-add_exhibition" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
@@ -124,7 +124,7 @@
 								</div>
 								<div class="[ col-10 col-md-6 mb-1 ]">
 									<a href="{{ url_for('exhibition', exhibition_id=exhibit.Exh_art_park.exhib.id) }}" class="is-active">{{ exhibit.Exh_art_park.exhib.name }}</a>
-									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exhibit.Exh_art_park.exhib.id }}" value="{{ exhibit.Exh_art_park.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibit.Exh_art_park.exhib.id }}" value="{{ exhibit.Exh_art_park.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
 								<div class="[ col-2 col-md-3 align-items-baseline ]">
@@ -135,7 +135,7 @@
 								</div>
 								<div class="[ col-10 col-md-6 ]">
 									<a href="{{ url_for('park', park_id=exhibit.Exh_art_park.nycpark.id) }}" class="is-active">{{ exhibit.Exh_art_park.nycpark.name }}</a>
-									<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="{{ exhibit.Exh_art_park.nycpark.id }}" value="{{ exhibit.Exh_art_park.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ exhibit.Exh_art_park.nycpark.id }}" value="{{ exhibit.Exh_art_park.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("parks", parks) }}
 								</div>
 								<div class="[ col-2 col-md-3 align-items-baseline ]">
@@ -145,7 +145,7 @@
 
 					{% else %}
 
-						<li><i>There are no exhibitions connected with {{ artwork.name }}.</i></li>
+						<li class="[ is-active ]"><i>There are no exhibitions connected with {{ artwork.name }}.</i></li>
 
 					{% endfor %}
 
@@ -177,7 +177,7 @@
 			<label for="artists">Artist</label>
 		</div>
 		<div class="[ col-md-6 ]">
-			<input id="js-datalist_artist" type="text" name="artists" list="artists" data-value="" value="" placeholder="artist Name" class="js-datalist-child js-datalist_artist [ form-control ]">
+			<input id="js-datalist_artist" type="text" name="artists" list="artists" data-value="" value="" placeholder="Artist Name" class="js-datalist-child js-datalist_artist [ form-control ]">
 			{{ datalist("artists", artists) }}
 		</div>
 		<div class="[ col-md-2 ]">

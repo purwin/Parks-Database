@@ -42,8 +42,8 @@
 						</li>
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
-							<div class="[ col-md-3 d-block ]"><label>Exhibition Dates</label></div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</div>
+							<div class="[ col-md-3 ]"><label>Exhibition Dates</label></div>
+							<div class="[ col-md-6 ]">{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">
@@ -186,8 +186,8 @@
 					<ul class="[ list-unstyled p-0 ]">
 
 						<li class="is-active [ row mb-3 ]">
-							<div class="[ col-md-3 d-block ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.install_start|date_format }}{% if exhibition.install_end %}–{{ exhibition.install_end|date_format }}{% endif %}</div>
+							<div class="[ col-md-3 ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
+							<div class="[ col-md-6 ]">{{ exhibition.install_start|date_format }}{% if exhibition.install_end %}–{{ exhibition.install_end|date_format }}{% endif %}</div>
 						</li>
 
 						<li class="[ row mb-3 d-none ]">
@@ -300,7 +300,7 @@
 
 						<li class="is-active [ row mb-3 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
-							<div class="[ col-md-6 d-block ]">{{ exhibition.deinstall_date|date_format }}</div>
+							<div class="[ col-md-6 ]">{{ exhibition.deinstall_date|date_format }}</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline d-none ]">

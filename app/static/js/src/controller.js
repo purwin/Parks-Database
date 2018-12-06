@@ -43,6 +43,9 @@ export let controller = {
 
     // Show submit buttons
     $(".js-submit-div").show();
+
+    // Update newest input ID and name attributes
+    this.iterateFieldlists();
   },
 
 
@@ -54,6 +57,8 @@ export let controller = {
     // Append next UL with LI HTML
     $(x).closest('.row').nextAll('ul').append(model[obj].li.html);
 
+    // Update newest input ID and name attributes
+    this.iterateFieldlists();
   },
 
 
@@ -109,12 +114,30 @@ export let controller = {
   },
 
 
-  // Update input name value before posting forms for wtforms Fieldlist keys
-  iterateFieldlists: function(formID, childClass) {
-    // console.log("ITERATE: " + formID + " " + childClass);
-    $.each($(formID + " " + childClass), function(index, value) {
-        value.name = value.name + '-' + (index + 1);
-    });
+  // Update input ID and name value for each object child element
+  iterateFieldlists: function() {
+    for (const child in model.activeObject.children) {
+      console.log("Updating " + child + " datalists");
+      // Define child object in children
+      let item = model.activeObject.children[child];
+
+      console.log("ITEM ID: " + item.id);
+
+      console.log("LENGTH: " + $(item.class).length);
+
+      // Loop through matching IDs and append count number
+      $.each($(item.id), function() {
+        // Update name attribute
+        $(this).attr('name', $(this).attr('name') + '-' + item.count);
+
+        // Update ID attribute
+        $(this).attr('id', $(this).attr('id') + '-' + item.count);
+
+        // Update count
+        item.count++
+      });
+    }
+
   },
 
 
@@ -252,6 +275,8 @@ export let controller = {
       this.selectActiveObject(obj);
     }
 
+    console.dir(model.activeObject);
+
     // Call post data function, get response
     var postPromise = this.postData(model.activeObject, model.activeObject.form.id, model.activeObject.post.edit);
 
@@ -273,7 +298,7 @@ export let controller = {
         console.log("Form Sucess!");
         console.dir(response);
         // Reload page
-        window.location.reload(true);
+        // window.location.reload(true);
       }
 
     });
@@ -286,17 +311,17 @@ export let controller = {
     console.log("Form ID: " + formID);
 
     // Change selected datalist values to IDs for adding via SQLAlchemy
-    var valueUpdate = this.valSwitch(formID);
+    // var valueUpdate = this.valSwitch(formID);
 
-    if (valueUpdate === false) {
-      return;
-    }
+    // if (valueUpdate === false) {
+    //   return;
+    // }
 
     // For each object child class (artwork.artists, exhibition.orgs, etc.),
     // add number suffix for wtforms Datalist
-    for (child in obj.children) {
-      this.iterateFieldlists(formID, obj.children[child]);
-    }
+    // for (const child in obj.children) {
+    //   this.iterateFieldlists(formID, obj.children[child]);
+    // }
 
     console.log("Post data: " + $(formID).serialize());
 
@@ -377,6 +402,9 @@ export let controller = {
     // Get object type from argument's ID
     var obj = this.determineObject(x);
 
+    // Set active object
+    this.selectActiveObject(obj);
+
     // Make inputs editable
     $(model[obj].form.id).find(":input").not(":button").each(function() {
       // Remove input readonly attributes
@@ -391,22 +419,25 @@ export let controller = {
     });
 
     // Hide non-edit block elements
-    $(model[obj].form.id).find(".d-block").each(function() {
-      $(this).toggleClass("d-block").toggleClass("d-none");
-    });
+    // $(model[obj].form.id).find(".d-block").each(function() {
+    //   $(this).toggleClass("d-block").toggleClass("d-none");
+    // });
 
     // Hide non-edit inline elements
-    $(model[obj].form.id).find(".d-inline").each(function() {
-      $(this).toggleClass("d-inline").toggleClass("d-none");
-    });
+    // $(model[obj].form.id).find(".d-inline").each(function() {
+    //   $(this).toggleClass("d-inline").toggleClass("d-none");
+    // });
 
-    // Hide non-edit inline elements
+    // Hide designated non-editable elements
     $(model[obj].form.id).find(".is-active").each(function() {
       $(this).toggleClass("is-active").toggleClass("d-none");
     });
 
     // Hide edit button
     $(x).addClass('invisible');
+
+    // Update fieldlist item ID and name values for wtforms validation
+    this.iterateFieldlists();
   }
 
 

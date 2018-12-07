@@ -545,12 +545,13 @@ def artwork(artwork_id):
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   form = Form_artwork()
-  artwork_join = (db.session.query(Exh_art_park, Artwork)
-    .filter(Exh_art_park.artwork_id == Artwork.id)
-    .filter(Artwork.id == artwork_id)).all()
+  art_exhib = Exh_art_park.query.filter_by(artwork_id = artwork_id).all()
+  # artwork_join = (db.session.query(Exh_art_park, Artwork)
+  #   .filter(Exh_art_park.artwork_id == Artwork.id)
+  #   .filter(Artwork.id == artwork_id)).all()
   return render_template('artwork.html', artwork = artwork, artists = artists,
-                         exhibitions = exhibitions, parks = parks, form = form,
-                         artwork_join = artwork_join)
+                         exhibitions = exhibitions, parks = parks,
+                         art_exhib = art_exhib, form = form)
 
 
 @app.route('/artworks/create', methods=['POST'])

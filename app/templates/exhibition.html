@@ -139,14 +139,14 @@
 					</div>
 
 					<ul class="[ list-unstyled p-0 ]">
-						{% for x in exhib %}
+						{% for item in exhib %}
 
 							<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
 								<div class="[ col-md-3 ]">
 									<label for="artworks">Artwork</label>
 								</div>
 								<div class="[ col-10 col-md-6 mb-1 ]">
-									<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="{{ x.artw.id }}" value="{{ x.artw.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext ]">
+									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext ]">
 									{{ datalist("artworks", artworks) }}
 								</div>
 								<div class="[ col-2 col-md-3 align-items-baseline ]">
@@ -157,7 +157,7 @@
 									<label for="artworks">Park</label>
 								</div>
 								<div class="[ col-10 col-md-6 ]">
-									<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="{{ x.nycpark.id }}" value="{{ x.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext ]">
+									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ item.nycpark.id }}" value="{{ item.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext ]">
 									{{ datalist("parks", parks) }}
 								</div>
 								<div class="[ col-2 col-md-3 ]">

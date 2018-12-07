@@ -162,7 +162,8 @@ export let controller = {
     var obj = this.determineObject(x);
 
     // Call post data function, get response
-    var postPromise = this.postData(model[obj], model[obj].form.modalID, model[obj].post.create);
+    var postPromise = this.postData(model[obj], model[obj].form.modalID,
+                                    model[obj].post.create);
 
     postPromise.done(function(response) {
       // If form POST doesn't validate with wtforms, add errors to page
@@ -187,12 +188,14 @@ export let controller = {
         controller.addSuccess("Success! Created " + response.data.name + "!");
 
         // Update model object datalist
-        model[obj].li.html = controller.updateTemplate(model[obj].li.html, response.data);
+        model[obj].li.html = controller.updateTemplate(model[obj].li.html,
+                                                       response.data);
 
         // Set all [obj] datalists to updated model object datalist
         try {
           $('#' + model[obj].name + 's').each(function(index) {
-            $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
+            $(this).append('<option data-value="' + response.data.id +
+                           '" value="' + response.data.name + '"></option>');
           });
         }
         catch (e) {
@@ -224,7 +227,9 @@ export let controller = {
     console.log("submitForm form post route: " + model.activeObject.post);
 
     // Call post data function, get response
-    var postPromise = this.postData(model.activeObject, model.activeObject.form.id, model[obj].post.create);
+    var postPromise = this.postData(model.activeObject,
+                                    model.activeObject.form.id,
+                                    model[obj].post.create);
 
     postPromise.done(function(response) {
       // If form POST doesn't validate with wtforms, add errors to page
@@ -247,12 +252,14 @@ export let controller = {
         controller.addSuccess("Success! Created " + response.data.name + "!");
 
         // Update model object datalist
-        model.activeObject.li.html = controller.updateTemplate(model.activeObject.li.html, response.data);
+        model.activeObject.li.html = 
+        controller.updateTemplate(model.activeObject.li.html, response.data);
 
         // Set all [obj] datalists to updated model object datalist
         try {
           $('#' + model.activeObject.name + 's').each(function(index) {
-            $(this).append('<option data-value="' + response.data.id + '" value="' + response.data.name + '"></option>');
+            $(this).append('<option data-value="' + response.data.id +
+                           '" value="' + response.data.name + '"></option>');
           });
         }
         catch (e) {
@@ -278,7 +285,9 @@ export let controller = {
     console.dir(model.activeObject);
 
     // Call post data function, get response
-    var postPromise = this.postData(model.activeObject, model.activeObject.form.id, model.activeObject.post.edit);
+    var postPromise = this.postData(model.activeObject,
+                                    model.activeObject.form.id,
+                                    model.activeObject.post.edit);
 
     postPromise.done(function(response) {
       // If form POST doesn't validate with wtforms, add errors to page
@@ -348,7 +357,9 @@ export let controller = {
     var div = $('<div/>');
 
     // Add error template HTML to DIV, add error message to inner DIV SPAN
-    $(div).html($('#js-template_error').html()).find('.js-error-notice').append(error);
+    $(div).html($('#js-template_error').html())
+                                       .find('.js-error-notice')
+                                       .append(error);
 
     // Add new DIV to body
     $('.js-alert').append($(div).html());
@@ -361,7 +372,9 @@ export let controller = {
     var div = $('<div/>');
 
     // Add success template HTML to DIV, add success message to inner DIV
-    $(div).html($('#js-template_success').html()).find('.js-success-message').append(message);
+    $(div).html($('#js-template_success').html())
+                                         .find('.js-success-message')
+                                         .append(message);
 
     // Add new DIV to body
     $('.js-alert').append($(div).html());
@@ -391,7 +404,8 @@ export let controller = {
     $(div).html(template);
 
     // Append template datalist with new object data
-    $(div).find('datalist').append('\t<option data-value="' + update.id + '" value="' + update.name + '"></option>')
+    $(div).find('datalist').append('\t<option data-value="' + update.id + 
+                                   '" value="' + update.name + '"></option>')
 
     // Return template
     return $(div).html();

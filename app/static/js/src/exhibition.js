@@ -21,17 +21,17 @@ model.exhibition.children = {
 
 model.exhibition.children = {
   artwork: {
-    count: 1,
+    count: $('.js-datalist_artwork').length + 1,
     class: ".js-datalist_artwork",
     id: "#js-datalist_artwork"
   },
   park: {
-    count: 1,
+    count: $('.js-datalist_park').length + 1,
     class: ".js-datalist_park",
     id: "#js-datalist_park"
   },
   org: {
-    count: 1,
+    count: $('.js-datalist_org').length + 1,
     class: ".js-datalist_org",
     id: "#js-datalist_org"
   }

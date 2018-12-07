@@ -197,7 +197,7 @@
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
 		<div class="[ col-2 col-md-3 align-items-baseline ]">
-			<span class="[ px-2 ]">@</span>
+			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 		<div class="[ col-md-3 ]">
 			<label for="parks">Park</label>
@@ -205,9 +205,6 @@
 		<div class="[ col-10 col-md-6 ]">
 			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control ]">
 			{{ datalist("parks", parks) }}
-		</div>
-		<div class="[ col-2 col-md-3 align-items-baseline ]">
-			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
 </script>

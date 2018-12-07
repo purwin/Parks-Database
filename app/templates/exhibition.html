@@ -89,7 +89,14 @@
 					<ul class="[ list-unstyled p-0 ]">
 						{% for park in exhibition.parks %}
 
-							<li><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></li>
+							<li class="js-li_park [ row mb-3 align-items-baseline ]">
+								<div class="[ col-md-3 ]">
+									<label for="artworks">Park</label>
+								</div>
+								<div class="[ col-10 col-md-6 ]">
+									<a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a>
+								</div>
+							</li>
 
 						{% else %}
 
@@ -109,14 +116,32 @@
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Organizations</h2>
 
-					<ul class="[ list-unstyled p-0 ]">
-						{% for org in exhibition.orgs %}
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-12 text-right py-4 ]">
+							<button id="js-add_org" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+						</div>
+					</div>
 
-							<li><a href="{{ url_for('org', org_id=org.id) }}">{{ org.name }}</a></li>
+					<ul class="[ list-unstyled p-0 ]">
+						{% for org in exhibition.organizations %}
+
+						<li class="js-li_org [ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								<label for="artworks">Organization</label>
+							</div>
+								<div class="[ col-10 col-md-6 ]">
+									<a href="{{ url_for('org', org_id=org.id) }}" class="is-active">{{ org.name }}</a>
+									<input id="js-datalist_org-{{ loop.index }}" type="text" name="orgs-{{ loop.index }}" list="orgs" data-value="{{ org.id }}" value="{{ org.name }}" class="js-datalist-child js-datalist_org [ form-control-plaintext d-none ]">
+									{{ datalist("orgs", orgs) }}
+								</div>
+								<div class="[ col-2 col-md-3 ]">
+									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+								</div>
+							</li>
 
 						{% else %}
 
-							<li><i>{{ exhibition.name }} has no related organizations.</i></li>
+							<li class="is-active"><i>{{ exhibition.name }} has no related organizations.</i></li>
 
 						{% endfor %}
 					</ul>
@@ -146,22 +171,21 @@
 									<label for="artworks">Artwork</label>
 								</div>
 								<div class="[ col-10 col-md-6 mb-1 ]">
-									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext ]">
+									<a href="{{ url_for('artwork', artwork_id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
+									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]">
 									{{ datalist("artworks", artworks) }}
 								</div>
-								<div class="[ col-2 col-md-3 align-items-baseline ]">
-									<span class="[ px-2 ]">@</span>
+								<div class="[ col-2 col-md-3 ]">
+									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
 
 								<div class="[ col-md-3 ]">
 									<label for="artworks">Park</label>
 								</div>
 								<div class="[ col-10 col-md-6 ]">
-									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ item.nycpark.id }}" value="{{ item.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext ]">
+									<a href="{{ url_for('park', park_id=item.nycpark.id) }}" class="is-active">{{ item.nycpark.name }}</a>
+									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ item.nycpark.id }}" value="{{ item.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]">
 									{{ datalist("parks", parks) }}
-								</div>
-								<div class="[ col-2 col-md-3 ]">
-									<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
 							</li>
 
@@ -348,19 +372,22 @@
 <!-- Empty artwork template -->
 <script id="js-template_artwork" type="text/template">
 	<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
-		<div class="[ col-10 col-md-8 mb-1 ]">
+		<div class="[ col-md-3 ]">
+			<label for="artworks">Artwork</label>
+		</div>
+		<div class="[ col-10 col-md-6 mb-1 ]">
 			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
-		<div class="[ col-2 col-md-3 align-items-baseline ]">
-			<span class="[ px-2 ]">@</span>
+		<div class="[ col-2 col-md-3 ]">
+			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
-		<div class="[ col-10 col-md-8 ]">
+		<div class="[ col-md-3 ]">
+			<label for="artworks">Park</label>
+		</div>
+		<div class="[ col-10 col-md-6 ]">
 			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control ]">
 			{{ datalist("parks", parks) }}
-		</div>
-		<div class="[ col-2 col-md-3 ]">
-			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
 </script>
@@ -369,12 +396,15 @@
 <!-- Empty org template -->
 <script id="js-template_org" type="text/template">
 	<li class="js-li_org [ row mb-3 align-items-baseline ]">
-		<div class="[ col-10 col-md-8 ]">
+		<div class="[ col-md-3 ]">
+			<label for="artworks">Organization</label>
+		</div>
+		<div class="[ col-10 col-md-6 ]">
 			<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="js-datalist-child js-datalist_org [ form-control ]">
 			{{ datalist("orgs", orgs) }}
 		</div>
 		<div class="[ col-2 col-md-3 ]">
-			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
 </script>

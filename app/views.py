@@ -211,7 +211,8 @@ def exhibition_edit(exhibition_id):
         exh_rel = Exh_art_park(exhibition_id=exhibition.id, artwork_id=artwork.id, park_id=park.id)
         db.session.add(exh_rel)
     except Exception as e:
-      raise e
+      # Return database exception(s)
+      return jsonify({"success": False, "data": e})
     db.session.add(exhibition)
     db.session.commit()
     # Return success message, exhibition object via AJAX
@@ -248,13 +249,19 @@ def park(park_id):
   artworks = Artwork.query.all()
   form = Form_park()
   form.borough.data = park.borough
-  for exhibition in form.exhibitions:
-    form.exhibitions.append_entry(exhibition)
-  for artwork in form.artworks:
-    form.artworks.append_entry(artwork)
-  # park_art = Exh_art_park.query.filter_by(park_id = park_id).all()
+  # for exhibition in form.exhibitions:
+  #   form.exhibitions.append_entry(exhibition)
+  # for artwork in form.artworks:
+  #   form.artworks.append_entry(artwork)
+
+  # park_exh = (db.session.query(Exh_art_park, Park)
+  #   .filter(Exh_art_park.park_id == Park.id)
+  #   .filter(Park.id == park_id)).all()
+  park_exh = Exh_art_park.query.filter_by(park_id = park_id)
+                               .all()
+                               .order_by(exhibition_id)
   return render_template('park.html', park = park, exhibitions = exhibitions,
-                         artworks = artworks, form = form)
+                         artworks = artworks, park_art = form = form)
 
 
 @app.route('/parks/create', methods=['POST'])
@@ -291,6 +298,38 @@ def park_edit(park_id):
     park.borough = form.borough.data
     park.address = form.address.data
     park.cb = form.cb.data
+
+    # Get child list data
+    exhibitions = filter(None, form.exhibitions.data)
+    artworks = filter(None, form.artworks.data)
+    # Add artwork/park children to Exh_art_park table if numbers are equal
+    if len(exhibitions) == len(artworks):
+      # Clear exhibitions/artworks 1-to-many relationships
+      artwork.exhibitions = []
+      artwork.artworks = []
+
+      # Loop through arrays and add to database
+      for x, y in zip(exhibitions, artworks):
+        try:
+          exhibition = Exhibition.query.filter_by(name = x).one()
+          print "!!!EXHIBITION FOUND!: {}".format(exhibition.name)
+          artwork = Artwork.query.filter_by(name = y).one()
+          print "!!!ARTWORK FOUND!: {}".format(artwork.name)
+          exh_rel = Exh_art_park(exhibition_id = exhibition.id,
+                                 artwork_id = artwork.id,
+                                 park_id = park.id)
+          db.session.add(exh_rel)
+      except Exception as e:
+        db.session.rollback()
+        # Return errors if error is raised
+        return jsonify({"success": False, "data": str(e)})
+
+    else:
+      db.session.rollback()
+      # Return error if exhibitions and artworks count is uneven
+      return jsonify({"success": False,
+                      "data": "There's an unequal number of exhibitions and\
+                               artworks. This data needs to be complete."})
 
     # Update park data to database
     db.session.add(park)
@@ -433,12 +472,6 @@ def artwork(artwork_id):
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   form = Form_artwork()
-  # for artist in artwork.artists:
-    # form.artists.append_entry(artist)
-  # for exhibition in artwork.exhibitions:
-  #   form.exhibitions.append_entry(exhibition)
-  # for park in artwork.parks:
-  #   form.parks.append_entry(park)
   artwork_join = (db.session.query(Exh_art_park, Artwork)
     .filter(Exh_art_park.artwork_id == Artwork.id)
     .filter(Artwork.id == artwork_id)).all()
@@ -488,63 +521,57 @@ def artwork_edit(artwork_id):
     artwork.name = form.name.data
 
     # Add artists to 1-to-many relationship
-    try:
-      artwork.artists = []
-      artists = filter(None, form.artists.data)
-      # Add artists to artwork, removing duplicates
-      for item in list(set(artists)):
+    artwork.artists = []
+    artists = filter(None, form.artists.data)
+    # Add artists to artwork, removing duplicates
+    for item in list(set(artists)):
+      try:
         artist = Artist.query.filter_by(name = item).one()
         print "Adding {} to {}".format(artist.name, artwork.name)
         artwork.artists.append(artist)
-    except Exception as e:
-      # raise e
-      # Return errors if error is raised
-      return jsonify({"success": False, "data": e})
+      except Exception as e:
+        db.session.rollback()
+        # Return database exception(s)
+        return jsonify({"success": False,
+                        "data": "{} is not a recognized artist. Feel free to\
+                                 add them to the database!".format(item)})
 
-    # Add artwork/exhibition/park items
-    try:
-      artists = filter(None, form.artists.data)
-      # Add artists to artwork, removing duplicates
-      for item in list(set(artists)):
-        artist = Artist.query.filter_by(name = item).one()
-        print "Adding {} to {}".format(artist.name, artwork.name)
-        artwork.artists.append(artist)
-    except Exception as e:
-      # raise e
-      db.session.rollback()
-      # Return errors if error is raised
-      return jsonify({"success": False, "data": e})
-
-    print "***Exhibitions list!***!: {}".format(jsonify(form.exhibitions))
-    print "***Parks list!***!: {}".format(jsonify(form.parks))
-
-    # Add artwork/park children to Exh_art_park table
+    # Clear out empty data
     exhibitions = filter(None, form.exhibitions.data)
     parks = filter(None, form.parks.data)
-
+    # Add artwork/park children to Exh_art_park table if numbers are equal
     if len(exhibitions) == len(parks):
+      # Clear exhibitions/parks 1-to-many relationships
       artwork.exhibitions = []
       artwork.parks = []
-      try:
-        # Sort exhibitions data by key and add to temporary array
-        # for key in sorted(exhibitions.iterkeys()):
-          # exh_sorted.append(exhibitions[key])
-          # Sort parks data by key and add to temporary array
-        # for key in sorted(parks.iterkeys()):
-          # park_sorted.append(parks[key])
-        # Loop through sorted arrays and add to Exh_art_park table
-        for x, y in zip(exhibitions, parks):
+      # Sort exhibitions data by key and add to temporary array
+      # for key in sorted(exhibitions.iterkeys()):
+        # exh_sorted.append(exhibitions[key])
+        # Sort parks data by key and add to temporary array
+      # for key in sorted(parks.iterkeys()):
+        # park_sorted.append(parks[key])
+      # Loop through sorted arrays and add to Exh_art_park table
+      for x, y in zip(exhibitions, parks):
+        try:
           exhibition = Exhibition.query.filter_by(name = x).one()
           print "!!!EXHIBITION FOUND!: {}".format(exhibition.name)
           park = Park.query.filter_by(name = y).one()
           print "!!!PARK FOUND!: {}".format(park.name)
           exh_rel = Exh_art_park(exhibition_id = exhibition.id,
-                                 artwork_id = artwork.id, park_id = park.id)
+                                 artwork_id = artwork.id,
+                                 park_id = park.id)
           db.session.add(exh_rel)
       except Exception as e:
         db.session.rollback()
         # Return errors if error is raised
-        return jsonify({"success": False, "data": e})
+        return jsonify({"success": False, "data": str(e)})
+
+    else:
+      db.session.rollback()
+      # Return error if exhibitions and parks count is uneven
+      return jsonify({"success": False,
+                      "data": "There's an unequal number of exhibitions and\
+                               parks. This data needs to be complete."})
 
     db.session.add(artwork)
     db.session.commit()

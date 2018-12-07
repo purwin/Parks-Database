@@ -101,7 +101,7 @@
 								<div class="[ col-10 col-md-6 ]">
 									<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" class="is-active">{{ exhibition.name }}</a>
 
-									<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									<!-- Call datalist macro function -->
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
@@ -113,7 +113,7 @@
 
 						{% else %}
 
-							<p><i>There are no exhibitions connected with {{ org.name }}.</i></p>
+							<li><i>There are no exhibitions connected with {{ org.name }}.</i></li>
 
 						{% endfor %}
 

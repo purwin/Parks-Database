@@ -65,11 +65,10 @@ def exhibitions():
 @app.route('/exhibitions/<int:exhibition_id>')
 def exhibition(exhibition_id):
   exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
-  exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
-  exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
   artworks = Artwork.query.all()
   parks = Park.query.all()
   orgs = Org.query.all()
+  exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
   form = Form_exhibition()
   return render_template('exhibition.html', exhibition = exhibition,
                          exhib = exhib, artworks = artworks, parks = parks,
@@ -749,12 +748,17 @@ def org_edit(org_id):
         db.session.add(org)
         db.session.commit()
         print "Added {} exhibition to {}".format(exhibition.name, org.name)
-      except Exception as e:
-        print "{} isn’t a known exhibition".format(item)
-        # raise e
-        # Return errors if error is raised
-        return jsonify({"success": False, "data": e})
+      except:
+        db.session.rollback()
+        return jsonify({
+                        "success": False,
+                        "data": {
+                          "Exhibitions": "{} isn’t a recognized\
+                                            exhibition. Add it to the\
+                                            database!".format(item)}})
 
+    db.session.add(org)
+    db.session.commit()
     # Return success message, org object via AJAX
     return jsonify({"success": True, "data": org.serialize})
 

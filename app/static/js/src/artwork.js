@@ -7,9 +7,6 @@ model.artwork = new model.Obj("artwork");
 model.artist = new model.Obj("artist");
 model.exhibition = new model.Obj("exhibition");
 
-// Set form POST route based on HTML's action attribute
-// model.artwork.post.edit = $('form').attr('action');
-
 // Set child datalist classnames
 model.artwork.children = {
   artist: {

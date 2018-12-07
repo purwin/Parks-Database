@@ -69,10 +69,11 @@ def exhibition(exhibition_id):
   exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
   artworks = Artwork.query.all()
   parks = Park.query.all()
+  orgs = Org.query.all()
   form = Form_exhibition()
   return render_template('exhibition.html', exhibition = exhibition,
                          exhib = exhib, artworks = artworks, parks = parks,
-                         form = form)
+                         orgs = orgs, form = form)
 
 
 @app.route('/exhibitions/create', methods=['POST'])
@@ -192,22 +193,84 @@ def exhibition_edit(exhibition_id):
     exhibition.bond_return = form.bond_return.data
     exhibition.press_clippings = form.press_clippings.data
 
-    try:
+    # Get org child list data
+    orgs = filter(None, form.orgs.data)
+    # Clear exhibitions/artworks 1-to-many relationships
+    exhibition.organizations = []
 
+    for item in list(set(orgs)):
+      try:
+        org = Org.query.filter_by(name = item).one()
+        exhibition.organizations.append(org)
+        # Add org to database
+        db.session.add(exhibition)
+        db.session.commit()
+        print "Added {} org to {}".format(org.name, exhibition.name)
+      except Exception as e:
+        db.session.rollback()
+        return jsonify({
+                        "success": False,
+                        "data": {
+                          "Organizations": "{} isn’t a recognized\
+                                            organization. Add it to the\
+                                            database!".format(item)}})
+
+    # Get artworks/parks child list data
+    artworks = filter(None, form.artworks.data)
+    parks = filter(None, form.parks.data)
+
+    # Add artwork/park children to Exh_art_park table if numbers are equal
+    if len(parks) == len(artworks):
+      # Clear exhibitions/artworks 1-to-many relationships
       exhibition.artworks = []
       exhibition.parks = []
 
-      parks = filter(None, form.parks.data)
-      artworks = filter(None, form.artworks.data)
       for x, y in zip(artworks, parks):
-        # add exhibition, art, park ref to database
-        artwork = Artwork.query.filter_by(name = x).one()
-        park = Park.query.filter_by(name = y).one()
-        exh_rel = Exh_art_park(exhibition_id=exhibition.id, artwork_id=artwork.id, park_id=park.id)
-        db.session.add(exh_rel)
-    except Exception as e:
-      # Return database exception(s)
-      return jsonify({"success": False, "data": e})
+        # Check if artwork is in database
+        try:
+          artwork = Artwork.query.filter_by(name = x).one()
+          print "!!!ARTWORK FOUND!: {}".format(artwork.name)
+        except Exception as e:
+          db.session.rollback()
+          # Return error if artwork not found
+          return jsonify({
+                          "success": False,
+                          "data": {
+                            "Artworks": "{} isn’t a recognized artwork. Add\
+                                            it to the database!".format(x)}})
+        # Check if park is in database
+        try:
+          park = Park.query.filter_by(name = y).one()
+          print "!!!PARK FOUND!: {}".format(park.name)
+        except Exception as e:
+          db.session.rollback()
+          # Return error if artwork not found
+          return jsonify({
+                          "success": False,
+                          "data": {
+                            "Artworks": "{} isn’t a recognized park. Add\
+                                            it to the database!".format(y)}})
+        # Add unique exhibition/artwork/park to database
+        try:
+          exh_rel = Exh_art_park(exhibition_id = exhibition.id,
+                               artwork_id = artwork.id,
+                               park_id = park.id)
+          db.session.add(exh_rel)
+        except Exception as e:
+          db.session.rollback()
+          # Return error if exhibition/artwork/park can't be added
+          return jsonify({"success": False,
+                          "data": {
+                            "Artworks": str(e)}})
+    # Return error if exhibitions and artworks count is uneven
+    else:
+      db.session.rollback()
+      return jsonify({"success": False,
+                      "data": {
+                        "Artworks": "There’s an uneven number of\
+                                        artworks and parks. This data\
+                                         needs to be complete."}})
+    # Add exhibition to database if we made it this far
     db.session.add(exhibition)
     db.session.commit()
     # Return success message, exhibition object via AJAX
@@ -243,12 +306,10 @@ def park(park_id):
   exhibitions = Exhibition.query.all()
   artworks = Artwork.query.all()
   form = Form_park()
+  # Set default select item to current park borough
   form.borough.data = park.borough
-
-  # park_exh = (db.session.query(Exh_art_park, Park)
-  #   .filter(Exh_art_park.park_id == Park.id)
-  #   .filter(Park.id == park_id)).all()
-  park_art = Exh_art_park.query.filter_by(park_id = park_id).order_by(Exh_art_park.exhibition_id).all()
+  park_art = Exh_art_park.query.filter_by(park_id = park_id)\
+                               .order_by(Exh_art_park.exhibition_id).all()
   return render_template('park.html', park = park, exhibitions = exhibitions,
                          artworks = artworks, park_art = park_art, form = form)
 

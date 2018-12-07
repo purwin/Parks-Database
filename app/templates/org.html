@@ -87,7 +87,7 @@
 						</div>
 					</div>
 
-					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
+					<ul class="js-ul-child js-ul_exhibitions [ list-unstyled p-0 ]">
 
 						{% for exhibition in org.exhibitions %}
 
@@ -113,7 +113,7 @@
 
 						{% else %}
 
-							<li><i>There are no exhibitions connected with {{ org.name }}.</i></li>
+							<li class="is-active"><i>There are no exhibitions connected with {{ org.name }}.</i></li>
 
 						{% endfor %}
 

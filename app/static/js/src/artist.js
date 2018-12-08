@@ -8,10 +8,10 @@ model.artwork = new model.Obj("artwork");
 
 // Set child datalist classnames
 model.artist.children = {
-  artist: {
-    count: $('.js-datalist_artist').length + 1,
-    class: ".js-datalist_artist",
-    id: "#js-datalist_artist"
+  artwork: {
+    count: $('.js-datalist_artwork').length + 1,
+    class: ".js-datalist_artwork",
+    id: "#js-datalist_artwork"
   }
 };
 

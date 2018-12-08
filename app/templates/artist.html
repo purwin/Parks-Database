@@ -2,58 +2,45 @@
 {% extends "layout.html" %}
 {% block head_extras %}
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-	<meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
-{% block title %}Parks Database – {{ artist.name|capitalize }}{% endblock %}
+{% block title %}NYC Parks Database – {{ artist.name|capitalize }}{% endblock %}
 {% block content %}
-{% if artist %}
+
 <div class="container-fluid">
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
-			<div class="[ col-sm-12 col-md-8 ]">
+			<div class="[ col-md-8 ]">
 				<h1 class="[ text-center display-3 ]"><b>{{ artist.name|upper }}</b></h1>
 			</div>
 		</div>
 	</section>
 
-	<form action="/artists/{{ artist.id }}/edit" id="formArtist" method="post">
+	<div class="js-alert [ fixed-top ]"></div>
+
+
+	<form id="js-form_artist" action="/artists/{{ artist.id }}/edit" method="POST">
 		{{ form.csrf_token }}
 
 		<div class="[ row justify-content-center ]">
-			<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
-				<button type="button" class="butt butt--edit" id="form_edit">Edit</button>
-				<a href="{{ url_for('artist_delete', artist_id=artist.id) }}" role="button" class="butt butt--delete [ btn btn-sm ]">Delete</a>
+			<div class="[ col-md-8 text-right py-4 ]">
+				<button id="js-edit_artist" class="js-form-edit butt butt--edit" type="button">Edit</button>
+				<a href="{{ url_for('artist_delete', artist_id=artist.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 			</div>
 		</div>
 
-		{% if form.errors %}
 
-			<div class="[ fixed-top ]">
-				{% for field_name, field_errors in form.errors|dictsort if field_errors %}
-					{% for error in field_errors %}
-						<div class="[ alert alert-danger alert-dismissible fade show ]" role="alert">
-						  <strong>Watch out!</strong> {{ form[field_name].label }}: {{ error }}
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						    <span aria-hidden="true">&times;</span>
-						  </button>
-						</div>
-					{% endfor %}
-				{% endfor %}
-			</div>
-
-		{% endif %}
 
 		<section id="section--bio">
-			<div class="[ row justify-content-center py-4 ]">
-				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
-					<ul class="[ p-0 ]">
+					<ul class="js-ul_artwork [ p-0 ]">
 
-						<li class="[ row mb-3 d-none align-items-baseline ]">
-							<div class="[ col-md-4 ]">
+						<li class="[ row mb-3 align-items-baseline d-none ]">
+							<div class="[ col-md-3 ]">
 								{{ form.fName.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -61,8 +48,8 @@
 							</div>
 						</li>
 
-						<li class="[ row mb-3 d-none align-items-baseline ]">
-							<div class="[ col-md-4 ]">
+						<li class="[ row mb-3 align-items-baseline d-none ]">
+							<div class="[ col-md-3 ]">
 								{{ form.pName.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -71,7 +58,7 @@
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline ]">
-							<div class="[ col-md-4 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.email.label }}
 							</div>
 							<div class="[ col-md-6 ]">
@@ -80,20 +67,21 @@
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline ]">
-							<div class="[ col-md-4 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.phone.label }}
 							</div>
 							<div class="[ col-md-6 ]">
-								{{ form.phone(class="form-control-plaintext", value=artist.phone, readonly=true) }}
+								<p class="is-active [ m-0 ]">{% if artist.phone %}{{ artist.phone }}{% else %}None{% endif %}</p>
+								{{ form.phone(class="form-control-plaintext d-none", value=artist.phone,) }}
 							</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline ]">
-							<div class="[ col-md-4 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.website.label }}
 							</div>
 							<div class="[ col-md-6 ]">
-								<a href="http://{{ artist.website }}" class="[ d-inline ]">{{ artist.website }}</a>
+								<p class="is-active [ m-0 ]">{% if artist.website %}<a href="http://{{ artist.website }}" class="is-active">{{ artist.website }}</a>{% else %}None{% endif %}</p>
 								{{ form.website(class="form-control-plaintext d-none", value=artist.website) }}
 							</div>
 						</li>
@@ -106,37 +94,41 @@
 
 		<section id="section--artworks">
 			<div class="[ row justify-content-center py-4 ]">
-				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
-					<h2 class="[ display-4 py-4 ]">Artworks</h2>
+				<div class="[ col-md-8 ]">
+					<h2 class="[ display-4 pt-4 pb-3 ]">Artworks</h2>
 
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-12 text-right p-4 ]">
-							<button type="button" class="form_add butt butt--add [ d-none ml-2 ]" id="add_artist">Add</button>
+					<div class="[ row justify-content-center d-none ]">
+						<div class="[ col-12 text-right pb-4 ]">
+							<button id="js-add_artwork" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
-					<ul class="ul_artworks [ p-0 ]">
+					<ul class="js-ul-child js-ul_artworks [ p-0 ]">
 
 						{% for artwork in artist.artworks %}
 							<li class="artist__li--artworks [ row mb-3 align-items-baseline ]">
-								<div class="[ col-md-4 ]">
+
+								<div class="[ col-md-3 ]">
 									<label for="art_name">Artwork</label>
 								</div>
-								<div class="[ col-md-6 ]">
-									<a href="{{ url_for('artwork', artwork_id=artwork.id) }}" class="[ d-inline ]">{{ artwork.name }}</a>
 
-									<input id="datalist_art" type="text" name="artworks-{{ loop.index0 }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="datalist_art [ form-control-plaintext d-none ]" readonly>
+								<div class="[ col-md-6 ]">
+									<a href="{{ url_for('artwork', artwork_id=artwork.id) }}" class="is-active">{{ artwork.name }}</a>
+
+									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]">
 									<!-- Call datalist macro function -->
 									{{ datalist("artworks", artworks) }}
 								</div>
-								<div class="[ col-md-2 ]">
-									<button type="button" class="butt butt--delete-icon form_remove [ d-none ]"><i class="far fa-times-circle"></i></button>
+
+								<div class="[ col-2 ]">
+									<button class="js-delete-li butt butt--delete-icon [ d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
+
 							</li>
 
 						{% else %}
 
-							<p><i>There are no artworks connected with {{ artist.name }}.</i></p>
+							<p class="[ is-active ]"><i>There are no artworks connected with {{ artist.name }}.</i></p>
 
 						{% endfor %}
 
@@ -148,7 +140,7 @@
 
 		<!-- <section id="section--exhibitions">
 			<div class="[ row justify-content-center py-4 ]">
-				<div class="[ col-sm-12 col-md-8 col-lg-6 ]">
+				<div class="[ col-md-8 col-lg-6 ]">
 					<h2 class="[ text-center display-4 p-4 ]">Exhibitions</h2>
 
 					{% if artist.artworks %}
@@ -232,10 +224,10 @@
 		</section> -->
 
 		<section id="section--submit">
-			<div class="[ row justify-content-center d-none ]" id="form_buttons">
-				<div class="[ col-sm-12 col-md-10 text-right p-4 ]">
-					<button type="button" class="butt butt--delete" id="form_cancel">Cancel</button>
-					<button type="button" class="butt butt--add [ ml-2 ]" value="Create" id="form_update">Update</button>
+			<div class="[ row justify-content-center d-none ]">
+				<div class="[ col-md-8 text-right py-4 ]">
+					<button id="js-cancel_artist" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+					<button id="js-post_artist" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 				</div>
 			</div>
 		</section>
@@ -243,26 +235,41 @@
 	</form>
 </div>
 <!-- Empty artwork template -->
-<script id="template_artwork" type="text/template">
+<script id="js-template_artwork" type="text/template">
 	<li class="artist__li--artworks [ row mb-3 align-items-baseline ]">
-		<div class="[ col-md-4 ]">
-			<label for="name">Artwork</label>
+
+		<div class="[ col-md-3 ]">
+			<label for="art_name">Artwork</label>
 		</div>
+
 		<div class="[ col-md-6 ]">
-			<input id="datalist_art" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork" class="datalist_art [ form-control ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
-		<div class="[ col-md-2 ]">
-			<button type="button" class="butt butt--delete-icon form_remove"><i class="far fa-times-circle"></i></button>
+
+		<div class="[ col-2 ]">
+			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
+
 	</li>
 </script>
 
-<script id="template_exhibition" type="text/template">
-	
+
+<!-- Empty error template -->
+<script id="js-template_error" type="text/template">
+	<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+		<div class="js-error-body">
+			<strong>Error!</strong> <span class="js-error-notice"></span>
+		</div>
+		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
 </script>
 
-<script src="{{ url_for('static', filename='js/artist.js') }}"></script>
-{% endif %}
+
+<script src="{{ url_for('static', filename='js/dist/commons.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dist/artist.bundle.js') }}"></script>
+
 
 {% endblock %}

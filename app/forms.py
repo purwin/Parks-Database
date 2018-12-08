@@ -1,14 +1,14 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, FieldList, SelectField
 from wtforms.validators import DataRequired, Optional
-from wtforms.fields.html5 import DateField
+from wtforms.fields.html5 import DateField, TelField
 
 
 class Form_artist(FlaskForm):
   pName = StringField('Primary/Last Name', validators=[DataRequired()])
   fName = StringField('First Name')
   email = StringField('Email', validators=[DataRequired()])
-  phone = StringField('Phone')
+  phone = TelField('Phone')
   website = StringField('Website')
 
   # Related
@@ -77,7 +77,7 @@ class Form_exhibition(FlaskForm):
 class Form_org(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   website = StringField('Website')
-  phone = StringField('Phone')
+  phone = TelField('Phone')
 
   # Related
   exhibitions = FieldList(StringField('Exhibition'))

@@ -7,18 +7,13 @@ import {view} from './view';
 model.exhibition = new model.Obj("exhibition");
 model.artwork = new model.Obj("artwork");
 model.park = new model.Obj("park");
+model.org = new model.Obj("org");
 
 
 // Set form POST route based on HTML's action attribute
 // model.exhibition.post.edit = $('form').attr('action');
 
 // Set child datalist classnames
-model.exhibition.children = {
-  "artwork": ".js-datalist_artwork",
-  "park": ".js-datalist_park",
-  "org": ".js-datalist_org"
-};
-
 model.exhibition.children = {
   artwork: {
     count: $('.js-datalist_artwork').length + 1,

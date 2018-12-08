@@ -59,7 +59,7 @@
 		<section id="section--artists">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 pt-4 ]">Artists</h2>
+					<h2 class="[ display-4 pt-4 pb-1 ]">Artists</h2>
 
 					<div class="[ row justify-content-center d-none ]">
 						<div class="[ col-12 text-right pb-4 ]">
@@ -106,7 +106,7 @@
 		<section id="section--exhibitions">
 			<div class="[ row justify-content-center py-4 ]">
 				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 pt-4 ]">Exhibitions</h2>
+					<h2 class="[ display-4 pt-4 pb-2 ]">Exhibitions</h2>
 
 					<div class="[ row justify-content-center d-none ]">
 						<div class="[ col-12 text-right pb-4 ]">
@@ -125,8 +125,8 @@
 								</div>
 
 								<div class="[ col-10 col-md-6 mb-1 ]">
-									<a href="{{ url_for('exhibition', exhibition_id=exhibit.exhibit.exhib.id) }}" class="is-active">{{ exhibit.exhibit.exhib.name }}</a>
-									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibit.exhibit.exhib.id }}" value="{{ exhibit.exhibit.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<a href="{{ url_for('exhibition', exhibition_id=exhibit.exhib.id) }}" class="is-active">{{ exhibit.exhib.name }}</a>
+									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibit.exhib.id }}" value="{{ exhibit.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
 
@@ -139,8 +139,8 @@
 								</div>
 
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('park', park_id=exhibit.exhibit.nycpark.id) }}" class="is-active">{{ exhibit.exhibit.nycpark.name }}</a>
-									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ exhibit.exhibit.nycpark.id }}" value="{{ exhibit.exhibit.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]" readonly>
+									<a href="{{ url_for('park', park_id=exhibit.nycpark.id) }}" class="is-active">{{ exhibit.nycpark.name }}</a>
+									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ exhibit.nycpark.id }}" value="{{ exhibit.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("parks", parks) }}
 								</div>
 

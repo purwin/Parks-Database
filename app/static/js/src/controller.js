@@ -1,5 +1,3 @@
-import 'jquery';
-
 import {model} from './model';
 import {view} from './view';
 
@@ -7,7 +5,6 @@ import {view} from './view';
 export let controller = {
 
   init: function() {
-    // model.init();
     view.init();
   },
 
@@ -45,7 +42,7 @@ export let controller = {
     $(".js-submit-div").show();
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists();
+    this.iterateFieldlists(x);
   },
 
 
@@ -58,7 +55,7 @@ export let controller = {
     $(x).closest('.row').nextAll('ul').append(model[obj].li.html);
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists();
+    this.iterateFieldlists(x);
   },
 
 
@@ -115,18 +112,17 @@ export let controller = {
 
 
   // Update input ID and name value for each object child element
-  iterateFieldlists: function() {
+  iterateFieldlists: function(x) {
+    // Get ID of selected parent form
+    const formID = $(x).closest('form').attr('id');
+
     for (const child in model.activeObject.children) {
       console.log("Updating " + child + " datalists");
       // Define child object in children
       let item = model.activeObject.children[child];
 
-      console.log("ITEM ID: " + item.id);
-
-      console.log("LENGTH: " + $(item.class).length);
-
       // Loop through matching IDs and append count number
-      $.each($(item.id), function() {
+      $.each($('#' + formID + ' ' + item.id), function() {
         // Update name attribute
         $(this).attr('name', $(this).attr('name') + '-' + item.count);
 
@@ -162,7 +158,8 @@ export let controller = {
     var obj = this.determineObject(x);
 
     // Call post data function, get response
-    var postPromise = this.postData(model[obj], model[obj].form.modalID,
+    var postPromise = this.postData(model[obj],
+                                    model[obj].form.modalID,
                                     model[obj].post.create);
 
     postPromise.done(function(response) {
@@ -222,14 +219,13 @@ export let controller = {
 
   // Post main form
   submitForm: function(x) {
-
     console.log("submitForm form ID: " + model.activeObject.form.id);
     console.log("submitForm form post route: " + model.activeObject.post);
 
     // Call post data function, get response
     var postPromise = this.postData(model.activeObject,
                                     model.activeObject.form.id,
-                                    model[obj].post.create);
+                                    model.activeObject.post.create);
 
     postPromise.done(function(response) {
       // If form POST doesn't validate with wtforms, add errors to page
@@ -451,7 +447,7 @@ export let controller = {
     $(x).addClass('invisible');
 
     // Update fieldlist item ID and name values for wtforms validation
-    this.iterateFieldlists();
+    this.iterateFieldlists(x);
   }
 
 

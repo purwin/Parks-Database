@@ -1,7 +1,6 @@
 import {controller} from './controller';
 import {model} from './model';
 import {view} from './view';
-// import 'jquery';
 
 // Create object classes for exhibition, artwork, park
 model.exhibition = new model.Obj("exhibition");

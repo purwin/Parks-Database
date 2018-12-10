@@ -99,5 +99,38 @@ model.org.children = {
 };
 
 
+// Create org object class
+model.create = new model.Obj("create");
+
+// Set child datalist classnames
+model.create.children = {
+  artist: {
+    count: 1,
+    class: ".js-datalist_artist",
+    id: "#js-datalist_artist"
+  },
+  exhibition: {
+    count: 1,
+    class: ".js-datalist_exhibition",
+    id: "#js-datalist_exhibition"
+  },
+  park: {
+    count: 1,
+    class: ".js-datalist_park",
+    id: "#js-datalist_park"
+  },
+  artwork: {
+    count: 1,
+    class: ".js-datalist_artwork",
+    id: "#js-datalist_artwork"
+  },
+  org: {
+    count: 1,
+    class: ".js-datalist_org",
+    id: "#js-datalist_org"
+  }
+};
+
+
 // Init controller object
 controller.init();

@@ -31,7 +31,7 @@ export const model = {
     // Declare object modal ID and body HTML
     this.modal = {
       id: "#js-modal_" + arg, // modal ID ref
-      html: $('#js-form_' + arg).html(),
+      html: '<form id="js-form-modal_' + arg + '" action="" method="POST">' + $('#js-form_' + arg).html() + '</form>' // modal body HTML
     },
 
     // Declare IDs for object form and object modal form

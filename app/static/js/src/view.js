@@ -4,6 +4,7 @@ export let view = {
 
   // Call all view functions
   init: function() {
+
     this.hideDivs();
 
     this.selectForm();
@@ -37,12 +38,17 @@ export let view = {
   },
 
 
+  getVal: function() {
+    return $('#js-create_object').val();
+  },
+
+
   // Determine active form based on input type
   selectForm: function() {
     $('#js-create_object').change(function(e) {
 
       // Call controller function to show object section based on user input
-      controller.showSection($(this).val());
+      controller.showSection(view.getVal());
     });
   },
 

@@ -1,7 +1,6 @@
 {% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
-	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}"> -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 {% endblock %}
 {% block title %}NYC Parks Database – Create{% endblock %}
@@ -14,7 +13,7 @@
 	<section id="section--head">
 
 		<div class="head [ row justify-content-center align-items-center ]">
-			<div class="[ col-sm-12 col-md-8 ]">
+			<div class="[ col-md-8 ]">
 				<h1 class="[ display-3 text-center ]">
 					<label for="create_object">New</label>&#x2009;
 					<select id="js-create_object" class="select--create [ display-4 ]" name="create_object">
@@ -490,7 +489,7 @@
 						{{ form_artist.csrf_token }}
 
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
+							<div class="[ col pt-5 pb-4 ]">
 								<h3 class="section__head [ display-4 ]">Artist Bio</h3>
 							</div>
 						</div>
@@ -595,7 +594,7 @@
 						{{ form_park.csrf_token }}
 
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
+							<div class="[ col pt-5 pb-4 ]">
 								<h3 class="section__head [ display-4 ]">Park Bio</h3>
 							</div>
 						</div>
@@ -667,7 +666,7 @@
 						{{ form_org.csrf_token }}
 
 						<div class="[ row ]">
-							<div class="[ col-sm-12 col-md-8 pt-5 pb-4 ]">
+							<div class="[ col pt-5 pb-4 ]">
 								<h3 class="section__head [ display-4 ]">Organization Bio</h3>
 							</div>
 						</div>
@@ -718,7 +717,7 @@
 			<section id="section--submit">
 				<div class="js-submit-div">
 					<div class="[ row justify-content-center ]">
-						<div class="[ col-sm-12 col-md-10 text-right py-4 ]">
+						<div class="[ col text-right py-4 ]">
 							<button id="js-cancel_create" class="js-cancel-form butt butt--delete" type="button"><a href="{{ url_for('home') }}">Cancel</a></button>
 							<button id="js-post_create" class="js-post-form butt butt--create [ ml-2 ]" type="button" value="Create">Create</button>
 						</div>
@@ -861,7 +860,7 @@
 
 			</div>
 			<div class="[ modal-footer ]">
-				<button id="js-modal-cancel_artwork" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-cancel_artwork" class="js-cancel-modal butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
 				<button id="js-modal-post_artwork" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Create</button>
 			</div>
 		</div>
@@ -874,7 +873,7 @@
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
 				<h5 class="[ modal-title ]" id="">CREATE AN ARTIST</h5>
-				<button type="button" class="js-cancel-form [ close ]" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="js-cancel-modal [ close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -882,7 +881,7 @@
 
 			</div>
 			<div class="[ modal-footer ]">
-				<button id="js-modal-cancel_artist" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-cancel_artist" class="js-cancel-modal butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
 				<button id="js-modal-post_artist" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Create</button>
 			</div>
 		</div>
@@ -895,7 +894,7 @@
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
 				<h5 class="[ modal-title ]" id="">CREATE A PARK</h5>
-				<button type="button" class="js-cancel-form [close ]" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="js-cancel-modal [close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -903,7 +902,7 @@
 
 			</div>
 			<div class="[ modal-footer ]">
-				<button id="js-modal-cancel_park" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-cancel_park" class="js-cancel-modal butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
 				<button id="js-modal-post_park" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Create</button>
 			</div>
 		</div>
@@ -916,7 +915,7 @@
 		<div class="[ modal-content ]">
 			<div class="bg-green [ modal-header ]">
 				<h5 class="[ modal-title ]" id="">CREATE AN ORGANIZATION</h5>
-				<button type="button" class="js-cancel-form [ close ]" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="js-cancel-modal [ close ]" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -924,14 +923,13 @@
 
 			</div>
 			<div class="[ modal-footer ]">
-				<button id="js-modal-cancel_org" class="js-cancel-form butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
+				<button id="js-modal-cancel_org" class="js-cancel-modal butt butt--delete" type="button" data-dismiss="modal">Cancel</button>
 				<button id="js-modal-post_org" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Create</button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- <script src="{{ url_for('static', filename='js/create.js') }}"></script> -->
 <script src="{{ url_for('static', filename='js/dist/commons.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dist/create.bundle.js') }}"></script>
 

@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, FieldList, SelectField
-from wtforms.validators import DataRequired, Optional
-from wtforms.fields.html5 import DateField, TelField
+from wtforms.validators import DataRequired, Optional, Email
+from wtforms.fields.html5 import DateField, TelField, EmailField
 
 
 class Form_artist(FlaskForm):
   pName = StringField('Primary/Last Name', validators=[DataRequired()])
   fName = StringField('First Name')
-  email = StringField('Email', validators=[DataRequired()])
+  email = EmailField('Email', validators=[Email()])
   phone = TelField('Phone')
   website = StringField('Website')
 

@@ -42,7 +42,7 @@ export let controller = {
     $(".js-submit-div").show();
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists(x);
+    this.iterateFieldlists();
   },
 
 
@@ -55,7 +55,7 @@ export let controller = {
     $(x).closest('.row').nextAll('ul').append(model[obj].li.html);
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists(x);
+    this.iterateFieldlists();
   },
 
 
@@ -83,6 +83,9 @@ export let controller = {
     $(model[obj].modal.id).modal('show')
       .find('div.modal-body')
       .html(model[obj].modal.html);
+
+    // Update newest input ID and name attributes
+    this.iterateFieldlists();
   },
 
 
@@ -112,22 +115,24 @@ export let controller = {
 
 
   // Update input ID and name value for each object child element
-  iterateFieldlists: function(x) {
-    // Get ID of selected parent form
-    const formID = $(x).closest('form').attr('id');
-
-    for (const child in model.activeObject.children) {
+  iterateFieldlists: function() {
+    for (const child in model.create.children) {
       console.log("Updating " + child + " datalists");
       // Define child object in children
-      let item = model.activeObject.children[child];
+      let item = model.create.children[child];
 
       // Loop through matching IDs and append count number
-      $.each($('#' + formID + ' ' + item.id), function() {
-        // Update name attribute
-        $(this).attr('name', $(this).attr('name') + '-' + item.count);
+      $.each($(item.id), function() {
+
+        console.log("ID: " + $(this).attr('id'));
+        console.log("LENGTH: " + $(this).closest('ul').children('li').length);
 
         // Update ID attribute
         $(this).attr('id', $(this).attr('id') + '-' + item.count);
+
+        // Update name attribute
+        // $(this).attr('name', $(this).attr('name') + '-' + item.count);
+        $(this).attr('name', $(this).attr('name') + '-' + item.count);
 
         // Update count
         item.count++
@@ -315,19 +320,6 @@ export let controller = {
 
     console.log("Form ID: " + formID);
 
-    // Change selected datalist values to IDs for adding via SQLAlchemy
-    // var valueUpdate = this.valSwitch(formID);
-
-    // if (valueUpdate === false) {
-    //   return;
-    // }
-
-    // For each object child class (artwork.artists, exhibition.orgs, etc.),
-    // add number suffix for wtforms Datalist
-    // for (const child in obj.children) {
-    //   this.iterateFieldlists(formID, obj.children[child]);
-    // }
-
     console.log("Post data: " + $(formID).serialize());
 
     console.log("Post route: " + postRoute);
@@ -447,7 +439,7 @@ export let controller = {
     $(x).addClass('invisible');
 
     // Update fieldlist item ID and name values for wtforms validation
-    this.iterateFieldlists(x);
+    this.iterateFieldlists();
   }
 
 

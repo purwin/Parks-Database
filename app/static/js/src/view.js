@@ -1,5 +1,3 @@
-import 'jquery';
-
 import {controller} from './controller';
 
 export let view = {

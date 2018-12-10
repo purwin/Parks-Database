@@ -42,7 +42,7 @@ export let controller = {
     $(".js-submit-div").show();
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists();
+    this.iterateFieldlists(model.activeObject.form.id);
   },
 
 
@@ -51,11 +51,14 @@ export let controller = {
     // Get object type from argument's ID
     var obj = this.determineObject(x);
 
+    // Define nearest parent UL item to append li to
+    let nearestParentUL = $(x).closest('.row').nextAll('ul');
+
     // Append next UL with LI HTML
-    $(x).closest('.row').nextAll('ul').append(model[obj].li.html);
+    nearestParentUL.append(model[obj].li.html);
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists();
+    this.iterateFieldlists('#' + $(x).closest('form').attr('id'));
   },
 
 
@@ -79,13 +82,16 @@ export let controller = {
     // Get object type from argument's ID
     var obj = this.determineObject(x);
 
+    // Set active object
+    this.selectActiveObject(obj);
+
     // Show object modal and add object.modal HTML to modal body
     $(model[obj].modal.id).modal('show')
       .find('div.modal-body')
       .html(model[obj].modal.html);
 
     // Update newest input ID and name attributes
-    this.iterateFieldlists();
+    this.iterateFieldlists(model.activeObject.form.modalID);
   },
 
 
@@ -115,14 +121,16 @@ export let controller = {
 
 
   // Update input ID and name value for each object child element
-  iterateFieldlists: function() {
-    for (const child in model.create.children) {
+  iterateFieldlists: function(obj) {
+    console.log("iterate obj ID: " + obj);
+
+    for (const child in model.activeObject.children) {
       console.log("Updating " + child + " datalists");
       // Define child object in children
-      let item = model.create.children[child];
-
+      let item = model.activeObject.children[child];
+      console.log(obj + ' ' + item.id);
       // Loop through matching IDs and append count number
-      $.each($(item.id), function() {
+      $.each($(obj + ' ' + item.id), function() {
 
         console.log("ID: " + $(this).attr('id'));
         console.log("LENGTH: " + $(this).closest('ul').children('li').length);
@@ -154,6 +162,9 @@ export let controller = {
   // Remove modal ref from list when a modal is cancelled
   removeModal: function(x) {
     this.popModalList();
+
+    // Set active object
+    this.selectActiveObject(view.getVal());
   },
 
 
@@ -211,6 +222,8 @@ export let controller = {
         // Hide modal
         view.closeModal();
 
+        // Set active object to current value of create.html select value
+        controller.selectActiveObject(view.getVal());
       }
 
     }).fail(function(error) {
@@ -439,7 +452,7 @@ export let controller = {
     $(x).addClass('invisible');
 
     // Update fieldlist item ID and name values for wtforms validation
-    this.iterateFieldlists();
+    this.iterateFieldlists(model.activeObject.form.id);
   }
 
 

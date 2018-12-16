@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block head_extras %}
+<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
+{% endblock %}
+{% block title %}Parks Database – Sign Up{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+
+		<form id="js-form_signup" action="" method="POST">
+				{{ form.hidden_tag() }}
+
+				<section id="section--login">
+
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-md-8 ]">
+							<h2 class="[ display-4 py-4 text-center ]">Parks Database – Sign Up</h2>
+					
+							<ul class="js-ul_login [ p-0 ]">
+					
+								<li class="[ row mb-3 align-items-baseline ]">
+									<div class="[ col-md-3 ]">
+										{{ form.username.label }}
+									</div>
+									<div class="[ col-md-9 ]">
+										{{ form.username(class="form-control", placeholder="form.username.label") }}
+									</div>
+								</li>
+								<li class="[ row mb-3 align-items-baseline ]">
+									<div class="[ col-md-3 ]">
+										{{ form.password.label }}
+									</div>
+									<div class="[ col-md-9 ]">
+										{{ form.password(class="form-control", placeholder="form.password.label") }}
+									</div>
+								</li>
+								<li class="[ row mb-3 align-items-baseline ]">
+									<div class="[ col-md-3 ]">
+										{{ form.remember.label }}
+									</div>
+									<div class="[ col-md-9 ]">
+										{{ form.remember }}
+									</div>
+								</li>
+					
+							</ul>
+					
+						</div>
+					</div>
+
+				</section>
+
+				<section id="section--submit">
+					<div class="[ row justify-content-center ]">
+						<div class="[ col-md-8 py-4 ]">
+							<button id="js-cancel_signup" class="butt butt--delete js-cancel-signup" type="button">Cancel</button>
+							<button id="js-post_signup" class="butt butt--add js-post-signup [ ml-2 ]" value="" type="submit">Sign Up</button>
+						</div>
+					</div>
+				</section>
+
+		</form>
+
+</div>
+
+{% endblock %}

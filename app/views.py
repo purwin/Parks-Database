@@ -274,6 +274,7 @@ def exhibition_create():
 
 
 @app.route('/exhibitions/<int:exhibition_id>/edit', methods=['GET', 'POST'])
+@login_required
 def exhibition_edit(exhibition_id):
   exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
   form = Form_exhibition()

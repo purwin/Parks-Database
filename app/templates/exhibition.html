@@ -17,6 +17,8 @@
 		</div>
 	</section>
 
+	{% include "include/user.html" %}
+
 	<div class="js-alert [ fixed-top ]"></div>
 
 	<form id="js-form_exhibition" action="/exhibitions/{{ exhibition.id }}/edit" method="POST">

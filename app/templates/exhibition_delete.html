@@ -16,6 +16,8 @@
 		</div>
 	</section>
 
+	{% include "include/user.html" %}
+
 	<form id="js-form_exhibition" action="/exhibitions/{{ exhibition.id }}/delete" method="post">
 		{{ form.csrf_token }}
 

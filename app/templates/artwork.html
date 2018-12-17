@@ -25,13 +25,14 @@
 	<form id="js-form_artwork" action="/artworks/{{ artwork.id }}/edit" method="POST">
 		{{ form.csrf_token }}
 
-		<div class="[ row justify-content-center ]">
-			<div class="[ col-md-8 text-right py-4 ]">
-				<button id="js-edit_artwork" class="js-form-edit butt butt--edit" type="button">Edit</button>
-				<a href="{{ url_for('artwork_delete', artwork_id=artwork.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+		{% if current_user.is_authenticated %}
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-md-8 text-right py-4 ]">
+					<button id="js-edit_artwork" class="js-form-edit butt butt--edit" type="button">Edit</button>
+					<a href="{{ url_for('artwork_delete', artwork_id=artwork.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+				</div>
 			</div>
-		</div>
-
+		{% endif %}
 
 
 		<section id="section--bio">
@@ -161,15 +162,16 @@
 		</section>
 
 
-
-		<section id="section--submit">
-			<div class="[ row justify-content-center d-none ]">
-				<div class="[ col-md-8 text-right py-4 ]">
-					<button id="js-cancel_artwork" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
-					<button id="js-post_artwork" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
+		{% if current_user.is_authenticated %}
+			<section id="section--submit">
+				<div class="[ row justify-content-center d-none ]">
+					<div class="[ col-md-8 text-right py-4 ]">
+						<button id="js-cancel_artwork" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+						<button id="js-post_artwork" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		{% endif %}
 
 	</form>
 

@@ -24,12 +24,14 @@
 	<form id="js-form_exhibition" action="/exhibitions/{{ exhibition.id }}/edit" method="POST">
 		{{ form.csrf_token }}
 
-		<div class="[ row justify-content-center ]">
-			<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
-				<button id="js-edit_exhibition" class="js-form-edit butt butt--edit" type="button">Edit</button>
-				<a href="{{ url_for('exhibition_delete', exhibition_id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+		{% if current_user.is_authenticated %}
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
+					<button id="js-edit_exhibition" class="js-form-edit butt butt--edit" type="button">Edit</button>
+					<a href="{{ url_for('exhibition_delete', exhibition_id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+				</div>
 			</div>
-		</div>
+		{% endif %}
 
 		<section id="section--bio">
 			<div class="[ row justify-content-center ]">
@@ -356,15 +358,16 @@
 		</section>
 
 
-
-		<section id="section--submit">
-			<div class="[ row justify-content-center d-none ]">
-				<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
-					<button id="js-cancel_exhibition" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
-					<button id="js-post_exhibition" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
+		{% if current_user.is_authenticated %}
+			<section id="section--submit">
+				<div class="[ row justify-content-center d-none ]">
+					<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
+						<button id="js-cancel_exhibition" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+						<button id="js-post_exhibition" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		{% endif %}
 
 	</form>
 

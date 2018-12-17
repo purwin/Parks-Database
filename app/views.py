@@ -36,6 +36,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
+
 @login_manager.user_loader
 def load_user(user_id):
   return User.query.get(user_id)
@@ -43,6 +44,7 @@ def load_user(user_id):
 @app.template_filter('date_format')
 def date_format(value, format='%m/%d/%y'):
   return value.strftime(format)
+
 
 
 @app.route('/home')
@@ -147,6 +149,7 @@ def exhibition(exhibition_id):
 
 
 @app.route('/exhibitions/create', methods=['POST'])
+@login_required
 def exhibition_create():
   form = Form_exhibition()
   if form.validate_on_submit():
@@ -395,6 +398,7 @@ def exhibition_edit(exhibition_id):
 
 
 @app.route('/exhibitions/<int:exhibition_id>/delete', methods=['GET', 'POST'])
+@login_required
 def exhibition_delete(exhibition_id):
   exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
   form = Form_exhibition()
@@ -429,6 +433,7 @@ def park(park_id):
 
 
 @app.route('/parks/create', methods=['POST'])
+@login_required
 def park_create():
   form = Form_park()
   if form.validate_on_submit():
@@ -452,6 +457,7 @@ def park_create():
 
 
 @app.route('/parks/<int:park_id>/edit', methods=['POST'])
+@login_required
 def park_edit(park_id):
   park = Park.query.filter_by(id = park_id).one()
   form = Form_park()
@@ -531,6 +537,7 @@ def park_edit(park_id):
 
 
 @app.route('/parks/<int:park_id>/delete', methods=['GET', 'POST'])
+@login_required
 def park_delete(park_id):
   park = Park.query.filter_by(id=park_id).one()
   form = Form_park()
@@ -552,12 +559,11 @@ def artists():
 def artist(artist_id):
   artist = Artist.query.filter_by(id = artist_id).one()
   artworks = Artwork.query.all()
-  # exhibitions = Exhibition.query.all()
-  # parks = Park.query.all()
+
+  form = Form_artist()
   # artist_join = (db.session.query(Artist, Exh_art_park, Artwork, Park)
   #   .filter(Exh_art_park.artwork_id == Artwork.id)
   #   .filter(Artist.id == artist_id)).all()
-  form = Form_artist()
   # for i in artist_join:
   #   print "ARTIST: {}: {}".format(i.Artist.id, i.Artist.name)
   #   print "ARTWORK: {}: {}".format(i.Artwork.id, i.Artwork.name)
@@ -568,6 +574,7 @@ def artist(artist_id):
 
 
 @app.route('/artists/create', methods=['GET', 'POST'])
+@login_required
 def artist_create():
   pass
   form = Form_artist()
@@ -613,6 +620,7 @@ def artist_create():
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
+@login_required
 def artist_edit(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
   form = Form_artist()
@@ -656,6 +664,7 @@ def artist_edit(artist_id):
 
 
 @app.route('/artists/<int:artist_id>/delete', methods=['GET', 'POST'])
+@login_required
 def artist_delete(artist_id):
   artist = Artist.query.filter_by(id=artist_id).one()
   form = Form_artist()
@@ -690,6 +699,7 @@ def artwork(artwork_id):
 
 
 @app.route('/artworks/create', methods=['POST'])
+@login_required
 def artwork_create():
   form = Form_artwork()
   if form.validate_on_submit():
@@ -727,6 +737,7 @@ def artwork_create():
 
 
 @app.route('/artworks/<int:artwork_id>/edit', methods=['POST'])
+@login_required
 def artwork_edit(artwork_id):
   artwork = Artwork.query.filter_by(id=artwork_id).one()
   form = Form_artwork()
@@ -821,6 +832,7 @@ def artwork_edit(artwork_id):
 
 
 @app.route('/artworks/<int:artwork_id>/delete', methods=['GET', 'POST'])
+@login_required
 def artwork_delete(artwork_id):
   artwork = Artwork.query.filter_by(id=artwork_id).one()
   form = Form_artwork()
@@ -851,6 +863,7 @@ def org(org_id):
 
 
 @app.route('/orgs/create', methods=['POST'])
+@login_required
 def org_create():
   form = Form_org()
 
@@ -892,6 +905,7 @@ def org_create():
 
 
 @app.route('/orgs/<int:org_id>/edit', methods=['POST'])
+@login_required
 def org_edit(org_id):
   org = Org.query.filter_by(id=org_id).one()
   form = Form_org()
@@ -934,6 +948,7 @@ def org_edit(org_id):
 
 
 @app.route('/orgs/<int:org_id>/delete', methods=['GET', 'POST'])
+@login_required
 def org_delete(org_id):
   org = Org.query.filter_by(id=org_id).one()
   form = Form_org()

@@ -6,24 +6,25 @@ import json
 # from sqlalchemy import create_engine
 # from sqlalchemy.orm import sessionmaker
 
-# import db
+# import current database
 from app import db
 
-# import parks_db
-from app import parks_db
-
+# import Park class
+from app.parks_db import Park
 
 def import_parks(json_file):
+  # Start up database
   init_db()
 
+  # Parse JSON file, add objects to database
   get_parks(json_file)
 
 
 def get_parks(json_file):
   # db.create_all()
-  # Read json file
+  # Read JSON file
   with open(json_file, 'r') as r:
-    # Store json object
+    # Store JSON object
     input = json.load(r)
 
   # List of parks with duplicate names
@@ -54,13 +55,15 @@ def get_parks(json_file):
       add_park({
         'Park_ID': i['Prop_ID'],
         'Name': "{} {}".format(i['Prop_ID'], i['Name']),
-        'Address': "{}, {}".format(i['Location'], i['Zip']),
+        'Zip': i['Zip'],
+        'Location': i['Location']
       })
     else:
       add_park({
         'Park_ID': i['Prop_ID'],
         'Name': i['Name'],
-        'Address': "{}, {}".format(i['Location'], i['Zip']),
+        'Zip': i['Zip'],
+        'Location': i['Location']
       })
 
 
@@ -69,37 +72,43 @@ def init_db():
 
 
 def add_park(obj):
-  # print obj
-  # return
-
+  # Determine borough
   if obj['Park_ID'].startswith('X'):
     borough = 'Bronx'
-    print obj
   elif obj['Park_ID'].startswith('B'):
     borough = 'Brooklyn'
   elif obj['Park_ID'].startswith('M'):
     borough = 'Manhattan'
   elif obj['Park_ID'].startswith('Q'):
     borough = 'Queens'
+  elif obj['Park_ID'].startswith('R'):
+    borough = 'Staten Island'
   else:
-    print obj
-    return
-  # elif obj['Park_ID'].startswith(''):
-    # borough = 'Staten Island'
+    print "ERROR: {}".format(obj)
+    dump_errors(obj)
+
+  # Determine address
+  if obj['Zip']:
+    address = "{}, {} NY {}".format(obj['Location'], borough, obj['Zip'])
+  else:
+    address = "{}, {} NY".format(obj['Location'], borough)
 
   return
   new_park = Park(name=obj['Name'],
                   park_id=obj['Park_ID'],
-                  address=obj['Address'],
+                  address=address,
                   borough=borough)
+  db.session.add(new_park)
+  db.session.commit()
 
 
-def dump_errors(list):
-  pass
+def dump_errors(obj):
+  with open('errors_park.txt', 'a') as w:
+    json.dump(obj, w)
 
 
 if __name__ == '__main__':
-  # Declare parks json file
+  # Declare parks JSON file
   json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/DPR_Parks_001.json'
 
   get_parks(json_file)

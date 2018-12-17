@@ -16,6 +16,8 @@
 		</div>
 	</section>
 
+	{% include "include/user.html" %}
+
 	<form id="js-form_org" action="/orgs/{{ org.id }}/delete" method="POST">
 		{{ form.csrf_token }}
 

@@ -1,17 +1,49 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-from app import app, db
-from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
-from forms import Form_artist, Form_exhibition, Form_artwork, Form_park, Form_org
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.urls import url_parse
 
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import (
+  LoginManager,
+  UserMixin,
+  login_user,
+  login_required,
+  logout_user,
+  current_user
+)
+
+from app import app, db
+
+from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from forms import (
+  Form_artist,
+  Form_exhibition,
+  Form_artwork,
+  Form_park,
+  Form_org,
+  Form_user
+)
+from users import User
 
 import sys
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+  return User.query.get(user_id)
+
+@app.template_filter('date_format')
+def date_format(value, format='%m/%d/%y'):
+  return value.strftime(format)
+
 
 @app.route('/home')
 @app.route('/index')
@@ -25,13 +57,52 @@ def home():
   return render_template('index.html', exhibitions=exhibitions, parks=parks)
 
 
-@app.template_filter('date_format')
-def date_format(value, format='%m/%d/%y'):
-  return value.strftime(format)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  pass
+  form = Form_user()
+  if form.validate_on_submit():
+    user = User.query.filter_by(username = form.username.data).one()
+    if user:
+      if check_password_hash(user.password, form.password.data):
+        login_user(user, remember = form.remember.data)
+        next = request.args.get('next')
+        if not next or url_parse(next).netloc != '':
+          next = url_for('home')
+          return redirect(next)
+
+  return render_template('login.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+  logout_user()
+  return 'You are now logged out!'
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+  form = Form_user()
+
+  if form.is_submitted():
+    if form.validate():
+      hashed_password = generate_password_hash(form.password.data, method='sha256')
+      new_user = User(username=form.username.data, password=hashed_password)
+      db.session.add(new_user)
+      db.session.commit()
+      return jsonify({"success": True, "data": {"Signup": "User created!"}})
+
+    else:
+      return jsonify({"success": False, "data": form.errors})
+
+  return render_template('signup.html', form=form)
+
 
 
 # Route: Create database items
 @app.route('/create', methods=['GET'])
+@login_required
 def create():
   # Query object classes
   artists = Artist.query.all()

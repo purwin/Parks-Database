@@ -1,13 +1,22 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 import json
 
 # from sqlalchemy import create_engine
 # from sqlalchemy.orm import sessionmaker
 
 # import db
-# from app import db
+from app import db
 
 # import parks_db
-# from parks_db import Park
+from app import parks_db
+
+
+def import_parks(json_file):
+  init_db()
+
+  get_parks(json_file)
 
 
 def get_parks(json_file):
@@ -16,8 +25,6 @@ def get_parks(json_file):
   with open(json_file, 'r') as r:
     # Store json object
     input = json.load(r)
-
-  parks_list = []
 
   # List of parks with duplicate names
   duplicate_list = ['Park', 'GREENSTREET', 'Lafayette Playground',
@@ -39,9 +46,60 @@ def get_parks(json_file):
                     'Parkside Playground', 'Fox Playground', 'Rainey Park',
                     'Washington Park']
 
+  # for i in input:
+  #   print i
+  #   return
+  for i in input:
+    if i['Name'] in duplicate_list:
+      add_park({
+        'Park_ID': i['Prop_ID'],
+        'Name': "{} {}".format(i['Prop_ID'], i['Name']),
+        'Address': "{}, {}".format(i['Location'], i['Zip']),
+      })
+    else:
+      add_park({
+        'Park_ID': i['Prop_ID'],
+        'Name': i['Name'],
+        'Address': "{}, {}".format(i['Location'], i['Zip']),
+      })
+
+
+def init_db():
+  db.create_all()
+
+
+def add_park(obj):
+  # print obj
+  # return
+
+  if obj['Park_ID'].startswith('X'):
+    borough = 'Bronx'
+    print obj
+  elif obj['Park_ID'].startswith('B'):
+    borough = 'Brooklyn'
+  elif obj['Park_ID'].startswith('M'):
+    borough = 'Manhattan'
+  elif obj['Park_ID'].startswith('Q'):
+    borough = 'Queens'
+  else:
+    print obj
+    return
+  # elif obj['Park_ID'].startswith(''):
+    # borough = 'Staten Island'
+
+  return
+  new_park = Park(name=obj['Name'],
+                  park_id=obj['Park_ID'],
+                  address=obj['Address'],
+                  borough=borough)
+
+
+def dump_errors(list):
+  pass
+
 
 if __name__ == '__main__':
   # Declare parks json file
   json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/DPR_Parks_001.json'
 
-  init_parks(json_file)
+  get_parks(json_file)

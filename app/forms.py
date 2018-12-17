@@ -1,5 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FieldList, SelectField
+from wtforms import (
+  StringField,
+  TextAreaField,
+  FieldList,
+  SelectField,
+  PasswordField,
+  BooleanField
+)
 from wtforms.validators import DataRequired, Optional, Email
 from wtforms.fields.html5 import DateField, TelField, EmailField
 
@@ -15,6 +22,7 @@ class Form_artist(FlaskForm):
   artworks = FieldList(StringField('Artwork'), min_entries=1)
   # FUTURE: custom validation for artworks
 
+
 class Form_artwork(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
 
@@ -27,13 +35,20 @@ class Form_artwork(FlaskForm):
 class Form_park(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   park_id = StringField('Park ID No.', validators=[DataRequired()])
-  borough = SelectField('Borough',  choices=[('Bronx', 'Bronx'), ('Brooklyn', 'Brooklyn'), ('Manhattan', 'Manhattan'), ('Queens', 'Queens'), ('Staten Island', 'Staten Island')], validators=[DataRequired()])
+  borough = SelectField('Borough',
+                        choices=[('Bronx', 'Bronx'),
+                                 ('Brooklyn', 'Brooklyn'),
+                                 ('Manhattan', 'Manhattan'),
+                                 ('Queens', 'Queens'),
+                                 ('Staten Island', 'Staten Island')],
+                        validators=[DataRequired()])
   address = StringField('Address')
   cb = StringField('Community Board', validators=[DataRequired()])
 
   # Related
   exhibitions = FieldList(StringField('Exhibition'))
   artworks = FieldList(StringField('Artwork'))
+
 
 class Form_exhibition(FlaskForm):
   # Bio
@@ -74,6 +89,7 @@ class Form_exhibition(FlaskForm):
   artworks = FieldList(StringField('Artwork'))
   orgs = FieldList(StringField('Organization'))
 
+
 class Form_org(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
   website = StringField('Website')
@@ -81,3 +97,9 @@ class Form_org(FlaskForm):
 
   # Related
   exhibitions = FieldList(StringField('Exhibition'))
+
+
+class Form_user(FlaskForm):
+  username = StringField('Username', validators=[DataRequired()])
+  password = PasswordField('Password', validators=[DataRequired()])
+  remember = BooleanField('Remember')

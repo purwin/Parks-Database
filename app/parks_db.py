@@ -88,7 +88,7 @@ class Park(db.Model):
   # __tablename__ = 'park'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
-  park_id = db.Column(db.String(6))
+  park_id = db.Column(db.String(8))
   borough = db.Column(db.String(15))
   address = db.Column(db.String(100))
   cb = db.Column(db.String(10))

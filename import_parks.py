@@ -3,6 +3,8 @@
 
 import json
 import requests
+# from bs4 import BeautifulSoup
+import re
 
 # import current database
 from app import db
@@ -81,7 +83,7 @@ def determine_borough(obj):
     return 'Staten Island'
   else:
     print "ERROR: {}".format(obj)
-    dump_errors("{}: Cannot determine borough.".format(obj['Name']))
+    dump_errors("{}: Cannot determine borough.\n".format(obj['Name']))
     return None
 
 
@@ -95,24 +97,55 @@ def add_park(obj):
   else:
     address = "{}, {} NY".format(obj['Location'], borough)
 
+  # Determine community board(s)
+  obj['CB'] = get_site(obj['Name'])
+
+  print json.dumps(obj)
+
+  # Add parks to database
   return
   try:
     new_park = Park(name=obj['Name'],
                     park_id=obj['Park_ID'],
                     address=address,
-                    borough=borough)
+                    borough=borough,
+                    cb=obj['CB'])
     db.session.add(new_park)
     db.session.commit()
   except Exception as e:
-    dump_errors("{}: {}".format(obj['Name'], e))
+    dump_errors("{}: {}\n".format(obj['Name'], e))
 
 
-def get_cb(name):
+def get_site(name):
   r = requests.get('https://www.nycgovparks.org/parks/{}'.format(name.lower().replace(' ', '-')))
   if r.status_code == 200:
-    print r.text
+    print "Site found: {}".format(name)
+    # print r.text
+    # get_cb(r.text)
+    cb = find_cb(r.text)
+    if not cb:
+      dump_errors("{}: Unable to find community board\n".format(name))
+      return None
+    else:
+      print "CB Found: {}".format(cb)
+      return cb
   else:
-    dump_errors("{}: Unable to connect to Parks site".format(name))
+    dump_errors("{}: Unable to connect to Parks site\n".format(name))
+    return None
+
+
+# def get_cb(html):
+#   pass
+#   page = BeautifulSoup(html, 'html.parser')
+#   details = page.find_all(id = 'park_more_details')
+#   find_cb(details[0])
+#   print str(details[0])
+
+
+def find_cb(text):
+  search = re.findall(r'<strong>Community Board:</strong>(.+?)<br/>', text, re.DOTALL)
+  # print "CB Found: {}".format(search[0].lstrip().rstrip())
+  return search[0].lstrip().rstrip()
 
 
 def dump_errors(error):
@@ -122,7 +155,6 @@ def dump_errors(error):
 
 if __name__ == '__main__':
   # Declare parks JSON file
-  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/DPR_Parks_001.json'
+  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/DPR_Parks_002.json'
 
-  # get_parks(json_file)
-  get_cb("von briesen park")
+  import_parks(json_file)

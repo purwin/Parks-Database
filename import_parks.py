@@ -36,7 +36,7 @@ def import_parks(json_file):
                     'Washington Park']
 
   # Start up database
-  init_db()
+  # init_db()
 
   # Parse JSON file, add objects to database
   input = get_parks(json_file)
@@ -135,6 +135,7 @@ def get_site(name):
     print "Site found: {}".format(name)
     cb = find_cb(r.text)
     if not cb:
+      print "CB Missing: {}".format(name)
       dump_errors("{}: Unable to find community board\n".format(name))
       return None
     else:
@@ -162,6 +163,6 @@ def dump_errors(error):
 
 if __name__ == '__main__':
   # Declare parks JSON file
-  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_R-03.json'
+  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_X-02.json'
 
   import_parks(json_file)

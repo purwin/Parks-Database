@@ -128,7 +128,8 @@ def add_park(obj):
 def get_site(name):
   url_name = name.lower().replace(' ', '-')\
                          .replace('.', '')\
-                         .replace(' ', '-')
+                         .replace(' ', '-')\
+                         .replace('\'', "")
   r = requests.get('https://www.nycgovparks.org/parks/{}'.format(url_name))
   if r.status_code == 200:
     print "Site found: {}".format(name)
@@ -156,6 +157,6 @@ def dump_errors(error):
 
 if __name__ == '__main__':
   # Declare parks JSON file
-  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_R-02.json'
+  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_R-03.json'
 
   import_parks(json_file)

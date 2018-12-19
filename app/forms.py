@@ -7,8 +7,10 @@ from wtforms import (
   PasswordField,
   BooleanField
 )
-from wtforms.validators import DataRequired, Optional, Email
+from wtforms.validators import DataRequired, Optional, Email, ValidationError
 from wtforms.fields.html5 import DateField, TelField, EmailField
+
+from users import User
 
 
 class Form_artist(FlaskForm):
@@ -103,3 +105,14 @@ class Form_user(FlaskForm):
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[DataRequired()])
   remember = BooleanField('Remember')
+
+
+class Form_signup(FlaskForm):
+  username = StringField('Username', validators=[DataRequired()])
+  password = PasswordField('Password', validators=[DataRequired()])
+  remember = BooleanField('Remember')
+
+  def validate_username(self, username):
+          user = User.query.filter_by(username=username.data).first()
+          if user is not None:
+              raise ValidationError('Please use a different username.')

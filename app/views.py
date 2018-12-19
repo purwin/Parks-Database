@@ -25,7 +25,6 @@ from flask_login import (
 )
 
 from app import app, db
-
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import (
   Form_artist,
@@ -39,6 +38,7 @@ from forms import (
 from users import User
 
 import sys
+from datetime import datetime
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -61,12 +61,25 @@ def date_format(value, format='%m/%d/%y'):
 @app.route('/index')
 @app.route('/')
 def home():
-  todayItems = []
-  activeExhibitions = []
-  upcomingItems = []
+  today = datetime.utcnow().strftime('%Y-%m-%d')
+  active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
+                                       .filter(Exhibition.start_date < today)\
+                                       .order_by(Exhibition.end_date)\
+                                       .all()
+  upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
+                                         .order_by(Exhibition.start_date)\
+                                         .limit(10)\
+                                         .all()
+  recent_exhibitions = Exhibition.query.filter(Exhibition.end_date <= today)\
+                                         .order_by(Exhibition.end_date.desc())\
+                                         .limit(10)\
+                                         .all()
   exhibitions = Exhibition.query.all()
-  parks = Park.query.all()
-  return render_template('index.html', exhibitions=exhibitions, parks=parks)
+  session['url'] = request.path
+  return render_template('index.html', exhibitions=exhibitions, parks=parks,
+    active_exhibitions = active_exhibitions,
+    upcoming_exhibitions = upcoming_exhibitions,
+    recent_exhibitions = recent_exhibitions)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -144,6 +157,7 @@ def exhibitions():
   activeExhibitions = []
   activeDeinstalls = []
   upcomingExhibitions = []
+  session['url'] = request.path
   return render_template('exhibitions.html', exhibitions = exhibitions)
 
 
@@ -155,6 +169,7 @@ def exhibition(exhibition_id):
   orgs = Org.query.all()
   exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
   form = Form_exhibition()
+  session['url'] = request.path
   return render_template('exhibition.html', exhibition = exhibition,
                          exhib = exhib, artworks = artworks, parks = parks,
                          orgs = orgs, form = form)
@@ -428,7 +443,7 @@ def exhibition_delete(exhibition_id):
 def parks():
   parks = Park.query.all()
   activeParks = []
-  session['url'] = url_for('parks')
+  session['url'] = request.path
   return render_template('parks.html', parks = parks)
 
 
@@ -442,6 +457,7 @@ def park(park_id):
   form.borough.data = park.borough
   park_art = Exh_art_park.query.filter_by(park_id = park_id)\
                                .order_by(Exh_art_park.exhibition_id).all()
+  session['url'] = request.path
   return render_template('park.html', park = park, exhibitions = exhibitions,
                          artworks = artworks, park_art = park_art, form = form)
 
@@ -566,6 +582,7 @@ def park_delete(park_id):
 @app.route('/artists')
 def artists():
   artists = Artist.query.all()
+  session['url'] = request.path
   return render_template('artists.html', artists = artists)
 
 
@@ -583,6 +600,7 @@ def artist(artist_id):
   #   print "ARTWORK: {}: {}".format(i.Artwork.id, i.Artwork.name)
   #   print "EXH: {}: {}".format(i.Exh_art_park.exhibition_id, i.Exh_art_park.exhib.name)
   #   print "PARK: {}: {}".format(i.Park.id, i.Park.name)
+  session['url'] = request.path
   return render_template('artist.html', artist = artist, artworks = artworks,
                          form = form)
 
@@ -693,6 +711,7 @@ def artist_delete(artist_id):
 @app.route('/artworks')
 def artworks():
   artworks = Artwork.query.all()
+  session['url'] = request.path
   return render_template('artworks.html', artworks = artworks)
 
 
@@ -707,6 +726,7 @@ def artwork(artwork_id):
   # artwork_join = (db.session.query(Exh_art_park, Artwork)
   #   .filter(Exh_art_park.artwork_id == Artwork.id)
   #   .filter(Artwork.id == artwork_id)).all()
+  session['url'] = request.path
   return render_template('artwork.html', artwork = artwork, artists = artists,
                          exhibitions = exhibitions, parks = parks,
                          art_exhib = art_exhib, form = form)
@@ -862,6 +882,7 @@ def artwork_delete(artwork_id):
 @app.route('/orgs')
 def orgs():
   orgs = Org.query.all()
+  session['url'] = request.path
   return render_template('orgs.html', orgs = orgs)
 
 
@@ -872,6 +893,7 @@ def org(org_id):
   form = Form_org()
   for exh in org.exhibitions:
     form.exhibitions.append_entry(exh)
+  session['url'] = request.path
   return render_template('org.html', org = org, exhibitions = exhibitions,
                          form = form)
 

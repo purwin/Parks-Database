@@ -25,7 +25,8 @@ from forms import (
   Form_artwork,
   Form_park,
   Form_org,
-  Form_user
+  Form_user,
+  Form_signup
 )
 from users import User
 
@@ -33,6 +34,7 @@ import sys
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.session_protection = "strong"
 login_manager.login_view = 'login'
 
 
@@ -61,7 +63,8 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-  pass
+  if current_user.is_authenticated:
+    return redirect(url_for('home'))
   form = Form_user()
   if form.validate_on_submit():
     user = User.query.filter_by(username = form.username.data).one()
@@ -72,6 +75,7 @@ def login():
         if not next or url_parse(next).netloc != '':
           next = url_for('home')
           return redirect(next)
+      # FUTURE: Return error notice for invalid username/password
 
   return render_template('login.html', form=form)
 
@@ -85,7 +89,7 @@ def logout():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-  form = Form_user()
+  form = Form_signup()
 
   if form.is_submitted():
     if form.validate():

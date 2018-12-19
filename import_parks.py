@@ -46,15 +46,15 @@ def import_parks(json_file):
     # Determine borough
     i['Borough'] = determine_borough(i)
 
-    # Update park name for items in duplicate list
-    if i['Name'] in duplicate_list:
-      i['Name'] = "{} {}".format(i['Prop_ID'], i['Name'])
-
     # Determine borough
     i['Address'] = determine_address(i)
 
     # Determine community board(s)
     i['CB'] = get_site(i['Name'])
+
+    # Update park name for items in duplicate list
+    if i['Name'] in duplicate_list:
+      i['Name'] = "{} {}".format(i['Prop_ID'], i['Name'])
 
     # Add updated park to database
     add_park({

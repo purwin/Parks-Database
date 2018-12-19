@@ -1,7 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import (
+  Flask,
+  render_template,
+  request,
+  redirect,
+  url_for,
+  jsonify,
+  session
+)
 from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -73,7 +81,7 @@ def login():
         login_user(user, remember = form.remember.data)
         next = request.args.get('next')
         if not next or url_parse(next).netloc != '':
-          next = url_for('home')
+          next = session['url']
           return redirect(next)
       # FUTURE: Return error notice for invalid username/password
 
@@ -420,6 +428,7 @@ def exhibition_delete(exhibition_id):
 def parks():
   parks = Park.query.all()
   activeParks = []
+  session['url'] = url_for('parks')
   return render_template('parks.html', parks = parks)
 
 

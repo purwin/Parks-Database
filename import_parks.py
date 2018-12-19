@@ -147,7 +147,12 @@ def get_site(name):
 
 def find_cb(text):
   search = re.findall(r'<strong>Community Board:</strong>(.+?)<br/>', text, re.DOTALL)
-  return search[0].lstrip().rstrip()
+  try:
+    findings = search[0].lstrip().rstrip()
+  except:
+    findings = None
+
+  return findings
 
 
 def dump_errors(error):

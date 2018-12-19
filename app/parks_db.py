@@ -91,7 +91,7 @@ class Park(db.Model):
   park_id = db.Column(db.String(8))
   borough = db.Column(db.String(15))
   address = db.Column(db.String(100))
-  cb = db.Column(db.String(10))
+  cb = db.Column(db.String(40))
 
   def __repr__(self):
     return "<Park: (%s)>"

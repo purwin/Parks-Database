@@ -25,19 +25,19 @@
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
 
-				<h2 class="[ display-4 py-4 ]">Current Parks</h2>
+				<h2 class="[ display-4 py-4 ]">Active Parks</h2>
 
 				{% set park_list = [] %}
 
 					{% for line in active_parks %}
 
 						{% if line.Park.id not in park_list %}
-							<h3><a href="{{ url_for('park', park_id=line.Park.id) }}">{{ line.Park.name }}</a></h3>
+							<h3 class="[ py-1 ]"><a href="{{ url_for('park', park_id=line.Park.id) }}">{{ line.Park.name }}</a></h3>
 							{% set park_list = park_list.append(line.Park.id) %}
 						{% endif %}
 
 					{% else %}
-						<p><i>There are no current active parks.</i></p>
+						<p><i>There are no active parks.</i></p>
 					{% endfor %}
 
 			</div>

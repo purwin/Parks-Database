@@ -55,13 +55,12 @@ def load_user(user_id):
 def date_format(value, format='%m/%d/%y'):
   return value.strftime(format)
 
-
+today = datetime.utcnow().strftime('%Y-%m-%d')
 
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
 def home():
-  today = datetime.utcnow().strftime('%Y-%m-%d')
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
@@ -154,11 +153,23 @@ def create():
 @app.route('/exhibitions')
 def exhibitions():
   exhibitions = Exhibition.query.all()
-  activeExhibitions = []
-  activeDeinstalls = []
-  upcomingExhibitions = []
+  active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
+                                       .filter(Exhibition.start_date < today)\
+                                       .order_by(Exhibition.end_date)\
+                                       .all()
+  upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
+                                         .order_by(Exhibition.start_date)\
+                                         .limit(10)\
+                                         .all()
+  recent_exhibitions = Exhibition.query.filter(Exhibition.end_date <= today)\
+                                         .order_by(Exhibition.end_date.desc())\
+                                         .limit(10)\
+                                         .all()
   session['url'] = request.path
-  return render_template('exhibitions.html', exhibitions = exhibitions)
+  return render_template('exhibitions.html', exhibitions = exhibitions,
+    active_exhibitions = active_exhibitions,
+    upcoming_exhibitions = upcoming_exhibitions,
+    recent_exhibitions = recent_exhibitions)
 
 
 @app.route('/exhibitions/<int:exhibition_id>')
@@ -441,7 +452,6 @@ def exhibition_delete(exhibition_id):
 
 @app.route('/parks')
 def parks():
-  today = datetime.utcnow().strftime('%Y-%m-%d')
   parks = Park.query.all()
   active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
     .filter(Exh_art_park.exhibition_id == Exhibition.id)\

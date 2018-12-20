@@ -21,6 +21,29 @@
 
 
 
+	<section id="section--search">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+				<form id="js-form_search" action="/search" method="POST">
+					{{ form.csrf_token }}
+
+					<div class="[ d-none ]">
+						{{ form.class_object(class="form-control", value="Park") }}
+					</div>
+
+					<div class="[ input-group ]">
+						{{ form.search(class="form-control", placeholder="Search Parks") }}
+						<div class="[ input-group-append ]">
+							<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</section>
+
+
 	<section id="section--active">
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">

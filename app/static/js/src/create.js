@@ -2,8 +2,6 @@ import {controller} from './controller';
 import {model} from './model';
 import {view} from './view';
 
-import 'jquery';
-import 'bootstrap';
 
 // Create exhibition object class
 model.exhibition = new model.Obj("exhibition");

@@ -13,7 +13,6 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
-import flask_whooshalchemy as whoosh
 from flask_login import (
   LoginManager,
   UserMixin,
@@ -22,6 +21,7 @@ from flask_login import (
   logout_user,
   current_user
 )
+from flask_msearch import Search
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import (
@@ -37,7 +37,11 @@ from forms import (
 from users import User
 from datetime import datetime
 
-whoosh.whoosh_index(app, Park)
+
+search = Search()
+search.init_app(app)
+search.create_index()
+
 
 # Flask-login settings
 login_manager = LoginManager()
@@ -1026,7 +1030,8 @@ def org_delete(org_id):
 def search():
   form = Form_search()
   if form.validate_on_submit():
-    results = db.session.query(form.class_object.data).whoosh_search(form.search.data).all()
+    print "!!!! {}".format(form.class_object.data)
+    results = form.class_object.data.query.msearch(form.search.data).all()
     return render_template('results.html', form = form, results = results)
   else:
     # Return errors if form doesn't validate

@@ -441,10 +441,18 @@ def exhibition_delete(exhibition_id):
 
 @app.route('/parks')
 def parks():
+  today = datetime.utcnow().strftime('%Y-%m-%d')
   parks = Park.query.all()
-  activeParks = []
+  active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
+    .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+    .filter(Exh_art_park.park_id == Park.id)\
+    .filter(Exhibition.end_date > today)\
+    .filter(Exhibition.start_date < today)\
+    .order_by(Park.name)\
+    .all()
   session['url'] = request.path
-  return render_template('parks.html', parks = parks)
+  return render_template('parks.html', parks = parks,
+    active_parks = active_parks)
 
 
 @app.route('/parks/<int:park_id>')

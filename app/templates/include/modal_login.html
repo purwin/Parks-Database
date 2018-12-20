@@ -1,0 +1,58 @@
+<div id="js-modal_login" class="[ modal fade ]" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="[ modal-dialog ]" role="document">
+    <div class="[ modal-content ]">
+      <div class="bg-green [ modal-header ]">
+        <h5 class="[ modal-title ]" id=""></h5>
+        <button type="button" class="js-cancel-modal [ close ]" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="[ modal-body px-4 ]">
+
+        <form id="js-form_login" action="/login" method="POST">
+          {{ form.csrf_token(id="csrf_token-login") }}
+
+          <section id="section--login">
+
+            <div class="[ row justify-content-center ]">
+              <div class="[ col-md-8 ]">
+                <h2 class="[ py-4 ]">Login</h2>
+            
+                <ul class="js-ul_login [ p-0 ]">
+            
+                  <li class="[ row mb-3 align-items-baseline ]">
+                    <div class="[ col ]">
+                      {{ form.username(class="form-control", placeholder=form.username.label.text) }}
+                    </div>
+                  </li>
+                  <li class="[ row mb-3 align-items-baseline ]">
+                    <div class="[ col ]">
+                      {{ form.password(class="form-control", placeholder=form.password.label.text) }}
+                    </div>
+                  </li>
+                  <li class="[ row mb-3 align-items-baseline ]">
+                    <div class="[ col-1 ]">
+                      {{ form.remember(class="[ form-control ]") }}
+                    </div>
+                    <div class="[ col ]">
+                      {{ form.remember.label }}
+                    </div>
+                  </li>
+            
+                </ul>
+            
+              </div>
+            </div>
+
+          </section>
+
+        </form>
+
+      </div>
+      <div class="[ modal-footer ]">
+        <button id="js-cancel_login" class="butt butt--delete js-cancel-modal" type="button">Cancel</button>
+        <input id="js-post_login" class="butt butt--add js-post-login [ ml-2 ]" value="Login" type="submit" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,10 +11,9 @@ from flask import (
   session
 )
 from flask_sqlalchemy import SQLAlchemy
-
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
-
+import flask_whooshalchemy as whoosh
 from flask_login import (
   LoginManager,
   UserMixin,
@@ -23,7 +22,6 @@ from flask_login import (
   logout_user,
   current_user
 )
-
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import (
@@ -33,19 +31,19 @@ from forms import (
   Form_park,
   Form_org,
   Form_user,
-  Form_signup
+  Form_signup,
+  Form_search
 )
 from users import User
-
-import sys
 from datetime import datetime
 
+whoosh.whoosh_index(app, Park)
+
+# Flask-login settings
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.session_protection = "strong"
+login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
-
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -54,6 +52,7 @@ def load_user(user_id):
 @app.template_filter('date_format')
 def date_format(value, format='%m/%d/%y'):
   return value.strftime(format)
+
 
 today = datetime.utcnow().strftime('%Y-%m-%d')
 
@@ -460,9 +459,10 @@ def parks():
     .filter(Exhibition.start_date < today)\
     .order_by(Park.name)\
     .all()
+  form = Form_search()
   session['url'] = request.path
   return render_template('parks.html', parks = parks,
-    active_parks = active_parks)
+    active_parks = active_parks, form = form)
 
 
 @app.route('/parks/<int:park_id>')
@@ -1021,3 +1021,13 @@ def org_delete(org_id):
       return redirect(url_for('orgs'))
   else:
       return render_template('org_delete.html', org = org, form = form)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+  form = Form_search()
+  if form.validate_on_submit():
+    results = db.session.query(form.class_object.data).whoosh_search(form.search.data).all()
+    return render_template('results.html', form = form, results = results)
+  else:
+    # Return errors if form doesn't validate
+    return jsonify({"success": False, "data": form.errors})

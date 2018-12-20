@@ -1030,7 +1030,9 @@ def org_delete(id):
 def search():
   form = Form_search()
   if form.validate_on_submit():
-    results = Park.query.msearch(form.search.data).all()
+    # results = eval(form.class_object.data).query.msearch(form.search.data).all()
+    obj = eval(form.class_object.data)
+    results = obj.query.filter(obj.name.contains(form.search.data)).all()
     return render_template('results.html', form = form, results = results)
   else:
     # Return errors if form doesn't validate

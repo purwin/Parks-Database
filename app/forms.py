@@ -116,3 +116,8 @@ class Form_signup(FlaskForm):
     user = User.query.filter_by(username=username.data).first()
     if user is not None:
       raise ValidationError('Please use a different username.')
+
+
+class Form_search(FlaskForm):
+  class_object = StringField('Class Object', validators=[DataRequired()])
+  search = StringField('Search', validators=[DataRequired()])

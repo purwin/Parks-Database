@@ -18,9 +18,39 @@
 
 	{% include "include/user.html" %}
 
+
+
+	<section id="section--active">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Active Artworks</h2>
+
+				{% set artworks_list = [] %}
+
+					{% for line in active_artworks %}
+
+						{% if line.Artwork.id not in artworks_list %}
+							<h3 class="[ py-1 ]"><a href="{{ url_for('artwork', artwork_id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a href="{{ url_for('exhibition', exhibition_id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
+						{% endif %}
+
+					{% else %}
+						<p><i>There are no active artworks.</i></p>
+					{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
 	<section id="section--artworks">
 		<div class="[ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Artworks</h2>
 
 				{% for artwork in artworks %}
 

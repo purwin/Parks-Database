@@ -21,13 +21,40 @@
 
 
 
-	<section id="section--parks">
-		<div class="[ row justify-content-center py-5 ]">
+	<section id="section--active">
+		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Current Parks</h2>
+
+				{% set park_list = [] %}
+
+					{% for line in active_parks %}
+
+						{% if line.Park.id not in park_list %}
+							<h3><a href="{{ url_for('park', park_id=line.Park.id) }}">{{ line.Park.name }}</a></h3>
+							{% set park_list = park_list.append(line.Park.id) %}
+						{% endif %}
+
+					{% else %}
+						<p><i>There are no current active parks.</i></p>
+					{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--parks">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Parks</h2>
 
 				{% for park in parks %}
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></h2>
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Park ID: {{ park.park_id }}</li>
 						<li>Address: {{ park.address }}</li>

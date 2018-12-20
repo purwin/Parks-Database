@@ -729,8 +729,17 @@ def artist_delete(artist_id):
 @app.route('/artworks')
 def artworks():
   artworks = Artwork.query.all()
+  active_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
+      .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+      .filter(Exh_art_park.artwork_id == Artwork.id)\
+      .filter(Exhibition.end_date > today)\
+      .filter(Exhibition.start_date < today)\
+      .order_by(Exhibition.name)\
+      .order_by(Artwork.name)\
+      .all()
   session['url'] = request.path
-  return render_template('artworks.html', artworks = artworks)
+  return render_template('artworks.html', artworks = artworks,
+    active_artworks = active_artworks)
 
 
 @app.route('/artworks/<int:artwork_id>')

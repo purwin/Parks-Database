@@ -86,6 +86,7 @@ class Exhibition(db.Model):
 
 class Park(db.Model):
   # __tablename__ = 'park'
+  __searchable__ = ['name']
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
   park_id = db.Column(db.String(8))

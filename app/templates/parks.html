@@ -30,6 +30,9 @@
 					<div class="[ d-none ]">
 						{{ form.class_object(class="form-control", value="Park") }}
 					</div>
+					<div class="[ d-none ]">
+						{{ form.class_id(class="form-control", value="park_id") }}
+					</div>
 
 					<div class="[ input-group ]">
 						{{ form.search(class="form-control", placeholder="Search Parks") }}
@@ -55,7 +58,7 @@
 					{% for line in active_parks %}
 
 						{% if line.Park.id not in park_list %}
-							<h3 class="[ py-1 ]"><a href="{{ url_for('park', park_id=line.Park.id) }}">{{ line.Park.name }}</a></h3>
+							<h3 class="[ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a></h3>
 							{% set park_list = park_list.append(line.Park.id) %}
 						{% endif %}
 
@@ -77,7 +80,7 @@
 
 				{% for park in parks %}
 
-					<h3 class="[ pt-3 ]"><a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a></h3>
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Park ID: {{ park.park_id }}</li>
 						<li>Address: {{ park.address }}</li>

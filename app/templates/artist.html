@@ -29,7 +29,7 @@
 				<div class="[ row justify-content-center ]">
 					<div class="[ col-md-8 text-right py-4 ]">
 						<button id="js-edit_artist" class="js-form-edit butt butt--edit" type="button">Edit</button>
-						<a href="{{ url_for('artist_delete', artist_id=artist.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+						<a href="{{ url_for('artist_delete', id=artist.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 					</div>
 				</div>
 			{% endif %}
@@ -118,7 +118,7 @@
 										</div>
 		
 										<div class="[ col-md-6 ]">
-											<a href="{{ url_for('artwork', artwork_id=artwork.id) }}" class="is-active">{{ artwork.name }}</a>
+											<a href="{{ url_for('artwork', id=artwork.id) }}" class="is-active">{{ artwork.name }}</a>
 		
 											<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]">
 											<!-- Call datalist macro function -->
@@ -183,7 +183,7 @@
 													</div>
 
 													<div class="[ col-md-6 ]">
-														<a href="{{ url_for('exhibition', exhibition_id=thing.Exh_art_park.exhib.id) }}" class="d-inline">{{ thing.Exh_art_park.exhib.name }}</a>
+														<a href="{{ url_for('exhibition', id=thing.Exh_art_park.exhib.id) }}" class="d-inline">{{ thing.Exh_art_park.exhib.name }}</a>
 														<input id="datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="{{ thing.Exh_art_park.exhib.id }}" value="{{ thing.Exh_art_park.exhib.name }}" class="datalist_exhibition [ form-control-plaintext d-none ]" readonly> -->
 														<!-- Call datalist macro function -->
 														<!-- {{ datalist("exhibitions", exhibitions) }}
@@ -198,7 +198,7 @@
 													</div>
 
 													<div class="[ col-md-6 ]">
-														<a href="{{ url_for('park', park_id=thing.Park.id) }}" class="d-inline">{{ thing.Park.name }}</a>
+														<a href="{{ url_for('park', id=thing.Park.id) }}" class="d-inline">{{ thing.Park.name }}</a>
 														<input id="datalist_park" type="text" name="parks" list="parks" data-value="{{ thing.Park.id }}" value="{{ thing.Park.name }}" class="datalist_park [ form-control-plaintext d-none ]" readonly> -->
 														<!-- Call datalist macro function -->
 														<!-- {{ datalist("parks", parks) }}

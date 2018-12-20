@@ -31,8 +31,8 @@
 					{% for line in active_artworks %}
 
 						{% if line.Artwork.id not in artworks_list %}
-							<h3 class="[ py-1 ]"><a href="{{ url_for('artwork', artwork_id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
-								(<a href="{{ url_for('exhibition', exhibition_id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							<h3 class="[ py-1 ]"><a href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
 							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
 						{% endif %}
 
@@ -54,13 +54,13 @@
 
 				{% for artwork in artworks %}
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('artwork', artwork_id=artwork.id) }}">{{ artwork.name }}</a></h2>
+					<h2 class="[ pt-3 ]"><a href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a></h2>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Artists:
 							<ul>
 
 								{% for artist in artwork.artists %}
-									<li><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.name }}</a></li>
+									<li><a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a></li>
 								{% else %}
 								<li><i>{{ artwork.name }} doesn't have any artists yet.</i></li>
 								{% endfor %}

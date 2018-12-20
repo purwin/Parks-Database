@@ -30,7 +30,7 @@
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
 					<button id="js-edit_org" class="js-form-edit butt butt--edit" type="button">Edit</button>
-					<a href="{{ url_for('org_delete', org_id=org.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+					<a href="{{ url_for('org_delete', id=org.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
 			</div>
 		{% endif %}
@@ -103,7 +103,7 @@
 
 
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}" class="is-active">{{ exhibition.name }}</a>
+									<a href="{{ url_for('exhibition', id=exhibition.id) }}" class="is-active">{{ exhibition.name }}</a>
 
 									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									<!-- Call datalist macro function -->

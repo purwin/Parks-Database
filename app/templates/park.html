@@ -25,19 +25,17 @@
 	<form id="js-form_park" action="/parks/{{ park.id }}/edit" method="POST">
 		{{ form.csrf_token }}
 
-		{% if current_user.is_authenticated %}
-			<div class="[ row justify-content-center ]">
-				<div class="[ col-md-8 text-right pt-5 pb-4 ]">
-					<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
-					<a href="{{ url_for('park_delete', park_id=park.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
-				</div>
+		<div class="chunk [ row justify-content-center ]">
+			<div class="[ col-md-8 text-right pt-5 pb-4 ]">
+				<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
+				<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 			</div>
-		{% endif %}
+		</div>
 
 
 
 		<section id="section--bio">
-			<div class="[ row justify-content-center ]">
+			<div class="chunk [ row justify-content-center ]">
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
@@ -98,7 +96,7 @@
 
 
 		<section id="section--exhibitions">
-			<div class="[ row justify-content-center py-4 ]">
+			<div class="chunk [ row justify-content-center py-4 ]">
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
 
@@ -117,7 +115,7 @@
 									<label for="exhibitions">Exhibition</label>
 								</div>
 								<div class="[ col-10 col-md-6 mb-1 ]">
-									<a href="{{ url_for('exhibition', exhibition_id=item.exhib.id) }}" class="is-active">{{ item.exhib.name }}</a>
+									<a href="{{ url_for('exhibition', id=item.exhib.id) }}" class="is-active">{{ item.exhib.name }}</a>
 									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
@@ -128,7 +126,7 @@
 									<label for="parks">Artwork</label>
 								</div>
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('artwork', artwork_id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
+									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
 									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("artworks", artworks) }}
 								</div>
@@ -147,16 +145,14 @@
 		</section>
 
 
-		{% if current_user.is_authenticated %}
 			<section id="section--submit">
-				<div class="[ row justify-content-center d-none ]">
+				<div class="chunk [ row justify-content-center d-none ]">
 					<div class="[ col-md-8 text-right py-4 ]">
 						<button id="js-cancel_park" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
 						<button id="js-post_park" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 					</div>
 				</div>
 			</section>
-		{% endif %}
 
 	</form>
 

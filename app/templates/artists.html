@@ -24,13 +24,13 @@
 
 				{% for artist in artists %}
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('artist', artist_id=artist.id) }}">{{ artist.name }}</a></h2>
+					<h2 class="[ pt-3 ]"><a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a></h2>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Artworks:
 							<ul>
 
 								{% for artwork in artist.artworks %}
-									<li><a href="{{ url_for('artwork', artwork_id=artwork.id) }}">{{ artwork.name }}</a></li>
+									<li><a href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a></li>
 								{% else %}
 									<li><i>{{ artist.name }} doesn't have any artworks yet.</i></li>
 								{% endfor %}

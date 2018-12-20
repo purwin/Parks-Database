@@ -28,7 +28,7 @@
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
 					<button id="js-edit_exhibition" class="js-form-edit butt butt--edit" type="button">Edit</button>
-					<a href="{{ url_for('exhibition_delete', exhibition_id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+					<a href="{{ url_for('exhibition_delete', id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
 			</div>
 		{% endif %}
@@ -98,7 +98,7 @@
 									<label for="artworks">Park</label>
 								</div>
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('park', park_id=park.id) }}">{{ park.name }}</a>
+									<a href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a>
 								</div>
 							</li>
 
@@ -134,7 +134,7 @@
 								<label for="artworks">Organization</label>
 							</div>
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('org', org_id=org.id) }}" class="is-active">{{ org.name }}</a>
+									<a href="{{ url_for('org', id=org.id) }}" class="is-active">{{ org.name }}</a>
 									<input id="js-datalist_org-{{ loop.index }}" type="text" name="orgs-{{ loop.index }}" list="orgs" data-value="{{ org.id }}" value="{{ org.name }}" class="js-datalist-child js-datalist_org [ form-control-plaintext d-none ]">
 									{{ datalist("orgs", orgs) }}
 								</div>
@@ -175,7 +175,7 @@
 									<label for="artworks">Artwork</label>
 								</div>
 								<div class="[ col-10 col-md-6 mb-1 ]">
-									<a href="{{ url_for('artwork', artwork_id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
+									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
 									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]">
 									{{ datalist("artworks", artworks) }}
 								</div>
@@ -187,7 +187,7 @@
 									<label for="artworks">Park</label>
 								</div>
 								<div class="[ col-10 col-md-6 ]">
-									<a href="{{ url_for('park', park_id=item.nycpark.id) }}" class="is-active">{{ item.nycpark.name }}</a>
+									<a href="{{ url_for('park', id=item.nycpark.id) }}" class="is-active">{{ item.nycpark.name }}</a>
 									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ item.nycpark.id }}" value="{{ item.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]">
 									{{ datalist("parks", parks) }}
 								</div>

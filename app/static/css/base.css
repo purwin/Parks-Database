@@ -23,6 +23,7 @@ body {
 	max-width: 100%;
 	font-size: 18px;
   font-family: 'Arimo', 'Hind', sans-serif;
+  hyphens: auto;
 }
 
 
@@ -55,13 +56,67 @@ p {}
  *
  */
 
-a {}
+a {
+  color: #58595b;
+  border-bottom: 2.5px solid;
+  text-decoration: none;
+}
 
-a:hover {}
+a:hover {
+  text-decoration: none;
+}
 
 a:active {}
 
 
+/* Interal links: Parks */
+a[href^="/parks"] {
+  border-bottom-color: #88c659;
+}
+
+a[href^="/parks"]:hover {
+  color: #88c659;
+}
+
+
+/* Interal links: Exhibitions */
+a[href^="/exhibitions"] {
+  border-bottom-color: #a174f6;
+}
+
+a[href^="/exhibitions"]:hover {
+  color: #a174f6;
+}
+
+
+/* Interal links: Artworks */
+a[href^="/artworks"] {
+  border-bottom-color: #e76a58;
+}
+
+a[href^="/artworks"]:hover {
+  color: #e76a58;
+}
+
+
+/* Interal links: Artists */
+a[href^="/artists"] {
+  border-bottom-color: #ff7c9e;
+}
+
+a[href^="/artists"]:hover {
+  color: #ff7c9e;
+}
+
+
+/* Interal links: Organizations */
+a[href^="/orgs"] {
+  border-bottom-color: #fe8254;
+}
+
+a[href^="/orgs"]:hover {
+  color: #fe8254;
+}
 
 /*
  *
@@ -86,6 +141,83 @@ ol li {}
  */
 
 
+/*
+ *
+ * Colors
+ *
+ */
+
+
+.c-red--d {
+  color: #e76a58;
+}
+
+.c-red--l {
+  color: #ec8879;
+}
+
+
+.c-yellow--d {
+  color: #ffd248;
+}
+
+.c-yellow--l {
+  color: #ffdb6d;
+}
+
+
+.c-orange--d {
+  color: #fe8254;
+}
+
+.c-orange--l {
+  color: #fe9b76;
+}
+
+
+.c-purple--d {
+  color: #a174f6;
+}
+
+.c-purple--l {
+  color: #b490f8;
+}
+
+
+.c-blue--d {
+  color: #62b5ff;
+}
+
+.c-blue--l {
+  color: #81c4ff;
+}
+
+
+.c-pink--d {
+  color: #ff7c9e;
+}
+
+.c-pink--l {
+  color: #ff96b1;
+}
+
+
+.c-teal--d {
+  color: #51f4ae;
+}
+
+.c-teal--l {
+  color: #74f6be;
+}
+
+
+.c-green--d {
+  color: #88c659;
+}
+
+.c-green--l {
+  color: #a0d17a;
+}
 
 /*
  *

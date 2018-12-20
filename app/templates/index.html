@@ -53,8 +53,86 @@
 
 
 
+	<section class="section--active">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+		
+				<h2 class="[ display-4 py-4 ]">Active Exhibitions</h2>
+		
+				{% for exhibition in active_exhibitions %}
+		
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
+					<ul class="[ list-unstyled p-0 ]">
+						<li>Start date: {{ exhibition.start_date }}</li>
+						<li>End date: {{ exhibition.end_date }}</li>
+					</ul>
+		
+				{% else %}
+		
+					<p><i>There are no active exhibitions right now.</i></p>
+		
+				{% endfor %}
+		
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="section--upcoming">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Upcoming Exhibitions</h2>
+
+				{% for exhibition in upcoming_exhibitions %}
+
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
+					<ul class="[ list-unstyled p-0 ]">
+						<li>Start date: {{ exhibition.start_date }}</li>
+						<li>End date: {{ exhibition.end_date }}</li>
+					</ul>
+
+				{% else %}
+
+					<p><i>There are no upcoming exhibitions right now.</i></p>
+
+				{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="section--recent">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Recent Exhibitions</h2>
+
+				{% for exhibition in recent_exhibitions %}
+
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', exhibition_id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
+					<ul class="[ list-unstyled p-0 ]">
+						<li>Start date: {{ exhibition.start_date }}</li>
+						<li>End date: {{ exhibition.end_date }}</li>
+					</ul>
+
+				{% else %}
+
+					<p><i>There are no recent exhibitions right now.</i></p>
+
+				{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
 	<section id="section--exhibitions">
-		<div class="[ row justify-content-center py-4 ]">
+		<div class="chunk [ row justify-content-center py-4 ]">
 
 			<div class="[ col-md-8 ]">
 				<h2 class="text-center display-4 p-4">Exhibitions</h2>
@@ -75,30 +153,6 @@
 
 			</div>
 
-		</div>
-	</section>
-
-
-
-	<section id="section--parks">
-		<div class="container-fluid parks">
-			<h2 class="text-center display-4 p-4">Parks</h2>
-			{% if parks %}
-			{% for p in parks %}
-			<div class="row">
-				<div class="col">
-					<h3><a href="{{ url_for('park', park_id=p.id) }}">{{ p.name }}</a></h3>
-					<ul>
-						<li>ID: {{ p.id }}</li>
-						<li>Park ID: {{ p.park_id }}</li>
-						<li>Borough: {{ p.borough }}</li>
-						<li>Address: {{ p.address }}</li>
-						<li>Community Board: {{ p.cb }}</li>
-					</ul>
-				</div>
-			</div>
-			{% endfor %}
-			{% endif %}
 		</div>
 	</section>
 

@@ -5,9 +5,16 @@ from wtforms import (
   FieldList,
   SelectField,
   PasswordField,
-  BooleanField
+  BooleanField,
+  HiddenField
 )
-from wtforms.validators import DataRequired, Optional, Email, ValidationError
+from wtforms.validators import (
+  DataRequired,
+  Optional,
+  Email,
+  ValidationError,
+  AnyOf
+)
 from wtforms.fields.html5 import DateField, TelField, EmailField
 
 from users import User
@@ -119,5 +126,6 @@ class Form_signup(FlaskForm):
 
 
 class Form_search(FlaskForm):
-  class_object = StringField('Class Object', validators=[DataRequired()])
+  class_object = HiddenField('Class Object', validators=[DataRequired(),
+    AnyOf(['Park', 'Exhibition', 'Artwork', 'Artist', 'Org'])])
   search = StringField('Search', validators=[DataRequired()])

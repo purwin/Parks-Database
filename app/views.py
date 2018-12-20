@@ -175,13 +175,13 @@ def exhibitions():
     recent_exhibitions = recent_exhibitions)
 
 
-@app.route('/exhibitions/<int:exhibition_id>')
-def exhibition(exhibition_id):
-  exhibition = Exhibition.query.filter_by(id = exhibition_id).one()
+@app.route('/exhibitions/<int:id>')
+def exhibition(id):
+  exhibition = Exhibition.query.filter_by(id = id).one()
   artworks = Artwork.query.all()
   parks = Park.query.all()
   orgs = Org.query.all()
-  exhib = Exh_art_park.query.filter_by(exhibition_id = exhibition_id).all()
+  exhib = Exh_art_park.query.filter_by(exhibition_id = id).all()
   form = Form_exhibition()
   session['url'] = request.path
   return render_template('exhibition.html', exhibition = exhibition,
@@ -314,10 +314,10 @@ def exhibition_create():
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/exhibitions/<int:exhibition_id>/edit', methods=['GET', 'POST'])
+@app.route('/exhibitions/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
-def exhibition_edit(exhibition_id):
-  exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
+def exhibition_edit(id):
+  exhibition = Exhibition.query.filter_by(id=id).one()
   form = Form_exhibition()
   if form.validate_on_submit():
     # Update exhibition items
@@ -439,10 +439,10 @@ def exhibition_edit(exhibition_id):
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/exhibitions/<int:exhibition_id>/delete', methods=['GET', 'POST'])
+@app.route('/exhibitions/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
-def exhibition_delete(exhibition_id):
-  exhibition = Exhibition.query.filter_by(id=exhibition_id).one()
+def exhibition_delete(id):
+  exhibition = Exhibition.query.filter_by(id=id).one()
   form = Form_exhibition()
   if request.method == 'POST':
       db.session.delete(exhibition)
@@ -469,15 +469,15 @@ def parks():
     active_parks = active_parks, form = form)
 
 
-@app.route('/parks/<int:park_id>')
-def park(park_id):
-  park = Park.query.filter_by(id=park_id).one()
+@app.route('/parks/<int:id>')
+def park(id):
+  park = Park.query.filter_by(id=id).one()
   exhibitions = Exhibition.query.all()
   artworks = Artwork.query.all()
   form = Form_park()
   # Set default select item to current park borough
   form.borough.data = park.borough
-  park_art = Exh_art_park.query.filter_by(park_id = park_id)\
+  park_art = Exh_art_park.query.filter_by(park_id = id)\
                                .order_by(Exh_art_park.exhibition_id).all()
   session['url'] = request.path
   return render_template('park.html', park = park, exhibitions = exhibitions,
@@ -508,10 +508,10 @@ def park_create():
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/parks/<int:park_id>/edit', methods=['POST'])
+@app.route('/parks/<int:id>/edit', methods=['POST'])
 @login_required
-def park_edit(park_id):
-  park = Park.query.filter_by(id = park_id).one()
+def park_edit(id):
+  park = Park.query.filter_by(id = id).one()
   form = Form_park()
   if form.validate_on_submit():
     # Update form items
@@ -588,10 +588,10 @@ def park_edit(park_id):
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/parks/<int:park_id>/delete', methods=['GET', 'POST'])
+@app.route('/parks/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
-def park_delete(park_id):
-  park = Park.query.filter_by(id=park_id).one()
+def park_delete(id):
+  park = Park.query.filter_by(id=id).one()
   form = Form_park()
   if request.method == 'POST':
       db.session.delete(park)
@@ -608,9 +608,9 @@ def artists():
   return render_template('artists.html', artists = artists)
 
 
-@app.route('/artists/<int:artist_id>')
-def artist(artist_id):
-  artist = Artist.query.filter_by(id = artist_id).one()
+@app.route('/artists/<int:id>')
+def artist(id):
+  artist = Artist.query.filter_by(id = id).one()
   artworks = Artwork.query.all()
 
   form = Form_artist()
@@ -673,10 +673,10 @@ def artist_create():
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/artists/<int:artist_id>/edit', methods=['POST'])
+@app.route('/artists/<int:id>/edit', methods=['POST'])
 @login_required
-def artist_edit(artist_id):
-  artist = Artist.query.filter_by(id=artist_id).one()
+def artist_edit(id):
+  artist = Artist.query.filter_by(id=id).one()
   form = Form_artist()
 
   if form.validate_on_submit():
@@ -717,10 +717,10 @@ def artist_edit(artist_id):
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/artists/<int:artist_id>/delete', methods=['GET', 'POST'])
+@app.route('/artists/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
-def artist_delete(artist_id):
-  artist = Artist.query.filter_by(id=artist_id).one()
+def artist_delete(id):
+  artist = Artist.query.filter_by(id=id).one()
   form = Form_artist()
   if request.method == 'POST':
       db.session.delete(artist)
@@ -746,14 +746,14 @@ def artworks():
     active_artworks = active_artworks)
 
 
-@app.route('/artworks/<int:artwork_id>')
-def artwork(artwork_id):
-  artwork = Artwork.query.filter_by(id=artwork_id).one()
+@app.route('/artworks/<int:id>')
+def artwork(id):
+  artwork = Artwork.query.filter_by(id=id).one()
   artists = Artist.query.all()
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   form = Form_artwork()
-  art_exhib = Exh_art_park.query.filter_by(artwork_id = artwork_id).all()
+  art_exhib = Exh_art_park.query.filter_by(artwork_id = id).all()
   # artwork_join = (db.session.query(Exh_art_park, Artwork)
   #   .filter(Exh_art_park.artwork_id == Artwork.id)
   #   .filter(Artwork.id == artwork_id)).all()
@@ -801,10 +801,10 @@ def artwork_create():
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/artworks/<int:artwork_id>/edit', methods=['POST'])
+@app.route('/artworks/<int:id>/edit', methods=['POST'])
 @login_required
-def artwork_edit(artwork_id):
-  artwork = Artwork.query.filter_by(id=artwork_id).one()
+def artwork_edit(id):
+  artwork = Artwork.query.filter_by(id=id).one()
   form = Form_artwork()
   if form.validate_on_submit():
     # Update artwork items
@@ -896,10 +896,10 @@ def artwork_edit(artwork_id):
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/artworks/<int:artwork_id>/delete', methods=['GET', 'POST'])
+@app.route('/artworks/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
-def artwork_delete(artwork_id):
-  artwork = Artwork.query.filter_by(id=artwork_id).one()
+def artwork_delete(id):
+  artwork = Artwork.query.filter_by(id=id).one()
   form = Form_artwork()
   if request.method == 'POST':
       db.session.delete(artwork)
@@ -917,9 +917,9 @@ def orgs():
   return render_template('orgs.html', orgs = orgs)
 
 
-@app.route('/orgs/<int:org_id>')
-def org(org_id):
-  org = Org.query.filter_by(id=org_id).one()
+@app.route('/orgs/<int:id>')
+def org(id):
+  org = Org.query.filter_by(id=id).one()
   exhibitions = Exhibition.query.all()
   form = Form_org()
   for exh in org.exhibitions:
@@ -971,10 +971,10 @@ def org_create():
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/orgs/<int:org_id>/edit', methods=['POST'])
+@app.route('/orgs/<int:id>/edit', methods=['POST'])
 @login_required
-def org_edit(org_id):
-  org = Org.query.filter_by(id=org_id).one()
+def org_edit(id):
+  org = Org.query.filter_by(id=id).one()
   form = Form_org()
 
   if form.validate_on_submit():
@@ -1014,10 +1014,10 @@ def org_edit(org_id):
     return jsonify({"success": False, "data": form.errors})
 
 
-@app.route('/orgs/<int:org_id>/delete', methods=['GET', 'POST'])
+@app.route('/orgs/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
-def org_delete(org_id):
-  org = Org.query.filter_by(id=org_id).one()
+def org_delete(id):
+  org = Org.query.filter_by(id=id).one()
   form = Form_org()
   if request.method == 'POST':
       db.session.delete(org)
@@ -1030,8 +1030,7 @@ def org_delete(org_id):
 def search():
   form = Form_search()
   if form.validate_on_submit():
-    print "!!!! {}".format(form.class_object.data)
-    results = form.class_object.data.query.msearch(form.search.data).all()
+    results = Park.query.msearch(form.search.data).all()
     return render_template('results.html', form = form, results = results)
   else:
     # Return errors if form doesn't validate

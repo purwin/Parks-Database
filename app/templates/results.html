@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block head_extras %}
+<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Search Results{% endblock %}
 {% block content %}
@@ -10,7 +11,7 @@
     {% include "include/nav.html" %}
     <div class="head [ row justify-content-center align-items-center ]">
       <div class="[ col-md-8 ]">  
-        <h1 class="[ text-center display-3 ]"><b>{{ form.class_object.data|upper }} SEARCH RESULTS</b></h1>
+        <h1 class="[ text-center display-3 ]"><b>{{ form.class_object.data|upper }}<br/>SEARCH RESULTS</b></h1>
       </div>
     </div>
   </section>
@@ -21,7 +22,7 @@
   <section id="section--results">
     <div class="chunk [ row justify-content-center ]">
       <div class="[ col-md-8 pb-5 ]">
-        <h3 class="[ display-5 py-4 ]">Found {{ results|length }} results for "{{ form.search.data }}".</h3>
+        <h3 class="[ display-5 py-4 ]">Found {{ results|length }} result(s) for "{{ form.search.data }}".</h3>
         {% for result in results %}
           <h3 class="[ py-1 ]"><a href="{{ url_for(form.class_object.data|lower, id=result.id) }}">{{ result.name }}</a></h3>
         {% endfor %}

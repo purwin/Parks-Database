@@ -114,16 +114,14 @@ def logout():
 def signup():
   form = Form_signup()
 
-  if form.is_submitted():
-    if form.validate():
-      hashed_password = generate_password_hash(form.password.data, method='sha256')
+  if form.validate_on_submit():
+      hashed_password = generate_password_hash(form.password.data,
+        method='sha256')
       new_user = User(username=form.username.data, password=hashed_password)
       db.session.add(new_user)
       db.session.commit()
-      return jsonify({"success": True, "data": {"Signup": "User created!"}})
-
-    else:
-      return jsonify({"success": False, "data": form.errors})
+      login_user(new_user, remember = form.remember.data)
+      return redirect(url_for('home'))
 
   return render_template('signup.html', form=form)
 
@@ -168,11 +166,12 @@ def exhibitions():
                                          .order_by(Exhibition.end_date.desc())\
                                          .limit(10)\
                                          .all()
+  form = Form_search()
   session['url'] = request.path
   return render_template('exhibitions.html', exhibitions = exhibitions,
     active_exhibitions = active_exhibitions,
     upcoming_exhibitions = upcoming_exhibitions,
-    recent_exhibitions = recent_exhibitions)
+    recent_exhibitions = recent_exhibitions, form = form)
 
 
 @app.route('/exhibitions/<int:id>')
@@ -604,8 +603,9 @@ def park_delete(id):
 @app.route('/artists')
 def artists():
   artists = Artist.query.all()
+  form = Form_search()
   session['url'] = request.path
-  return render_template('artists.html', artists = artists)
+  return render_template('artists.html', artists = artists, form = form)
 
 
 @app.route('/artists/<int:id>')
@@ -741,9 +741,10 @@ def artworks():
       .order_by(Exhibition.name)\
       .order_by(Artwork.name)\
       .all()
+  form = Form_search()
   session['url'] = request.path
   return render_template('artworks.html', artworks = artworks,
-    active_artworks = active_artworks)
+    active_artworks = active_artworks, form = form)
 
 
 @app.route('/artworks/<int:id>')
@@ -913,8 +914,9 @@ def artwork_delete(id):
 @app.route('/orgs')
 def orgs():
   orgs = Org.query.all()
+  form = Form_search()
   session['url'] = request.path
-  return render_template('orgs.html', orgs = orgs)
+  return render_template('orgs.html', orgs = orgs, form = form)
 
 
 @app.route('/orgs/<int:id>')
@@ -1026,11 +1028,13 @@ def org_delete(id):
   else:
       return render_template('org_delete.html', org = org, form = form)
 
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
   form = Form_search()
   if form.validate_on_submit():
-    # results = eval(form.class_object.data).query.msearch(form.search.data).all()
+    # results = eval(form.class_object.data).query\
+                                            # .msearch(form.search.data).all()
     obj = eval(form.class_object.data)
     results = obj.query.filter(obj.name.contains(form.search.data)).all()
     return render_template('results.html', form = form, results = results)

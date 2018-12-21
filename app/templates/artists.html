@@ -16,7 +16,29 @@
 		</div>
 	</section>
 
-	{% include "include/user.html" %}
+	<section id="section--search">
+		{% include "include/user.html" %}
+
+		<div class="[ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+				<form id="js-form_search" action="/search" method="POST">
+					{{ form.csrf_token }}
+
+					<div class="[ d-none ]">
+						{{ form.class_object(class="form-control", value="Artist") }}
+					</div>
+
+					<div class="[ input-group ]">
+						{{ form.search(class="form-control", placeholder="Search") }}
+						<div class="[ input-group-append ]">
+							<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</section>
 
 	<section id="section--artists">
 		<div class="[ row justify-content-center py-5 ]">

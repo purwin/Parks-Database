@@ -113,6 +113,11 @@ class Form_user(FlaskForm):
   password = PasswordField('Password', validators=[DataRequired()])
   remember = BooleanField('Remember')
 
+  def validate_username(self, username):
+    user = User.query.filter_by(username=username.data).first()
+    if user is None:
+      raise ValidationError('User not found!')
+
 
 class Form_signup(FlaskForm):
   username = StringField('Username', validators=[DataRequired()])

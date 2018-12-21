@@ -1,6 +1,8 @@
 import {model} from './model';
 import {view} from './view';
 
+import 'jquery'
+import 'bootstrap'
 
 export let controller = {
 
@@ -304,8 +306,13 @@ export let controller = {
                                     model.activeObject.post.edit);
 
     postPromise.done(function(response) {
+      if (response.success == undefined) {
+        console.log("Unexpected response! " + response);
+        // controller.showLogin(response)
+        location.assign("/login")
+      }
       // If form POST doesn't validate with wtforms, add errors to page
-      if (response.success == false) {
+      else if (response.success == false) {
         console.log("Form Error(s)!");
         console.dir(response);
 
@@ -317,11 +324,10 @@ export let controller = {
         }
       }
       // ...Otherwise, reload page
-      else {
+      else if (response.success == true) {
         console.log("Form Sucess!");
-        console.dir(response);
         // Reload page
-        // window.location.reload(true);
+        window.location.reload(true);
       }
 
     });
@@ -453,6 +459,24 @@ export let controller = {
 
     // Update fieldlist item ID and name values for wtforms validation
     this.iterateFieldlists(model.activeObject.form.id);
+  },
+
+
+  // Show login modal
+  showLogin: function(html) {
+    // Show object modal and add object.modal HTML to modal body
+    $('body').append(html);
+    $('#js-modal_login').modal('show');
+  },
+
+
+  // Log out user
+  getLogout: function() {
+    console.log("Logout clicked!");
+    $.get('/logout', function(data) {
+      console.log(data);
+      controller.addSuccess(data);
+    });
   }
 
 

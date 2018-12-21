@@ -90,7 +90,7 @@ def login():
     return redirect(url_for('home'))
   form = Form_user()
   if form.validate_on_submit():
-    user = User.query.filter_by(username = form.username.data).one()
+    user = User.query.filter_by(username = form.username.data).first()
     if user:
       if check_password_hash(user.password, form.password.data):
         login_user(user, remember = form.remember.data)
@@ -98,8 +98,8 @@ def login():
         if not next or url_parse(next).netloc != '':
           next = session['url']
           return redirect(next)
-      # FUTURE: Return error notice for invalid username/password
-
+      else:
+        form.password.errors.append("Incorrect password!")
   return render_template('login.html', form=form)
 
 
@@ -107,7 +107,7 @@ def login():
 @login_required
 def logout():
   logout_user()
-  return 'You are now logged out!'
+  return redirect(session['url'])
 
 
 @app.route('/signup', methods=['GET', 'POST'])

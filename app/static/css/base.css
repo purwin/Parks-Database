@@ -36,6 +36,12 @@ body {
 
 h1 {}
 
+.head--parks { color: #88c659; }
+.head--exhibitions { color: #a174f6; }
+.head--artworks { color: #e76a58; }
+.head--artists { color: #ff7c9e; }
+.head--orgs { color: #fe8254; }
+
 h2 { color:  #b8dd9b; }
 
 h3 {}
@@ -58,8 +64,9 @@ p {}
 
 a {
   color: #58595b;
-  border-bottom: 2.5px solid;
+  border-bottom: 2px solid;
   text-decoration: none;
+  transition: .2s;
 }
 
 a:hover {

@@ -31,7 +31,7 @@
 					</div>
 
 					<div class="[ input-group ]">
-						{{ form.search(class="form-control", placeholder="Search Parks") }}
+						{{ form.search(class="form-control", placeholder="Search") }}
 						<div class="[ input-group-append ]">
 							<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
 						</div>
@@ -49,12 +49,36 @@
 
 				<h2 class="[ display-4 py-4 ]">Active Parks</h2>
 
+				<!-- Loop and get list of active exhibitions -->
+				{% set active_exhibitions = [] %}
+				{% for line in active_parks %}
+					{% set active_exhibitions = active_exhibitions.append(line.Exhibition.id) %}
+				{% endfor %}
+
+				<!-- Create list of parks to prevent listing duplicates -->
 				{% set park_list = [] %}
 
 					{% for line in active_parks %}
 
 						{% if line.Park.id not in park_list %}
-							<h3 class="[ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a></h3>
+							<h3 class="[ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+
+								<!-- Loop and get list of park exhibitions if exhibition is in the list of active exhibitions -->
+								{% set park_exhibitions = [] %}
+								{% for exhibition in line.Park.exhibitions %}
+									{% if exhibition.id in active_exhibitions %}
+										{% set park_exhibitions = park_exhibitions.append(exhibition) %}
+									{% endif %}
+								{% endfor %}
+
+								<!-- Loop and display each active park exhibition -->
+								{% for exhibition in park_exhibitions %}
+									<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>
+									{{ "/" if not loop.last }}
+								{% endfor %}
+
+							)</h3>
+							<!-- Add park to list of parks -->
 							{% set park_list = park_list.append(line.Park.id) %}
 						{% endif %}
 

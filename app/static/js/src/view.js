@@ -26,6 +26,8 @@ export let view = {
     this.cancelForm();
 
     this.updateForm();
+
+    this.logoutUser();
   },
 
 
@@ -166,6 +168,14 @@ export let view = {
     $(".js-cancel-form").on('click', function(e) {
       // Reload page
       window.location.reload(true);
+    });
+  },
+
+
+  // Click event for user logging out
+  logoutUser: function() {
+    $('#js-logout').on('click', function(e) {
+      controller.getLogout();
     });
   }
 

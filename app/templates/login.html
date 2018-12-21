@@ -7,60 +7,86 @@
 
 <div class="container-fluid">
 
+	<section class="section--head">
+		{% include "include/nav.html" %}
 
-		<form id="js-form_login" action="" method="POST">
-				{{ form.hidden_tag() }}
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>NYC PARKS</b></h1>
+			</div>
+		</div>
+	</section>
 
-				<section id="section--login">
+	<form id="js-form_login" action="{{ url_for('login') }}" method="POST">
+		{{ form.hidden_tag() }}
 
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-md-8 ]">
-							<h2 class="[ display-4 py-4 text-center ]">Parks Database</h2>
-					
-							<ul class="js-ul_login [ p-0 ]">
-					
-								<li class="[ row mb-3 align-items-baseline ]">
-									<div class="[ col-md-3 ]">
-										{{ form.username.label }}
-									</div>
-									<div class="[ col-md-9 ]">
-										{{ form.username(class="form-control", placeholder=form.username.label.text) }}
-									</div>
-								</li>
-								<li class="[ row mb-3 align-items-baseline ]">
-									<div class="[ col-md-3 ]">
-										{{ form.password.label }}
-									</div>
-									<div class="[ col-md-9 ]">
-										{{ form.password(class="form-control", placeholder=form.password.label.text) }}
-									</div>
-								</li>
-								<li class="[ row mb-3 align-items-baseline ]">
-									<div class="[ col-md-3 ]">
-										{{ form.remember.label }}
-									</div>
-									<div class="[ col-md-9 ]">
-										{{ form.remember(class="[ form-control ]") }}
-									</div>
-								</li>
-					
-							</ul>
-					
+		<div class="js-alert [ fixed-top ]">
+			{% for field in form.errors %}
+				{% for error in form.errors[field] %}
+					<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+						<div class="js-error-body">
+							<strong>Error!</strong> <span class="js-error-notice">{{ error }}</span>
 						</div>
+						<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
 
-				</section>
+		<section id="section--login">
 
-				<section id="section--submit">
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-md-8 py-4 text-right ]">
-							<button id="js-cancel_login" class="butt butt--delete js-cancel-login" type="button">Cancel</button>
-							<input id="js-post_login" class="butt butt--add js-post-login [ ml-2 ]" value="Login" type="submit" />
-						</div>
-					</div>
-				</section>
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-md-8 ]">
+					<h2 class="[ display-4 py-4 text-center ]">Login</h2>
 
-		</form>
+					<ul class="js-ul_login [ p-0 ]">
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.username.label }}
+							</div>
+							<div class="[ col-md-9 ]">
+								{{ form.username(class="form-control", placeholder=form.username.label.text) }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.password.label }}
+							</div>
+							<div class="[ col-md-9 ]">
+								{{ form.password(class="form-control", placeholder=form.password.label.text) }}
+							</div>
+						</li>
+
+						<li class="[ row mb-3 align-items-baseline ]">
+							<div class="[ col-md-3 ]">
+								{{ form.remember.label }}
+							</div>
+							<div class="[ col-md-9 ]">
+								{{ form.remember(class="[ form-control ]") }}
+							</div>
+						</li>
+
+					</ul>
+
+				</div>
+			</div>
+
+		</section>
+
+		<section id="section--submit">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-md-8 py-4 text-right ]">
+					<button id="js-cancel_login" class="butt butt--delete js-cancel-login" type="button">Cancel</button>
+					<input id="js-post_login" class="butt butt--add js-post-login [ ml-2 ]" value="Login" type="submit" />
+				</div>
+			</div>
+		</section>
+
+	</form>
 
 </div>
 

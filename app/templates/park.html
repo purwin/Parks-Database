@@ -12,7 +12,7 @@
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
 			<div class="[ col-md-8 ]">
-				<h1 class="[ text-center display-3 ]"><b>{{ park.name|upper }}</b></h1>
+				<h1 class="head--parks [ text-center display-3 ]"><b>{{ park.name|upper }}</b></h1>
 			</div>
 		</div>
 	</section>
@@ -25,12 +25,14 @@
 	<form id="js-form_park" action="/parks/{{ park.id }}/edit" method="POST">
 		{{ form.csrf_token }}
 
-		<div class="chunk [ row justify-content-center ]">
-			<div class="[ col-md-8 text-right pt-5 pb-4 ]">
-				<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
-				<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+		{% if current_user.is_authenticated %}
+			<div class="chunk [ row justify-content-center ]">
+				<div class="[ col-md-8 text-right pt-5 pb-4 ]">
+					<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
+					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
+				</div>
 			</div>
-		</div>
+		{% endif %}
 
 
 
@@ -145,6 +147,7 @@
 		</section>
 
 
+		{% if current_user.is_authenticated %}
 			<section id="section--submit">
 				<div class="chunk [ row justify-content-center d-none ]">
 					<div class="[ col-md-8 text-right py-4 ]">
@@ -153,6 +156,7 @@
 					</div>
 				</div>
 			</section>
+		{% endif %}
 
 	</form>
 

@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block head_extras %}
+<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Sign Up{% endblock %}
 {% block content %}
@@ -39,7 +40,7 @@
 
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 py-4 text-center ]">Parks Database – Sign Up</h2>
+					<h2 class="[ display-4 py-4 ]">Sign Up</h2>
 
 					<ul class="js-ul_login [ p-0 ]">
 
@@ -48,7 +49,7 @@
 								{{ form.username.label }}
 							</div>
 							<div class="[ col-md-9 ]">
-								{{ form.username(class="form-control", placeholder="form.username.label") }}
+								{{ form.username(class="form-control", placeholder=form.username.label.text) }}
 							</div>
 						</li>
 
@@ -57,7 +58,7 @@
 								{{ form.password.label }}
 							</div>
 							<div class="[ col-md-9 ]">
-								{{ form.password(class="form-control", placeholder="form.password.label") }}
+								{{ form.password(class="form-control", placeholder=form.password.label.text) }}
 							</div>
 						</li>
 
@@ -78,9 +79,9 @@
 		</section>
 
 		<section id="section--submit">
-			<div class="[ row justify-content-center ]">
+			<div class="[ row justify-content-center text-right ]">
 				<div class="[ col-md-8 py-4 ]">
-					<button id="js-cancel_signup" class="butt butt--delete js-cancel-signup" type="button">Cancel</button>
+					<a id="js-cancel_signup" class="butt butt--delete js-cancel-signup [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 					<button id="js-post_signup" class="butt butt--add js-post-signup [ ml-2 ]" value="" type="submit">Sign Up</button>
 				</div>
 			</div>

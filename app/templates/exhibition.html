@@ -26,7 +26,7 @@
 
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-sm-12 col-md-8 text-right pt-5 pb-4 ]">
+				<div class="[ col-sm-12 col-md-8 text-right py-5 ]">
 					<button id="js-edit_exhibition" class="js-form-edit butt butt--edit" type="button">Edit</button>
 					<a href="{{ url_for('exhibition_delete', id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
@@ -34,7 +34,7 @@
 		{% endif %}
 
 		<section id="section--bio">
-			<div class="[ row justify-content-center ]">
+			<div class="chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
@@ -86,7 +86,7 @@
 
 
 		<section id="section--parks">
-			<div class="is-active [ row justify-content-center ]">
+			<div class="is-active chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Parks</h2>
 
@@ -116,7 +116,7 @@
 
 
 		<section id="section--orgs">
-			<div class="[ row justify-content-center ]">
+			<div class="chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Organizations</h2>
 
@@ -157,7 +157,7 @@
 
 
 		<section id="section--artworks">
-			<div class="[ row justify-content-center ]">
+			<div class="chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Artworks</h2>
 
@@ -207,7 +207,7 @@
 
 
 		<section id="section--install">
-			<div class="[ row justify-content-center ]">
+			<div class="chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Install Details</h2>
 
@@ -320,7 +320,7 @@
 		</section>
 
 		<section id="section--de-install">
-			<div class="[ row justify-content-center ]">
+			<div class="chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-sm-12 col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">De-Install Details</h2>
 
@@ -360,7 +360,7 @@
 
 		{% if current_user.is_authenticated %}
 			<section id="section--submit">
-				<div class="[ row justify-content-center d-none ]">
+				<div class="[ row justify-content-center d-none py-4 ]">
 					<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
 						<button id="js-cancel_exhibition" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
 						<button id="js-post_exhibition" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>

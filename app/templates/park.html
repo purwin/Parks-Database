@@ -121,7 +121,7 @@
 									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
-								<div class="[ col-2 col-md-3 align-items-baseline ]">
+								<div class="[ col-2 align-items-baseline ]">
 									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
 								<div class="[ col-md-3 ]">
@@ -177,7 +177,7 @@
 			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
-		<div class="[ col-2 col-md-3 ]">
+		<div class="[ col-2 ]">
 			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
@@ -195,7 +195,7 @@
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
 		<div class="[ col-md-2 ]">
-			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 		<div class="[ col-md-3 ]">
 			<label for="artworks">Artwork</label>

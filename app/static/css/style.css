@@ -1,4 +1,5 @@
-
+/* Import Bootstrap CSS */
+/* import 'bootstrap/dist/css/bootstrap.min.css'; */
 
 
 /* Import Base CSS file: global CSS, resets */
@@ -18,6 +19,9 @@
 /* Import Modules */
 
 /* Import Buttons CSS */
+@import "module-heads.css";
+
+/* Import Buttons CSS */
 @import "module-buttons.css";
 
 /* Import Forms CSS */
@@ -31,135 +35,11 @@
 
 h4 { display:  inline-block; }
 
-/*
- *
- * Divs
- *
- */
-
-
-
-
-
-/*
- *
- * Buttons
- *
- */
-
-.btn__parks {
-	cursor: pointer;
-	border-width: 1.5px;
-	border-style: solid;
-	border-color: #bcbdbd;
-	border-radius: 4px;
-	background-color: #fff;
-	color: #58595b;
-}
-.btn__parks a {
-	color: inherit;
-	text-decoration: none;
-}
-.btn__parks:focus {
-	outline:0;
-}
-.btn__parks:hover {
-	border-color: #58595b;
-}
-.btn__parks:active {
-	border-color: #bcbdbd;
-	background-color: #58595b;
-	color: #f4f4f4;
-}
-
-.btn__parks--edit {
-	border-color: #ffe491;
-	color: #ffd248;
-}
-.btn__parks--edit:hover {
-	border-color: #ffd248;
-}
-.btn__parks--edit:active {
-	border-color: #ffe491;
-	background-color: #ffd248;
-}
-
-.btn__parks--no {
-	border-color: #f1a69b;
-	color: #e76a58;
-}
-.btn__parks--no:hover {
-	border-color: #e76a58;
-}
-.btn__parks--no:active {
-	border-color: #f1a69b;
-	background-color: #e76a58;
-}
-
-.btn__parks--add {
-	border-color: #a1d3ff;
-	color: #62b5ff;
-}
-.btn__parks--add:hover {
-	border-color: #62b5ff;
-}
-.btn__parks--add:active {
-	border-color: #a1d3ff;
-	background-color: #62b5ff;
-}
-
-.btn__parks--delete {
-	color: #f1a69b;
-	border: none;
-}
-.btn__parks--delete:hover {
-	color: #e76a58;
-	border: none;
-}
-.btn__parks--delete:active {
-	border-color: #f1a69b;
-	border: none;
-}
-
-/*
- *
- * Bootstrap Overrides
- *
- */
-
-
-
-/*
- *
- * Exhibition
- *
- */
-
-span.artist {
-	display: inline-block;
-	vertical-align: top;
-}
-span.artwork {
-	display: inline-block;
-	vertical-align: top;
-}
-span.park {
-	display: inline-block;
-	vertical-align: top;
-}
-
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {  }
 
 /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {  
-	.leaf {
-		position: fixed;
-		width: 130px;
-		top: 35px;
-		left: 15px;
-	}
-}
+@media (min-width: 768px) {  }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {  }

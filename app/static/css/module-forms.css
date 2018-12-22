@@ -12,12 +12,14 @@
 
 /* input */
 
+input { color: #58595b }
+
 .select--create {
   color: inherit;
   border:none;
   border-radius: 0;
   border-bottom: 5px dashed;
-  -webkit-appearance:none;
+  -webkit-appearance: none;
   background-color: transparent;
   padding:  0 1rem;
 }

@@ -27,7 +27,7 @@
 
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-md-8 text-right py-4 ]">
+				<div class="[ col-md-8 text-right py-5 ]">
 					<button id="js-edit_artwork" class="js-form-edit butt butt--edit" type="button">Edit</button>
 					<a href="{{ url_for('artwork_delete', id=artwork.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
@@ -36,7 +36,7 @@
 
 
 		<section id="section--bio">
-			<div class="[ row justify-content-center d-none ]">
+			<div class="chunk [ row justify-content-center d-none py-5 ]">
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
@@ -60,7 +60,7 @@
 
 
 		<section id="section--artists">
-			<div class="[ row justify-content-center py-4 ]">
+			<div class="chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 pt-4 pb-1 ]">Artists</h2>
 
@@ -107,7 +107,7 @@
 
 
 		<section id="section--exhibitions">
-			<div class="[ row justify-content-center py-4 ]">
+			<div class="chunk [ row justify-content-center py-4 ]">
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 pt-4 pb-2 ]">Exhibitions</h2>
 
@@ -164,7 +164,7 @@
 
 		{% if current_user.is_authenticated %}
 			<section id="section--submit">
-				<div class="[ row justify-content-center d-none ]">
+				<div class="[ row justify-content-center d-none py-5 ]">
 					<div class="[ col-md-8 text-right py-4 ]">
 						<button id="js-cancel_artwork" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
 						<button id="js-post_artwork" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>

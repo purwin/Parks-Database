@@ -36,11 +36,12 @@ body {
 
 h1 {}
 
-.head--parks { color: #88c659; }
-.head--exhibitions { color: #a174f6; }
-.head--artworks { color: #e76a58; }
-.head--artists { color: #ff7c9e; }
-.head--orgs { color: #fe8254; }
+.head__h1 { font-size: 4rem; }
+.head__h1--parks > * { border-bottom: 5px solid #88c659; }
+.head__h1--exhibitions > * { border-bottom: 5px solid #a174f6; }
+.head__h1--artworks > * { border-bottom: 5px solid #e76a58; }
+.head__h1--artists > * { border-bottom: 5px solid #ff7c9e; }
+.head__h1--orgs > * { border-bottom: 5px solid #fe8254; }
 
 h2 { color:  #b8dd9b; }
 

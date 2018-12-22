@@ -33,6 +33,7 @@ input { color: #58595b }
 /* Class applied to required form labels */
 .required {
   font-weight: bold;
+  border-color: #e76a58;
 }
 
 

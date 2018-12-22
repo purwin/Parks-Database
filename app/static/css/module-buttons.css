@@ -72,36 +72,38 @@ add				- blue
 
 /* .butt--delete: Used for delete/cancel buttons */
 .butt--delete, .butt--delete a {
-	border-color: #f1a69b;
-	color: #e76a58;
+	border-color: #f1a69b !important;
+	color: #e76a58 !important;
 	vertical-align: inherit;
 }
 
 	.butt--delete:hover, .butt--delete a:hover {
-		color: #e76a58;
-		border-color: #e76a58;
+		color: #e76a58 !important;
+		border-color: #e76a58 !important;
 	}
 
 	.butt--delete:active {
-		border-color: #f1a69b;
-		background-color: #e76a58;
+		border-color: #f1a69b !important;
+		background-color: #e76a58 !important;
 	}
 
 
 
 /* .butt--delete-icon: Used for X icon for delete/remove buttons */
 .butt--delete-icon {
-	color: #f1a69b;
+	color: #f1a69b !important;
 	border: none;
+	background-color: transparent;
+	padding: 0;
 }
 
 	.butt--delete-icon:hover {
-		color: #e76a58;
+		color: #e76a58 !important;
 		border: none;
 	}
 
 	.butt--delete-icon:active {
-		border-color: #f1a69b;
+		border-color: #f1a69b !important;
 		border: none;
 	}
 

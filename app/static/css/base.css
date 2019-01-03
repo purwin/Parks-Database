@@ -38,10 +38,10 @@ h1 {}
 
 .head__h1 { font-size: 4rem; }
 .head__h1--parks > * { border-bottom: 5px solid #88c659; }
-.head__h1--exhibitions > * { border-bottom: 5px solid #a174f6; }
-.head__h1--artworks > * { border-bottom: 5px solid #e76a58; }
-.head__h1--artists > * { border-bottom: 5px solid #ff7c9e; }
-.head__h1--orgs > * { border-bottom: 5px solid #fe8254; }
+.head__h1--exhibitions > * { border-bottom: 5px solid #b490f8; }
+.head__h1--artworks > * { border-bottom: 5px solid #81c4ff; }
+.head__h1--artists > * { border-bottom: 5px solid #ff96b1; }
+.head__h1--orgs > * { border-bottom: 5px solid #fe9b76; }
 
 h2 { color:  #b8dd9b; }
 
@@ -89,41 +89,41 @@ a[href^="/parks"]:hover {
 
 /* Interal links: Exhibitions */
 a[href^="/exhibitions"] {
-  border-bottom-color: #a174f6;
+  border-bottom-color: #b490f8;
 }
 
 a[href^="/exhibitions"]:hover {
-  color: #a174f6;
+  color: #b490f8;
 }
 
 
 /* Interal links: Artworks */
 a[href^="/artworks"] {
-  border-bottom-color: #e76a58;
+  border-bottom-color: #81c4ff;
 }
 
 a[href^="/artworks"]:hover {
-  color: #e76a58;
+  color: #81c4ff;
 }
 
 
 /* Interal links: Artists */
 a[href^="/artists"] {
-  border-bottom-color: #ff7c9e;
+  border-bottom-color: #ff96b1;
 }
 
 a[href^="/artists"]:hover {
-  color: #ff7c9e;
+  color: #ff96b1;
 }
 
 
 /* Interal links: Organizations */
 a[href^="/orgs"] {
-  border-bottom-color: #fe8254;
+  border-bottom-color: #fe9b76;
 }
 
 a[href^="/orgs"]:hover {
-  color: #fe8254;
+  color: #fe9b76;
 }
 
 /*

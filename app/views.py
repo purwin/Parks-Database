@@ -112,6 +112,7 @@ def logout():
 
 
 @app.route('/signup', methods=['GET', 'POST'])
+@login_required
 def signup():
   form = Form_signup()
 

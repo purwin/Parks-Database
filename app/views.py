@@ -12,7 +12,7 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.urls import url_parse
+from werkzeug.urls import url_parse, secure_filename
 from flask_login import (
   LoginManager,
   UserMixin,
@@ -32,7 +32,8 @@ from forms import (
   Form_org,
   Form_user,
   Form_signup,
-  Form_search
+  Form_search,
+  Form_import
 )
 from users import User
 from datetime import datetime
@@ -149,6 +150,23 @@ def create():
     form_artist = form_artist, form_artwork = form_artwork,
     form_park = form_park, form_exhibition = form_exhibition,
     form_org = form_org)
+
+
+@app.route('/import', methods=['GET', 'POST'])
+def import_data():
+  pass
+  form = Form_import()
+
+  if form.validate_on_submit():
+    # get file upload
+    f = form.file.data
+    filename = secure_filename(f.filename)
+  # get form data (object type, classes, etc.)
+  # store file data
+  # call function to add data to database
+  # store success/error info, return to user
+
+  return render_template('import.html', form=form)
 
 
 @app.route('/exhibitions')

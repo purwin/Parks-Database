@@ -3,7 +3,6 @@
 
 import json
 import requests
-# from bs4 import BeautifulSoup
 import re
 
 # import current database
@@ -126,6 +125,7 @@ def add_park(obj):
 
 
 def get_site(name):
+  name = name.encode('utf-8')
   url_name = name.lower().replace(' ', '-')\
                          .replace('.', '')\
                          .replace(' ', '-')\
@@ -163,6 +163,6 @@ def dump_errors(error):
 
 if __name__ == '__main__':
   # Declare parks JSON file
-  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_X-02.json'
+  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_M-02.json'
 
   import_parks(json_file)

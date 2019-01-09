@@ -186,7 +186,7 @@ def import_file():
 
 @app.route('/import/data', methods=['GET', 'POST'])
 def import_data():
-  return render_template('import_data.html')
+  pass
 
 
 @app.route('/exhibitions')

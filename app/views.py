@@ -12,7 +12,8 @@ from flask import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.urls import url_parse, secure_filename
+from werkzeug.urls import url_parse
+from werkzeug.utils import secure_filename
 from flask_login import (
   LoginManager,
   UserMixin,
@@ -36,7 +37,9 @@ from forms import (
   Form_import
 )
 from users import User
+
 from datetime import datetime
+import pandas as pd
 
 
 search = Search()
@@ -154,20 +157,30 @@ def create():
 
 
 @app.route('/import', methods=['GET', 'POST'])
-def import_data():
-  pass
+@login_required
+def import_file():
   form = Form_import()
 
   if form.validate_on_submit():
     # get file upload
-    f = form.file.data
-    filename = secure_filename(f.filename)
-  # get form data (object type, classes, etc.)
+    # filename = secure_filename(form.file.data.filename)
+    file = form.file.data
+    # get form data (object type, classes, etc.)
+    file_data = pd.read_csv(file)
+    print file_data[1:3]
+    file_headers = file_data.columns.values
+    print file_headers
+    return file_headers
   # store file data
   # call function to add data to database
   # store success/error info, return to user
 
-  return render_template('import.html', form=form)
+  return render_template('import.html', form = form)
+
+
+@app.route('/import/data', methods=['GET', 'POST'])
+def import_data():
+  return render_template('import_data.html')
 
 
 @app.route('/exhibitions')

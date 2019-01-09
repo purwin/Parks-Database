@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+{% block head_extras %}
+<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
+{% endblock %}
+{% block title %}Parks Database – Import Data{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+	<section class="section--head">
+		{% include "include/nav.html" %}
+
+		<div class="head [ row justify-content-center align-items-center ]">
+			<div class="[ col-md-8 ]">
+				<h1 class="[ text-center display-3 ]"><b>IMPORT DATA</b></h1>
+			</div>
+		</div>
+	</section>
+
+	<form id="js-form_import" action="{{ url_for('import_data') }}" enctype="multipart/form-data" method="POST">
+		{{ form.hidden_tag() }}
+
+		<div class="js-alert [ fixed-top ]">
+			{% for field in form.errors %}
+				{% for error in form.errors[field] %}
+					<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+						<div class="js-error-body">
+							<strong>Error!</strong> <span class="js-error-notice">{{ error }}</span>
+						</div>
+						<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
+
+		<section id="section--import-file">
+
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-md-8 text-center ]">
+					<h4 class="[ py-4 ]">Choose a File to Import</h4>
+
+					<ul class="js-ul_import [ p-0 ]">
+
+						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+							<div class="[ col-md-8 ]">
+								{{ form.file(class="form-control") }}
+							</div>
+						</li>
+
+					</ul>
+
+				</div>
+			</div>
+
+		</section>
+
+		<section id="section--submit">
+			<div class="[ row justify-content-center ]">
+				<div class="[ col-md-8 py-4 text-right ]">
+					<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+					<input id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]" value="Import" type="submit" />
+				</div>
+			</div>
+		</section>
+
+	</form>
+
+	<section id="section--import-data">
+
+		<div class="[ row justify-content-center d-none ]">
+			<div class="[ col-md-8 text-center ]">
+				<h4 class="[ py-4 ]">Map Data!</h4>
+
+				<ul class="js-ul_import [ p-0 ]">
+
+					<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+						<div class="[ col-md-3 ]">
+							{{ form.class_object.label(class="form-control") }}
+						</div>
+						<div class="[ col-md-6 ]">
+							{{ form.class_object(class="form-control") }}
+						</div>
+					</li>
+
+					<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+						<div class="[ col-md-3 ]">
+							{{ form.keys.label(class="form-control") }}
+						</div>
+						<div class="[ col-md-6 ]">
+							{{ form.keys(class="form-control") }}
+						</div>
+					</li>
+
+				</ul>
+
+			</div>
+		</div>
+
+	</section>
+
+
+</div>
+
+{% endblock %}

@@ -22,7 +22,6 @@ from flask_login import (
   logout_user,
   current_user
 )
-from flask_msearch import Search
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import (
@@ -41,10 +40,6 @@ from users import User
 from datetime import datetime
 import pandas as pd
 
-
-search = Search()
-search.init_app(app)
-search.create_index()
 
 
 # Flask-login settings
@@ -1071,8 +1066,6 @@ def org_delete(id):
 def search():
   form = Form_search()
   if form.validate_on_submit():
-    # results = eval(form.class_object.data).query\
-                                            # .msearch(form.search.data).all()
     obj = eval(form.class_object.data)
     results = obj.query.filter(obj.name.contains(form.search.data)).all()
     return render_template('results.html', form = form, results = results)

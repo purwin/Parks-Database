@@ -99,6 +99,8 @@ def login():
       if check_password_hash(user.password, form.password.data):
         login_user(user, remember = form.remember.data)
         next = request.args.get('next')
+        print "NEXT!!!!!: {}".format(next)
+        print "ARGS!!!!!: {}".format(request.values)
         if not next or url_parse(next).netloc != '':
           next = session['url']
           return redirect(next)
@@ -117,6 +119,10 @@ def logout():
 @app.route('/signup', methods=['GET', 'POST'])
 @login_required
 def signup():
+  # Allow only admin access to signup route
+  if current_user.username != 'admin':
+    return redirect(url_for('home'))
+
   form = Form_signup()
 
   if form.validate_on_submit():

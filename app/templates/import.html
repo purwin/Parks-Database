@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block head_extras %}
 <script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='js/src/import.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Import Data{% endblock %}
 {% block content %}
@@ -60,7 +61,7 @@
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 py-4 text-right ]">
 					<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
-					<input id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]" value="Import" type="submit" />
+					<input id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]" value="Import File" type="submit" />
 				</div>
 			</div>
 		</section>

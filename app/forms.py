@@ -1,4 +1,6 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+
 from wtforms import (
   StringField,
   TextAreaField,
@@ -134,3 +136,33 @@ class Form_search(FlaskForm):
   class_object = HiddenField('Class Object', validators=[DataRequired(),
     AnyOf(['Park', 'Exhibition', 'Artwork', 'Artist', 'Org'])])
   search = StringField('Search', validators=[DataRequired()])
+
+
+class Form_import(FlaskForm):
+  file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'Please choose a CSV file!')])
+  class_object = SelectField('Import Type',
+                        choices=[('', 'Choose an Object Type'),
+                                 ('Exhibition', 'Exhibitions'),
+                                 ('Artwork', 'Artworks'),
+                                 ('Park', 'Parks'),
+                                 ('Artist', 'Artists'),
+                                 ('Org', 'Orgs')],
+                        validators=[DataRequired()])
+  keys = FieldList(SelectField('Key'))
+  artists = FieldList(SelectField('Artist',
+                        choices=[('primary_name', 'Last/Primary Name'),
+                                 ('first_name', 'First Name'),
+                                 ('email', 'Email'),
+                                 ('phone', 'Phone'),
+                                 ('website', 'Website')]))
+  artworks = FieldList(SelectField('Artwork', choices=[('name', 'Name')]))
+  parks = FieldList(SelectField('Park',
+                        choices=[('name', 'Name'),
+                                 ('park_id', 'Park ID'),
+                                 ('borough', 'Borough'),
+                                 ('address', 'Address'),
+                                 ('cb', 'Community Board')]))
+  orgs = FieldList(SelectField('Org',
+                        choices=[('name', 'name'),
+                                 ('website', 'website'),
+                                 ('phone', 'phone')]))

@@ -11,7 +11,7 @@
 	<section id="section--head">
 		{% include "include/nav.html" %}
 		<div class="head [ row justify-content-center align-items-center ]">
-			<div class="[ col-sm-12 col-md-8 ]">
+			<div class="[ col-md-8 ]">
 				<h1 class="head__h1 head__h1--exhibitions [ text-center display-3 ]"><b>{{ exhibition.name|upper }}</b></h1>
 			</div>
 		</div>
@@ -26,7 +26,7 @@
 
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
-				<div class="[ col-sm-12 col-md-8 text-right py-5 ]">
+				<div class="[ col-md-8 text-right py-5 ]">
 					<button id="js-edit_exhibition" class="js-form-edit butt butt--edit" type="button">Edit</button>
 					<a href="{{ url_for('exhibition_delete', id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
@@ -35,7 +35,7 @@
 
 		<section id="section--bio">
 			<div class="chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-sm-12 col-md-8 ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Bio</h2>
 
 					<ul class="[ list-unstyled p-0 ]">
@@ -87,7 +87,7 @@
 
 		<section id="section--parks">
 			<div class="is-active chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-sm-12 col-md-8 ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Parks</h2>
 
 					<ul class="[ list-unstyled p-0 ]">
@@ -117,7 +117,7 @@
 
 		<section id="section--orgs">
 			<div class="chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-sm-12 col-md-8 ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Organizations</h2>
 
 					<div class="[ row justify-content-center ]">
@@ -158,7 +158,7 @@
 
 		<section id="section--artworks">
 			<div class="chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-sm-12 col-md-8 ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Artworks</h2>
 
 					<div class="[ row justify-content-center ]">
@@ -195,7 +195,7 @@
 
 						{% else %}
 
-							<li><i>{{ exhibition.name }} has no related artworks.</i></li>
+							<li class="is-active"><i>{{ exhibition.name }} has no related artworks.</i></li>
 
 						{% endfor %}
 					</ul>
@@ -208,7 +208,7 @@
 
 		<section id="section--install">
 			<div class="chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-sm-12 col-md-8 ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Install Details</h2>
 
 					<ul class="[ list-unstyled p-0 ]">
@@ -321,7 +321,7 @@
 
 		<section id="section--de-install">
 			<div class="chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-sm-12 col-md-8 ]">
+				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">De-Install Details</h2>
 
 					<ul class="[ list-unstyled p-0 ]">
@@ -361,7 +361,7 @@
 		{% if current_user.is_authenticated %}
 			<section id="section--submit">
 				<div class="[ row justify-content-center d-none py-4 ]">
-					<div class="[ col-sm-12 col-md-8 text-right py-4 ]">
+					<div class="[ col-md-8 text-right py-4 ]">
 						<button id="js-cancel_exhibition" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
 						<button id="js-post_exhibition" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 					</div>

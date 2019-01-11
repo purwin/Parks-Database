@@ -1,4 +1,6 @@
-<!-- Function to show Datalists for input fields -->
+<!-- Function to show datalists for input fields -->
+<!-- data_id: pluralized name of datalist (artworks, parks, etc.) -->
+<!-- collection: object parameter (list of artwork objects, park objects, etc.) -->
 {% macro datalist(data_id, collection) %}
 <datalist id="{{ data_id }}">
 	{% for item in collection %}

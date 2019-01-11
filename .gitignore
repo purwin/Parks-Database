@@ -6,7 +6,6 @@ config.*
 *.pyc
 updated/
 sqlite_parks_db.db
-requirements.txt
 venv.txt
 z_archive/*
 node_modules

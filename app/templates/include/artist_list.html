@@ -1,8 +1,0 @@
-<li class="li_artist mb-1">
-	<input id="datalist_artist" type="text" name="art_artist" list="artists"  placeholder="Artist Name" class="form-control">
-		<datalist id="artists">
-			{% for artist in artists %}
-			<option data-value="{{ artist.id }}" value="{% if artist.fName %}{{ artist.fName }} {% endif %}{{ artist.pName }}"></option>
-			{% endfor %}
-		</datalist>
-</li>

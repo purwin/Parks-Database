@@ -1,19 +1,29 @@
 <div class="site-nav">
-  <div class="[ w-100 dropdown ]">
+
+  <div class="[ d-block d-md-none ]">
+    <div class="[ row justify-content-end ]">
+      <div class="[ col ]">
+        <nav class="[ navbar navbar-light w-100 justify-content-end ]">
+          <button class="[ navbar-toggler ]" type="button" data-toggle="collapse" data-target="#dropdownMenuMobile" aria-controls="dropdownMenuMobile" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="[ navbar-toggler-icon ]"></span>
+          </button>
+        </nav>
+        <div class="[ collapse w-100 ]" id="dropdownMenuMobile">
+          <div class="[ p-4 text-center ]">
+            {% include "include/nav-links.html" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="[ d-none d-md-block w-100 dropdown ]">
     <div class="[ w-100 dropdown links ]">
       <button class="site-nav__butt [ btn btn-block p-0 ]" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img class="[ img-fluid ]" src="{{ url_for('static', filename='img/leaf.png') }}" />
       </button>
       <div class="site-nav__menu [ dropdown-menu w-100 border-0 ]" aria-labelledby="dropdownMenuButton">
-        <ul class="[ p-0 m-0 ]">
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('home') }}"><span class="site-nav__link-text">Home</span></a></div>
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('exhibitions') }}"><span class="site-nav__link-text">Exhibitions</span></a></div>
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('parks') }}"><span class="site-nav__link-text">Parks</span></a></div>
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('artists') }}"><span class="site-nav__link-text">Artists</span></a></div>
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('artworks') }}"><span class="site-nav__link-text">Artworks</span></a></div>
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('orgs') }}"><span class="site-nav__link-text">Orgs</span></a></div>
-          <div class="site-nav__link [ dropdown-item ]"><a href="{{ url_for('create') }}"><span class="site-nav__link-text">Create</span></a></div>
-        </ul>
+        {% include "include/nav-links.html" %}
       </div>
     </div>
   </div>

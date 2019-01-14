@@ -151,7 +151,7 @@ class Form_import_data(FlaskForm):
                                  ('Artist', 'Artists'),
                                  ('Org', 'Orgs')],
                         validators=[DataRequired()])
-  keys = FieldList(SelectField('Key'),choices=[('', 'Choose a Column Head')])
+  keys = FieldList(SelectField('Key'))
   exhibitions = FieldList(SelectField('Artist',
                         choices=[('name', 'Exhibition Name'),
                                  ('start_date', 'Start Date'),

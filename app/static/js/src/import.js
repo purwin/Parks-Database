@@ -1,57 +1,124 @@
-(function() {
+'use strict';
 
-  let model = {
+import 'jquery'
 
-  };
+import {controller} from './controller';
 
+$(document).ready(function() {
 
-  let controller = {
+  (function importData() {
 
-    postFile: function(x) {
-      // Call post data function, get response
-      let postPromise = this.postImport($(x).attr('id'), $(x).attr('action'));
+    let model = {
 
-      postPromise.done(function(response) {
-        console.log(response);
-      })
+      columns: [],
 
-    },
+      // Declare selected form type
+      activeObject: null,
 
+      artist: {
+        li: $('#js-template_artist').html()
+      }
 
-    // Post form
-    postImport: function(formID, postRoute) {
-
-      console.log("Form ID: " + formID);
-      console.log("Post route: " + postRoute);
-
-      let formData = new FormData($(formID));
-
-      // Post data
-      return $.ajax({
-        url: postRoute,
-        contentType: false,
-        data: formData,
-        type: 'POST'
-      });
-
-    }
-
-  };
+    };
 
 
-  let view = {
+    let cont = {
 
-    init: function() {
-      this.sendFile()
-    },
+      init: function() {
+        view.init()
+      },
 
-    sendFile: function() {
-      $('#js-post_file').on('click', function(e) {
-        e.preventDefault();
-        controller.postFile($('#js-form_import'));
-      });
-    }
 
-  };
+      // Send import file data to server, work with response
+      importFile: function(x) {
+        // Call post data function, get response
+        let postPromise = this.postFile($(x), $(x).attr('action'));
 
-})();
+        postPromise.done(function(response) {
+          console.log(response);
+          // If form POST doesn't validate with wtforms, add errors to page
+          if (response.success == false) {
+            console.log("Form Error(s)!");
+            console.dir(response);
+
+            // For each received error...
+            for (var itemName in response.data) {
+              console.log("ITEM: " + itemName);
+              // Notify user of alert error with alert DIV
+              controller.addErrors(itemName + ": " + response.data[itemName]);
+            }
+
+          }
+
+          else {
+            console.log("Form Sucess!");
+            console.dir(response);
+
+          }
+
+        })
+
+      },
+
+
+      // Send import data to server, work with response
+      importData: function(x) {
+
+      },
+
+
+      // set select field
+      // show second form (view)
+
+
+      // Post file form
+      postFile: function(formID, postRoute) {
+
+        // console.log("Form ID: " + formID);
+        console.log("Post route: " + postRoute);
+
+
+        let formData = new FormData($(formID)[0]);
+
+        // Post data
+        return $.ajax({
+          type: 'POST',
+          url: postRoute,
+          processData: false,
+          contentType: false,
+          data: formData,
+        });
+
+      },
+
+
+      // Post data form
+      postData: function(formID, postRoute) {
+
+      }
+
+    };
+
+
+    let view = {
+
+      init: function() {
+        this.sendFile();
+      },
+
+
+      sendFile: function() {
+        $('body').on('click', '#js-post_file', function(e) {
+          e.preventDefault();
+          console.log("CLICKED");
+          cont.importFile($('#js-form_import'));
+        });
+      }
+
+    };
+
+    cont.init()
+
+  })();
+
+});

@@ -33,7 +33,8 @@ from forms import (
   Form_user,
   Form_signup,
   Form_search,
-  Form_import
+  Form_import_file,
+  Form_import_data
 )
 from users import User
 
@@ -63,6 +64,7 @@ today = datetime.utcnow().strftime('%Y-%m-%d')
 @app.route('/index')
 @app.route('/')
 def home():
+  exhibitions = Exhibition.query.all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
@@ -75,7 +77,6 @@ def home():
                                          .order_by(Exhibition.end_date.desc())\
                                          .limit(10)\
                                          .all()
-  exhibitions = Exhibition.query.all()
   session['url'] = request.path
   return render_template('index.html', exhibitions=exhibitions, parks=parks,
     active_exhibitions = active_exhibitions,
@@ -160,23 +161,30 @@ def create():
 @app.route('/import', methods=['GET', 'POST'])
 @login_required
 def import_file():
-  form = Form_import()
+  form = Form_import_file()
 
-  if form.validate_on_submit():
-    # get file upload
-    # filename = secure_filename(form.file.data.filename)
-    file = form.file.data
-    # get form data (object type, classes, etc.)
-    file_data = pd.read_csv(file)
-    print file_data[1:3]
-    file_headers = file_data.columns.values
-    print file_headers
-    return file_headers
+  if form.is_submitted():
+    if form.validate():
+      # get file upload
+      # filename = secure_filename(form.file.data.filename)
+      file = form.file.data
+      print "FILENAME: {}".format(file)
+      # get form data (object type, classes, etc.)
+      file_data = pd.read_csv(file)
+      print file_data[1:3]
+      file_headers = file_data.columns.values
+      print "FILE HEADERS: {}".format(file_headers)
+      return jsonify({"success": True, "data": list(file_headers)})
+    else:
+      # Return errors if form doesn't validate
+      return jsonify({"success": False, "data": form.errors})
+
   # store file data
   # call function to add data to database
   # store success/error info, return to user
 
-  return render_template('import.html', form = form)
+  form_data = Form_import_data()
+  return render_template('import.html', form = form, form_data = form_data)
 
 
 @app.route('/import/data', methods=['GET', 'POST'])

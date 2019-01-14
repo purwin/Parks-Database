@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block head_extras %}
 <script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
-<script src="{{ url_for('static', filename='js/src/import.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dist/import.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Import Data{% endblock %}
 {% block content %}
@@ -13,28 +13,15 @@
 
 		<div class="head [ row justify-content-center align-items-center ]">
 			<div class="[ col-md-8 ]">
-				<h1 class="[ text-center display-3 ]"><b>IMPORT DATA</b></h1>
+				<h1 id="testIT" class="[ text-center display-3 ]"><b>IMPORT DATA</b></h1>
 			</div>
 		</div>
 	</section>
 
-	<form id="js-form_import" action="{{ url_for('import_data') }}" enctype="multipart/form-data" method="POST">
-		{{ form.hidden_tag() }}
+	<div class="js-alert [ fixed-top ]"></div>
 
-		<div class="js-alert [ fixed-top ]">
-			{% for field in form.errors %}
-				{% for error in form.errors[field] %}
-					<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
-						<div class="js-error-body">
-							<strong>Error!</strong> <span class="js-error-notice">{{ error }}</span>
-						</div>
-						<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				{% endfor %}
-			{% endfor %}
-		</div>
+	<form id="js-form_import" action="{{ url_for('import_file') }}" enctype="multipart/form-data" method="POST">
+		{{ form.hidden_tag() }}
 
 		<section id="section--import-file">
 
@@ -61,7 +48,7 @@
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 py-4 text-right ]">
 					<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
-					<input id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]" value="Import File" type="submit" />
+					<button id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]">Import File</button>
 				</div>
 			</div>
 		</section>
@@ -74,25 +61,20 @@
 			<div class="[ col-md-8 text-center ]">
 				<h4 class="[ py-4 ]">Map Data!</h4>
 
-				<ul class="js-ul_import [ p-0 ]">
+				<ul class="[ p-0 ]">
 
 					<li class="[ row mb-3 justify-content-center align-items-baseline ]">
 						<div class="[ col-md-3 ]">
-							{{ form.class_object.label(class="form-control") }}
+							{{ form_data.class_object.label(class="form-control") }}
 						</div>
 						<div class="[ col-md-6 ]">
-							{{ form.class_object(class="form-control") }}
+							{{ form_data.class_object(class="form-control") }}
 						</div>
 					</li>
 
-					<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-						<div class="[ col-md-3 ]">
-							{{ form.keys.label(class="form-control") }}
-						</div>
-						<div class="[ col-md-6 ]">
-							{{ form.keys(class="form-control") }}
-						</div>
-					</li>
+				</ul>
+
+				<ul class="js-ul_keys [ p-0 ]">
 
 				</ul>
 
@@ -103,5 +85,48 @@
 
 
 </div>
+
+<!-- Empty error template -->
+<script id="js-template_error" type="text/template">
+	<div class="[ alert alert-danger alert-dismissible fade show mb-0 ]" role="alert">
+		<div class="js-error-body">
+			<strong>Error!</strong> <span class="js-error-notice"></span>
+		</div>
+		<button type="button" class="[ close ]" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+</script>
+
+
+<script id="js-template_keys" type="text/template">
+	{{ form_data.keys(class="form-control ") }}
+</script>
+
+<script id="js-template_arrow" type="text/template">
+	<div class="[ col-md-2 ]">
+		<i class="fas fa-arrow-right"></i>
+	</div>
+</script>
+
+<script id="js-template_artist" type="text/template">
+		{{ form_data.artists(class="form-control ") }}
+</script>
+
+<script id="js-template_artwork" type="text/template">
+		{{ form_data.artworks(class="form-control ") }}
+</script>
+
+<script id="js-template_park" type="text/template">
+		{{ form_data.parks(class="form-control ") }}
+</script>
+
+<script id="js-template_exhibition" type="text/template">
+		{{ form_data.exhibitions(class="form-control ") }}
+</script>
+
+<script id="js-template_org" type="text/template">
+		{{ form_data.orgs(class="form-control ") }}
+</script>
 
 {% endblock %}

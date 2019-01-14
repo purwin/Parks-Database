@@ -12,11 +12,29 @@ $(document).ready(function() {
 
       columns: [],
 
+      key: $('#js-template_keys').html(),
+
       // Declare selected form type
       activeObject: null,
 
+      exhibition: {
+        li: $('#js-template_exhibition').html()
+      },
+
+      artwork: {
+        li: $('#js-template_artwork').html()
+      },
+
+      park: {
+        li: $('#js-template_park').html()
+      },
+
       artist: {
         li: $('#js-template_artist').html()
+      },
+
+      org: {
+        li: $('#js-template_org').html()
       }
 
     };

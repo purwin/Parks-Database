@@ -138,8 +138,11 @@ class Form_search(FlaskForm):
   search = StringField('Search', validators=[DataRequired()])
 
 
-class Form_import(FlaskForm):
+class Form_import_file(FlaskForm):
   file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'Please choose a CSV file!')])
+
+
+class Form_import_data(FlaskForm):
   class_object = SelectField('Import Type',
                         choices=[('', 'Choose an Object Type'),
                                  ('Exhibition', 'Exhibitions'),
@@ -148,7 +151,14 @@ class Form_import(FlaskForm):
                                  ('Artist', 'Artists'),
                                  ('Org', 'Orgs')],
                         validators=[DataRequired()])
-  keys = FieldList(SelectField('Key'))
+  keys = FieldList(SelectField('Key'),choices=[('', 'Choose a Column Head')])
+  exhibitions = FieldList(SelectField('Artist',
+                        choices=[('name', 'Exhibition Name'),
+                                 ('start_date', 'Start Date'),
+                                 ('end_date', 'End Date'),
+                                 ('org', 'Org'),
+                                 ('artwork', 'Artwork'),
+                                 ('park', 'Park')]))
   artists = FieldList(SelectField('Artist',
                         choices=[('primary_name', 'Last/Primary Name'),
                                  ('first_name', 'First Name'),

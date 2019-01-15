@@ -173,6 +173,6 @@ class Form_import_data(FlaskForm):
                                  ('address', 'Address'),
                                  ('cb', 'Community Board')]))
   orgs = FieldList(SelectField('Org',
-                        choices=[('name', 'name'),
-                                 ('website', 'website'),
-                                 ('phone', 'phone')]))
+                        choices=[('name', 'Name'),
+                                 ('website', 'Website'),
+                                 ('phone', 'Phone')]))

@@ -1,6 +1,6 @@
 'use strict';
 
-import 'jquery'
+import 'jquery';
 import {controller} from './controller';
 
 
@@ -75,10 +75,9 @@ $(document).ready(function() {
             model.columns = response.data;
 
             // Loop through response, add as option to model.key
-            for (const item in response.data) {
+            for (const item of response.data) {
               console.log("COLUMN: " + item);
               // Add item to column list
-              // model.columns.push(item);
 
               // Add item as option to key SelectField
               model.key = $(model.key).append($("<option></option>")
@@ -86,11 +85,15 @@ $(document).ready(function() {
                                       .text(item));
             }
 
+            console.log(model.columns);
+            console.log(model.key);
+            console.log(typeof model.key);
+
             // Build mapping UL
-            control.buildUL();
+            // control.buildUL();
 
             // Show Data DIV
-            view.toggleVisible($('#js-data'));
+            // view.toggleVisible($('#js-data'));
 
             // set import_data file input to match import_file input
           }
@@ -113,10 +116,11 @@ $(document).ready(function() {
 
 
       buildUL: function() {
+        console.log("RUNNING BUILDUL");
         model.columns.forEach(function(column) {
-          $('#js-ul_data').append('<li class="[ row mb-3 align-items-baseline ]">\
+          $('#js-data_ul').append('<li class="[ row mb-3 align-items-baseline ]">\
                 <div class="js-key [ col-md-5 ]">' +
-                  $(model.key).html() +
+                  $(model.key) +
                 '</div>\
                 <div class="[ col-md-2 ]">\
                   <i class="fas fa-arrow-right"></i>\

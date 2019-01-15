@@ -220,18 +220,20 @@ $(document).ready(function () {
             // Store response list in model.columns
             model.columns = response.data; // Loop through response, add as option to model.key
 
-            for (const item in response.data) {
+            for (const item of response.data) {
               console.log("COLUMN: " + item); // Add item to column list
-              // model.columns.push(item);
               // Add item as option to key SelectField
 
               model.key = $(model.key).append($("<option></option>").attr("value", item).text(item));
-            } // Build mapping UL
+            }
 
-
-            control.buildUL(); // Show Data DIV
-
-            view.toggleVisible($('#js-data')); // set import_data file input to match import_file input
+            console.log(model.columns);
+            console.log(model.key);
+            console.log(typeof model.key); // Build mapping UL
+            // control.buildUL();
+            // Show Data DIV
+            // view.toggleVisible($('#js-data'));
+            // set import_data file input to match import_file input
           } else {
             console.log("Don't know what to do!");
             console.dir(response);
@@ -244,9 +246,10 @@ $(document).ready(function () {
         let postPromise = this.postFile($(x), $(x).attr('action'));
       },
       buildUL: function () {
+        console.log("RUNNING BUILDUL");
         model.columns.forEach(function (column) {
-          $('#js-ul_data').append('<li class="[ row mb-3 align-items-baseline ]">\
-                <div class="js-key [ col-md-5 ]">' + $(model.key).html() + '</div>\
+          $('#js-data_ul').append('<li class="[ row mb-3 align-items-baseline ]">\
+                <div class="js-key [ col-md-5 ]">' + $(model.key) + '</div>\
                 <div class="[ col-md-2 ]">\
                   <i class="fas fa-arrow-right"></i>\
                 </div>\

@@ -12,19 +12,9 @@ class Config(object):
 
   SQLALCHEMY_DATABASE_URI = 'sqlite:////{}/parks.db'.format(BASE_DIR)
 
-  # SECRET_KEY = 'tomagatchi!!'
   SECRET_KEY = os.environ.get('PARKS_DB_KEY')
 
-
   SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-  # Flask MSearch
-  MSEARCH_INDEX_NAME = 'msearch'
-  MSEARCH_BACKEND = 'whoosh'
-  # auto create or update index
-  MSEARCH_ENABLE = True
-
-  MAX_SEARCH_RESULTS = 50
 
 
 class DevelopmentConfig(Config):

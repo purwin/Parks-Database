@@ -30,12 +30,16 @@ def import_park(**params):
 
 def import_artist(**params):
   print "ARTIST!"
+
   # Check for existing ID
-  id = params.get('id', None)
-  if id:
+  if params.get('id'):
     artist = Artist.query.filter_by(id = id).one()
+    action = 'Updated'
   else:
     artist = Artist()
+    action = 'Created'
+
+  name = "{} {}".format(params.get('fName'), params.get('pName')) if params.get('fName') else params.get('pName')
 
   try:
     # Require pName param to add artist to database
@@ -51,24 +55,27 @@ def import_artist(**params):
 
     db.session.add(artist)
     db.session.commit()
+    print "Success: {} {} to the Artist databse!".format(action, name)
+    return "Success: {} {} to the Artist databse!".format(action, name)
   except Exception as e:
-    name = "{} {}".format(params.get('fName'), params.get('pName')) if params.get('fName') else params.get('pName')
-    return "{}: {}".format(name, e)
-
-kwargs = {'a': 'one', 'b': 'two', 'id': 'yoyo', 'pName': 'williams', 'fName': 'doug'}
-kwargs = {'a': 'one', 'b': 'two', 'pName': 'williams', 'fName': 'doug'}
-
-import_artwork(**kwargs)
+    print "Error: {}: {}".format(name, e)
+    return "Error: {}: {}".format(name, e)
 
 def import_artwork(**params):
   print "ARTWORK!"
   # Check for existing ID
-  id = params['id']
+  id = params.get('id')
   print id
   name = "{} {}".format(params.get('fName'), params.get('pName')) if params.get('fName') else params.get('pName')
   print name
   for key, value in params.items():
     print "{} equals {}".format(key, value)
+
+
+kwargs = {'a': 'one', 'b': 'two', 'id': 'yoyo', 'pName': 'williams', 'fName': 'doug'}
+kwargs = {'a': 'one', 'b': 'two', 'pName': 'williams', 'fName': 'doug'}
+
+# import_artwork(**kwargs)
 
 
 def import_exhibition(**params):
@@ -94,27 +101,28 @@ def object_table(arg):
   return set_obj[arg.lower()]
 
 
-def import_csv(csv_file, obj, cols, vals):
-  # Get panda dataframe from selected file
-  file = pd.read_csv(csv_file)
-  # Remove empty columns
-  file.drop(file.columns[file.columns.str.contains('unnamed', case=False)],
-    axis=1, inplace=True)
-
-  # TEMP VAR!
-  file = file[1:5]
-
+def import_csv(csv_data, obj, cols, vals):
+  # Remove empty rows
+  csv_data = csv_data.replace('', pd.np.nan).dropna(how='all')
+  # Replace nan values with empty string
+  csv_data = csv_data.replace(pd.np.nan, "")
   # Get Object type, store function value
   model_object = object_table(obj)
+  # Set result log
+  results = []
 
   # Loop through file rows
-  for index, row in file.iterrows():
+  for index, row in csv_data.iterrows():
     kwargs = {}
     for col, val in zip(cols, vals):
       # Store val item as key, value of row item as value
-      kwargs[val] = row[col]
+      kwargs[val] = row[col].strip()
     # Call relevant function with key/value items
-    model_object(**kwargs)
+    print kwargs
+    result = model_object(**kwargs)
+    results.append(result)
+
+  return results
 
 
 

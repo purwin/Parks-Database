@@ -168,12 +168,14 @@ def import_file():
       # get file upload
       # filename = secure_filename(form.file.data.filename)
       file = form.file.data
-      print "FILENAME: {}".format(file)
+      # print "FILENAME: {}".format(file)
       # get form data (object type, classes, etc.)
       file_data = pd.read_csv(file)
-      print file_data[1:3]
+      # Drop unnamed columns
+      file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
+        axis=1, inplace=True)
       file_headers = file_data.columns.values
-      print "FILE HEADERS: {}".format(file_headers)
+      # print "FILE HEADERS: {}".format(file_headers)
       return jsonify({"success": True, "data": list(file_headers)})
     else:
       # Return errors if form doesn't validate
@@ -190,6 +192,29 @@ def import_file():
 @app.route('/import/data', methods=['GET', 'POST'])
 def import_data():
   pass
+  form = Form_import_data()
+  if form.validate_on_submit():
+    # get file
+    file = form.file.data
+    print "FILENAME: {}".format(file)
+    # Get form data (object type, classes, etc.)
+    class_object = form.class_object.data
+    print "CLASS OBJECT: {}".format(class_object)
+    # Get column heads to import
+    cols = form.keys.data
+    print "COLS: {}".format(cols)
+    # Get object attributes to import
+    vals = form.values.data
+    print "VALS: {}".format(vals)
+    # Skip header row
+    # FUTURE: Ask for including header row
+    # Substitue empty quotes for empty items
+    file_data = pd.read_csv(file, skiprows = 1, na_values = [''])
+    file_headers = file_data.columns.values
+    return jsonify({"success": True, "data": list(file_headers)})
+  else:
+    # Return errors if form doesn't validate
+    return jsonify({"success": False, "data": form.errors})
 
 
 @app.route('/exhibitions')

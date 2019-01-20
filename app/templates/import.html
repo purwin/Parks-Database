@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block head_extras %}
-<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dist/import.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Import Data{% endblock %}
@@ -20,82 +19,75 @@
 
 	<div class="js-alert [ fixed-top ]"></div>
 
-	<form id="js-form_import_file" action="{{ url_for('import_file') }}" enctype="multipart/form-data" method="POST">
-		{{ form.hidden_tag() }}
+	<section id="section--import-file">
+		<div id="import_file">
+			<form id="js-form_import_file" action="{{ url_for('import_file') }}" enctype="multipart/form-data" method="POST">
+				{{ form.hidden_tag() }}
 
-		<section id="section--import-file">
+					<div class="chunk [ row justify-content-center py-4 ]">
+						<div class="[ col-lg-8 text-center ]">
+							<h4 class="[ py-4 ]">Choose a File to Import</h4>
 
-			<div class="[ row justify-content-center ]">
-				<div class="[ col-md-8 text-center ]">
-					<h4 class="[ py-4 ]">Choose a File to Import</h4>
+							<ul class="js-ul_import [ py-2 ]">
 
-					<ul class="js-ul_import [ p-0 ]">
+								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+									<div class="[ col-md-8 ]">
+										{{ form.file(class="form-control", id='file_file') }}
+									</div>
+								</li>
 
-						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<div class="[ col-md-8 ]">
-								{{ form.file(class="form-control") }}
-							</div>
-						</li>
+							</ul>
+						</div>
 
-					</ul>
+						<div class="[ col-md-8 py-4 text-right ]">
+							<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+							<button id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]">Import File</button>
+						</div>
 
-				</div>
-			</div>
-
-			<div class="[ row justify-content-center ]">
-				<div class="[ col-md-8 py-4 text-right ]">
-					<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
-					<button id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]">Import File</button>
-				</div>
-			</div>
-
-		</section>
-
-	</form>
-
-
-	<form id="js-form_import_data" action="{{ url_for('import_data') }}" enctype="multipart/form-data" method="POST">
-		{{ form_data.hidden_tag() }}
-
-		<section id="section--import-data">
-
-			<div id="js-data" class="[ row justify-content-center d-none ]">
-				<div class="[ col-md-8 text-center ]">
-					<h4 class="[ py-4 ]">Map Data!</h4>
-
-					<ul class="[ p-0 list-unstyled ]">
-
-						<!-- FUTURE: Add hidden form_data.file ref -->
-
-						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<div class="[ col-md-3 ]">
-								{{ form_data.class_object.label(class="form-control") }}
-							</div>
-							<div class="[ col-md-6 ]">
-								{{ form_data.class_object(class="form-control") }}
-							</div>
-						</li>
-
-					</ul>
-
-					<ul id="js-data_ul" class="[ p-0 list-unstyled d-none ]">
-
-					</ul>
-
-				</div>
-
-				<div class="[ row justify-content-center ]">
-					<div class="[ col-md-8 py-4 text-right ]">
-						<a id="js-cancel_data" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
-						<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">Import Data</button>
 					</div>
-				</div>
 
-			</div>
+			</form>
+		</div>
+	</section>
 
-		</section>
 
-	</form>
+	<section id="section--import-data">
+		<div id="js-import_data" class="[ d-none ]">
+			<form id="js-form_import_data" action="{{ url_for('import_data') }}" enctype="multipart/form-data" method="POST">
+				{{ form_data.hidden_tag() }}
+
+					<div class="chunk [ row justify-content-center py-4 ]">
+						<div class="[ col-md-8 text-center ]">
+							<h4 class="[ py-4 ]">Map Data!</h4>
+
+							<ul id="js-import_data_ul" class="[ p-0 list-unstyled ]">
+
+								<!-- FUTURE: Add hidden form_data.file ref -->
+
+								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+									<div class="[ col-8 ]">
+										{{ form_data.class_object(class="form-control") }}
+									</div>
+								</li>
+
+							</ul>
+
+						</div>
+
+						<div class="[ col-8 justify-content-center ]">
+							<ul id="js-data_ul" class="[ py-4 list-unstyled justify-content-center d-none ]"></ul>
+						</div>
+
+						<div class="[ col-md-8 py-4 text-right ]">
+							<a id="js-cancel_data" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+							<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">Import Data</button>
+						</div>
+
+					</div>
+
+			</form>
+		</div>
+	</section>
 
 </div>
 
@@ -125,7 +117,9 @@
 
 
 <script id="js-template_keys" type="text/template">
-	{{ form_data.keys(class="form-control", placeholder="Select a Column") }}
+	<select name="keys" class="js-column_key [form-control]">
+		<option value="">Select a Column</option>
+	</select>
 </script>
 
 <script id="js-template_arrow" type="text/template">
@@ -135,23 +129,53 @@
 </script>
 
 <script id="js-template_artist" type="text/template">
-		{{ form_data.artists(class="form-control") }}
+	<select name="values" class="js-column_artist [form-control]">
+		<option value="">Select a Category</option>
+		<option value="pName">Last/Primary Name</option>
+		<option value="fName">First Name</option>
+		<option value="email">Email</option>
+		<option value="phone">Phone</option>
+		<option value="website">Website</option>
+	</select>
 </script>
 
 <script id="js-template_artwork" type="text/template">
-		{{ form_data.artworks(class="form-control") }}
+	<select name="values" class="js-column_artwork [form-control]">
+		<option value="">Select a Category</option>
+		<option value="name">Name</option>
+	</select>
 </script>
 
 <script id="js-template_park" type="text/template">
-		{{ form_data.parks(class="form-control") }}
+	<select name="values" class="js-column_park [form-control]">
+		<option value="">Select a Category</option>
+		<option value="name">Name</option>
+		<option value="park_id">Park ID</option>
+		<option value="borough">Borough</option>
+		<option value="address">Address</option>
+		<option value="cb">Community Board</option>
+	</select>
 </script>
 
 <script id="js-template_exhibition" type="text/template">
-		{{ form_data.exhibitions(class="form-control") }}
+	<select name="values" class="js-column_exhibition [form-control]">
+		<option value="">Select a Category</option>
+		<option value="name">Exhibition Name</option>
+		<option value="start_date">Start Date</option>
+		<option value="end_date">End Date</option>
+		<option value="org">Org</option>
+		<option value="artwork">Artwork</option>
+		<option value="park">Park</option>
+	</select>
 </script>
 
 <script id="js-template_org" type="text/template">
-		{{ form_data.orgs(class="form-control") }}
+	<select name="values" class="js-column_org [form-control]">
+		<option value="">Select a Category</option>
+		<option value="name">Name</option>
+		<option value="website">Website</option>
+		<option value="phone">Phone</option>
+	</select>
 </script>
 
 {% endblock %}

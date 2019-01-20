@@ -44,6 +44,7 @@ import_artist,
 import_artwork,
 import_exhibition,
 import_org,
+import_csv,
 object_table
 )
 
@@ -199,24 +200,25 @@ def import_data():
   pass
   form = Form_import_data()
   if form.validate_on_submit():
-    # get file
+    # Get file
     file = form.file.data
     print "FILENAME: {}".format(file)
     # Get form data (object type, classes, etc.)
     class_object = form.class_object.data
-    print "CLASS OBJECT: {}".format(class_object)
+    # print "CLASS OBJECT: {}".format(class_object)
     # Get column heads to import
     cols = form.keys.data
-    print "COLS: {}".format(cols)
     # Get object attributes to import
     vals = form.values.data
-    print "VALS: {}".format(vals)
     # Skip header row
     # FUTURE: Ask for including header row
+    # FUTURE: Ask to skip items that may be in the database
     # Substitue empty quotes for empty items
-    file_data = pd.read_csv(file, skiprows = 1, na_values = [''])
-    file_headers = file_data.columns.values
-    return jsonify({"success": True, "data": list(file_headers)})
+    file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
+    # Import data with import_csv() from model_import
+    results = import_csv(csv_data=file_data, obj=class_object, cols=cols, vals=vals)
+
+    return jsonify({"success": True, "data": list(results)})
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})

@@ -38,6 +38,15 @@ from forms import (
 )
 from users import User
 
+from model_import import (
+import_park,
+import_artist,
+import_artwork,
+import_exhibition,
+import_org,
+object_table
+)
+
 from datetime import datetime
 import pandas as pd
 

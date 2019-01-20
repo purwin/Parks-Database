@@ -142,37 +142,24 @@ class Form_import_file(FlaskForm):
   file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'Please choose a CSV file!')])
 
 
+class FreeSelectField(SelectField):
+    """
+    Attempt to make an open ended select multiple field that can accept dynamic
+    choices added by the browser.
+    """
+    def pre_validate(self, form):
+        pass
+
+
 class Form_import_data(FlaskForm):
+  file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'Please choose a CSV file!')])
   class_object = SelectField('Import Type',
                         choices=[('', 'Choose an Object Type'),
-                                 ('Exhibition', 'Exhibitions'),
-                                 ('Artwork', 'Artworks'),
-                                 ('Park', 'Parks'),
-                                 ('Artist', 'Artists'),
-                                 ('Org', 'Orgs')],
+                                 ('exhibition', 'Exhibitions'),
+                                 ('artwork', 'Artworks'),
+                                 ('park', 'Parks'),
+                                 ('artist', 'Artists'),
+                                 ('org', 'Orgs')],
                         validators=[DataRequired()])
-  keys = FieldList(SelectField('Key'))
-  exhibitions = FieldList(SelectField('Artist',
-                        choices=[('name', 'Exhibition Name'),
-                                 ('start_date', 'Start Date'),
-                                 ('end_date', 'End Date'),
-                                 ('org', 'Org'),
-                                 ('artwork', 'Artwork'),
-                                 ('park', 'Park')]))
-  artists = FieldList(SelectField('Artist',
-                        choices=[('primary_name', 'Last/Primary Name'),
-                                 ('first_name', 'First Name'),
-                                 ('email', 'Email'),
-                                 ('phone', 'Phone'),
-                                 ('website', 'Website')]))
-  artworks = FieldList(SelectField('Artwork', choices=[('name', 'Name')]))
-  parks = FieldList(SelectField('Park',
-                        choices=[('name', 'Name'),
-                                 ('park_id', 'Park ID'),
-                                 ('borough', 'Borough'),
-                                 ('address', 'Address'),
-                                 ('cb', 'Community Board')]))
-  orgs = FieldList(SelectField('Org',
-                        choices=[('name', 'Name'),
-                                 ('website', 'Website'),
-                                 ('phone', 'Phone')]))
+  keys = FieldList(FreeSelectField('Key'))
+  values = FieldList(FreeSelectField('Value'))

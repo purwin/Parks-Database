@@ -131,13 +131,13 @@ def signup():
   form = Form_signup()
 
   if form.validate_on_submit():
-      hashed_password = generate_password_hash(form.password.data,
-        method='sha256')
-      new_user = User(username=form.username.data, password=hashed_password)
-      db.session.add(new_user)
-      db.session.commit()
-      login_user(new_user, remember = form.remember.data)
-      return redirect(url_for('home'))
+    hashed_password = generate_password_hash(form.password.data,
+      method='sha256')
+    new_user = User(username=form.username.data, password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+    login_user(new_user, remember = form.remember.data)
+    return redirect(url_for('home'))
 
   return render_template('signup.html', form=form)
 
@@ -178,7 +178,7 @@ def import_file():
       # filename = secure_filename(form.file.data.filename)
       file = form.file.data
       # print "FILENAME: {}".format(file)
-      # get form data (object type, classes, etc.)
+      # Get form data (object type, classes, etc.)
       file_data = pd.read_csv(file)
       # Drop unnamed columns
       file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
@@ -189,10 +189,6 @@ def import_file():
     else:
       # Return errors if form doesn't validate
       return jsonify({"success": False, "data": form.errors})
-
-  # store file data
-  # call function to add data to database
-  # store success/error info, return to user
 
   form_data = Form_import_data()
   return render_template('import.html', form = form, form_data = form_data)

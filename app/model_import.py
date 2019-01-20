@@ -60,8 +60,7 @@ def object_table(arg):
     'artist': import_artist,
     'org': import_org
   }
-
-  return set_obj[arg]
+  return set_obj[arg.lower()]
 
 
 def import_csv(csv_file, obj, cols, vals):

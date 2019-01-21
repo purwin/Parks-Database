@@ -208,15 +208,25 @@ def import_data():
     # print "CLASS OBJECT: {}".format(class_object)
     # Get column heads to import
     cols = form.keys.data
+    print "cols: {}".format(cols)
     # Get object attributes to import
     vals = form.values.data
-    # Skip header row
+    print "vals: {}".format(vals)
+    # Check for duplicate values in cols/vals lists
+    if ((len(cols) != len(set(cols))) or (len(vals) != len(set(vals)))):
+      return jsonify({"success": False,
+                      "data": {
+                        "Columns": "Duplicate Column value(s)! Make sure\
+                        these are unique."}})
+
+    # FUTURE: Allow imports with duplicate row/attributes
     # FUTURE: Ask for including header row
-    # FUTURE: Ask to skip items that may be in the database
-    # Substitue empty quotes for empty items
+    # Get value of matching existing items
+    match_existing = form.match_existing.data
     file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
     # Import data with import_csv() from model_import
-    results = import_csv(csv_data=file_data, obj=class_object, cols=cols, vals=vals)
+    results = import_csv(csv_data=file_data, obj=class_object, cols=cols,
+      vals=vals, match=match_existing)
 
     return jsonify({"success": True, "data": list(results)})
   else:

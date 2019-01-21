@@ -4,6 +4,8 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CsrfProtect
 from flask_talisman import Talisman
 
+from app import views, parks_db, forms, users
+
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -43,4 +45,6 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from app import views, parks_db, forms, users
+
+if __name__ == '__main__':
+  app.run()

@@ -13,7 +13,6 @@ from wtforms import (
 from wtforms.validators import (
   DataRequired,
   Optional,
-  Email,
   ValidationError,
   AnyOf
 )

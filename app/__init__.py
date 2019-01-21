@@ -37,7 +37,7 @@ csp = {
     ]
 }
 
-Talisman(app, content_security_policy=csp)
+# Talisman(app, content_security_policy=csp)
 
 db = SQLAlchemy(app)
 

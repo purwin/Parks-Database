@@ -12,7 +12,6 @@ class Config(object):
 
   SQLALCHEMY_DATABASE_URI = 'sqlite:////{}/parks.db'.format(BASE_DIR)
 
-
   SECRET_KEY = os.environ.get('PARKS_DB_KEY')
 
   SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -24,8 +23,6 @@ class DevelopmentConfig(Config):
   """
 
   DEBUG = True
-
-  SQLALCHEMY_ECHO = False
 
   print 'THIS APP IS IN DEBUG MODE. YOU SHOULD NOT SEE THIS IN PRODUCTION.'
 

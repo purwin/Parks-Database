@@ -28,26 +28,32 @@ def import_park(**params):
     print "{} equals {}".format(key, value)
 
 
-def import_artist(**params):
+def import_artist(match=False, **params):
   print "ARTIST!"
+  artist = False
+  name = "{} {}".format(params.get('fName'), params.get('pName'))\
+    if params.get('fName') else params.get('pName')
 
   # Check for existing ID
   if params.get('id'):
-    artist = Artist.query.filter_by(id = id).one()
+    artist = Artist.query.filter_by(id = id).first()
     action = 'Updated'
-  else:
+  elif match == True:
+    artist = Artist.query.filter_by(pName=params['pName'])\
+                         .filter_by(fName=params['fName']).first()
+    if artist:
+      print "Duplicate: {} already exists in the Artist databse. Skipping artist.".format(name)
+      return "Duplicate: {} already exists in the Artist databse. Skipping artist.".format(name)
+    else:
+      return "Not a duplicate"
+
+  if not artist:
     artist = Artist()
     action = 'Created'
 
-  name = "{} {}".format(params.get('fName'), params.get('pName')) if params.get('fName') else params.get('pName')
-
   try:
-    # Require pName param to add artist to database
-    artist.pName = params['pName']
-    artist.fName = params.get('fName', None)
-    artist.email = params.get('email', None)
-    artist.phone = params.get('phone', None)
-    artist.website = params.get('website', None)
+    for key, value in params.iteritems():
+      setattr(artist, key, value)
 
     # for art in params.get('artworks', None):
     #   artwork = Artwork.query.filter_by(name = art).one()
@@ -101,7 +107,7 @@ def object_table(arg):
   return set_obj[arg.lower()]
 
 
-def import_csv(csv_data, obj, cols, vals):
+def import_csv(csv_data, obj, cols, vals, match=False):
   # Remove empty rows
   csv_data = csv_data.replace('', pd.np.nan).dropna(how='all')
   # Replace nan values with empty string
@@ -119,7 +125,7 @@ def import_csv(csv_data, obj, cols, vals):
       kwargs[val] = row[col].strip()
     # Call relevant function with key/value items
     print kwargs
-    result = model_object(**kwargs)
+    result = model_object(match=match, **kwargs)
     results.append(result)
 
   return results

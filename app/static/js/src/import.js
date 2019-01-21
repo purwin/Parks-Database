@@ -103,7 +103,10 @@ $(document).ready(function() {
 
             // set import_data file input to match import_file input
             // console.log($('#file_file')[0].files[0]);
-            $('#file_file').clone().attr('id', 'data_file').appendTo('#js-import_data_ul');
+            $('#file_file').clone()
+                           .attr('id', 'data_file')
+                           .addClass('d-none')
+                           .appendTo('#js-import_data_ul');
           }
 
           else {

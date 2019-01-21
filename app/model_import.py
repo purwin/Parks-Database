@@ -29,7 +29,7 @@ def import_park(**params):
 
 
 def import_artist(match=False, **params):
-  print "ARTIST!"
+  print "IMPORT ARTIST!"
   artist = False
   name = "{} {}".format(params.get('fName'), params.get('pName'))\
     if params.get('fName') else params.get('pName')
@@ -37,35 +37,44 @@ def import_artist(match=False, **params):
   # Check for existing ID
   if params.get('id'):
     artist = Artist.query.filter_by(id = id).first()
-    action = 'Updated'
+  # Or search for existing items if match option is set
   elif match == True:
     artist = Artist.query.filter_by(pName=params['pName'])\
                          .filter_by(fName=params['fName']).first()
-    if artist:
-      print "Duplicate: {} already exists in the Artist databse. Skipping artist.".format(name)
-      return "Duplicate: {} already exists in the Artist databse. Skipping artist.".format(name)
-    else:
-      return "Not a duplicate"
+
+  action = 'Found {} in the database.\
+            Updated artist with new data.'.format(name)
 
   if not artist:
     artist = Artist()
-    action = 'Created'
+    action = 'Added new artist {} to the databse.'.format(name)
 
+  # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      setattr(artist, key, value)
+      if key != 'artworks':
+        setattr(artist, key, value)
 
-    # for art in params.get('artworks', None):
-    #   artwork = Artwork.query.filter_by(name = art).one()
-    #   artist.artworks.append(artwork)
+    # Loop through artist.artworks separately
+    if 'artworks' in params:
+      print "There's artworks in this!"
+      for art in params.get('artworks', None):
+        # FUTURE: Call artwork function
+        artwork = Artwork.query.filter_by(name = art).first()
+        if not artwork:
+          artwork = Artwork(name=art)
+          db.session.add(artwork)
+        if artwork not in artist.artworks:
+          artist.artworks.append(artwork)
 
     db.session.add(artist)
     db.session.commit()
-    print "Success: {} {} to the Artist databse!".format(action, name)
-    return "Success: {} {} to the Artist databse!".format(action, name)
+    print "Success: {}".format(action)
+    return "Success: {}".format(action)
   except Exception as e:
     print "Error: {}: {}".format(name, e)
     return "Error: {}: {}".format(name, e)
+
 
 def import_artwork(**params):
   print "ARTWORK!"
@@ -76,12 +85,6 @@ def import_artwork(**params):
   print name
   for key, value in params.items():
     print "{} equals {}".format(key, value)
-
-
-kwargs = {'a': 'one', 'b': 'two', 'id': 'yoyo', 'pName': 'williams', 'fName': 'doug'}
-kwargs = {'a': 'one', 'b': 'two', 'pName': 'williams', 'fName': 'doug'}
-
-# import_artwork(**kwargs)
 
 
 def import_exhibition(**params):

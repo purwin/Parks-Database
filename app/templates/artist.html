@@ -72,7 +72,7 @@
 									{{ form.phone.label }}
 								</div>
 								<div class="[ col-md-6 ]">
-									<p class="is-active [ m-0 ]">{% if artist.phone %}{{ artist.phone }}{% else %}None{% endif %}</p>
+									{% if artist.phone %}<p class="is-active [ m-0 ]">{{ artist.phone }}</p>{% endif %}
 									{{ form.phone(class="form-control-plaintext d-none", value=artist.phone,) }}
 								</div>
 							</li>
@@ -82,7 +82,7 @@
 									{{ form.website.label }}
 								</div>
 								<div class="[ col-md-6 ]">
-									<p class="is-active [ m-0 ]">{% if artist.website %}<a href="http://{{ artist.website }}" class="is-active" target="_blank">{{ artist.website }}</a>{% else %}None{% endif %}</p>
+									{% if artist.website %}<p class="is-active [ m-0 ]"><a href="http://{{ artist.website }}" class="is-active" target="_blank">{{ artist.website }}</a></p>{% endif %}
 									{{ form.website(class="form-control-plaintext d-none", value=artist.website) }}
 								</div>
 							</li>

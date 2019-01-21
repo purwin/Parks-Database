@@ -33,9 +33,20 @@ from forms import (
   Form_user,
   Form_signup,
   Form_search,
-  Form_import
+  Form_import_file,
+  Form_import_data
 )
 from users import User
+
+from model_import import (
+import_park,
+import_artist,
+import_artwork,
+import_exhibition,
+import_org,
+import_csv,
+object_table
+)
 
 from datetime import datetime
 import pandas as pd
@@ -63,6 +74,7 @@ today = datetime.utcnow().strftime('%Y-%m-%d')
 @app.route('/index')
 @app.route('/')
 def home():
+  exhibitions = Exhibition.query.all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
@@ -75,7 +87,6 @@ def home():
                                          .order_by(Exhibition.end_date.desc())\
                                          .limit(10)\
                                          .all()
-  exhibitions = Exhibition.query.all()
   session['url'] = request.path
   return render_template('index.html', exhibitions=exhibitions, parks=parks,
     active_exhibitions = active_exhibitions,
@@ -121,13 +132,13 @@ def signup():
   form = Form_signup()
 
   if form.validate_on_submit():
-      hashed_password = generate_password_hash(form.password.data,
-        method='sha256')
-      new_user = User(username=form.username.data, password=hashed_password)
-      db.session.add(new_user)
-      db.session.commit()
-      login_user(new_user, remember = form.remember.data)
-      return redirect(url_for('home'))
+    hashed_password = generate_password_hash(form.password.data,
+      method='sha256')
+    new_user = User(username=form.username.data, password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+    login_user(new_user, remember = form.remember.data)
+    return redirect(url_for('home'))
 
   return render_template('signup.html', form=form)
 
@@ -160,28 +171,67 @@ def create():
 @app.route('/import', methods=['GET', 'POST'])
 @login_required
 def import_file():
-  form = Form_import()
+  form = Form_import_file()
 
-  if form.validate_on_submit():
-    # get file upload
-    # filename = secure_filename(form.file.data.filename)
-    file = form.file.data
-    # get form data (object type, classes, etc.)
-    file_data = pd.read_csv(file)
-    print file_data[1:3]
-    file_headers = file_data.columns.values
-    print file_headers
-    return file_headers
-  # store file data
-  # call function to add data to database
-  # store success/error info, return to user
+  if form.is_submitted():
+    if form.validate():
+      # get file upload
+      # filename = secure_filename(form.file.data.filename)
+      file = form.file.data
+      # print "FILENAME: {}".format(file)
+      # Get form data (object type, classes, etc.)
+      file_data = pd.read_csv(file)
+      # Drop unnamed columns
+      file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
+        axis=1, inplace=True)
+      file_headers = file_data.columns.values
+      # print "FILE HEADERS: {}".format(file_headers)
+      return jsonify({"success": True, "data": list(file_headers)})
+    else:
+      # Return errors if form doesn't validate
+      return jsonify({"success": False, "data": form.errors})
 
-  return render_template('import.html', form = form)
+  form_data = Form_import_data()
+  return render_template('import.html', form = form, form_data = form_data)
 
 
 @app.route('/import/data', methods=['GET', 'POST'])
 def import_data():
   pass
+  form = Form_import_data()
+  if form.validate_on_submit():
+    # Get file
+    file = form.file.data
+    print "FILENAME: {}".format(file)
+    # Get form data (object type, classes, etc.)
+    class_object = form.class_object.data
+    # print "CLASS OBJECT: {}".format(class_object)
+    # Get column heads to import
+    cols = form.keys.data
+    print "cols: {}".format(cols)
+    # Get object attributes to import
+    vals = form.values.data
+    print "vals: {}".format(vals)
+    # Check for duplicate values in cols/vals lists
+    if ((len(cols) != len(set(cols))) or (len(vals) != len(set(vals)))):
+      return jsonify({"success": False,
+                      "data": {
+                        "Columns": "Duplicate Column value(s)! Make sure\
+                        these are unique."}})
+
+    # FUTURE: Allow imports with duplicate row/attributes
+    # FUTURE: Ask for including header row
+    # Get value of matching existing items
+    match_existing = form.match_existing.data
+    file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
+    # Import data with import_csv() from model_import
+    results = import_csv(csv_data=file_data, obj=class_object, cols=cols,
+      vals=vals, match=match_existing)
+
+    return jsonify({"success": True, "data": list(results)})
+  else:
+    # Return errors if form doesn't validate
+    return jsonify({"success": False, "data": form.errors})
 
 
 @app.route('/exhibitions')

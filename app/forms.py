@@ -13,7 +13,6 @@ from wtforms import (
 from wtforms.validators import (
   DataRequired,
   Optional,
-  Email,
   ValidationError,
   AnyOf
 )
@@ -25,7 +24,7 @@ from users import User
 class Form_artist(FlaskForm):
   pName = StringField('Primary/Last Name', validators=[DataRequired()])
   fName = StringField('First Name')
-  email = EmailField('Email', validators=[Email()])
+  email = EmailField('Email')
   phone = TelField('Phone')
   website = StringField('Website')
 
@@ -138,31 +137,29 @@ class Form_search(FlaskForm):
   search = StringField('Search', validators=[DataRequired()])
 
 
-class Form_import(FlaskForm):
+class Form_import_file(FlaskForm):
+  file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'Please choose a CSV file!')])
+
+
+class FreeSelectField(SelectField):
+    """
+    Attempt to make an open ended select multiple field that can accept dynamic
+    choices added by the browser.
+    """
+    def pre_validate(self, form):
+        pass
+
+
+class Form_import_data(FlaskForm):
   file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'Please choose a CSV file!')])
   class_object = SelectField('Import Type',
                         choices=[('', 'Choose an Object Type'),
-                                 ('Exhibition', 'Exhibitions'),
-                                 ('Artwork', 'Artworks'),
-                                 ('Park', 'Parks'),
-                                 ('Artist', 'Artists'),
-                                 ('Org', 'Orgs')],
+                                 ('exhibition', 'Exhibitions'),
+                                 ('artwork', 'Artworks'),
+                                 ('park', 'Parks'),
+                                 ('artist', 'Artists'),
+                                 ('org', 'Orgs')],
                         validators=[DataRequired()])
-  keys = FieldList(SelectField('Key'))
-  artists = FieldList(SelectField('Artist',
-                        choices=[('primary_name', 'Last/Primary Name'),
-                                 ('first_name', 'First Name'),
-                                 ('email', 'Email'),
-                                 ('phone', 'Phone'),
-                                 ('website', 'Website')]))
-  artworks = FieldList(SelectField('Artwork', choices=[('name', 'Name')]))
-  parks = FieldList(SelectField('Park',
-                        choices=[('name', 'Name'),
-                                 ('park_id', 'Park ID'),
-                                 ('borough', 'Borough'),
-                                 ('address', 'Address'),
-                                 ('cb', 'Community Board')]))
-  orgs = FieldList(SelectField('Org',
-                        choices=[('name', 'name'),
-                                 ('website', 'website'),
-                                 ('phone', 'phone')]))
+  match_existing = BooleanField('Match Existing Items in the Database')
+  keys = FieldList(FreeSelectField('Key'))
+  values = FieldList(FreeSelectField('Value'))

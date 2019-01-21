@@ -1,7 +1,6 @@
 {% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 {% endblock %}
 {% block title %}NYC Parks Database – {{ artist.name|capitalize }}{% endblock %}
 {% block content %}
@@ -73,7 +72,7 @@
 									{{ form.phone.label }}
 								</div>
 								<div class="[ col-md-6 ]">
-									<p class="is-active [ m-0 ]">{% if artist.phone %}{{ artist.phone }}{% else %}None{% endif %}</p>
+									{% if artist.phone %}<p class="is-active [ m-0 ]">{{ artist.phone }}</p>{% endif %}
 									{{ form.phone(class="form-control-plaintext d-none", value=artist.phone,) }}
 								</div>
 							</li>
@@ -83,7 +82,7 @@
 									{{ form.website.label }}
 								</div>
 								<div class="[ col-md-6 ]">
-									<p class="is-active [ m-0 ]">{% if artist.website %}<a href="http://{{ artist.website }}" class="is-active" target="_blank">{{ artist.website }}</a>{% else %}None{% endif %}</p>
+									{% if artist.website %}<p class="is-active [ m-0 ]"><a href="http://{{ artist.website }}" class="is-active" target="_blank">{{ artist.website }}</a></p>{% endif %}
 									{{ form.website(class="form-control-plaintext d-none", value=artist.website) }}
 								</div>
 							</li>

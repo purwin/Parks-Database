@@ -25,7 +25,7 @@ from users import User
 class Form_artist(FlaskForm):
   pName = StringField('Primary/Last Name', validators=[DataRequired()])
   fName = StringField('First Name')
-  email = EmailField('Email', validators=[Email()])
+  email = EmailField('Email')
   phone = TelField('Phone')
   website = StringField('Website')
 

@@ -161,6 +161,6 @@ class Form_import_data(FlaskForm):
                                  ('artist', 'Artists'),
                                  ('org', 'Orgs')],
                         validators=[DataRequired()])
-  skip_existing = BooleanField('Skip Items Already Added to the Database')
+  match_existing = BooleanField('Match Existing Items in the Database')
   keys = FieldList(FreeSelectField('Key'))
   values = FieldList(FreeSelectField('Value'))

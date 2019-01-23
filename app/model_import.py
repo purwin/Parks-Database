@@ -4,28 +4,37 @@ from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 import pandas as pd
 
 
-
-
-# def import_park(**data):
-#   pass
-#   if not data.id:
-#     park = Park()
-#   else:
-#     park = Park.query.filter_by(id = data.id).one()
-
-#   park.name = data.name
-#   park.park_id = data.park_id
-#   park.borough = data.borough
-#   park.address = data.address
-#   park.cb = data.cb
-#   # Add park to database
-#   db.session.add(park)
-#   db.session.commit()
-
-def import_park(**params):
+def import_park(match=False, **params):
   print "PARK!"
-  for key, value in params.items():
-    print "{} equals {}".format(key, value)
+  park = False
+  # Check for existing ID
+  if params.get('id'):
+    park = Park.query.filter_by(id = id).first()
+  # Or search for existing items if match option is set
+  elif match == True:
+    park = Park.query.filter_by(name=params['name']).first()
+
+  action = 'Found {} in the database.\
+            Updated park with new data.'.format(params.get('name'))
+
+  if not park:
+    park = Park()
+    action = 'Added new park {} to the databse.'.format(params.get('name'))
+
+  # Loop through passed key/value attributes, add to class object
+  try:
+    for key, value in params.iteritems():
+      if key != 'exh_art_park':
+        setattr(park, key, value)
+
+    # FUTURE: Add exh_art_park relationships
+    db.session.add(park)
+    db.session.commit()
+    print "Success: {}".format(action)
+    return "Success: {}".format(action)
+  except Exception as e:
+    print "Error: {}: {}".format(params.get('name'), e)
+    return "Error: {}: {}".format(params.get('name'), e)
 
 
 def import_artist(match=False, **params):

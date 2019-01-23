@@ -96,10 +96,50 @@ def import_artwork(**params):
     print "{} equals {}".format(key, value)
 
 
-def import_exhibition(**params):
+def import_exhibition(match=False, **params):
   print "EXHIBITION!"
-  for key, value in params.items():
-    print "{} equals {}".format(key, value)
+  exhibition = False
+  # Check for existing ID
+  if params.get('id'):
+    exhibition = Exhibition.query.filter_by(id=id).first()
+  # Or search for existing items if match option is set
+  elif match == True:
+    exhibition = Exhibition.query.filter_by(name=params['name']).first()
+
+  action = 'Found {} in the database.\
+            Updated exhibition with new data.'.format(params.get('name'))
+
+  if not exhibition:
+    exhibition = Exhibition()
+    action = 'Added new exhibition {} to the databse.'.format(params.get('name'))
+
+  # Loop through passed key/value attributes, add to class object
+  try:
+    for key, value in params.iteritems():
+      if ((key != 'exh_art_park') or (key != 'orgs')):
+        setattr(exhibition, key, value)
+
+    # FUTURE: Add exh_art_park relationships
+
+    # Add any orgs to exhibitions.org
+    if 'orgs' in params:
+      print "There's orgs in this!"
+      for org in params.get('orgs', None):
+        # FUTURE: Call org function
+        org = Artwork.query.filter_by(name=org).first()
+        if not org:
+          org = Org(name=org)
+          db.session.add(org)
+        if org not in exhibition.orgs:
+          exhibition.orgs.append(org)
+
+    db.session.add(exhibition)
+    db.session.commit()
+    print "Success: {}".format(action)
+    return "Success: {}".format(action)
+  except Exception as e:
+    print "Error: {}: {}".format(params.get('name'), e)
+    return "Error: {}: {}".format(params.get('name'), e)
 
 
 def import_org(**params):

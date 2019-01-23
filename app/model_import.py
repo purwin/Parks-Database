@@ -116,7 +116,7 @@ def import_exhibition(match=False, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key not in ['exh_art_park', 'orgs']:
+      if key not in ['exh_art_park', 'orgs', 'artworks', 'parks']:
         setattr(exhibition, key, value)
 
     # FUTURE: Add exh_art_park relationships

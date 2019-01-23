@@ -4,7 +4,7 @@ _DS_store
 _DS_Store
 *.pyc
 updated/
-sqlite_parks_db.db
+*.db
 requirements.txt
 venv.txt
 z_archive/*

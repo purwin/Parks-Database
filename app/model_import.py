@@ -24,7 +24,7 @@ def import_park(match=False, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key not in ['exh_art_park']:
+      if key not in ['exh_art_park', 'exhibitions', 'artworks']:
         setattr(park, key, value)
 
     # FUTURE: Add exh_art_park relationships

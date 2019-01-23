@@ -124,12 +124,14 @@ def import_exhibition(match=False, **params):
     # Add any orgs to exhibitions.org
     if 'orgs' in params:
       print "There's orgs in this!"
-      for org in params.get('orgs', None):
+      for organization in params.get('orgs', None):
         # FUTURE: Call org function
-        org = Artwork.query.filter_by(name=org).first()
+        org = Artwork.query.filter_by(name=organization).first()
+        # Add new org to database if not found
         if not org:
-          org = Org(name=org)
+          org = Org(name=organization)
           db.session.add(org)
+        # Add org relationship if not in one-to-many relationship
         if org not in exhibition.orgs:
           exhibition.orgs.append(org)
 

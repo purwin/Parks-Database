@@ -1,4 +1,4 @@
-from app import app, db
+from app import db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 
 import pandas as pd

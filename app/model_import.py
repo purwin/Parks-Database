@@ -9,7 +9,7 @@ def import_park(match=False, **params):
   park = False
   # Check for existing ID
   if params.get('id'):
-    park = Park.query.filter_by(id = id).first()
+    park = Park.query.filter_by(id=id).first()
   # Or search for existing items if match option is set
   elif match == True:
     park = Park.query.filter_by(name=params['name']).first()
@@ -45,7 +45,7 @@ def import_artist(match=False, **params):
 
   # Check for existing ID
   if params.get('id'):
-    artist = Artist.query.filter_by(id = id).first()
+    artist = Artist.query.filter_by(id=id).first()
   # Or search for existing items if match option is set
   elif match == True:
     artist = Artist.query.filter_by(pName=params['pName'])\
@@ -69,7 +69,7 @@ def import_artist(match=False, **params):
       print "There's artworks in this!"
       for art in params.get('artworks', None):
         # FUTURE: Call artwork function
-        artwork = Artwork.query.filter_by(name = art).first()
+        artwork = Artwork.query.filter_by(name=art).first()
         if not artwork:
           artwork = Artwork(name=art)
           db.session.add(artwork)
@@ -85,15 +85,37 @@ def import_artist(match=False, **params):
     return "Error: {}: {}".format(name, e)
 
 
-def import_artwork(**params):
+def import_artwork(match=False, **params):
   print "ARTWORK!"
+  artwork = False
   # Check for existing ID
-  id = params.get('id')
-  print id
-  name = "{} {}".format(params.get('fName'), params.get('pName')) if params.get('fName') else params.get('pName')
-  print name
-  for key, value in params.items():
-    print "{} equals {}".format(key, value)
+  if params.get('id'):
+    artwork = Artwork.query.filter_by(id=id).first()
+  # Or search for existing items if match option is set
+  elif match == True:
+    artwork = Artwork.query.filter_by(name=params['name']).first()
+
+  action = 'Found {} in the database.\
+            Updated artwork with new data.'.format(params.get('name'))
+
+  if not artwork:
+    artwork = Artwork()
+    action = 'Added new artwork {} to the databse.'.format(params.get('name'))
+
+  # Loop through passed key/value attributes, add to class object
+  try:
+    for key, value in params.iteritems():
+      if key not in ['exh_art_park', 'exhibitions', 'parks']:
+        setattr(artwork, key, value)
+
+    # FUTURE: Add exh_art_park relationships
+    db.session.add(artwork)
+    db.session.commit()
+    print "Success: {}".format(action)
+    return "Success: {}".format(action)
+  except Exception as e:
+    print "Error: {}: {}".format(params.get('name'), e)
+    return "Error: {}: {}".format(params.get('name'), e)
 
 
 def import_exhibition(match=False, **params):
@@ -149,7 +171,7 @@ def import_org(match=False,**params):
   org = False
   # Check for existing ID
   if params.get('id'):
-    org = Org.query.filter_by(id = id).first()
+    org = Org.query.filter_by(id=id).first()
   # Or search for existing items if match option is set
   elif match == True:
     org = Org.query.filter_by(name=params['name']).first()

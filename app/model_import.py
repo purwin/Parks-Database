@@ -24,7 +24,7 @@ def import_park(match=False, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key != 'exh_art_park':
+      if key not in ['exh_art_park']:
         setattr(park, key, value)
 
     # FUTURE: Add exh_art_park relationships
@@ -61,7 +61,7 @@ def import_artist(match=False, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key != 'artworks':
+      if key not in['artworks']:
         setattr(artist, key, value)
 
     # Loop through artist.artworks separately
@@ -116,7 +116,7 @@ def import_exhibition(match=False, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if ((key != 'exh_art_park') or (key != 'orgs')):
+      if key not in ['exh_art_park', 'orgs']:
         setattr(exhibition, key, value)
 
     # FUTURE: Add exh_art_park relationships

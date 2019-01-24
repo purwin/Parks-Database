@@ -23,7 +23,7 @@
 		{% include "include/user.html" %}
 
 		<div class="[ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
+			<div class="[ col-sm-8 col-md-6 ]">
 				<form id="js-form_search" action="/search" method="POST">
 					{{ form.csrf_token }}
 
@@ -32,9 +32,9 @@
 					</div>
 
 					<div class="[ input-group ]">
-						{{ form.search(class="form-control", placeholder="Search") }}
+						{{ form.search(class="form-control", placeholder="Search Exhibitions") }}
 						<div class="[ input-group-append ]">
-							<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
+							<button class="js-search butt--right butt" type="submit" id="js-search_exhibitions">Search</button>
 						</div>
 					</div>
 

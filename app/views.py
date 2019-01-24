@@ -1112,7 +1112,7 @@ def org_delete(id):
       return render_template('org_delete.html', org = org, form = form)
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['POST'])
 def search():
   form = Form_search()
   if form.validate_on_submit():

@@ -19,7 +19,7 @@ def import_park(match=False, **params):
 
   if not park:
     park = Park()
-    action = 'Added new park {} to the databse.'.format(params.get('name'))
+    action = 'Added new park: {}.'.format(params.get('name'))
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -56,7 +56,7 @@ def import_artist(match=False, **params):
 
   if not artist:
     artist = Artist()
-    action = 'Added new artist {} to the databse.'.format(name)
+    action = 'Added new artist: {}.'.format(name)
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -67,14 +67,19 @@ def import_artist(match=False, **params):
     # Loop through artist.artworks separately
     if 'artworks' in params:
       print "There's artworks in this!"
-      for art in params.get('artworks', None):
+      artworks = params.get('artworks', None)
+      # If artist.artworks is string, convert to list
+      artworks = [artworks] if isinstance(artworks, str) else artworks
+      # Loop through list values if they exist, add to artwork
+      for artwork in artworks or []:
+        art = False
         # FUTURE: Call artwork function
-        artwork = Artwork.query.filter_by(name=art).first()
-        if not artwork:
-          artwork = Artwork(name=art)
-          db.session.add(artwork)
-        if artwork not in artist.artworks:
-          artist.artworks.append(artwork)
+        art = Artwork.query.filter_by(name=artwork).first()
+        if not art:
+          art = Artwork(name=artwork)
+          db.session.add(art)
+        if art not in artist.artworks:
+          artist.artworks.append(art)
 
     db.session.add(artist)
     db.session.commit()
@@ -100,13 +105,37 @@ def import_artwork(match=False, **params):
 
   if not artwork:
     artwork = Artwork()
-    action = 'Added new artwork {} to the databse.'.format(params.get('name'))
+    action = 'Added new artwork: {}.'.format(params.get('name'))
 
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key not in ['exh_art_park', 'exhibitions', 'parks']:
+      if key not in ['exh_art_park', 'artists', 'exhibitions', 'parks']:
         setattr(artwork, key, value)
+
+  # FUTURE: Update to first_name, last_name
+  # Loop through artwork.artists separately
+  if 'artists' in params:
+    print "{} has artists!".format(params.get('name'))
+    artists = params.get('artists', None)
+    # FUTURE: Search for 
+    # If artwork.artists is string, convert to object with split first/last names
+    if isinstance(artists, str):
+      artists = [{
+              'pName': artists.split(' ', 1)[0],
+              'fName': artists.split(' ', 1)[1]
+      }]
+    # Loop through list values if they exist, add to artwork
+    for artist in artists or []:
+      person = False
+      # FUTURE: Call artist function
+      person = Artist.query.filter_by(pName=artist['pName'])\
+                           .filter_by(fName=artist['fName']).first()
+      if not person:
+        person = Artist(pName=artist['pName'], fName=artist['fName'])
+        db.session.add(person)
+      if person not in artwork.artists:
+        artwork.artists.append(person)
 
     # FUTURE: Add exh_art_park relationships
     db.session.add(artwork)
@@ -133,7 +162,7 @@ def import_exhibition(match=False, **params):
 
   if not exhibition:
     exhibition = Exhibition()
-    action = 'Added new exhibition {} to the databse.'.format(params.get('name'))
+    action = 'Added new exhibition: {}.'.format(params.get('name'))
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -146,16 +175,20 @@ def import_exhibition(match=False, **params):
     # Add any orgs to exhibitions.org
     if 'orgs' in params:
       print "There's orgs in this!"
-      for organization in params.get('orgs', None):
+      orgs = params.get('orgs', None)
+      # If exhibition.orgs is string, convert to list
+      orgs = [orgs] if isinstance(orgs, str) else orgs
+      for org in orgs or []:
+        organization = False
         # FUTURE: Call org function
-        org = Artwork.query.filter_by(name=organization).first()
+        organization = Org.query.filter_by(name=org).first()
         # Add new org to database if not found
         if not org:
-          org = Org(name=organization)
+          organization = Org(name=org)
           db.session.add(org)
         # Add org relationship if not in one-to-many relationship
-        if org not in exhibition.orgs:
-          exhibition.orgs.append(org)
+        if organization not in exhibition.orgs:
+          exhibition.orgs.append(organization)
 
     db.session.add(exhibition)
     db.session.commit()
@@ -166,7 +199,7 @@ def import_exhibition(match=False, **params):
     return "Error: {}: {}".format(params.get('name'), e)
 
 
-def import_org(match=False,**params):
+def import_org(match=False, **params):
   print "ORG!"
   org = False
   # Check for existing ID
@@ -181,7 +214,7 @@ def import_org(match=False,**params):
 
   if not org:
     org = Org()
-    action = 'Added new org {} to the databse.'.format(params.get('name'))
+    action = 'Added new org: {}.'.format(params.get('name'))
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -192,9 +225,13 @@ def import_org(match=False,**params):
     # Add any exhibitions to exhibitions.exhibition
     if 'exhibitions' in params:
       print "There's exhibitions in this!"
-      for exh in params.get('exhibitions', None):
+      exhibitions = params.get('exhibitions', None)
+      exhibitions = [exhibitions] if isinstance(exhibitions, str)
+                                  else exhibitions
+      for exh in exhibitions or []:
+        exhibition = False
         # FUTURE: Call exhibition function
-        exhibition = Artwork.query.filter_by(name=exh).first()
+        exhibition = Exhibition.query.filter_by(name=exh).first()
         # Add new org to database if not found
         if not exhibition:
           exhibition = Exhibition(name=exh)
@@ -226,22 +263,26 @@ def object_table(arg):
 def import_csv(csv_data, obj, cols, vals, match=False):
   # Remove empty rows
   csv_data = csv_data.replace('', pd.np.nan).dropna(how='all')
+
   # Replace nan values with empty string
   csv_data = csv_data.replace(pd.np.nan, "")
+
   # Get Object type, store function value
   model_object = object_table(obj)
-  # Set result log
+
+  # Define result log
   results = []
 
-  # Loop through file rows
+  # Loop through file rows, create object to add to database
   for index, row in csv_data.iterrows():
     kwargs = {}
     for col, val in zip(cols, vals):
       # Store val item as key, value of row item as value
       kwargs[val] = row[col].strip()
-    # Call relevant function with key/value items
     print kwargs
+    # Call relevant function with key/value items
     result = model_object(match=match, **kwargs)
+    # Add result to results array
     results.append(result)
 
   return results

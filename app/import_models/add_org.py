@@ -1,5 +1,5 @@
 from app import db
-from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from parks_db import Org, Exhibition
 
 
 def add_org(match=False, **params):
@@ -29,7 +29,7 @@ def add_org(match=False, **params):
     if 'exhibitions' in params:
       print "There's exhibitions in this!"
       exhibitions = params.get('exhibitions', None)
-      exhibitions = [exhibitions] if isinstance(exhibitions, str)
+      exhibitions = [exhibitions] if isinstance(exhibitions, str) \
                                   else exhibitions
       for exh in exhibitions or []:
         exhibition = False

@@ -1,5 +1,5 @@
 from app import db
-from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from parks_db import Artwork, Artist
 
 
 def add_artwork(match=False, **params):
@@ -25,29 +25,29 @@ def add_artwork(match=False, **params):
       if key not in ['exh_art_park', 'artists', 'exhibitions', 'parks']:
         setattr(artwork, key, value)
 
-  # FUTURE: Update to first_name, last_name
-  # Loop through artwork.artists separately
-  if 'artists' in params:
-    print "{} has artists!".format(params.get('name'))
-    artists = params.get('artists', None)
-    # FUTURE: Search for 
-    # If artwork.artists is string, convert to object with split first/last names
-    if isinstance(artists, str):
-      artists = [{
-              'pName': artists.split(' ', 1)[0],
-              'fName': artists.split(' ', 1)[1]
-      }]
-    # Loop through list values if they exist, add to artwork
-    for artist in artists or []:
-      person = False
-      # FUTURE: Call artist function
-      person = Artist.query.filter_by(pName=artist['pName'])\
-                           .filter_by(fName=artist['fName']).first()
-      if not person:
-        person = Artist(pName=artist['pName'], fName=artist['fName'])
-        db.session.add(person)
-      if person not in artwork.artists:
-        artwork.artists.append(person)
+    # FUTURE: Update to first_name, last_name
+    # Loop through artwork.artists separately
+    if 'artists' in params:
+      print "{} has artists!".format(params.get('name'))
+      artists = params.get('artists', None)
+      # FUTURE: Search for 
+      # If artwork.artists is string, convert to object with split first/last names
+      if isinstance(artists, str):
+        artists = [{
+                'pName': artists.split(' ', 1)[0],
+                'fName': artists.split(' ', 1)[1]
+        }]
+      # Loop through list values if they exist, add to artwork
+      for artist in artists or []:
+        person = False
+        # FUTURE: Call artist function
+        person = Artist.query.filter_by(pName=artist['pName'])\
+                             .filter_by(fName=artist['fName']).first()
+        if not person:
+          person = Artist(pName=artist['pName'], fName=artist['fName'])
+          db.session.add(person)
+        if person not in artwork.artists:
+          artwork.artists.append(person)
 
     # FUTURE: Add exh_art_park relationships
     db.session.add(artwork)

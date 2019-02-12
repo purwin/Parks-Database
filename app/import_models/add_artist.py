@@ -1,5 +1,5 @@
 from app import db
-from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from parks_db import Artist, Artwork
 
 
 def add_artist(match=False, **params):

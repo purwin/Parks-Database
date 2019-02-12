@@ -2,6 +2,19 @@ from app import db
 from parks_db import Artist, Artwork
 
 
+# List of acceptable keys for Artist objects
+artist_params = [
+  'id',
+  'pName',
+  'fName',
+  'name',
+  'email',
+  'phone',
+  'website',
+  'artworks'
+]
+
+
 def add_artist(match=False, **params):
   print "IMPORT ARTIST!"
   artist = False

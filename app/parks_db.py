@@ -1,6 +1,5 @@
 from app import db
 from sqlalchemy.ext.hybrid import hybrid_property
-# from sqlalchemy import UniqueConstraint, ForeignKeyConstraint
 
 
 artist_artwork = db.Table(
@@ -20,7 +19,6 @@ exh_org = db.Table(
 
 
 class Exhibition(db.Model):
-  # __tablename__ = 'exhibition'
   # Bio
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
@@ -85,7 +83,6 @@ class Exhibition(db.Model):
 
 
 class Park(db.Model):
-  # __tablename__ = 'park'
   __searchable__ = ['name']
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
@@ -111,7 +108,6 @@ class Park(db.Model):
 
 
 class Artwork(db.Model):
-  # __tablename__ = 'artwork'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(80))
   parks = db.relationship('Park',
@@ -135,8 +131,6 @@ class Artwork(db.Model):
 
 
 class Exh_art_park(db.Model):
-  # __tablename__ = 'exh_art_park'
-  # id = db.Column(db.Integer, primary_key=True)
   exhibition_id = db.Column(db.Integer,
                             db.ForeignKey('exhibition.id'),
                             primary_key=True
@@ -158,15 +152,8 @@ class Exh_art_park(db.Model):
   def __repr__(self):
     return "<Exh_art_park (%s)>"
 
-# Exh_art_park = db.Table('exhibition_artwork_park',
-#   db.Column('exhibition_id', db.Integer, db.ForeignKey('exhibition.id'), primary_key=True),
-#   db.Column('artwork_id', db.Integer, db.ForeignKey('artwork.id'), primary_key=True),
-#   db.Column('park_id', db.Integer, db.ForeignKey('park.id'), primary_key=True)
-# )
-
 
 class Artist(db.Model):
-  # __tablename__ = 'artist'
   id = db.Column(db.Integer, primary_key=True)
   pName = db.Column(db.String(40))
   fName = db.Column(db.String(40))
@@ -198,7 +185,6 @@ class Artist(db.Model):
 
 
 class Org(db.Model):
-  # __tablename__ = 'org'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(40))
   website = db.Column(db.String(40))
@@ -216,7 +202,6 @@ class Org(db.Model):
 
 
 class Event(db.Model):
-  # __tablename__ = 'event'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(40))
   exhibition_id = db.Column(db.Integer, db.ForeignKey('exhibition.id'))
@@ -234,22 +219,3 @@ def init_db():
 
 if __name__ == '__main__':
   init_db()
-
-
-
-'''
-
-exhib = session.query(Exh_art_park).filter(exhibition_id=#).all()
-
-for x in exhib:
-  print '%s at %s from %s to %s' % (x.artw.name, x.nycpark.name, x.exhib.startDate, x.exhib.endDate)
-
-for x in exhib:
-  print x.artw.creators.all()
-
-for x in exhib:
-  for y in x.artw.creators:
-    print y
-
-
-'''

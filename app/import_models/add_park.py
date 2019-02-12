@@ -1,6 +1,16 @@
 from app import db
-from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from parks_db import Park
 
+# List of acceptable keys for Park objects
+park_params = [
+  'id',
+  'name',
+  'park_id',
+  'borough',
+  'address',
+  'cb',
+  'exh_art_park'
+]
 
 def add_park(match=False, **params):
   print "PARK!"

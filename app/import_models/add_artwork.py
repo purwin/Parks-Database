@@ -2,6 +2,17 @@ from app import db
 from parks_db import Artwork, Artist
 
 
+# List of acceptable keys for Artwork objects
+artwork_params = [
+  'id',
+  'name',
+  'artists',
+  'exh_art_park',
+  'parks',
+  'exhibitions'
+]
+
+
 def add_artwork(match=False, **params):
   print "ARTWORK!"
   artwork = False

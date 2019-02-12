@@ -2,6 +2,16 @@ from app import db
 from parks_db import Org, Exhibition
 
 
+# List of acceptable keys for Org objects
+org_params = [
+  'id',
+  'name',
+  'website',
+  'phone',
+  'exhibitions'
+]
+
+
 def add_org(match=False, **params):
   print "ORG!"
   org = False

@@ -14,6 +14,11 @@ artwork_params = [
 
 
 def add_artwork(match=False, **params):
+  """
+  Add object argument to Artwork database 
+  Returns an object with two attributes: success boolean and the added object
+  """
+
   print "ARTWORK!"
   artwork = False
   # Check for existing ID

@@ -42,6 +42,11 @@ exhibition_params = [
 
 
 def add_exhibition(match=False, **params):
+  """
+  Add object argument to Exhibition database 
+  Returns an object with two attributes: success boolean and the added object
+  """
+
   print "EXHIBITION!"
   exhibition = False
   # Check for existing ID

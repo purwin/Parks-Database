@@ -1,3 +1,5 @@
+from flask import jsonify
+
 from app import db
 from parks_db import Org, Exhibition
 
@@ -13,26 +15,54 @@ org_params = [
 
 
 def add_org(match=False, **params):
+  """
+  Add object argument to Org database 
+  Returns an object with two attributes: success boolean and the added object
+  """
+
   print "ORG!"
+
+  # If required name parameter not included, return error
+  if not params.get('name'):
+    return jsonify({
+      "success": False,
+      "error": "Couldn't determine object name.",
+      "data": params})
+  else:
+    name = params.get('name')
+
+  # Define org as false to check if object exists in database below
   org = False
+
   # Check for existing ID
   if params.get('id'):
     org = Org.query.filter_by(id=id).first()
+
   # Or search for existing items if match option is set
   elif match == True:
     org = Org.query.filter_by(name=params['name']).first()
 
   action = 'Found {} in the database.\
-            Updated org with new data.'.format(params.get('name'))
+        Updated org with new data.'.format(name)
 
+  # Create new class object if nothing found
   if not org:
     org = Org()
-    action = 'Added new org: {}.'.format(params.get('name'))
+    action = 'Added new org: {}.'.format(name)
+
+  # Define warnings array to return
+  warnings = []
 
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key not in ['exhibitions']:
+      # Check for bad keys, add to warning list
+      if key not in org_params:
+        warnings.append('Unexpected {} attribute found. Skipping "{}" \
+                 addition.'.format(key, value))
+
+      # Add non-list key items to exhibition object
+      elif key not in ['exhibitions']:
         setattr(org, key, value)
 
     # Add any exhibitions to exhibitions.exhibition
@@ -40,7 +70,10 @@ def add_org(match=False, **params):
       print "There's exhibitions in this!"
       exhibitions = params.get('exhibitions', None)
       exhibitions = [exhibitions] if isinstance(exhibitions, str) \
-                                  else exhibitions
+        else exhibitions
+
+      # Loop through items in exhibitions list,
+      # add each to object relationship
       for exh in exhibitions or []:
         exhibition = False
         # FUTURE: Call exhibition function
@@ -49,14 +82,24 @@ def add_org(match=False, **params):
         if not exhibition:
           exhibition = Exhibition(name=exh)
           db.session.add(exhibition)
-        # Add exhibition relationship if not in one-to-many relationship
+        # Add exhibition relationship
+        # if not in one-to-many relationship
         if exhibition not in org.exhibitions:
           org.exhibitions.append(exhibition)
 
     db.session.add(org)
     db.session.commit()
     print "Success: {}".format(action)
-    return "Success: {}".format(action)
+    return jsonify({
+      "success": True,
+      "warning": warnings,
+      "response": action,
+      "data": org})
+
   except Exception as e:
-    print "Error: {}: {}".format(params.get('name'), e)
-    return "Error: {}: {}".format(params.get('name'), e)
+    print "Error: {}: {}".format(name, e)
+    return jsonify({
+      "success": False,
+      "error": "{}: {}".format(name, e),
+      "warning": warnings,
+      "data": params})

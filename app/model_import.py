@@ -1,23 +1,23 @@
 import pandas as pd
 
-from app import db
 from add_models import (
     add_artist,
     add_artwork,
     add_exhibition,
     add_org,
-    add_park,
-    add_exh_art_park
+    add_park
 )
+
+# import add_models
 
 
 def object_table(arg):
     set_obj = {
-        'exhibition': add_exhibition,
-        'artwork': add_artwork,
-        'park': add_park,
-        'artist': add_artist,
-        'org': add_org
+        'exhibition': add_exhibition.add_exhibition,
+        'artwork': add_artwork.add_artwork,
+        'park': add_park.add_park,
+        'artist': add_artist.add_artist,
+        'org': add_org.add_org
     }
     return set_obj[arg.lower()]
 
@@ -41,13 +41,13 @@ def import_csv(csv_data, obj, cols, vals, match=False):
         for col, val in zip(cols, vals):
             # Store val item as key, value of row item as value
             kwargs[val] = row[col].strip()
-        print kwargs
+        # print kwargs
         # Call relevant function with key/value items
         result = model_object(match=match, **kwargs)
-        print "IMPORT_CSV: {}".format(result)
         # Add result to results array
-        results.append(result.response)
+        results.append(result['result'])
 
+    print results
     return results
 
 

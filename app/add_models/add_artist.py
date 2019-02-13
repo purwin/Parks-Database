@@ -16,6 +16,11 @@ artist_params = [
 
 
 def add_artist(match=False, **params):
+  """
+  Add object argument to Artist database 
+  Returns an object with two attributes: success boolean and the added object
+  """
+
   print "IMPORT ARTIST!"
   artist = False
   name = "{} {}".format(params.get('fName'), params.get('pName'))\

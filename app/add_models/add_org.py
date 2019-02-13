@@ -1,7 +1,7 @@
 from flask import jsonify
 
 from app import db
-from parks_db import Org, Exhibition
+from app.parks_db import Org, Exhibition
 
 
 # List of acceptable keys for Org objects

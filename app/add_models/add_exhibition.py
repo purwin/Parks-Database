@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from app import db
-from parks_db import Exhibition, Org
+from app.parks_db import Exhibition, Org
 # from add_models import add_org
 
 

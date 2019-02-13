@@ -1,5 +1,5 @@
 from app import db
-from parks_db import Artist, Artwork
+from app.parks_db import Artist, Artwork
 
 
 # List of acceptable keys for Artist objects

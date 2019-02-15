@@ -1,77 +1,152 @@
 import pandas as pd
+# import StringIO
 
 from add_models import (
-    add_artist,
-    add_artwork,
-    add_exhibition,
-    add_org,
-    add_park
+  add_artist,
+  add_artwork,
+  add_exhibition,
+  add_org,
+  add_park
 )
 
 # import add_models
 
 
 def object_table(arg):
-    set_obj = {
-        'exhibition': add_exhibition.add_exhibition,
-        'artwork': add_artwork.add_artwork,
-        'park': add_park.add_park,
-        'artist': add_artist.add_artist,
-        'org': add_org.add_org
-    }
-    return set_obj[arg.lower()]
+  """
+  Take in string argument and return relevant add_models function
+  """
+
+  set_obj = {
+    'exhibition': add_exhibition.add_exhibition,
+    'artwork': add_artwork.add_artwork,
+    'park': add_park.add_park,
+    'artist': add_artist.add_artist,
+    'org': add_org.add_org
+  }
+
+  return set_obj[arg.lower()]
 
 
-def import_csv(csv_data, obj, cols, vals, match=False):
-    # Remove empty rows
-    csv_data = csv_data.replace('', pd.np.nan).dropna(how='all')
+def read_csv_heads(file):
+  """
+  Read a CSV file and return a list of column head values
 
-    # Replace nan values with empty string
-    csv_data = csv_data.replace(pd.np.nan, "")
+  Receive a CSV file as argument
+  Read the file using Pandas, dropping empty columns
+  Return CSV column head values as a list of strings
+  """
 
-    # Get Object type, store function value
-    model_object = object_table(obj)
-
-    # Define result log
-    results = []
-
-    # Loop through file rows, create object to add to database
-    for index, row in csv_data.iterrows():
-        kwargs = {}
-        for col, val in zip(cols, vals):
-            # Store val item as key, value of row item as value
-            kwargs[val] = row[col].strip()
-        # print kwargs
-        # Call relevant function with key/value items
-        result = model_object(match=match, **kwargs)
-        # Add result to results array
-        results.append(result['result'])
-
-    print results
-    return results
+  # Get form data (object type, classes, etc.)
+  file_data = pd.read_csv(file)
+  # Drop unnamed columns
+  file_data.drop(
+      file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
+      axis=1, inplace=True)
+  # Return file column names
+  return file_data.columns.values
 
 
-def main(csv_file):
-    temp_obj = 'park'
-    cols = ['Location', 'Borough']
-    vals = ['park_name', 'borough']
+def import_csv(file, obj, cols, vals, match=False):
+  """
+  Receive a file and column info, add rows to database, return results
 
-    import_csv(csv_file=csv_file, obj=temp_obj, cols=cols, vals=vals)
+  Read the file using Pandas, dropping empty columns
+  Loop through file rows
+  Create a dict from based on the supplied column mapping
+  Add dict to database
+  Create a list of dict responses
+  Return results
 
-    # file = pd.read_csv(csv_file)
-    # file.drop(file.columns[file.columns.str.contains('unnamed', case=False)],
-    #   axis=1, inplace=True)
-    # file_headers = file.columns.values
-    # print file_headers
+  Keyword arguments:
+  file -- CSV file
+  obj -- string, determines which DB table to import data 
+         (one of 'exhibition', 'artwork', 'park', 'artist', 'org')
+  cols -- list of columns to be imported
+  vals -- list of matching class attributes to apply col values
+  match -- (default = False)
+  """
 
-    # row_1 = file[1:5]
-    # for index, row in row_1.iterrows():
-    #   d = {}
-    #   for col in file_headers:
-    #     d[col] = row[col]
-    #   print d
+  # Read passed file
+  csv_data = pd.read_csv(file, skiprows = 0, na_values = [''])
+
+  # Remove empty rows
+  csv_data = csv_data.replace('', pd.np.nan).dropna(how='all')
+
+  # Replace nan values with empty string
+  csv_data = csv_data.replace(pd.np.nan, "")
+
+  # Get Object type, store function value
+  model_object = object_table(obj)
+
+  # Define result log
+  results = []
+
+  # Loop through file rows, create dict to add to database
+  for index, row in csv_data.iterrows():
+    kwargs = {}
+    for col, val in zip(cols, vals):
+      # Store val item as key, value of row item as value
+      kwargs[val] = row[col].strip()
+    # print kwargs
+    # Call relevant function with key/value items
+    result = model_object(match=match, **kwargs)
+    # Add result to results array
+    # results.append(result.result)
+    results.append(result)
+
+  # return results
+  export_csv(results)
 
 
-if __name__ == '__main__':
-    main('/Users/michaelpurwin/Documents/workings/parks database/data/'
-         'CURRENT_Public-Art-Chronology_1.30.2017.csv')
+def export_csv(data):
+  """
+  Read a list of dicts and return a list of column head values
+
+  Receive a CSV file as argument
+  Read the file using Pandas, dropping empty columns
+  Return CSV column head values as a list of strings
+  """
+
+  # Turn argument into dataframe
+  df = pd.DataFrame(data)
+  # Turn dataframe into csv
+  csv_file = df.to_csv()
+  print csv_file
+  # Store csv in StringIO
+  # Return shiny temp file
+
+  # temp_file = StringIO.StringIO()
+  # filename = "%s.csv" % ('output file')
+  # df.to_csv(temp_file, encoding='utf-8')
+  # csv_output = temp_file.getvalue()
+  # temp_file.close()
+
+  # Return data as panda dataframe csv
+  # return df.to_csv()
+
+
+  # resp = make_response(df.to_csv())
+  # resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+  # resp.headers["Content-Type"] = "text/csv"
+  # return resp
+
+
+  # def serve_csv(filename):
+  #     dataframe = filtered_dataframe(filename)
+  #     buffer = StringIO()
+  #     dataframe.to_csv(buffer,encoding='utf-8')
+  #     buffer.seek(0)
+  #     return send_file(buffer,
+  #                  attachment_filename="test.csv",
+  #                  mimetype='text/csv')
+
+
+  # from flask import Response
+  # from io import StringIO
+
+  # @app.route('/download/<id>.csv')
+  # def csv(id):
+  #   with StringIO as f:
+  #     write_csv_to_file(f)
+  #     return Response(f.getvalue(), mimetype='text/csv')

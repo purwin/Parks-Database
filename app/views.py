@@ -22,6 +22,8 @@ from flask_login import (
   logout_user,
   current_user
 )
+from datetime import datetime
+
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import (
@@ -37,11 +39,9 @@ from forms import (
   Form_import_data
 )
 from users import User
+from model_import import import_csv, read_csv_heads
 
-from model_import import import_csv
-
-from datetime import datetime
-import pandas as pd
+# import pandas as pd
 
 
 
@@ -167,17 +167,14 @@ def import_file():
 
   if form.is_submitted():
     if form.validate():
-      # get file upload
-      # filename = secure_filename(form.file.data.filename)
+      # Get file upload
       file = form.file.data
-      # print "FILENAME: {}".format(file)
       # Get form data (object type, classes, etc.)
-      file_data = pd.read_csv(file)
+      # file_data = pd.read_csv(file)
       # Drop unnamed columns
-      file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
-        axis=1, inplace=True)
-      file_headers = file_data.columns.values
-      # print "FILE HEADERS: {}".format(file_headers)
+      # file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
+        # axis=1, inplace=True)
+      file_headers = read_csv_heads(file)
       return jsonify({"success": True, "data": list(file_headers)})
     else:
       # Return errors if form doesn't validate
@@ -197,30 +194,27 @@ def import_data():
     print "FILENAME: {}".format(file)
     # Get form data (object type, classes, etc.)
     class_object = form.class_object.data
-    # print "CLASS OBJECT: {}".format(class_object)
     # Get column heads to import
     cols = form.keys.data
-    print "cols: {}".format(cols)
     # Get object attributes to import
     vals = form.values.data
-    print "vals: {}".format(vals)
     # Check for duplicate values in cols/vals lists
-    if ((len(cols) != len(set(cols))) or (len(vals) != len(set(vals)))):
+    if (len(cols) != len(set(cols))) or (len(vals) != len(set(vals))):
       return jsonify({"success": False,
                       "data": {
-                        "Columns": "Duplicate Column value(s)! Make sure\
-                        these are unique."}})
+                          "Columns": "Duplicate Column value(s)! Make sure\
+                          these are unique."}})
 
     # FUTURE: Allow imports with duplicate row/attributes
     # FUTURE: Ask for including header row
     # Get value of matching existing items
     match_existing = form.match_existing.data
-    file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
+    # file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
     # Import data with import_csv() from model_import
-    results = import_csv(csv_data=file_data, obj=class_object, cols=cols,
+    results = import_csv(file=file, obj=class_object, cols=cols,
       vals=vals, match=match_existing)
 
-    return jsonify({"success": True, "data": list(results)})
+    return jsonify({"success": True, "data": results})
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
@@ -650,7 +644,7 @@ def park_edit(id):
                       "data": {
                         "Exhibitions": "There’s an uneven number of\
                                         exhibitions and artworks. This data\
-                                         needs to be complete."}})
+                                        needs to be complete."}})
 
     # Update park data to database
     db.session.add(park)

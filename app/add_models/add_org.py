@@ -16,8 +16,13 @@ org_params = [
 
 def add_org(match=False, **params):
   """
-  Add object argument to Org database 
-  Returns an object with two attributes: success boolean and the added object
+  Add dict argument to Org database table
+
+  Returns a dict with four attributes:
+  - "success": boolean value
+  - "data": added dict item
+  - "result": string detailing database results
+  - "warning": string detailing any unforseen issues
   """
 
   print "ORG!"

@@ -29,35 +29,29 @@ def add_artist(match=False, **params):
   - "warning": string detailing any unforseen issues
   """
 
+  # Define name, pName, and fName based on recieved params
+  name = get_artist_name(**params)
+
   # If required name parameter not included, return error
-  if not params.get('name'):
+  if name == False:
     return {
       "success": False,
       "result": "Couldn't determine object name.",
       "data": params
     }
-  else:
-    name = params.get('name')
-
 
   print "IMPORT ARTIST!"
   artist = False
-  name = "{} {}".format(params.get('fName'), params.get('pName'))\
-    if params.get('fName') else params.get('pName')
 
   # Check for existing ID
   if params.get('id'):
     artist = Artist.query.filter_by(id=id).first()
   # Or search for existing items if match option is set
   elif match == True:
-    if params.get('pName') and params.get('fName'):
-      artist = Artist.query.filter_by(pName=params['pName'])\
-                           .filter_by(fName=params['fName']).first()
-    elif params.get('name'):
-      artist = Artist.query.filter_by(name=params.get('name')).first()
+    artist = Artist.query.filter_by(name=name['name']).first()
 
   result = 'Found {} in the database.\
-            Updated artist with new data.'.format(name)
+            Updated artist with new data.'.format(name['name'])
 
   if not artist:
     artist = Artist()
@@ -105,7 +99,7 @@ def add_artist(match=False, **params):
       "success": True,
       "result": result,
       "warning": warnings,
-      "data": park.serialize
+      "data": artist.serialize
     }
 
   except Exception as e:
@@ -120,22 +114,25 @@ def add_artist(match=False, **params):
 
 
 def get_artist_name(**params):
-  if 'name' not in params:
+  # Return false if required parameters aren't present
+  if 'name' not in params and 'pName' not in params:
     return False
 
-  else:
-    pName = ('pName' in params and params['pName']) or params.get('name').split(' ', 1)[0]
-    fName = ('fName' in params and (params['fName'] and params['pName'])) or params.get('name').split(' ', 1)[1]
-
-  # if params.get('pName'):
-  #   pName = params.get('pName')
-  #   if params.get('fName'):
-  #     fName = params.get('pName')
-  #   else:
-  #     fName = ''
+  if 'pName' not in params:
+    # Set pName to name if no spaces found
+    pName = params.get('name').split(' ', 1)[1]\
+        if ' ' in params.get('name', '') else params['name']
+    # Define fName if spaces found in name
+    fName = params.get('name').split(' ', 1)[0]\
+        if ' ' in params.get('name', '') else None
+    name = params.get('name', None)
+  elif 'name' not in params:
+    fName = params.get('fName', None)
+    pName = params.get('pName', None)
+    name = ''.join([fName, ' ', pName]) if fName else pName
 
   return {
-     'name': params.get('name'),
-    'fName': fName,
-    'pName': pName
+     'name': params.get('name', name),
+    'fName': params.get('fName', fName),
+    'pName': params.get('pName', pName)
   }

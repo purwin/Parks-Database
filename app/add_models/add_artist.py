@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from app import db
 from app.parks_db import Artist, Artwork
 

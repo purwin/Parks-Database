@@ -57,7 +57,8 @@ def load_user(user_id):
 
 @app.template_filter('date_format')
 def date_format(value, format='%m/%d/%y'):
-  return value.strftime(format)
+  if value is not None:
+    return value.strftime(format)
 
 
 today = datetime.utcnow().strftime('%Y-%m-%d')
@@ -195,9 +196,9 @@ def import_data():
     # Get form data (object type, classes, etc.)
     class_object = form.class_object.data
     # Get column heads to import
-    cols = form.keys.data
+    cols = filter(None, form.keys.data)
     # Get object attributes to import
-    vals = form.values.data
+    vals = filter(None, form.values.data)
     # Check for duplicate values in cols/vals lists
     if (len(cols) != len(set(cols))) or (len(vals) != len(set(vals))):
       return jsonify({"success": False,

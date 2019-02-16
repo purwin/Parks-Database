@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from app import db
-from app.parks_db import Park, Artwork, Exhibition
-from add_artwork import add_artwork
-from add_exhibition import add_exhibition
-from add_exh_art_park import add_exh_art_park
+from app.parks_db import Park
+import add_artwork
+import add_exhibition
+import add_exh_art_park
 
 
 # List of acceptable keys for Park objects
@@ -42,24 +42,23 @@ def add_park(match=True, **params):
   else:
     name = params.get('name')
 
+  park = False
   # If ID included, search for existing park
   if params.get('id'):
     park = Park.query.filter_by(id=id).first()
-    result = 'Found {} in the database. Updated park with new '\
-         'data.'.format(name)
-
 
   # Or search for existing items if match option is set
   elif match == True:
     park = Park.query.filter_by(name=name).first()
-    result = 'Found {} in the database. Updated park with new '\
-         'data.'.format(name)
+
+  result = 'Found {} in the database. Updated park with new data.'\
+           .format(name)
 
   # Create new class object if nothing found
-  else:
-    park = Park()
-    result = 'Added new park: {}.'.format(name)
 
+  if not park:
+    artwork = Park()
+    result = 'Added new park: {}.'.format(name)
 
   # Define warnings string to return
   warnings = ""
@@ -81,7 +80,7 @@ def add_park(match=True, **params):
     if 'exhibitions' and 'artworks' in params:
       # Flush session to get and use park ID
       db.session.flush()
-      print "There's artworks and exhibitions in {}!".format(name)
+      # print "There's artworks and exhibitions in {}!".format(name)
       exhibitions = filter(None, params.get('exhibitions', None))
       # If park.exhibitions is string, convert to list
       exhibitions = [exhibitions] if isinstance(exhibitions, str)\
@@ -103,29 +102,31 @@ def add_park(match=True, **params):
           # park_list.append(park.name)
 
         for exhibition, artwork in zip(exhibitions, artworks):
-          artwork_dict = add_artwork({name: artwork})
-          print "Art dict: {}".format(artwork_dict)
-          artwork_id = artwork_dict.data.id
-          print "Art ID: {}".format(artwork_id)
+          artwork_dict = add_artwork.add_artwork(name=artwork)
+          artwork_id = artwork_dict['data']['id']
 
-          exhibition_dict = add_exhibition({name: exhibition})
-          print "Exhibition dict: {}".format(exhibition_dict)
-          exhibition_id = exhibition_dict.data.id
-          print "Exhibition ID: {}".format(exhibition_id)
+          exhibition_dict = add_exhibition.add_exhibition(name=exhibition)
+          print "EXHIBITION DICT: {}".format(exhibition_dict)
+          exhibition_id = exhibition_dict['data']['id']
+          print "EXHIBITION ID: {}".format(exhibition_id)
 
 
-          exh_art_park = add_exh_art_park(
+          exh_art_park = add_exh_art_park.add_exh_art_park(
               exhibition_id=exhibition_id,
                  artwork_id=artwork_id,
                     park_id=park.id)
 
-          if exh_art_park.success == True:
+          if exh_art_park['success'] == True:
             result += "\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition, artwork, park.name)
+            print "Added {} @ {} to the {} exhibition".format(exhibition, artwork, park.name)
           else:
-            warnings += "\n{}".format(exh_art_park.result)
+            warnings += "\n{}".format(exh_art_park['result'])
 
     db.session.commit()
+    db.session.flush()
+
+    # print "Park: {}: {}".format(name, result)
 
     return {
       "success": True,
@@ -136,6 +137,7 @@ def add_park(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
+    print "ERROR! {}".format(e)
     return {
       "success": False,
       "result": "{}: {}".format(name, e),

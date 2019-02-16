@@ -50,8 +50,8 @@ def add_artist(match=False, **params):
   elif match == True:
     artist = Artist.query.filter_by(name=name['name']).first()
 
-  result = 'Found {} in the database.\
-            Updated artist with new data.'.format(name['name'])
+  result = 'Found {} in the database. '\
+            'Updated artist with new data.'.format(name['name'])
 
   if not artist:
     artist = Artist()
@@ -63,7 +63,13 @@ def add_artist(match=False, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      if key not in['artworks']:
+      # Check for bad keys, skip and add to warning list
+      if key not in artist_params:
+        warnings += 'Unexpected {} attribute found. Skipping "{}" addition.\n'\
+                    .format(key, value)
+      # Add non-list key items to exhibition object
+      # Skip name key item as that's created from artist.serialize
+      elif key not in ['artworks', 'name']:
         setattr(artist, key, value)
 
     db.session.add(artist)
@@ -94,6 +100,10 @@ def add_artist(match=False, **params):
     db.session.flush()
 
     # print "Park: {}: {}".format(name, result)
+
+    print "Artist result: {}".format(result)
+    print "Artist warnings: {}".format(warnings)
+    print "Artist data: {}".format(artist.serialize)
 
     return {
       "success": True,

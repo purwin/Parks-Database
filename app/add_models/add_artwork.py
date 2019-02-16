@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 from app import db
-from app.parks_db import Artwork, Artist, Park, Exhibition
+from app.parks_db import Artwork
 from add_park import add_park
 from add_exhibition import add_exhibition
 from add_exh_art_park import add_exh_art_park
@@ -137,6 +139,10 @@ def add_artwork(match=True, **params):
             warnings += "\n{}".format(exh_art_park.result)
 
     db.session.commit()
+    db.session.flush()
+
+    # print "Artwork: {}: {}".format(name, result)
+
     return {
       "success": True,
       "result": result,

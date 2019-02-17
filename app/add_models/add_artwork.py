@@ -2,9 +2,10 @@
 
 from app import db
 from app.parks_db import Artwork
-from add_park import add_park
-from add_exhibition import add_exhibition
-from add_exh_art_park import add_exh_art_park
+import add_artist
+import add_park
+import add_exhibition
+import add_exh_art_park
 
 
 # List of acceptable keys for Artwork objects
@@ -70,78 +71,63 @@ def add_artwork(match=True, **params):
 
     db.session.add(artwork)
 
-    # FUTURE: Update to first_name, last_name
     # Loop through artwork.artists separately
-    # if 'artists' in params:
-    #   print "{} has artists!".format(name)
-    #   artists = params.get('artists', None)
-    #   # If artwork.artists is string, convert to object with split first/last names
-    #   if isinstance(artists, str):
-    #     artists = [{
-    #                 'pName': artists.split(' ', 1)[0],
-    #                 'fName': artists.split(' ', 1)[1]
-    #     }]
-    #   # Loop through list values if they exist, add to artwork
-    #   for artist in artists or []:
-    #     person = False
-    #     # FUTURE: Call artist function
-    #     person = Artist.query.filter_by(pName=artist['pName'])\
-    #                          .filter_by(fName=artist['fName']).first()
-    #     if not person:
-    #       person = Artist(pName=artist['pName'], fName=artist['fName'])
-    #       db.session.add(person)
-    #     if person not in artwork.artists:
-    #       artwork.artists.append(person)
+    if 'artists' in params:
+      artists = params.get('artists', None)
+      # If artwork.artists is string, convert to list
+      artists = [artists] if isinstance(artists, str) else artists
 
-    # FUTURE: Add exh_art_park relationships
+      # Loop through list values if they exist, add to artwork
+      for artist in artists or []:
+        person = add_artist.add_artist(name=artist)
 
-    # Add exh_art_park relationships
+        if person['success'] == True:
+          if person['artist'] not in artwork.artists:
+            print 'Adding {} artist to {}'.format(person['data']['name'], artwork.name)
+            artwork.artists.append(person['artist'])
+        else:
+          warnings += person['result']
+
+    # # Add exh_art_park relationships
     if 'exhibitions' and 'parks' in params:
-      # Flush session to get and use artwork ID
+    #   # Flush session to get and use artwork ID
       db.session.flush()
 
-      print "There's parks and exhibitions in {}!".format(name)
       exhibitions = filter(None, params.get('exhibitions', None))
-      # If artwork.exhibitions is string, convert to list
+    #   # If artwork.exhibitions is string, convert to list
       exhibitions = [exhibitions] if isinstance(exhibitions, str)\
                                   else exhibitions
 
       parks = filter(None, params.get('parks', None))
-      # If artwork.parks is string, convert to list
+    #   # If artwork.parks is string, convert to list
       parks = [parks] if isinstance(parks, str) else parks
 
       if len(exhibitions) != len(parks):
         warnings += 'There’s an uneven number of exhibitions and parks in '\
                     '{}. Skipping addition.\n'.format(name)
       else:
-
         for exhibition, park in zip(exhibitions, parks):
-          park_dict = add_park({name: park})
-          print "Park dict: {}".format(park_dict)
-          park_id = park_dict.data.id
-          print "Park ID: {}".format(park_id)
+          park_dict = add_park.add_park(name=park)
+          park_id = park_dict['data']['id']
 
-          exhibition_dict = add_exhibition({name: exhibition})
-          print "Exhibition dict: {}".format(exhibition_dict)
-          exhibition_id = exhibition_dict.data.id
-          print "Exhibition ID: {}".format(exhibition_id)
+          exhibition_dict = add_exhibition.add_exhibition(name=exhibition)
+          exhibition_id = exhibition_dict['data']['id']
 
-
-          exh_art_park = add_exh_art_park(
+          exh_art_park = add_exh_art_park.add_exh_art_park(
               exhibition_id=exhibition_id,
                     park_id=park_id,
                  artwork_id=artwork.id)
 
-          if exh_art_park.success == True:
+          if exh_art_park['success'] == True:
             result += "\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition, park, artwork.name)
           else:
-            warnings += "\n{}".format(exh_art_park.result)
+            warnings += "\n{}".format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
 
-    # print "Artwork: {}: {}".format(name, result)
+    print "Add_artwork: {}".format(result)
 
     return {
       "success": True,

@@ -78,7 +78,33 @@ class Exhibition(db.Model):
 
     return {
       'id': self.id,
-      'name': self.name
+      'name': self.name,
+      'start_date': self.start_date,
+      'end_date': self.end_date,
+      'opening': self.opening,
+      'comments': self.comments,
+      'install_start': self.install_start,
+      'install_end': self.install_end,
+      'prm': self.prm,
+      'approval': self.approval,
+      'walkthrough': self.walkthrough,
+      'cb_presentation': self.cb_presentation,
+      'license_mailed': self.license_mailed,
+      'license_signed': self.license_signed,
+      'license_borough': self.license_borough,
+      'bond': self.bond,
+      'coi': self.coi,
+      'coi_renewal': self.coi_renewal,
+      'signage_submit': self.signage_submit,
+      'signage_received': self.signage_received,
+      'press_draft': self.press_draft,
+      'press_approved': self.press_approved,
+      'web_text': self.web_text,
+      'work_images': self.work_images,
+      'deinstall_date': self.deinstall_date,
+      'deinstall_check': self.deinstall_check,
+      'bond_return': self.bond_return,
+      'press_clippings': self.press_clippings
     }
 
 

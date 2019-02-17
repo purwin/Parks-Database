@@ -112,19 +112,17 @@ def add_exhibition(match=True, **params):
 
     # Add any orgs to exhibitions.org
     if 'orgs' in params:
-      print "There's orgs in {}!".format(name)
       orgs = params.get('orgs', None)
-      # If exhibition.orgs is string, convert to list
+      # If exhibition.organizations is string, convert to list
       orgs = [orgs] if isinstance(orgs, str) else orgs
       for org in orgs or []:
-        organization = add_org.add_org(org)
+        organization = add_org.add_org(name=org)
 
         if organization['success'] == True:
-          print "ORG: {}".format(organization)
-          if organization['org'] not in exhibition.orgs:
-            print '{} org data not in exhibition.orgs'\
-                .format(organization['data']['name'])
-            exhibition.orgs.append(organization['org'])
+          if organization['org'] not in exhibition.organizations:
+            exhibition.organizations.append(organization['org'])
+            result += "\nAdded {} to the {} exhibition"\
+                      .format(org, exhibition.name)
 
     # # Add exh_art_park relationships
     # if 'artworks' and 'parks' in params:
@@ -201,8 +199,7 @@ def format_date(date_text):
     try:
       # Determine style of date string
       date = datetime.strptime(date_text, style)
-      # Return date text to match wtforms style
-      # return date.strftime('%Y-%m-%d')
+      # Return date object
       return date
     except ValueError:
       pass

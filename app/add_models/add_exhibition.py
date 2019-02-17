@@ -124,54 +124,49 @@ def add_exhibition(match=True, **params):
             result += "\nAdded {} to the {} exhibition"\
                       .format(org, exhibition.name)
 
-    # # Add exh_art_park relationships
-    # if 'artworks' and 'parks' in params:
-    #   # Flush session to get and use exhibition ID
-    #   db.session.flush()
 
-    #   print "There's artworks and parks in {}!".format(name)
-    #   artworks = filter(None, params.get('artworks', None))
-    #   # If exhibition.artworks is string, convert to list
-    #   artworks = [artworks] if isinstance(artworks, str)\
-    #                               else artworks
+    # Add exh_art_park relationships
+    if 'artworks' and 'parks' in params:
+      # Flush session to get and use exhibition ID
+      db.session.flush()
 
-    #   parks = filter(None, params.get('parks', None))
-    #   # If exhibition.parks is string, convert to list
-    #   parks = [parks] if isinstance(parks, str) else parks
+      artworks = filter(None, params.get('artworks', None))
+      # If park.artworks is string, convert to list
+      artworks = [artworks] if isinstance(artworks, str) else artworks
 
-    #   if len(artworks) != len(parks):
-    #     warnings += 'There’s an uneven number of artworks and parks in '\
-    #                 '{}. Skipping addition.\n'.format(name)
-    #   else:
+      parks = filter(None, params.get('parks', None))
+      # If exhibition.parks is string, convert to list
+      parks = [parks] if isinstance(parks, str)\
+                                  else parks
 
-    #     for artwork, park in zip(artworks, parks):
-    #       park_dict = add_park.add_park({name: park})
-    #       print "Park dict: {}".format(park_dict)
-    #       park_id = park_dict.data.id
-    #       print "Park ID: {}".format(park_id)
+      if len(parks) != len(artworks):
+        warnings += 'There’s an uneven number of artworks and parks in '\
+                    '{}. Skipping addition.\n'.format(name)
+      else:
 
-    #       artwork_dict = add_artwork.add_artwork({name: artwork})
-    #       print "Artwork dict: {}".format(artwork_dict)
-    #       artwork_id = artwork_dict.data.id
-    #       print "Artwork ID: {}".format(artwork_id)
+        for artwork, park in zip(artworks, parks):
+          artwork_dict = add_artwork.add_artwork(name=artwork)
+          artwork_id = artwork_dict['data']['id']
 
-    #       exh_art_park = add_exh_art_park.add_exh_art_park(
-    #           artwork_id=artwork_id,
-    #                 park_id=park_id,
-    #              exhibition_id=exhibition.id)
+          park_dict = add_park.add_park(name=park)
+          park_id = park_dict['data']['id']
 
-    #       if exh_art_park.success == True:
-    #         result += "\nAdded {} @ {} to the {} artwork"\
-    #                   .format(artwork, park, exhibition.name)
-    #       else:
-    #         warnings += "\n{}".format(exh_art_park.result)
+          exh_art_park = add_exh_art_park.add_exh_art_park(
+              exhibition_id=exhibition.id,
+                 artwork_id=artwork_id,
+                    park_id=park_id)
+
+          if exh_art_park['success'] == True:
+            result += "\nAdded {} @ {} to the {} exhibition"\
+                      .format(exhibition.name, artwork, park)
+            print "Added {} @ {} to the {} exhibition".format(exhibition.name, artwork, park)
+          else:
+            warnings += "{}\n".format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
 
-    print "Result: {}".format(result)
-    print "Warning: {}".format(warnings)
-    print "Data: {}".format(exhibition.serialize)
+    print "Add_park: {}".format(result)
 
     return {
       "success": True,
@@ -182,10 +177,8 @@ def add_exhibition(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
-    print "Result: {}".format(result)
-    print "Warning: {}".format(warnings)
-    print "Data: {}".format(exhibition.serialize)
     print "Error: {}".format(e)
+
     return {
       "success": False,
       "result": "{}: {}".format(name, e),

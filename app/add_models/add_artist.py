@@ -93,8 +93,6 @@ def add_artist(match=False, **params):
     db.session.commit()
     db.session.flush()
 
-    # print "Park: {}: {}".format(name, result)
-
     print "Artist result: {}".format(result)
     print "Artist warnings: {}".format(warnings)
     print "Artist data: {}".format(artist.serialize)

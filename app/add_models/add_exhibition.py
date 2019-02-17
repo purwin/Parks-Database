@@ -3,7 +3,8 @@
 from datetime import datetime
 
 from app import db
-from app.parks_db import Exhibition, Org
+from app.parks_db import Exhibition
+import add_org
 import add_artwork
 import add_park
 import add_exh_art_park
@@ -64,8 +65,8 @@ def add_exhibition(match=True, **params):
       "result": "Couldn't determine object name.",
       "data": params
     }
-  else:
-    name = params.get('name')
+
+  name = params.get('name')
 
   exhibition = False
 
@@ -89,20 +90,25 @@ def add_exhibition(match=True, **params):
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
-      # Check for bad keys in object
+      # Check for bad keys, skip and add to warning list
       if key not in exhibition_params:
-        return "Error: {}: Unexpected {} attribute found.".format(name, key)
-      # Add non-arry key items to exhibition object
-      if key not in ['exh_art_park', 'orgs', 'artworks', 'parks']:
+        warnings += 'Unexpected {} attribute found. Skipping "{}" addition.\n'\
+                    .format(key, value)
+
+      # Add non-list key items to exhibition object
+      elif key not in ['exh_art_park', 'orgs', 'artworks', 'parks']:
+        # Check for date keys
+        if key in ['start_date', 'end_date', 'opening', 'install_start',
+                   'install_end', 'deinstall_date']:
+          # Create a date object from string
+          value = format_date(value)
+
+        # FUTURE: Check if start date/end date is complete
+        # FUTURE: Check if end date is after start date
+
         setattr(exhibition, key, value)
 
     db.session.add(exhibition)
-
-      # FUTURE: Add conditional for start/end dates
-      # FUTURE: Check if start date/end date is complete
-      # FUTURE: Check if end date is after start date
-
-    # FUTURE: Add exh_art_park relationships
 
     # Add any orgs to exhibitions.org
     if 'orgs' in params:
@@ -111,16 +117,14 @@ def add_exhibition(match=True, **params):
       # If exhibition.orgs is string, convert to list
       orgs = [orgs] if isinstance(orgs, str) else orgs
       for org in orgs or []:
-        organization = False
-        # FUTURE: Call org function
-        organization = Org.query.filter_by(name=org).first()
-        # Add new org to database if not found
-        if not org:
-          organization = Org(name=org)
-          db.session.add(org)
-        # Add org relationship if not in one-to-many relationship
-        if organization not in exhibition.orgs:
-          exhibition.orgs.append(organization)
+        organization = add_org.add_org(org)
+
+        if organization['success'] == True:
+          print "ORG: {}".format(organization)
+          if organization['org'] not in exhibition.orgs:
+            print '{} org data not in exhibition.orgs'\
+                .format(organization['data']['name'])
+            exhibition.orgs.append(organization['org'])
 
     # # Add exh_art_park relationships
     # if 'artworks' and 'parks' in params:
@@ -167,7 +171,9 @@ def add_exhibition(match=True, **params):
     db.session.commit()
     db.session.flush()
 
-    # print "Exhibition: {}: {}".format(name, result)
+    print "Result: {}".format(result)
+    print "Warning: {}".format(warnings)
+    print "Data: {}".format(exhibition.serialize)
 
     return {
       "success": True,
@@ -178,6 +184,10 @@ def add_exhibition(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
+    print "Result: {}".format(result)
+    print "Warning: {}".format(warnings)
+    print "Data: {}".format(exhibition.serialize)
+    print "Error: {}".format(e)
     return {
       "success": False,
       "result": "{}: {}".format(name, e),
@@ -192,7 +202,8 @@ def format_date(date_text):
       # Determine style of date string
       date = datetime.strptime(date_text, style)
       # Return date text to match wtforms style
-      return date.strftime('%Y-%m-%d')
+      # return date.strftime('%Y-%m-%d')
+      return date
     except ValueError:
       pass
-  raise ValueError('Can\'t determine date format!')
+  raise ValueError('Can\'t determine date format of {}!'.format(date_text))

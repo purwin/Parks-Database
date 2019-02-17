@@ -147,7 +147,8 @@ def add_artwork(match=True, **params):
       "success": True,
       "result": result,
       "warning": warnings,
-      "data": artwork.serialize
+      "data": artwork.serialize,
+      "artwork": artwork
     }
 
   except Exception as e:

@@ -80,7 +80,6 @@ def add_park(match=True, **params):
     if 'exhibitions' and 'artworks' in params:
       # Flush session to get and use park ID
       db.session.flush()
-      # print "There's artworks and exhibitions in {}!".format(name)
       exhibitions = filter(None, params.get('exhibitions', None))
       # If park.exhibitions is string, convert to list
       exhibitions = [exhibitions] if isinstance(exhibitions, str)\
@@ -106,10 +105,7 @@ def add_park(match=True, **params):
           artwork_id = artwork_dict['data']['id']
 
           exhibition_dict = add_exhibition.add_exhibition(name=exhibition)
-          print "EXHIBITION DICT: {}".format(exhibition_dict)
           exhibition_id = exhibition_dict['data']['id']
-          print "EXHIBITION ID: {}".format(exhibition_id)
-
 
           exh_art_park = add_exh_art_park.add_exh_art_park(
               exhibition_id=exhibition_id,
@@ -126,7 +122,7 @@ def add_park(match=True, **params):
     db.session.commit()
     db.session.flush()
 
-    # print "Park: {}: {}".format(name, result)
+    print "Add_park: {}".format(result)
 
     return {
       "success": True,

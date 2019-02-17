@@ -74,27 +74,21 @@ def add_artist(match=False, **params):
 
     db.session.add(artist)
 
+    # Loop through artwork.artists separately
+    if 'artworks' in params:
+      print "There's artworks in this!"
+      artworks = params.get('artworks', None)
+      # If artist.artworks is string, convert to list
+      artworks = [artworks] if isinstance(artworks, str) else artworks
+      # Loop through list values if they exist, add to artwork
+      for artwork in artworks or []:
+        art = add_artwork.add_artwork(name=artwork)
 
-    # Loop through artist.artworks separately
-    # if 'artworks' in params:
-    #   print "There's artworks in this!"
-    #   artworks = params.get('artworks', None)
-    #   # If artist.artworks is string, convert to list
-    #   artworks = [artworks] if isinstance(artworks, str) else artworks
-    #   # Loop through list values if they exist, add to artwork
-    #   for artwork in artworks or []:
-    #     art = add_artwork.add_artwork(name=artwork)
-
-    #     if art['success'] == True:
-    #       pass
-    #     # art = False
-    #     # FUTURE: Call artwork function
-    #     # art = Artwork.query.filter_by(name=artwork).first()
-    #     # if not art:
-    #       # art = Artwork(name=artwork)
-    #       # db.session.add(art)
-    #     if art not in artist.artworks:
-    #       artist.artworks.append(art)
+        if art['success'] == True:
+          print "ART: {}".format(art)
+        if art['artwork'] not in artist.artworks:
+          print '{} art data not in artist.artworks'.format(art['data']['name'])
+          artist.artworks.append(art['artwork'])
 
     db.session.commit()
     db.session.flush()
@@ -109,7 +103,8 @@ def add_artist(match=False, **params):
       "success": True,
       "result": result,
       "warning": warnings,
-      "data": artist.serialize
+      "data": artist.serialize,
+      "artist": artist
     }
 
   except Exception as e:

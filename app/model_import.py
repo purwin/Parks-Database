@@ -91,12 +91,16 @@ def import_csv(file, obj, cols, vals, match=False):
     # print kwargs
     # Call relevant function with key/value items
     result = model_object(match=match, **kwargs)
-    # Add result to results array
-    # results.append(result.result)
-    results.append(result)
+    # Add result dict to results list
+    results.append({
+      "success": result['success'],
+      "result": result['result'],
+      "warning": result['warning'],
+      "data": result['data'],
+      })
 
-  # return results
-  export_csv(results)
+  return results
+  # export_csv(results)
 
 
 def export_csv(data):
@@ -112,7 +116,7 @@ def export_csv(data):
   df = pd.DataFrame(data)
   # Turn dataframe into csv
   csv_file = df.to_csv()
-  print csv_file
+  # print csv_file
   # Store csv in StringIO
   # Return shiny temp file
 

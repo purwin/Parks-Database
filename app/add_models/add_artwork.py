@@ -34,7 +34,8 @@ def add_artwork(match=True, **params):
   if not params.get('name'):
     return {
       "success": False,
-      "error": "Couldn't determine object name.",
+      "result": "Couldn't determine object name.",
+      "warning": "",
       "data": params
     }
   else:

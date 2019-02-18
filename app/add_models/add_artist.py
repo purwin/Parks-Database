@@ -37,6 +37,7 @@ def add_artist(match=False, **params):
     return {
       "success": False,
       "result": "Couldn't determine object name.",
+      "warning": "",
       "data": params
     }
 

@@ -17,6 +17,9 @@ $(document).ready(function() {
       // Declare selected form type
       activeObject: null,
 
+      // Store result array from imported data
+      result: [],
+
       key: $('#js-template_keys').html(),
 
       exhibition: {
@@ -126,7 +129,6 @@ $(document).ready(function() {
         let postPromise = this.postFile($(x), $(x).attr('action'));
 
         postPromise.done(function(response) {
-          console.log(response);
           // If form POST doesn't validate with wtforms, add errors to page
           if (response.success == false) {
             console.log("Form Error(s)!");
@@ -137,7 +139,36 @@ $(document).ready(function() {
 
           else if (response.success == true) {
             // Store response list in model.columns
-            model.columns = response.data;
+            model.result = response;
+            console.log(model.result);
+
+            let resultCount = model.result.data.reduce((item, obj) => {
+              console.log(item);
+              obj.success == true ? item.success++ : item.error++;
+              obj.warning.length > 0 ? item.warning++ : item.warning = item.warning;
+              return item;
+            }, {success: 0, warning: 0, error: 0});
+            // let resultCount = model.result.data.reduce((item = 0, obj) => {
+            //   return item + (obj.success == true);
+            // });
+            console.dir(resultCount);
+            // Count # of successes
+            // Count # of warnings
+            // Count # of errors
+            // Show modal with results
+            $('#js-modal_results').modal('show')
+              .find('div.modal-body')
+              .html(
+                '<h3>Import Results:</h3>\
+                  <ul>\
+                    <li>Records successfully imported: ' + resultCount.success + '</li>\
+                    <li>Records with warnings: ' + resultCount.warning + '</li>\
+                    <li>Records with errors: ' + resultCount.error + '</li>\
+                  </ul>'
+              );
+            // Ask to export CSV
+            // Close modal
+            // Reset page
           }
 
           else {

@@ -63,6 +63,7 @@ def add_exhibition(match=True, **params):
     return {
       "success": False,
       "result": "Couldn't determine object name.",
+      "warning": "",
       "data": params
     }
 
@@ -166,13 +167,14 @@ def add_exhibition(match=True, **params):
     db.session.commit()
     db.session.flush()
 
-    print "Add_park: {}".format(result)
+    print "Add_exhibition: {}".format(result)
 
     return {
       "success": True,
       "result": result,
       "warning": warnings,
-      "data": exhibition.serialize
+      "data": exhibition.serialize,
+      "exhibition": exhibition
     }
 
   except Exception as e:

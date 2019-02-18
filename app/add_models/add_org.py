@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from app import db
-from app.parks_db import Org, Exhibition
+from app.parks_db import Org
+import add_exhibition
 
 
 # List of acceptable keys for Org objects
@@ -29,7 +30,8 @@ def add_org(match=False, **params):
   if not params.get('name'):
     return {
       "success": False,
-      "error": "Couldn't determine object name.",
+      "result": "Couldn't determine object name.",
+      "warning": "",
       "data": params
     }
 
@@ -68,34 +70,34 @@ def add_org(match=False, **params):
       elif key not in ['exhibitions']:
         setattr(org, key, value)
 
-    # # Add any exhibitions to exhibitions.exhibition
-    # if 'exhibitions' in params:
-    #   print "There's exhibitions in this!"
-    #   exhibitions = params.get('exhibitions', None)
-    #   exhibitions = [exhibitions] if isinstance(exhibitions, str) \
-    #     else exhibitions
+    # Add any exhibitions to exhibitions.exhibition
+    if 'exhibitions' in params:
+      print "There's exhibitions in this!"
+      exhibitions = params.get('exhibitions', None)
+      exhibitions = [exhibitions] if isinstance(exhibitions, str) \
+        else exhibitions
 
-    #   # Loop through items in exhibitions list,
-    #   # add each to object relationship
-    #   for exh in exhibitions or []:
-    #     exhibition = False
-    #     # FUTURE: Call exhibition function
-    #     exhibition = Exhibition.query.filter_by(name=exh).first()
-    #     # Add new org to database if not found
-    #     if not exhibition:
-    #       exhibition = Exhibition(name=exh)
-    #       db.session.add(exhibition)
-    #     # Add exhibition relationship
-    #     # if not in one-to-many relationship
-    #     if exhibition not in org.exhibitions:
-    #       org.exhibitions.append(exhibition)
+      # Loop through items in exhibitions list,
+      # add each to object relationship
+      for exhibition in exhibitions or []:
+        exh = add_exhibition.add_exhibition(name=exhibition)
+
+        if exh['success'] == True:
+          print "EXHIBITION: {}".format(exh)
+        if exh['exhibition'] not in org.exhibitions:
+          print '{} exh data not in org.exhibitions'.format(exh['data']['name'])
+          org.exhibitions.append(exh['exhibition'])
 
     db.session.add(org)
     db.session.commit()
+
+    print "RESULT: {}".format(result)
+    print "WARNING: {}".format(warnings)
+    print "DATA: {}".format(org.serialize)
     return {
       "success": True,
+      "result": result,
       "warning": warnings,
-      "response": result,
       "data": org.serialize,
       "org": org
     }
@@ -104,7 +106,7 @@ def add_org(match=False, **params):
     print "Error: {}: {}".format(name, e)
     return {
       "success": False,
-      "error": "{}: {}".format(name, e),
+      "result": "{}: {}".format(name, e),
       "warning": warnings,
       "data": params
     }

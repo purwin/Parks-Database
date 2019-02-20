@@ -100,10 +100,9 @@ def import_csv(file, obj, cols, vals, match=False):
       })
 
   return results
-  # export_csv(results)
 
 
-def export_csv(data):
+def export_csv(obj):
   """
   Read a list of dicts and return a list of column head values
 
@@ -113,7 +112,7 @@ def export_csv(data):
   """
 
   # Turn argument into dataframe
-  df = pd.DataFrame(data)
+  df = pd.DataFrame(obj)
   # Turn dataframe into csv
   csv_file = df.to_csv()
   # print csv_file

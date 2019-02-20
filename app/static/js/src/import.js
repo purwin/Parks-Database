@@ -1,6 +1,6 @@
 'use strict';
 
-import 'jquery';
+// import 'jquery';
 import {controller} from './controller';
 
 
@@ -90,9 +90,6 @@ $(document).ready(function() {
 
             // Loop through response, add as option to model.key
             for (const item of response.data) {
-              console.log("COLUMN: " + item);
-              // Add item to column list
-
               // Add item as option to key SelectField
               model.key = $(model.key).append($("<option></option>")
                                       .attr("value", item)
@@ -158,7 +155,7 @@ $(document).ready(function() {
 
             // Add result info to modal
             view.showModal(
-              `<h3>'
+              `<h3>
                 ${model.activeObject.name.toUpperCase()} IMPORT RESULTS
               </h3>
               <ul>
@@ -285,11 +282,32 @@ $(document).ready(function() {
 
       // Post JSON data
       postExport: function(postRoute, json_data) {
+        let csrftoken = $('meta[name=csrf-token]').attr('content')
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                }
+            }
+        })
         return $.ajax({
           url: postRoute,
           type: 'POST',
           contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
           data: JSON.stringify(json_data),
+          processData: false,
+          success: (data, textStatus, jQxhr) => {
+            console.log("jqXhr: ", jqXhr);
+            console.log("textStatus: ", textStatus);
+            console.log("errorThrown: ", errorThrown);
+          },
+          error: (jqXhr, textStatus, errorThrown ) => {
+            console.log("jqXhr: ", jqXhr);
+            console.log("textStatus: ", textStatus);
+            console.log("errorThrown: ", errorThrown);
+          }
         });
 
       }

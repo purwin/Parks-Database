@@ -20,6 +20,9 @@ $(document).ready(function() {
       // Store result array from imported data
       result: [],
 
+      // Route to post AJAX request to receive CSV download
+      routeExport: '/export',
+
       key: $('#js-template_keys').html(),
 
       exhibition: {
@@ -102,10 +105,13 @@ $(document).ready(function() {
             control.buildUL();
 
             // Show Data DIV
+            // FUTURE: Change to show instead of toggle
             view.toggleVisible($('#js-import_data'));
 
-            // set import_data file input to match import_file input
-            // console.log($('#file_file')[0].files[0]);
+            // Delete current #data_file if it exists
+            $('#data_file').remove();
+
+            // Set import_data file input to match import_file input
             $('#file_file').clone()
                            .attr('id', 'data_file')
                            .addClass('d-none')
@@ -142,33 +148,25 @@ $(document).ready(function() {
             model.result = response;
             console.log(model.result);
 
+            // Count # of successes, warnings, errors
             let resultCount = model.result.data.reduce((item, obj) => {
-              console.log(item);
               obj.success == true ? item.success++ : item.error++;
-              obj.warning.length > 0 ? item.warning++ : item.warning = item.warning;
+              obj.warning.length > 0 && item.warning++;
               return item;
             }, {success: 0, warning: 0, error: 0});
-            // let resultCount = model.result.data.reduce((item = 0, obj) => {
-            //   return item + (obj.success == true);
-            // });
             console.dir(resultCount);
-            // Count # of successes
-            // Count # of warnings
-            // Count # of errors
-            // Show modal with results
-            $('#js-modal_results').modal('show')
-              .find('div.modal-body')
-              .html(
-                '<h3>Import Results:</h3>\
-                  <ul>\
-                    <li>Records successfully imported: ' + resultCount.success + '</li>\
-                    <li>Records with warnings: ' + resultCount.warning + '</li>\
-                    <li>Records with errors: ' + resultCount.error + '</li>\
-                  </ul>'
-              );
-            // Ask to export CSV
-            // Close modal
-            // Reset page
+
+            // Add result info to modal
+            view.showModal(
+              `<h3>'
+                ${model.activeObject.name.toUpperCase()} IMPORT RESULTS
+              </h3>
+              <ul>
+                <li>Records imported: ${resultCount.success}</li>
+                <li>Records with warnings: ${resultCount.warning}</li>
+                <li>Records with errors: ${resultCount.error}</li>
+              </ul>`
+            );
           }
 
           else {
@@ -181,19 +179,40 @@ $(document).ready(function() {
       },
 
 
+      // Send export data to server, get file to download
+      sendExport: function() {
+        // Call post data function, get response
+        let postPromise = this.postExport(model.routeExport, model.result.data);
+
+        postPromise.done(function(response) {
+          console.log('EXPORT DONE!');
+          console.log(response);
+          // Close modal if necessary
+          // $('.modal').modal('hide');
+          // Reset page
+          // FUTURE: Call this once cancel or export is submitted
+          // window.location.reload(true);
+        });
+      },
+
+
       buildUL: function() {
+
+        // Clear Data UL if attributes exist
+        $('#js-data_ul').html();
 
         model.columns.forEach(function(column) {
           $('#js-data_ul').append(
-              '<li class="[ row mb-3 align-items-baseline justify-content-center ]">\
-                <div class="js-key">' +
-                  $(model.key)[0].outerHTML +
-                '</div>\
-                <div class="[ px-3 ]">\
-                  <i class="fas fa-arrow-right c-blue--l"></i>\
-                </div>\
-                <div class="js-value"></div>\
-              </li>');
+            `<li 
+              class="[ row mb-3 align-items-baseline justify-content-center ]"
+             >
+              <div class="js-key">${$(model.key)[0].outerHTML}</div>
+              <div class="[ px-3 ]">
+                <i class="fas fa-arrow-right c-blue--l"></i>
+              </div>
+              <div class="js-value"></div>
+            </li>`
+          );
         });
 
         // Update name attribute to match WTForms FieldList formatting
@@ -251,12 +270,6 @@ $(document).ready(function() {
       },
 
 
-      // Post data form
-      postData: function(formID, postRoute) {
-
-      },
-
-
       // Add each error to HTML page
       iterateErrors: function(response) {
 
@@ -270,16 +283,14 @@ $(document).ready(function() {
       },
 
 
-      // Notify user if data import has errors
-      notifyDataErrors: function(response) {
-
-      },
-
-
-      // Notify user if data import is 100% successful
-      notifyDataSuccess: function(response) {
-
-        controller.addSuccess(response);
+      // Post JSON data
+      postExport: function(postRoute, json_data) {
+        return $.ajax({
+          url: postRoute,
+          type: 'POST',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(json_data),
+        });
 
       }
 
@@ -294,6 +305,7 @@ $(document).ready(function() {
         this.sendFile();
         this.sendData();
         this.changeObject();
+        this.sendExport();
 
       },
 
@@ -326,9 +338,6 @@ $(document).ready(function() {
           let obj = view.getVal();
 
           if (obj) {
-            // Hide UL
-            // FUTURE: Move to View
-            $('#js-data_ul').addClass('d-none');
 
             // Call controller function to show object section based on user input
             control.changeObject(obj);
@@ -337,25 +346,39 @@ $(document).ready(function() {
             // FUTURE: Move to View
             $('#js-data_ul').removeClass('d-none');
 
-            // FUTURE: (create as Promise?)
           }
+
         });
 
       },
 
       // Function called to retrieve current Class_object value
       getVal: function() {
-
         return $('#class_object').val();
-
       },
 
 
       // Function called to change display value of element
       toggleVisible: function(element) {
 
-        $(element).toggleClass("d-none");
+        $(element).removeClass("d-none");
 
+      },
+
+      showModal: function(html) {
+        // Show modal with results
+        $('#js-modal_results').modal('show')
+          .find('div.modal-body')
+          .html(html);
+      },
+
+
+      // Function called when export data button in modal selected
+      sendExport: function() {
+        $('#js-modal-post_export').on('click', function(e) {
+          e.preventDefault();
+          control.sendExport();
+        })
       }
 
     };

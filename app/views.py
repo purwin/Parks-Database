@@ -23,6 +23,7 @@ from flask_login import (
   current_user
 )
 from datetime import datetime
+import json
 
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
@@ -221,13 +222,14 @@ def import_data():
 @login_required
 def export_data():
   if request.method == 'POST':
-    print "Export route post!"
-    print request
+    print "EXPORT POST!"
     # Check if received data is JSON
-    # try:
-    #   json_object = json.loads(myjson)
-    # except ValueError, e:
-    #   return False
+    try:
+      json_object = json.loads(request.data)
+      csv_file = export_csv(json_object)
+    except ValueError, e:
+      print e
+      return False
     # return True
     # Call export_csv to get file data
     # Return file

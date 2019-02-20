@@ -39,10 +39,7 @@ from forms import (
   Form_import_data
 )
 from users import User
-from model_import import import_csv, read_csv_heads
-
-# import pandas as pd
-
+from model_import import import_csv, read_csv_heads, export_csv
 
 
 # Flask-login settings
@@ -203,14 +200,13 @@ def import_data():
     if (len(cols) != len(set(cols))) or (len(vals) != len(set(vals))):
       return jsonify({"success": False,
                       "data": {
-                          "Columns": "Duplicate Column value(s)! Make sure\
-                          these are unique."}})
+                          "Columns": "Duplicate Column value(s)! Make sure "\
+                                     "these are unique."}})
 
     # FUTURE: Allow imports with duplicate row/attributes
     # FUTURE: Ask for including header row
     # Get value of matching existing items
     match_existing = form.match_existing.data
-    # file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
     # Import data with import_csv() from model_import
     results = import_csv(file=file, obj=class_object, cols=cols,
       vals=vals, match=match_existing)
@@ -219,6 +215,22 @@ def import_data():
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
+
+
+@app.route('/export', methods=['POST'])
+@login_required
+def export_data():
+  if request.method == 'POST':
+    print "Export route post!"
+    print request
+    # Check if received data is JSON
+    # try:
+    #   json_object = json.loads(myjson)
+    # except ValueError, e:
+    #   return False
+    # return True
+    # Call export_csv to get file data
+    # Return file
 
 
 @app.route('/exhibitions')

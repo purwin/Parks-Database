@@ -8,7 +8,8 @@ from flask import (
   redirect,
   url_for,
   jsonify,
-  session
+  session,
+  send_file
 )
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -225,11 +226,16 @@ def export_data():
     print "EXPORT POST!"
     # Check if received data is JSON
     try:
-      json_object = json.loads(request.data)
+      json_object = json.loads(request.form['export_data'])
+      print json_object
       csv_file = export_csv(json_object)
+      return send_file(csv_file,
+          attachment_filename="import_export.csv",
+          mimetype='text/csv')
+    #   return "FUN"
     except ValueError, e:
-      print e
-      return False
+      print "ERROR: {}".format(e)
+      return e
     # return True
     # Call export_csv to get file data
     # Return file

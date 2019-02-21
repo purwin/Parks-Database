@@ -9,8 +9,6 @@ from add_models import (
   add_park
 )
 
-# import add_models
-
 
 def object_table(arg):
   """
@@ -88,7 +86,6 @@ def import_csv(file, obj, cols, vals, match=False):
     for col, val in zip(cols, vals):
       # Store val item as key, value of row item as value
       kwargs[val] = row[col].strip()
-    # print kwargs
     # Call relevant function with key/value items
     result = model_object(match=match, **kwargs)
     # Add result dict to results list

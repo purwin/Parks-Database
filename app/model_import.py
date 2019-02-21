@@ -1,5 +1,5 @@
 import pandas as pd
-# import StringIO
+import StringIO
 
 from add_models import (
   add_artist,
@@ -104,20 +104,20 @@ def import_csv(file, obj, cols, vals, match=False):
 
 def export_csv(obj):
   """
-  Read a list of dicts and return a list of column head values
-
-  Receive a CSV file as argument
-  Read the file using Pandas, dropping empty columns
-  Return CSV column head values as a list of strings
+  Read a JSON object and return a list of column head values
   """
 
   # Turn argument into dataframe
   df = pd.DataFrame(obj)
-  # Turn dataframe into csv
-  csv_file = df.to_csv()
   # print csv_file
   # Store csv in StringIO
+  buffer = StringIO.StringIO()
+  # Turn dataframe into csv
+  csv_file = df.to_csv(buffer,encoding='utf-8')
+  print csv_file
+  buffer.seek(0)
   # Return shiny temp file
+  return buffer
 
   # temp_file = StringIO.StringIO()
   # filename = "%s.csv" % ('output file')

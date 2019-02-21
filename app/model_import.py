@@ -109,47 +109,10 @@ def export_csv(obj):
 
   # Turn argument into dataframe
   df = pd.DataFrame(obj)
-  # print csv_file
   # Store csv in StringIO
   buffer = StringIO.StringIO()
   # Turn dataframe into csv
   csv_file = df.to_csv(buffer,encoding='utf-8')
-  print csv_file
   buffer.seek(0)
-  # Return shiny temp file
+  # Return CSV temp file
   return buffer
-
-  # temp_file = StringIO.StringIO()
-  # filename = "%s.csv" % ('output file')
-  # df.to_csv(temp_file, encoding='utf-8')
-  # csv_output = temp_file.getvalue()
-  # temp_file.close()
-
-  # Return data as panda dataframe csv
-  # return df.to_csv()
-
-
-  # resp = make_response(df.to_csv())
-  # resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
-  # resp.headers["Content-Type"] = "text/csv"
-  # return resp
-
-
-  # def serve_csv(filename):
-  #     dataframe = filtered_dataframe(filename)
-  #     buffer = StringIO()
-  #     dataframe.to_csv(buffer,encoding='utf-8')
-  #     buffer.seek(0)
-  #     return send_file(buffer,
-  #                  attachment_filename="test.csv",
-  #                  mimetype='text/csv')
-
-
-  # from flask import Response
-  # from io import StringIO
-
-  # @app.route('/download/<id>.csv')
-  # def csv(id):
-  #   with StringIO as f:
-  #     write_csv_to_file(f)
-  #     return Response(f.getvalue(), mimetype='text/csv')

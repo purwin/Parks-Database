@@ -224,21 +224,18 @@ def import_data():
 def export_data():
   if request.method == 'POST':
     print "EXPORT POST!"
-    # Check if received data is JSON
     try:
+      # Check if received data is JSON
       json_object = json.loads(request.form['export_data'])
-      print json_object
+      # Create temporary CSV file
       csv_file = export_csv(json_object)
+      # Send CSV to client
       return send_file(csv_file,
-          attachment_filename="import_export.csv",
+          attachment_filename="export.csv",
           mimetype='text/csv')
-    #   return "FUN"
     except ValueError, e:
       print "ERROR: {}".format(e)
       return e
-    # return True
-    # Call export_csv to get file data
-    # Return file
 
 
 @app.route('/exhibitions')

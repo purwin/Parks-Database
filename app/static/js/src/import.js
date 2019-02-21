@@ -153,6 +153,9 @@ $(document).ready(function() {
             }, {success: 0, warning: 0, error: 0});
             console.dir(resultCount);
 
+            $('#export_data').val(JSON.stringify(model.result.data));
+            console.log($('#export_data').val());
+
             // Add result info to modal
             view.showModal(
               `<h3>
@@ -162,7 +165,8 @@ $(document).ready(function() {
                 <li>Records imported: ${resultCount.success}</li>
                 <li>Records with warnings: ${resultCount.warning}</li>
                 <li>Records with errors: ${resultCount.error}</li>
-              </ul>`
+              </ul>
+              <h3>EXPORT RESULTS?</h3>`
             );
           }
 
@@ -395,7 +399,10 @@ $(document).ready(function() {
       sendExport: function() {
         $('#js-modal-post_export').on('click', function(e) {
           e.preventDefault();
-          control.sendExport();
+          // control.sendExport();
+          $(this).closest('form').submit();
+          // location.reload(true);
+          $('.modal').modal('hide');
         })
       }
 

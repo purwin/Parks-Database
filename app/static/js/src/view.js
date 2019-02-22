@@ -142,6 +142,7 @@ export let view = {
     });
   },
 
+
   // Click event to make read-only forms editable
   editForm: function() {
     $(".js-form-edit").on('click', function(e) {

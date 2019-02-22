@@ -55,6 +55,13 @@ add				- blue
 }
 
 
+/* .butt--left: Rounded corners on left side only */
+.butt--left {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+
 
 /* .butt--create: Used for submit/create buttons */
 .butt--create {

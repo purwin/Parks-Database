@@ -338,7 +338,7 @@ $(document).ready(function() {
         this.changeObject();
         this.closeModal();
         this.sendExport();
-
+        this.selectFile();
       },
 
 
@@ -390,6 +390,15 @@ $(document).ready(function() {
       },
 
 
+      selectFile: function() {
+        // Referenced from https://stackoverflow.com/questions/11235206/
+        // twitter-bootstrap-form-file-element-upload-button/25053973#25053973
+        $(document).on('change', '#file_file', function(e) {
+          $('#file_text').html(this.files[0].name);
+        });
+      },
+
+
       // Function called to display passed element
       showItem: function(element) {
         $(element).removeClass("d-none");
@@ -413,7 +422,6 @@ $(document).ready(function() {
 
       // Function called when modal is closed
       closeModal: function() {
-
         $('#js-modal_results').modal('hide');
 
         $('#js-modal_results').on('hidden.bs.modal', function (e) {

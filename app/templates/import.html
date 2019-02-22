@@ -37,8 +37,14 @@
 							<ul class="js-ul_import [ py-2 px-0 ]">
 
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-									<div class="[ col-sm-10 col-md-8 ]">
-										{{ form.file(class="form-control", id='file_file') }}
+									<div class="[ col-sm-10 col-md-8 input-group ]">
+										<label class="butt butt--left butt--add [ m-0 ]" for="file_file">
+											{{ form.file(class="form-control", id='file_file', hidden=true) }}
+												Browse
+										</label>
+										<div class="f-grow [ form-control text-left align-items-center text-truncate ]">
+											<span class="align-sub" id="file_text"></span>
+										</div>
 									</div>
 								</li>
 

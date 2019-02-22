@@ -34,10 +34,10 @@
 						<div class="[ col-lg-8 text-center ]">
 							<h4 class="[ py-4 ]">Choose a File to Import</h4>
 
-							<ul class="js-ul_import [ py-2 ]">
+							<ul class="js-ul_import [ py-2 px-0 ]">
 
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-									<div class="[ col-md-8 ]">
+									<div class="[ col-sm-10 col-md-8 ]">
 										{{ form.file(class="form-control", id='file_file') }}
 									</div>
 								</li>
@@ -68,16 +68,16 @@
 
 							<ul id="js-import_data_ul" class="[ p-0 list-unstyled ]">
 
-								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+								<li class="[ row mb-2 justify-content-center align-items-baseline ]">
 									<div class="[ col-8 ]">
 										{{ form_data.class_object(class="form-control") }}
 									</div>
 								</li>
 
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-									<div class="[ col-8 text-left ]">
-										{{ form_data.match_existing(class="form-control form-check-input") }}
-										{{ form_data.match_existing.label }}
+									<div class="[ form-check col-7 text-left ]">
+										{{ form_data.match_existing(class="form-check-input") }}
+										{{ form_data.match_existing.label(class="form-check-label") }}
 									</div>
 								</li>
 

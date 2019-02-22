@@ -68,8 +68,6 @@
 
 							<ul id="js-import_data_ul" class="[ p-0 list-unstyled ]">
 
-								<!-- FUTURE: Add hidden form_data.file ref -->
-
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
 									<div class="[ col-8 ]">
 										{{ form_data.class_object(class="form-control") }}
@@ -77,10 +75,8 @@
 								</li>
 
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-									<div class="[ col-1 ]">
-										{{ form_data.match_existing(class="form-control") }}
-									</div>
-									<div class="[ col-10 col-md-7 text-left ]">
+									<div class="[ col-8 text-left ]">
+										{{ form_data.match_existing(class="form-control form-check-input") }}
 										{{ form_data.match_existing.label }}
 									</div>
 								</li>
@@ -124,7 +120,7 @@
 				</div>
 				<div class="[ modal-footer ]">
 					<button id="js-modal-cancel_export" class="js-cancel-modal butt butt--delete" type="button" data-dismiss="modal">No Thanks</button>
-					<button id="js-modal-post_export" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Export</button>
+					<button id="js-modal-post_export" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Export!</button>
 				</div>
 			</form>
 		</div>
@@ -157,7 +153,7 @@
 
 
 <script id="js-template_keys" type="text/template">
-	<select name="keys" class="js-column_key [form-control]">
+	<select name="keys" class="js-column_key [ form-control ]">
 		<option value="">Select a Column</option>
 	</select>
 </script>
@@ -169,7 +165,7 @@
 </script>
 
 <script id="js-template_artist" type="text/template">
-	<select name="values" class="js-column_artist [form-control]">
+	<select name="values" class="js-column_artist [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="pName">Last/Primary Name</option>
 		<option value="fName">First Name</option>
@@ -181,7 +177,7 @@
 </script>
 
 <script id="js-template_artwork" type="text/template">
-	<select name="values" class="js-column_artwork [form-control]">
+	<select name="values" class="js-column_artwork [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="name">Artwork Name</option>
 		<option value="artists">Artist</option>
@@ -191,7 +187,7 @@
 </script>
 
 <script id="js-template_park" type="text/template">
-	<select name="values" class="js-column_park [form-control]">
+	<select name="values" class="js-column_park [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="name">Park Name</option>
 		<option value="park_id">Park ID</option>
@@ -204,7 +200,7 @@
 </script>
 
 <script id="js-template_exhibition" type="text/template">
-	<select name="values" class="js-column_exhibition [form-control]">
+	<select name="values" class="js-column_exhibition [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="name">Exhibition Name</option>
 		<option value="start_date">Start Date</option>
@@ -216,7 +212,7 @@
 </script>
 
 <script id="js-template_org" type="text/template">
-	<select name="values" class="js-column_org [form-control]">
+	<select name="values" class="js-column_org [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="name">Organization Name</option>
 		<option value="website">Website</option>

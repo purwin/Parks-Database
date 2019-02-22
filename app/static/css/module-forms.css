@@ -41,6 +41,11 @@ input { color: #58595b }
 }
 
 
+.f-grow {
+  flex-grow: 1;
+}
+
+
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {

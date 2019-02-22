@@ -169,11 +169,7 @@ def import_file():
     if form.validate():
       # Get file upload
       file = form.file.data
-      # Get form data (object type, classes, etc.)
-      # file_data = pd.read_csv(file)
-      # Drop unnamed columns
-      # file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
-        # axis=1, inplace=True)
+      # Read CSV, get column head values
       file_headers = read_csv_heads(file)
       return jsonify({"success": True, "data": list(file_headers)})
     else:

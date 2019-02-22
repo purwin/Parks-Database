@@ -24,9 +24,6 @@ input { color: #58595b }
   padding:  0 1rem;
 }
 
-.select--create option[value="exhibition"] { border-bottom: 5px dashed red; }
-.select--create option[value="park"] { border-bottom: 5px dashed green; }
-
 /* label */
 
 
@@ -38,6 +35,13 @@ input { color: #58595b }
 
 
 
+/* Import.html-specific items */
+.arrow-import {
+  transform: rotate(90deg);
+}
+
+
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
 
@@ -45,7 +49,11 @@ input { color: #58595b }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-	
+
+  .arrow-import {
+    transform: rotate(0deg);
+  }
+
 }
 
 

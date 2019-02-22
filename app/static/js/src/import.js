@@ -75,35 +75,27 @@ $(document).ready(function() {
         let postPromise = this.postFile($(x), $(x).attr('action'));
 
         postPromise.done(function(response) {
-          console.log(response);
           // If form POST doesn't validate with wtforms, add errors to page
           if (response.success == false) {
-            console.log("Form Error(s)!");
-            console.dir(response);
-
             control.iterateErrors(response);
           }
 
+          // If POST is successful, add column values to import_data form
           else if (response.success == true) {
             // Store response list in model.columns
             model.columns = response.data;
 
-            // Loop through response, add as option to model.key
-            for (const item of response.data) {
-              // Add item as option to key SelectField
-              model.key = $(model.key).append($("<option></option>")
-                                      .attr("value", item)
-                                      .text(item));
-            }
+            // Call function to populate key option values
+            control.iterateKeys(response.data);
 
-            console.log(model.columns);
+            // Clear Data UL if attributes exist
+            $('#js-data_ul').html();
 
             // Build mapping UL
             control.buildUL();
 
             // Show Data DIV
-            // FUTURE: Change to show instead of toggle
-            view.toggleVisible($('#js-import_data'));
+            view.showItem($('#js-import_data'));
 
             // Delete current #data_file if it exists
             $('#data_file').remove();
@@ -134,27 +126,16 @@ $(document).ready(function() {
         postPromise.done(function(response) {
           // If form POST doesn't validate with wtforms, add errors to page
           if (response.success == false) {
-            console.log("Form Error(s)!");
-            console.dir(response);
-
-            control.iterateErrors(response);
+            control.iterateErrors(response.data);
           }
 
+          // If POST is successful, notify user of import results via modal
           else if (response.success == true) {
             // Store response list in model.columns
             model.result = response;
-            console.log(model.result);
 
-            // Count # of successes, warnings, errors
-            let resultCount = model.result.data.reduce((item, obj) => {
-              obj.success == true ? item.success++ : item.error++;
-              obj.warning.length > 0 && item.warning++;
-              return item;
-            }, {success: 0, warning: 0, error: 0});
-            console.dir(resultCount);
-
-            $('#export_data').val(JSON.stringify(model.result.data));
-            console.log($('#export_data').val());
+            // Get count of import success/warning/error values
+            let resultcount = control.iterateResults(model.result.data);
 
             // Add result info to modal
             view.showModal(
@@ -182,25 +163,18 @@ $(document).ready(function() {
 
       // Send export data to server, get file to download
       sendExport: function() {
-        // Call post data function, get response
-        let postPromise = this.postExport(model.routeExport, model.result.data);
-
-        postPromise.done(function(response) {
-          console.log('EXPORT DONE!');
-          console.log(response);
-          // Close modal if necessary
-          // $('.modal').modal('hide');
-          // Reset page
-          // FUTURE: Call this once cancel or export is submitted
-          // window.location.reload(true);
-        });
+        // Add import results JSON to export form field
+        $('#export_data').val(JSON.stringify(model.result.data));
+        // Submit form
+        $(this).closest('form').submit();
+        // Close modal if necessary
+        // $('.modal').modal('hide');
+        // Reset page
+        view.resetImport();
       },
 
 
       buildUL: function() {
-
-        // Clear Data UL if attributes exist
-        $('#js-data_ul').html();
 
         model.columns.forEach(function(column) {
           $('#js-data_ul').append(
@@ -209,7 +183,7 @@ $(document).ready(function() {
              >
               <div class="js-key">${$(model.key)[0].outerHTML}</div>
               <div class="[ px-3 ]">
-                <i class="fas fa-arrow-right c-blue--l"></i>
+                <i class="fas fa-arrow-right c-blue--l arrow-import"></i>
               </div>
               <div class="js-value"></div>
             </li>`
@@ -284,6 +258,30 @@ $(document).ready(function() {
       },
 
 
+      // Add received key values to key select option
+      iterateKeys: function(data) {
+        // Loop through response, add as option to model.key
+        for (const item of data) {
+          // Add item as option to key SelectField
+          model.key = $(model.key).append($("<option></option>")
+                                  .attr("value", item)
+                                  .text(item));
+        }
+
+      },
+
+
+      // Sift through passed object argument, return success/error/warning count
+      iterateResults: function(obj_data) {
+        // Count # of successes, warnings, errors
+        return obj_data.reduce((item, obj) => {
+          obj.success == true ? item.success++ : item.error++;
+          obj.warning.length > 0 && item.warning++;
+          return item;
+        }, {success: 0, warning: 0, error: 0});
+      },
+
+
       // Post JSON data
       postExport: function(postRoute, json_data) {
         let csrftoken = $('meta[name=csrf-token]').attr('content')
@@ -314,6 +312,16 @@ $(document).ready(function() {
           }
         });
 
+      },
+
+
+      // Function called when import is complete, resetting page view and values
+      resetImport: function() {
+        // Reset model values
+        model.columns = [];
+        model.activeObject = null;
+        model.result = [];
+        model.key = $('#js-template_keys').html();
       }
 
     };
@@ -327,9 +335,11 @@ $(document).ready(function() {
         this.sendFile();
         this.sendData();
         this.changeObject();
+        this.closeModal();
         this.sendExport();
 
       },
+
 
       // Function called when Submit File submit form button clicked
       sendFile: function() {
@@ -360,19 +370,18 @@ $(document).ready(function() {
           let obj = view.getVal();
 
           if (obj) {
-
             // Call controller function to show object section based on user input
             control.changeObject(obj);
 
             // Show UL
             // FUTURE: Move to View
             $('#js-data_ul').removeClass('d-none');
-
           }
 
         });
 
       },
+
 
       // Function called to retrieve current Class_object value
       getVal: function() {
@@ -380,18 +389,35 @@ $(document).ready(function() {
       },
 
 
-      // Function called to change display value of element
-      toggleVisible: function(element) {
-
+      // Function called to display passed element
+      showItem: function(element) {
         $(element).removeClass("d-none");
-
       },
 
+
+      // Function called to hide passed element
+      hideItem: function(element) {
+        $(element).addClass("d-none");
+      },
+
+
+      // Function called to display export modal, add HTML from passed argument
       showModal: function(html) {
         // Show modal with results
         $('#js-modal_results').modal('show')
-          .find('div.modal-body')
-          .html(html);
+                              .find('div.modal-body')
+                              .html(html);
+      },
+
+
+      // Function called when modal is closed
+      closeModal: function() {
+
+        $('.modal').on('hide.bs.modal', function (e) {
+          // Call function to hide modal, reset import page
+          view.resetImport();
+        });
+
       },
 
 
@@ -399,11 +425,28 @@ $(document).ready(function() {
       sendExport: function() {
         $('#js-modal-post_export').on('click', function(e) {
           e.preventDefault();
-          // control.sendExport();
-          $(this).closest('form').submit();
-          // location.reload(true);
-          $('.modal').modal('hide');
+          // Call function to submit import results
+          control.sendExport();
         })
+      },
+
+
+      // Function called when import is complete, resetting page view and values
+      resetImport: function() {
+        // $('.modal').modal('hide');
+        // Hide #js-import_data DIV
+        this.hideItem('#js-import_data');
+
+        // Clear #file_file
+        // $('#file_file').trigger('reset');
+        // Clear forms
+        $('js-form_import_file').trigger('reset');
+        $('js-form_import_data').trigger('reset');
+        $('js-form_export').trigger('reset');
+        // Clear any #js-form_import_file LIs
+        $('#js-data_ul').html();
+        // Call control function to reset model values
+        control.resetImport();
       }
 
     };

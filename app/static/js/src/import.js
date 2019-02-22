@@ -88,8 +88,8 @@ $(document).ready(function() {
             // Call function to populate key option values
             control.iterateKeys(response.data);
 
-            // Clear Data UL if attributes exist
-            $('#js-data_ul').html();
+            // Clear object/column values in map section
+            view.refreshMap();
 
             // Build mapping UL
             control.buildUL();
@@ -135,7 +135,7 @@ $(document).ready(function() {
             model.result = response;
 
             // Get count of import success/warning/error values
-            let resultcount = control.iterateResults(model.result.data);
+            const resultCount = control.iterateResults(model.result.data);
 
             // Add result info to modal
             view.showModal(
@@ -162,15 +162,15 @@ $(document).ready(function() {
 
 
       // Send export data to server, get file to download
-      sendExport: function() {
+      sendExport: function(x) {
         // Add import results JSON to export form field
         $('#export_data').val(JSON.stringify(model.result.data));
         // Submit form
-        $(this).closest('form').submit();
+        $(x).closest('form').submit();
         // Close modal if necessary
         // $('.modal').modal('hide');
         // Reset page
-        view.resetImport();
+        view.closeModal();
       },
 
 
@@ -179,13 +179,15 @@ $(document).ready(function() {
         model.columns.forEach(function(column) {
           $('#js-data_ul').append(
             `<li 
-              class="[ row mb-3 align-items-baseline justify-content-center ]"
+              class="[ row mb-5 align-items-baseline justify-content-center ]"
              >
-              <div class="js-key">${$(model.key)[0].outerHTML}</div>
-              <div class="[ px-3 ]">
+              <div class="js-key [ col ]">
+                ${$(model.key)[0].outerHTML}
+              </div>
+              <div class="[ px-3 col-12 col-md-1 text-center ]">
                 <i class="fas fa-arrow-right c-blue--l arrow-import"></i>
               </div>
-              <div class="js-value"></div>
+              <div class="js-value [ col ]"></div>
             </li>`
           );
         });
@@ -230,8 +232,6 @@ $(document).ready(function() {
         console.log("Post route: " + postRoute);
 
         let formData = new FormData($(formID)[0]);
-
-        console.log(formData);
 
         // Post data
         return $.ajax({
@@ -322,6 +322,7 @@ $(document).ready(function() {
         model.activeObject = null;
         model.result = [];
         model.key = $('#js-template_keys').html();
+        console.log(model);
       }
 
     };
@@ -413,7 +414,10 @@ $(document).ready(function() {
       // Function called when modal is closed
       closeModal: function() {
 
-        $('.modal').on('hide.bs.modal', function (e) {
+        $('#js-modal_results').modal('hide');
+
+        $('#js-modal_results').on('hidden.bs.modal', function (e) {
+          console.log("resetModal!");
           // Call function to hide modal, reset import page
           view.resetImport();
         });
@@ -426,7 +430,7 @@ $(document).ready(function() {
         $('#js-modal-post_export').on('click', function(e) {
           e.preventDefault();
           // Call function to submit import results
-          control.sendExport();
+          control.sendExport(this);
         })
       },
 
@@ -435,18 +439,26 @@ $(document).ready(function() {
       resetImport: function() {
         // $('.modal').modal('hide');
         // Hide #js-import_data DIV
-        this.hideItem('#js-import_data');
+        view.hideItem('#js-import_data');
 
         // Clear #file_file
-        // $('#file_file').trigger('reset');
+        $('#file_file').trigger('reset');
         // Clear forms
         $('js-form_import_file').trigger('reset');
         $('js-form_import_data').trigger('reset');
         $('js-form_export').trigger('reset');
-        // Clear any #js-form_import_file LIs
-        $('#js-data_ul').html();
+        view.refreshMap();
         // Call control function to reset model values
         control.resetImport();
+      },
+
+
+      refreshMap: function() {
+        // Clear selected object value
+        $('#class_object').val("");
+
+        // Clear Data UL if attributes exist
+        $('#js-data_ul').empty().addClass('d-none');
       }
 
     };

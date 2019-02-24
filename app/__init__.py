@@ -23,7 +23,9 @@ csp = {
     'script-src': [
       '\'self\'',
       '*.trusted.com',
-      'https://code.jquery.com'
+      'https://code.jquery.com',
+      'https://cdnjs.cloudflare.com',
+      'https://maxcdn.bootstrapcdn.com'
     ],
     'style-src': [
       '\'self\'',

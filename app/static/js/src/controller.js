@@ -1,9 +1,6 @@
 import {model} from './model';
 import {view} from './view';
 
-import 'jquery'
-import 'bootstrap'
-
 export let controller = {
 
   init: function() {

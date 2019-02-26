@@ -1,9 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.NODE_ENV !== 'production'
+var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
+  mode: 'production',
   watch: true,
   entry: {
     park: './app/static/js/src/park.js',
@@ -12,8 +11,7 @@ module.exports = {
     artwork: './app/static/js/src/artwork.js',
     artist: './app/static/js/src/artist.js',
     create: './app/static/js/src/create.js',
-    import: './app/static/js/src/import.js',
-    style: './app/static/style/src/style.scss'
+    import: './app/static/js/src/import.js'
   },
   output: {
     path: path.resolve(__dirname, './app/static/js/dist'),
@@ -21,23 +19,13 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-      {
-        test: /\.scss$/,
-        use: [
-            // fallback to style-loader in development
-            devMode !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
-            "css-loader",
-            "sass-loader"
-        ]
-    }
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "[name].bund.css"
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
     })
   ],
   stats: {

@@ -11,7 +11,8 @@ module.exports = {
     artwork: './app/static/js/src/artwork.js',
     artist: './app/static/js/src/artist.js',
     create: './app/static/js/src/create.js',
-    import: './app/static/js/src/import.js'
+    import: './app/static/js/src/import.js',
+    stylez: './app/static/style/src/style.scss'
   },
   output: {
     path: path.resolve(__dirname, './app/static/js/dist'),
@@ -19,15 +20,29 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].bundle.css',
+            }
+          },
+          {
+            loader: 'extract-loader'
+          },
+          {
+            loader: 'css-loader?-url'
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ]
+      }
     ]
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    })
-  ],
   stats: {
     colors: true
   },

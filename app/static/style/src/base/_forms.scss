@@ -1,0 +1,73 @@
+/*
+ *
+ * Parks DB Form CSS
+ *
+ */
+
+ /* Module(reusable pieces, nav, featured item, thumbnail divs, etc.) (can break up into smaller chunks) */
+
+
+
+/* textarea */
+
+/* input */
+
+input { color: #58595b }
+
+.select--create {
+  color: inherit;
+  border:none;
+  border-radius: 0;
+  border-bottom: 5px dashed;
+  -webkit-appearance: none;
+  background-color: transparent;
+  padding:  0 1rem;
+}
+
+/* label */
+
+
+/* Class applied to required form labels */
+.required {
+  font-weight: bold;
+  border-color: #e76a58;
+}
+
+
+
+/* Import.html-specific items */
+.arrow-import {
+  transform: rotate(90deg);
+}
+
+
+.f-grow {
+  flex-grow: 1;
+}
+
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+  .arrow-import {
+    transform: rotate(0deg);
+  }
+
+}
+
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}

@@ -1,0 +1,59 @@
+/*
+ *
+ * Parks DB State CSS
+ *
+ */
+
+/* Properties that refer to the state of an object */
+
+
+
+/* .is-active is left blank to maintain inherited display value
+   Used when needing to toggle between .is-active and .is-inactive */
+.is-active {}
+
+.is-inactive { display: none !important; }
+
+
+
+.is-invisible { visibility: hidden !important; }
+
+.is-visible { visibility: visible !important; }
+
+
+
+
+
+/*
+ *
+ * Media Queries
+ *
+ */
+
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  
+}
+
+
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}

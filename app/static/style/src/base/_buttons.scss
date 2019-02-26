@@ -1,0 +1,187 @@
+/*
+ *
+ * Parks DB Button CSS
+ *
+ */
+
+
+/*
+COLORS
+general   - grey
+create    - green
+delete    - red
+edit      - yellow
+add       - blue
+*/
+
+
+
+/* .butt: Base button styling */
+.butt {
+  cursor: pointer;
+  border-width: 2.5px;
+  border-style: solid;
+  border-radius: 4px;
+  border-color: color(grey);
+  background-color: color(grey);
+  color: color(grey--l);
+  font-size: 1.25rem;
+  padding: .25rem 1rem;
+  transition: .15s;
+}
+
+  .butt a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .butt:hover {
+    color: color(grey--l);
+    border-color: color(grey--d);
+    background-color: color(grey--d);
+  }
+
+  .butt:active {
+    border-color: color(grey) !important;
+    background-color: color(grey--l) !important;
+    color: color(grey--d) !important;
+  }
+
+
+/* .butt--right: Rounded corners on right side only */
+.butt--right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+
+/* .butt--left: Rounded corners on left side only */
+.butt--left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+
+/* .butt--create: Used for submit/create buttons */
+.butt--create {
+  background-color: color(green--l) !important;
+  border-color: color(green--l) !important;
+  color: color(grey--l) !important;
+}
+
+  .butt--create:hover {
+    color: color(grey--l) !important;
+    border-color: color(green--d) !important;
+    background-color: color(green--d) !important;
+  }
+
+  .butt--create:active {
+    border-color: color(green--l) !important;
+    background-color: color(grey--l) !important;
+    color: color(green--d) !important;
+  }
+
+
+
+/* .butt--delete: Used for delete/cancel buttons */
+.butt--delete, .butt--delete a {
+  background-color: #f1a69b !important;
+  border-color: #f1a69b !important;
+  color: color(grey--l);
+  vertical-align: inherit;
+}
+
+  .butt--delete:hover, .butt--delete a:hover {
+    color: color(grey--l) !important;
+    border-color: #e76a58 !important;
+    background-color: #e76a58 !important;
+  }
+
+  .butt--delete:active {
+    border-color: #f1a69b !important;
+    background-color: color(grey--l) !important;
+    color: #e76a58 !important;
+  }
+
+
+
+/* .butt--delete-icon: Used for X icon for delete/remove buttons */
+.butt--delete-icon {
+  color: #f1a69b !important;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+  .butt--delete-icon:hover {
+    color: #e76a58 !important;
+    border: none;
+    background-color: transparent;
+  }
+
+  .butt--delete-icon:active {
+    border-color: #f1a69b !important;
+    border: none;
+    background-color: transparent;
+  }
+
+
+
+/* .butt--edit: Used for edit buttons */
+.butt--edit {
+  border-color: #ffe491 !important;
+  background-color: #ffe491 !important;
+  color: color(grey--l) !important;
+}
+
+  .butt--edit:hover {
+    border-color: #ffd248 !important;
+    background-color: #ffd248 !important;
+    color: color(grey--l) !important;
+  }
+
+  .butt--edit:active {
+    border-color: #ffe491 !important;
+    background-color: color(grey--l) !important;
+    color: #ffd248 !important;
+  }
+
+
+
+/* .butt--add: Used for add buttons */
+.butt--add {
+  border-color: #a1d3ff;
+  background-color: #a1d3ff;
+  color: color(grey--l);
+}
+
+  .butt--add:hover {
+    border-color: #62b5ff;
+    background-color: #62b5ff;
+    color: color(grey--l);
+  }
+
+  .butt--add:active {
+    border-color: #a1d3ff;
+    background-color: color(grey--l);
+    color: #62b5ff;
+  }
+
+
+
+/* .butt--add-icon: Used for + icon for add buttons */
+.butt--add-icon {
+  color: #a1d3ff;
+  border: none;
+}
+
+  .butt--add-icon:hover {
+    color: #62b5ff;
+    border: none;
+  }
+
+  .butt--add-icon:active {
+    border-color: #a1d3ff;
+    border: none;
+  }

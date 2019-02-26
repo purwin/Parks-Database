@@ -1,5 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   mode: 'production',
@@ -11,8 +12,7 @@ module.exports = {
     artwork: './app/static/js/src/artwork.js',
     artist: './app/static/js/src/artist.js',
     create: './app/static/js/src/create.js',
-    import: './app/static/js/src/import.js',
-    stylez: './app/static/style/src/style.scss'
+    import: './app/static/js/src/import.js'
   },
   output: {
     path: path.resolve(__dirname, './app/static/js/dist'),
@@ -24,25 +24,25 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].bundle.css',
-            }
-          },
-          {
-            loader: 'extract-loader'
-          },
-          {
-            loader: 'css-loader?-url'
-          },
-          {
-            loader: 'sass-loader'
-          }
-        ]
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
+        ],
       }
     ]
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "../../style/dist/style.css"
+    })
+  ],
   stats: {
     colors: true
   },

@@ -10,5 +10,4 @@ venv.txt
 z_archive/*
 node_modules
 package*.json
-webpack.config.js
 /app/templates/_datalist.html

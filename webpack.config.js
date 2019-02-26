@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -34,8 +36,6 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
       filename: "../../style/dist/style.css"
     })
   ],
@@ -52,6 +52,14 @@ module.exports = {
             minChunks: 2
           }
         }
-      }
+      },
+      minimizer: [
+        new OptimizeCSSAssetsPlugin({
+          test: /\.css$/i,
+        }),
+        new TerserPlugin({
+          test: /\.js(\?.*)?$/i,
+        })
+      ]
     }
 };

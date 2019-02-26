@@ -22,9 +22,9 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
+      { test: /\.js$/i, exclude: /node_modules/, loader: "babel-loader" },
       {
-        test: /\.scss$/,
+        test: /\.scss$/i,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',

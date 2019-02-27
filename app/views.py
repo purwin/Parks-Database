@@ -259,7 +259,7 @@ def exhibitions():
 
 @app.route('/exhibitions/<int:id>')
 def exhibition(id):
-  exhibition = Exhibition.query.filter_by(id = id).one()
+  exhibition = Exhibition.query.filter_by(id = id).first_or_404()
   artworks = Artwork.query.all()
   parks = Park.query.all()
   orgs = Org.query.all()
@@ -553,7 +553,7 @@ def parks():
 
 @app.route('/parks/<int:id>')
 def park(id):
-  park = Park.query.filter_by(id=id).one()
+  park = Park.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
   artworks = Artwork.query.all()
   form = Form_park()
@@ -693,7 +693,7 @@ def artists():
 
 @app.route('/artists/<int:id>')
 def artist(id):
-  artist = Artist.query.filter_by(id = id).one()
+  artist = Artist.query.filter_by(id = id).first_or_404()
   artworks = Artwork.query.all()
 
   form = Form_artist()
@@ -832,7 +832,7 @@ def artworks():
 
 @app.route('/artworks/<int:id>')
 def artwork(id):
-  artwork = Artwork.query.filter_by(id=id).one()
+  artwork = Artwork.query.filter_by(id=id).first_or_404()
   artists = Artist.query.all()
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
@@ -1004,7 +1004,7 @@ def orgs():
 
 @app.route('/orgs/<int:id>')
 def org(id):
-  org = Org.query.filter_by(id=id).one()
+  org = Org.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
   form = Form_org()
   for exh in org.exhibitions:

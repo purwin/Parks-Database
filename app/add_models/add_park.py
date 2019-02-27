@@ -58,7 +58,7 @@ def add_park(match=True, **params):
   # Create new class object if nothing found
 
   if not park:
-    artwork = Park()
+    park = Park()
     result = 'Added new park: {}.'.format(name)
 
   # Define warnings string to return

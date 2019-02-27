@@ -56,7 +56,8 @@ class Exhibition(db.Model):
   # Related
   parks = db.relationship('Park',
                           secondary='exh_art_park',
-                          backref=db.backref('exhibitions')
+                          backref=db.backref('exhibitions'),
+                          viewonly=True
   )
   artworks = db.relationship('Artwork',
                              secondary='exh_art_park',

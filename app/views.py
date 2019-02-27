@@ -676,11 +676,11 @@ def park_delete(id):
   park = Park.query.filter_by(id=id).one()
   form = Form_park()
   if request.method == 'POST':
-      db.session.delete(park)
-      db.session.commit()
-      return redirect(url_for('parks'))
+    db.session.delete(park)
+    db.session.commit()
+    return redirect(url_for('parks'))
   else:
-      return render_template('park_delete.html', park = park, form = form)
+    return render_template('park_delete.html', park = park, form = form)
 
 
 @app.route('/artists')

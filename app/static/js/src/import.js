@@ -179,7 +179,7 @@ $(document).ready(function() {
         model.columns.forEach(function(column) {
           $('#js-data_ul').append(
             `<li 
-              class="[ row mb-5 align-items-baseline justify-content-center ]"
+              class="[ row mb-4 align-items-baseline justify-content-center ]"
              >
               <div class="js-key [ col ]">
                 ${$(model.key)[0].outerHTML}

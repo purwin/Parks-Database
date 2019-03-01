@@ -62,9 +62,7 @@ $(document).ready(function() {
     let control = {
 
       init: function() {
-
         view.init()
-
       },
 
 
@@ -119,7 +117,6 @@ $(document).ready(function() {
 
       // Send import data to server, get response
       sendData: function(x) {
-
         // Call post data function, get response
         let postPromise = this.postFile($(x), $(x).attr('action'));
 
@@ -175,7 +172,7 @@ $(document).ready(function() {
 
 
       buildUL: function() {
-
+        // Loop through model.columns, add to page
         model.columns.forEach(function(column) {
           $('#js-data_ul').append(
             `<li 
@@ -208,7 +205,6 @@ $(document).ready(function() {
 
       // Build key/value list
       changeObject: function(x) {
-
         // Set new model.activeObject
         model.activeObject = model[x];
 
@@ -227,7 +223,6 @@ $(document).ready(function() {
 
       // Post file form
       postFile: function(formID, postRoute) {
-
         // console.log("Form ID: " + formID);
         console.log("Post route: " + postRoute);
 
@@ -247,7 +242,6 @@ $(document).ready(function() {
 
       // Add each error to HTML page
       iterateErrors: function(response) {
-
         // For each received error...
         for (const item in response.data) {
           console.log("ERROR ITEM: " + item);
@@ -282,39 +276,6 @@ $(document).ready(function() {
       },
 
 
-      // Post JSON data
-      postExport: function(postRoute, json_data) {
-        let csrftoken = $('meta[name=csrf-token]').attr('content')
-
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken)
-                }
-            }
-        })
-        return $.ajax({
-          url: postRoute,
-          type: 'POST',
-          contentType: 'application/json; charset=utf-8',
-          dataType: 'json',
-          data: JSON.stringify(json_data),
-          processData: false,
-          success: (data, textStatus, jQxhr) => {
-            console.log("jqXhr: ", jqXhr);
-            console.log("textStatus: ", textStatus);
-            console.log("errorThrown: ", errorThrown);
-          },
-          error: (jqXhr, textStatus, errorThrown ) => {
-            console.log("jqXhr: ", jqXhr);
-            console.log("textStatus: ", textStatus);
-            console.log("errorThrown: ", errorThrown);
-          }
-        });
-
-      },
-
-
       // Function called when import is complete, resetting page view and values
       resetImport: function() {
         // Reset model values
@@ -323,6 +284,7 @@ $(document).ready(function() {
         model.result = [];
         model.key = $('#js-template_keys').html();
         console.log(model);
+        // Clear import file text
       }
 
     };
@@ -332,7 +294,6 @@ $(document).ready(function() {
     let view = {
 
       init: function() {
-
         this.sendFile();
         this.sendData();
         this.changeObject();
@@ -344,7 +305,6 @@ $(document).ready(function() {
 
       // Function called when Submit File submit form button clicked
       sendFile: function() {
-
         $('#js-post_file').on('click', function(e) {
           e.preventDefault();
           control.sendFile($('#js-form_import_file'));
@@ -355,19 +315,17 @@ $(document).ready(function() {
 
       // Function called when Submit Data submit form button clicked
       sendData: function() {
-
         $('#js-post_data').on('click', function(e) {
           e.preventDefault();
           control.sendData($('#js-form_import_data'));
+          view.addLoading();
         });
 
       },
 
       // Function called when Class_object option is changed
       changeObject: function() {
-
         $('#class_object').change(function(e) {
-
           let obj = view.getVal();
 
           if (obj) {
@@ -445,17 +403,18 @@ $(document).ready(function() {
 
       // Function called when import is complete, resetting page view and values
       resetImport: function() {
-        // $('.modal').modal('hide');
         // Hide #js-import_data DIV
         view.hideItem('#js-import_data');
 
         // Clear #file_file
         $('#file_file').trigger('reset');
+
         // Clear forms
         $('js-form_import_file').trigger('reset');
         $('js-form_import_data').trigger('reset');
         $('js-form_export').trigger('reset');
         view.refreshMap();
+        view.clearLoading();
         // Call control function to reset model values
         control.resetImport();
       },
@@ -467,6 +426,18 @@ $(document).ready(function() {
 
         // Clear Data UL if attributes exist
         $('#js-data_ul').empty().addClass('d-none');
+      },
+
+
+      addLoading: function() {
+        // Disable submit buttons
+        // Show/add spinner
+      },
+
+
+      clearLoading: function() {
+        // Un-disable submit buttons
+        // Clear/hide spinner
       }
 
     };

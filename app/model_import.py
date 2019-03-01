@@ -85,7 +85,7 @@ def import_csv(file, obj, cols, vals, match=False):
     kwargs = {}
     for col, val in zip(cols, vals):
       # Store val item as key, value of row item as value
-      kwargs[val] = row[col].strip()
+      kwargs[val] = str(row[col]).strip()
     # Call relevant function with key/value items
     result = model_object(match=match, **kwargs)
     # Add result dict to results list

@@ -125,7 +125,7 @@ def signup():
 
   if form.validate_on_submit():
     hashed_password = generate_password_hash(form.password.data,
-      method='sha256')
+        method='sha256')
     new_user = User(username=form.username.data, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
@@ -154,10 +154,10 @@ def create():
   form_org = Form_org()
 
   return render_template('create.html',
-    artworks = artworks, parks = parks, orgs = orgs, artists = artists,
-    form_artist = form_artist, form_artwork = form_artwork,
-    form_park = form_park, form_exhibition = form_exhibition,
-    form_org = form_org)
+      artworks = artworks, parks = parks, orgs = orgs, artists = artists,
+      form_artist = form_artist, form_artwork = form_artwork,
+      form_park = form_park, form_exhibition = form_exhibition,
+      form_org = form_org)
 
 
 @app.route('/import', methods=['GET', 'POST'])

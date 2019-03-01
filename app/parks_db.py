@@ -115,7 +115,7 @@ class Park(db.Model):
   name = db.Column(db.String(80))
   park_id = db.Column(db.String(8))
   borough = db.Column(db.String(15))
-  address = db.Column(db.String(100))
+  address = db.Column(db.String(200))
   cb = db.Column(db.String(40))
 
   def __repr__(self):

@@ -44,7 +44,7 @@ class Form_artwork(FlaskForm):
 
 class Form_park(FlaskForm):
   name = StringField('Name', validators=[DataRequired()])
-  park_id = StringField('Park ID No.', validators=[DataRequired()])
+  park_id = StringField('Park ID', validators=[DataRequired()])
   borough = SelectField('Borough',
       choices=[('Bronx', 'Bronx'),
                ('Brooklyn', 'Brooklyn'),

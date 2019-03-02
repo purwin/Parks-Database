@@ -55,7 +55,7 @@
 							<div class="[ col-md-3 ]">
 								{{ form.park_id.label }}
 							</div>
-							<div class="[ col-md-6 ]">
+							<div class="[ col ]">
 								{{ form.park_id(class="form-control-plaintext", value=park.park_id, readonly=true) }}
 							</div>
 						</li>
@@ -64,7 +64,7 @@
 							<div class="[ col-md-3 ]">
 								{{ form.borough.label }}
 							</div>
-							<div class="[ col-md-6 ]">
+							<div class="[ col ]">
 								<p class="is-active [ m-0 ]">{{ park.borough }}</p>
 								{{ form.borough(class="form-control-plaintext d-none", readonly=true) }}
 							</div>
@@ -74,7 +74,7 @@
 							<div class="[ col-md-3 ]">
 								{{ form.address.label }}
 							</div>
-							<div class="[ col-md-6 ]">
+							<div class="[ col ]">
 								<p class="is-active [ m-0 ]"><a href="https://www.google.com/maps/place/{{ park.address }}" target="_blank">{{ park.address }}</a></p>
 								{{ form.address(class="form-control-plaintext d-none", value=park.address, readonly=true) }}
 							</div>
@@ -84,7 +84,7 @@
 							<div class="[ col-md-3 ]">
 								{{ form.cb.label }}
 							</div>
-							<div class="[ col-md-6 ]">
+							<div class="[ col ]">
 								{{ form.cb(class="form-control-plaintext", value=park.cb, readonly=true) }}
 							</div>
 						</li>

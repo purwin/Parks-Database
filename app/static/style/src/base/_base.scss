@@ -19,7 +19,7 @@
  */
 
 body {
-  color: #58595b;
+  color: color(grey--d);
   max-width: 100%;
   font-size: 18px;
   font-family: 'Arimo', 'Hind', sans-serif;
@@ -37,13 +37,13 @@ body {
 h1 {}
 
 .head__h1 { font-size: 4rem; }
-.head__h1--parks > * { border-bottom: 5px solid #88c659; }
-.head__h1--exhibitions > * { border-bottom: 5px solid #b490f8; }
-.head__h1--artworks > * { border-bottom: 5px solid #81c4ff; }
-.head__h1--artists > * { border-bottom: 5px solid #ff96b1; }
-.head__h1--orgs > * { border-bottom: 5px solid #fe9b76; }
+.head__h1--parks > * { border-bottom: 5px solid color(green--d); }
+.head__h1--exhibitions > * { border-bottom: 5px solid color(purple--l); }
+.head__h1--artworks > * { border-bottom: 5px solid color(blue--l); }
+.head__h1--artists > * { border-bottom: 5px solid color(pink--l); }
+.head__h1--orgs > * { border-bottom: 5px solid color(orange--l); }
 
-h2 { color:  #b8dd9b; }
+h2 { color:  color(green--l); }
 
 h3 {}
 
@@ -64,7 +64,7 @@ p {}
  */
 
 a {
-  color: #58595b;
+  color: color(grey--d);
   border-bottom: 2px solid;
   text-decoration: none;
   transition: .2s;
@@ -72,6 +72,7 @@ a {
 
 a:hover {
   text-decoration: none;
+  // color: color(green--d);
 }
 
 a:active {}
@@ -79,51 +80,51 @@ a:active {}
 
 /* Interal links: Parks */
 a[href^="/parks"] {
-  border-bottom-color: #88c659;
+  border-bottom-color: color(green--d);
 }
 
 a[href^="/parks"]:hover {
-  color: #88c659;
+  color: color(green--d);
 }
 
 
 /* Interal links: Exhibitions */
 a[href^="/exhibitions"] {
-  border-bottom-color: #b490f8;
+  border-bottom-color: color(purple--l);
 }
 
 a[href^="/exhibitions"]:hover {
-  color: #b490f8;
+  color: color(purple--l);
 }
 
 
 /* Interal links: Artworks */
 a[href^="/artworks"] {
-  border-bottom-color: #81c4ff;
+  border-bottom-color: color(blue--l);
 }
 
 a[href^="/artworks"]:hover {
-  color: #81c4ff;
+  color: color(blue--l);
 }
 
 
 /* Interal links: Artists */
 a[href^="/artists"] {
-  border-bottom-color: #ff96b1;
+  border-bottom-color: color(pink--l);
 }
 
 a[href^="/artists"]:hover {
-  color: #ff96b1;
+  color: color(pink--l);
 }
 
 
 /* Interal links: Organizations */
 a[href^="/orgs"] {
-  border-bottom-color: #fe9b76;
+  border-bottom-color: color(orange--l);
 }
 
 a[href^="/orgs"]:hover {
-  color: #fe9b76;
+  color: color(orange--l);
 }
 
 /*

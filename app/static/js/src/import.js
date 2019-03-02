@@ -83,6 +83,9 @@ $(document).ready(function() {
             // Store response list in model.columns
             model.columns = response.data;
 
+            // Clear model.key of any old data
+            model.key = $('#js-template_keys').html();
+
             // Call function to populate key option values
             control.iterateKeys(response.data);
 
@@ -146,6 +149,9 @@ $(document).ready(function() {
               </ul>
               <h3>EXPORT RESULTS?</h3>`
             );
+
+            // Restore post buttons
+            view.clearLoading();
           }
 
           else {
@@ -283,8 +289,10 @@ $(document).ready(function() {
         model.activeObject = null;
         model.result = [];
         model.key = $('#js-template_keys').html();
-        console.log(model);
+
         // Clear import file text
+        $('#file_text').html("");
+        console.log('file text: ', $('#file_text').html());
       }
 
     };
@@ -352,6 +360,7 @@ $(document).ready(function() {
         // Referenced from https://stackoverflow.com/questions/11235206/
         // twitter-bootstrap-form-file-element-upload-button/25053973#25053973
         $(document).on('change', '#file_file', function(e) {
+          console.log("changing file!");
           $('#file_text').html(this.files[0].name);
         });
       },
@@ -410,9 +419,9 @@ $(document).ready(function() {
         $('#file_file').trigger('reset');
 
         // Clear forms
-        $('js-form_import_file').trigger('reset');
-        $('js-form_import_data').trigger('reset');
-        $('js-form_export').trigger('reset');
+        $('#js-form_import_file').trigger('reset');
+        $('#js-form_import_data').trigger('reset');
+        $('#js-form_export').trigger('reset');
         view.refreshMap();
         view.clearLoading();
         // Call control function to reset model values
@@ -429,15 +438,27 @@ $(document).ready(function() {
       },
 
 
+      // Function called to disable post buttons when import in progress
+      // Show user a loading spinner
       addLoading: function() {
         // Disable submit buttons
+        $('.js-cancel-import, .js-post-import').prop('disabled', true);
+
         // Show/add spinner
+        view.showItem('#js-post_loading');
+        view.hideItem('#js-post_label');
       },
 
 
+      // Function called to re-enable post buttons after import completes
+      // Hide spinner span
       clearLoading: function() {
         // Un-disable submit buttons
+        $('.js-cancel-import, .js-post-import').prop('disabled', false);
+
         // Clear/hide spinner
+        view.hideItem('#js-post_loading');
+        view.showItem('#js-post_label');
       }
 
     };

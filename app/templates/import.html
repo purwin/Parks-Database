@@ -94,7 +94,13 @@
 
 						<div class="[ col-md-8 py-4 text-right ]">
 							<a id="js-cancel_data" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
-							<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">Import Data</button>
+							<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">
+								<span id="js-post_loading" class="[ d-none ]">
+									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+									Importing...
+								</span>
+								<span id="js-post_label">Import Data</span>
+							</button>
 						</div>
 
 					</div>

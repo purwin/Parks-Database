@@ -21,7 +21,7 @@
 body {
   color: color(grey--d);
   max-width: 100%;
-  font-size: 18px;
+  font-size: 21px;
   font-family: 'Arimo', 'Hind', sans-serif;
   hyphens: auto;
 }
@@ -37,11 +37,11 @@ body {
 h1 {}
 
 .head__h1 { font-size: 4rem; }
-.head__h1--parks > * { border-bottom: 5px solid color(green--d); }
-.head__h1--exhibitions > * { border-bottom: 5px solid color(purple--l); }
-.head__h1--artworks > * { border-bottom: 5px solid color(blue--l); }
-.head__h1--artists > * { border-bottom: 5px solid color(pink--l); }
-.head__h1--orgs > * { border-bottom: 5px solid color(orange--l); }
+.head__h1--parks { color: darken(color(green--d), 22%); }
+.head__h1--exhibitions { color: darken(color(purple--l), 25%); }
+.head__h1--artworks { color: darken(color(blue--l), 25%); }
+.head__h1--artists { color: darken(color(pink--l), 25%); }
+.head__h1--orgs { color: darken(color(orange--l), 25%); }
 
 h2 { color:  color(green--l); }
 

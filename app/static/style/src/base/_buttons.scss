@@ -86,42 +86,54 @@ add       - blue
 
 /* .butt--delete: Used for delete/cancel buttons */
 .butt--delete, .butt--delete a {
-  background-color: #f1a69b !important;
-  border-color: #f1a69b !important;
+  background-color: color(red--l) !important;
+  border-color: color(red--l) !important;
   color: color(grey--l);
   vertical-align: inherit;
 }
 
   .butt--delete:hover, .butt--delete a:hover {
     color: color(grey--l) !important;
-    border-color: #e76a58 !important;
-    background-color: #e76a58 !important;
+    border-color: color(red--d) !important;
+    background-color: color(red--d) !important;
   }
 
   .butt--delete:active {
-    border-color: #f1a69b !important;
+    border-color: color(red--l) !important;
     background-color: color(grey--l) !important;
-    color: #e76a58 !important;
+    color: color(red--d) !important;
+  }
+
+
+.butt--delete-secondary {
+  background: none;
+  border: none;
+  color: color(red--d) !important;
+}
+
+  .butt--delete-secondary:hover, .butt--delete-secondary a:hover {
+    border-color: color(red--d) !important;
+    background-color: color(red--d) !important;
   }
 
 
 
 /* .butt--delete-icon: Used for X icon for delete/remove buttons */
 .butt--delete-icon {
-  color: #f1a69b !important;
+  color: color(red--l) !important;
   border: none;
   background-color: transparent;
   padding: 0;
 }
 
   .butt--delete-icon:hover {
-    color: #e76a58 !important;
+    color: color(red--d) !important;
     border: none;
     background-color: transparent;
   }
 
   .butt--delete-icon:active {
-    border-color: #f1a69b !important;
+    border-color: color(red--l) !important;
     border: none;
     background-color: transparent;
   }
@@ -151,37 +163,37 @@ add       - blue
 
 /* .butt--add: Used for add buttons */
 .butt--add {
-  border-color: #a1d3ff;
-  background-color: #a1d3ff;
+  border-color: color(blue--l);
+  background-color: color(blue--l);
   color: color(grey--l);
 }
 
   .butt--add:hover {
-    border-color: #62b5ff;
-    background-color: #62b5ff;
+    border-color: color(blue--d);
+    background-color: color(blue--d);
     color: color(grey--l);
   }
 
   .butt--add:active {
-    border-color: #a1d3ff;
+    border-color: color(blue--l);
     background-color: color(grey--l);
-    color: #62b5ff;
+    color: color(blue--d);
   }
 
 
 
 /* .butt--add-icon: Used for + icon for add buttons */
 .butt--add-icon {
-  color: #a1d3ff;
+  color: color(blue--l);
   border: none;
 }
 
   .butt--add-icon:hover {
-    color: #62b5ff;
+    color: color(blue--d);
     border: none;
   }
 
   .butt--add-icon:active {
-    border-color: #a1d3ff;
+    border-color: color(blue--l);
     border: none;
   }

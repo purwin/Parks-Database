@@ -9,7 +9,7 @@
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
-		<div class="head [ row justify-content-center align-items-center ]">
+		<div class="head head--parks [ row justify-content-center align-items-center ]">
 			<div class="[ col-md-8 ]">
 				<h1 class="head__h1 head__h1--parks [ text-center display-3 ]"><b>{{ park.name|upper }}</b></h1>
 			</div>
@@ -107,7 +107,7 @@
 						</div>
 					</div>
 
-					<ul class="js-ul-child js-ul_exhibitions [ p-0 ]">
+					<ul class="js-ul-child js-ul_exhibitions [ p-0 list-unstyled ]">
 
 						{% for item in park_art %}
 
@@ -189,17 +189,17 @@
 		<div class="[ col-md-3 ]">
 			<label for="exhibitions">Exhibition</label>
 		</div>
-		<div class="[ col-md-6 ]">
+		<div class="[ col-10 col-md-6 ]">
 			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
-		<div class="[ col-md-2 ]">
+		<div class="[ col-2 ]">
 			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 		<div class="[ col-md-3 ]">
 			<label for="artworks">Artwork</label>
 		</div>
-		<div class="[ col-md-6 ]">
+		<div class="[ col-10 col-md-6 ]">
 			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>

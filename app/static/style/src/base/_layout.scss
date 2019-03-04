@@ -19,8 +19,15 @@
   padding: 1rem;
   background-color: #b8dd9b;
   min-height: 200px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
 }
 
+.head--parks { border-bottom-color: color(green--d); }
+.head--exhibitions { border-bottom-color: (color(purple--l)); }
+.head--artworks { border-bottom-color: (color(blue--l)); }
+.head--artists { border-bottom-color: (color(pink--l)); }
+.head--orgs { border-bottom-color: (color(orange--l)); }
 
 
 /*

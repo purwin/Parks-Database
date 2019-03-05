@@ -139,7 +139,7 @@ $(document).ready(function() {
 
             // Add result info to modal
             view.showModal(
-              `<h3>
+              `<h3 class="[ my-4 ]">
                 ${model.activeObject.name.toUpperCase()} IMPORT RESULTS
               </h3>
               <ul>
@@ -147,7 +147,7 @@ $(document).ready(function() {
                 <li>Records with warnings: ${resultCount.warning}</li>
                 <li>Records with errors: ${resultCount.error}</li>
               </ul>
-              <h3>EXPORT RESULTS?</h3>`
+              <h3 class="[ my-4 ]">EXPORT RESULTS?</h3>`
             );
 
             // Restore post buttons

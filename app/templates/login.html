@@ -43,29 +43,27 @@
 					<ul class="js-ul_login [ p-0 ]">
 
 						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<!-- <div class="[ col-md-3 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.username.label }}
-							</div> -->
+							</div>
 							<div class="[ col-md-6 ]">
 								{{ form.username(class="form-control", placeholder=form.username.label.text) }}
 							</div>
 						</li>
 
 						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<!-- <div class="[ col-md-3 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.password.label }}
-							</div> -->
+							</div>
 							<div class="[ col-md-6 ]">
 								{{ form.password(class="form-control", placeholder=form.password.label.text) }}
 							</div>
 						</li>
 
 						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<div class="[ col-1 offset-md-1 ]">
-								{{ form.remember(class="[ form-control ]") }}
-							</div>
-							<div class="[ col-11 col-md-6 ]">
-								{{ form.remember.label }}
+							<div class="[ col-md-6 offset-md-3 form-check ]">
+								{{ form.remember(class="[ align-middle ]") }}
+								{{ form.remember.label(class="[ form-check-label h6 ]") }}
 							</div>
 						</li>
 

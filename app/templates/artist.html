@@ -27,8 +27,8 @@
 			{% if current_user.is_authenticated %}
 				<div class="[ row justify-content-center ]">
 					<div class="[ col-md-8 text-right py-5 ]">
+						<a href="{{ url_for('artist_delete', id=artist.id) }}" class="butt butt--text [ btn btn-sm ]" role="button">Delete</a>
 						<button id="js-edit_artist" class="js-form-edit butt butt--edit" type="button">Edit</button>
-						<a href="{{ url_for('artist_delete', id=artist.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 					</div>
 				</div>
 			{% endif %}
@@ -228,7 +228,7 @@
 				<section id="section--submit">
 					<div class="[ row justify-content-center d-none py-5 ]">
 						<div class="[ col-md-8 text-right py-4 ]">
-							<button id="js-cancel_artist" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+							<button id="js-cancel_artist" class="butt butt--text js-cancel-form" type="button">Cancel</button>
 							<button id="js-post_artist" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 						</div>
 					</div>

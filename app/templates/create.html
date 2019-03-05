@@ -13,23 +13,29 @@
 
 		<div class="head [ row justify-content-center align-items-center ]">
 			<div class="[ col-md-8 ]">
-				<h1 class="[ display-3 text-center ]">
-					<label for="create_object">New</label>&#x2009;
-					<select id="js-create_object" class="select--create [ display-4 ]" name="create_object">
-						<option value="" disabled selected></option>
-						<option value="exhibition">Exhibition</option>
-						<option value="artwork">Artwork</option>
-						<option value="artist">Artist</option>
-						<option value="park">Park</option>
-						<option value="org">Organization</option>
-					</select>
-				</h1>
+				<h1 class="[ text-center display-3 ]">CREATE DATA</h1>
 			</div>
 		</div>
 
 	</section>
 
 	{% include "include/user.html" %}
+
+	<div class="[ row justify-content-center py-3 ]">
+		<div class="[ col-md-8 ]">
+			<h1 class="[ display-3 text-center ]">
+				New&#x2009;
+				<select id="js-create_object" class="select--create [ display-4 ]" name="create_object">
+					<option value="" disabled selected></option>
+					<option value="exhibition">Exhibition</option>
+					<option value="artwork">Artwork</option>
+					<option value="artist">Artist</option>
+					<option value="park">Park</option>
+					<option value="org">Organization</option>
+				</select>
+			</h1>
+		</div>
+	</div>
 
 	<div class="[ row justify-content-center ]">
 		<div class="[ col-md-8 ]">

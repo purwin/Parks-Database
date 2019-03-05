@@ -17,7 +17,7 @@
 
 .head { 
   padding: 1rem;
-  background-color: #b8dd9b;
+  background-color: color(green--l);
   min-height: 200px;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
@@ -63,7 +63,7 @@
     }
 
       .site-nav__link a {
-        color: #58595b;
+        color: color(grey--d);
         text-decoration: none;
         border-bottom: none;
         padding: .25rem 1rem;

@@ -48,6 +48,21 @@ add       - blue
   }
 
 
+.butt--text {
+  background: none;
+  border: none;
+  color: color(grey) !important;
+  padding: 0;
+  margin: .25rem 2.25rem;
+}
+
+  .butt--text:hover, .butt--text a:hover {
+    color: color(grey--d) !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
+  }
+
+
 /* .butt--right: Rounded corners on right side only */
 .butt--right {
   border-top-left-radius: 0;

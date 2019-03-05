@@ -157,21 +157,21 @@ add       - blue
 
 /* .butt--edit: Used for edit buttons */
 .butt--edit {
-  border-color: #ffe491 !important;
-  background-color: #ffe491 !important;
+  border-color: color(orange--l) !important;
+  background-color: color(orange--l) !important;
   color: color(grey--l) !important;
 }
 
   .butt--edit:hover {
-    border-color: #ffd248 !important;
-    background-color: #ffd248 !important;
+    border-color: color(orange--d) !important;
+    background-color: color(orange--d) !important;
     color: color(grey--l) !important;
   }
 
   .butt--edit:active {
-    border-color: #ffe491 !important;
+    border-color: color(orange--l) !important;
     background-color: color(grey--l) !important;
-    color: #ffd248 !important;
+    color: color(orange--d) !important;
   }
 
 

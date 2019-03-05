@@ -65,6 +65,7 @@ today = datetime.utcnow().strftime('%Y-%m-%d')
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
+@login_required
 def home():
   exhibitions = Exhibition.query.all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
@@ -181,6 +182,7 @@ def import_file():
 
 
 @app.route('/import/data', methods=['GET', 'POST'])
+@login_required
 def import_data():
   pass
   form = Form_import_data()
@@ -235,6 +237,7 @@ def export_data():
 
 
 @app.route('/exhibitions')
+@login_required
 def exhibitions():
   exhibitions = Exhibition.query.all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
@@ -258,6 +261,7 @@ def exhibitions():
 
 
 @app.route('/exhibitions/<int:id>')
+@login_required
 def exhibition(id):
   exhibition = Exhibition.query.filter_by(id = id).first_or_404()
   artworks = Artwork.query.all()
@@ -536,6 +540,7 @@ def exhibition_delete(id):
 
 
 @app.route('/parks')
+@login_required
 def parks():
   parks = Park.query.all()
   active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
@@ -552,6 +557,7 @@ def parks():
 
 
 @app.route('/parks/<int:id>')
+@login_required
 def park(id):
   park = Park.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
@@ -684,6 +690,7 @@ def park_delete(id):
 
 
 @app.route('/artists')
+@login_required
 def artists():
   artists = Artist.query.all()
   form = Form_search()
@@ -692,6 +699,7 @@ def artists():
 
 
 @app.route('/artists/<int:id>')
+@login_required
 def artist(id):
   artist = Artist.query.filter_by(id = id).first_or_404()
   artworks = Artwork.query.all()
@@ -814,6 +822,7 @@ def artist_delete(id):
 
 
 @app.route('/artworks')
+@login_required
 def artworks():
   artworks = Artwork.query.all()
   active_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
@@ -831,6 +840,7 @@ def artworks():
 
 
 @app.route('/artworks/<int:id>')
+@login_required
 def artwork(id):
   artwork = Artwork.query.filter_by(id=id).first_or_404()
   artists = Artist.query.all()
@@ -995,6 +1005,7 @@ def artwork_delete(id):
 
 
 @app.route('/orgs')
+@login_required
 def orgs():
   orgs = Org.query.all()
   form = Form_search()
@@ -1003,6 +1014,7 @@ def orgs():
 
 
 @app.route('/orgs/<int:id>')
+@login_required
 def org(id):
   org = Org.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
@@ -1113,6 +1125,7 @@ def org_delete(id):
 
 
 @app.route('/search', methods=['POST'])
+@login_required
 def search():
   form = Form_search()
   if form.validate_on_submit():

@@ -26,8 +26,8 @@
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 text-right py-5 ]">
+					<a href="{{ url_for('exhibition_delete', id=exhibition.id) }}" class="butt butt--text [ btn btn-sm ]" role="button">Delete</a>
 					<button id="js-edit_exhibition" class="js-form-edit butt butt--edit" type="button">Edit</button>
-					<a href="{{ url_for('exhibition_delete', id=exhibition.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
 			</div>
 		{% endif %}
@@ -39,39 +39,39 @@
 
 					<ul class="[ list-unstyled p-0 ]">
 
-						<li class="[ row mb-3 align-items-baseline d-none ]">
+						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.name.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.name(class="form-control-plaintext", value=exhibition.name) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.name(class="form-control-plaintext", value=exhibition.name) }}</div>
 						</li>
 
-						<li class="is-active [ row mb-3 align-items-baseline ]">
+						<li class="is-active [ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]"><label>Exhibition Dates</label></div>
-							<div class="[ col-md-6 ]">{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</div>
+							<div class="[ col-lg-7 ]">{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline d-none ]">
+						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.start_date.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.start_date(class="form-control-plaintext", value=exhibition.start_date, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.start_date(class="form-control-plaintext", value=exhibition.start_date, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline d-none ]">
+						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.end_date.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.end_date(class="form-control-plaintext", value=exhibition.end_date, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.end_date(class="form-control-plaintext", value=exhibition.end_date, readonly=true) }}</div>
 						</li>
 
-						<li class="is-active [ row mb-3 align-items-baseline ]">
+						<li class="is-active [ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-md-6 ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
+							<div class="[ col-lg-7 ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline d-none ]">
+						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.opening(class="form-control-plaintext", value=exhibition.opening, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.opening(class="form-control-plaintext", value=exhibition.opening, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline ]">
+						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.comments.label }}</div>
-							<div class="[ col-md-6 ]">
+							<div class="[ col-lg-7 ]">
 								<p class="is-active [ m-0 ]">{{ exhibition.comments }}</p>
 								{{ form.comments(class="form-control-plaintext d-none", value=exhibition.comments, readonly=true) }}
 							</div>
@@ -92,11 +92,11 @@
 					<ul class="[ list-unstyled p-0 ]">
 						{% for park in exhibition.parks %}
 
-							<li class="js-li_park [ row mb-3 align-items-baseline ]">
+							<li class="js-li_park [ row mb-4 align-items-baseline ]">
 								<div class="[ col-md-3 ]">
 									<label for="artworks">Park</label>
 								</div>
-								<div class="[ col-10 col-md-6 ]">
+								<div class="[ col-lg-7 ]">
 									<a href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a>
 								</div>
 							</li>
@@ -119,25 +119,25 @@
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Organizations</h2>
 
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-12 text-right py-4 ]">
-							<button id="js-add_org" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+					<div class="[ row justify-content-center d-none ]">
+						<div class="[ col-12 text-right pb-4 ]">
+							<button id="js-add_org" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
 					<ul class="[ list-unstyled p-0 ]">
 						{% for org in exhibition.organizations %}
 
-						<li class="js-li_org [ row mb-3 align-items-baseline ]">
+						<li class="js-li_org [ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">
 								<label for="artworks">Organization</label>
 							</div>
-								<div class="[ col-10 col-md-6 ]">
+								<div class="[ col-10 col-md-8 col-lg-6 ]">
 									<a href="{{ url_for('org', id=org.id) }}" class="is-active">{{ org.name }}</a>
 									<input id="js-datalist_org-{{ loop.index }}" type="text" name="orgs-{{ loop.index }}" list="orgs" data-value="{{ org.id }}" value="{{ org.name }}" class="js-datalist-child js-datalist_org [ form-control-plaintext d-none ]">
 									{{ datalist("orgs", orgs) }}
 								</div>
-								<div class="[ col-2 ]">
+								<div class="[ col-2 col-md-1 ]">
 									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
 							</li>
@@ -160,32 +160,32 @@
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Artworks</h2>
 
-					<div class="[ row justify-content-center ]">
-						<div class="[ col-12 text-right py-4 ]">
-							<button id="js-add_artwork" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+					<div class="[ row justify-content-center d-none ]">
+						<div class="[ col-12 text-right pb-4 ]">
+							<button id="js-add_artwork" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
 					<ul class="[ list-unstyled p-0 ]">
 						{% for item in exhib %}
 
-							<li class="js-li_artwork [ row mb-3 align-items-baseline ]">
+							<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
 								<div class="[ col-md-3 ]">
 									<label for="artworks">Artwork</label>
 								</div>
-								<div class="[ col-10 col-md-6 mb-1 ]">
+								<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
 									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
 									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]">
 									{{ datalist("artworks", artworks) }}
 								</div>
-								<div class="[ col-2 ]">
+								<div class="[ col-2 col-md-1 ]">
 									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
 
 								<div class="[ col-md-3 ]">
 									<label for="artworks">Park</label>
 								</div>
-								<div class="[ col-10 col-md-6 ]">
+								<div class="[ col-10 col-md-8 col-lg-6 ]">
 									<a href="{{ url_for('park', id=item.nycpark.id) }}" class="is-active">{{ item.nycpark.name }}</a>
 									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ item.nycpark.id }}" value="{{ item.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park [ form-control-plaintext d-none ]">
 									{{ datalist("parks", parks) }}
@@ -212,104 +212,104 @@
 
 					<ul class="[ list-unstyled p-0 ]">
 
-						<li class="is-active [ row mb-3 ]">
+						<li class="is-active [ row mb-4 ]">
 							<div class="[ col-md-3 ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
-							<div class="[ col-md-6 ]">{{ exhibition.install_start|date_format }}{% if exhibition.install_end %}–{{ exhibition.install_end|date_format }}{% endif %}</div>
+							<div class="[ col-lg-7 ]">{{ exhibition.install_start|date_format }}{% if exhibition.install_end %}–{{ exhibition.install_end|date_format }}{% endif %}</div>
 						</li>
 
-						<li class="[ row mb-3 d-none ]">
+						<li class="[ row mb-4 d-none ]">
 							<div class="[ col-md-3 ]">{{ form.install_start.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.install_start(class="form-control-plaintext", value=exhibition.install_start, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.install_start(class="form-control-plaintext", value=exhibition.install_start, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 d-none ]">
+						<li class="[ row mb-4 d-none ]">
 							<div class="[ col-md-3 ]">{{ form.install_end.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.install_end(class="form-control-plaintext", value=exhibition.install_end, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.install_end(class="form-control-plaintext", value=exhibition.install_end, readonly=true) }}</div>
 						</li>
 
-<!-- 						<li class="[ row mb-3 ]">
+<!-- 						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.prm.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.prm(class="form-control-plaintext", value=exhibition.prm, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.prm(class="form-control-plaintext", value=exhibition.prm, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.approval.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.approval(class="form-control-plaintext", value=exhibition.approval, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.approval(class="form-control-plaintext", value=exhibition.approval, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.walkthrough.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.walkthrough(class="form-control-plaintext", value=exhibition.walkthrough, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.walkthrough(class="form-control-plaintext", value=exhibition.walkthrough, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.cb_presentation.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.cb_presentation(class="form-control-plaintext", value=exhibition.cb_presentation, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.cb_presentation(class="form-control-plaintext", value=exhibition.cb_presentation, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.license_mailed.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.license_mailed(class="form-control-plaintext", value=exhibition.license_mailed, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.license_mailed(class="form-control-plaintext", value=exhibition.license_mailed, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.license_signed.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.license_signed(class="form-control-plaintext", value=exhibition.license_signed, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.license_signed(class="form-control-plaintext", value=exhibition.license_signed, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.license_borough.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.license_borough(class="form-control-plaintext", value=exhibition.license_borough, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.license_borough(class="form-control-plaintext", value=exhibition.license_borough, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.bond.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.bond(class="form-control-plaintext", value=exhibition.bond, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.bond(class="form-control-plaintext", value=exhibition.bond, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.coi.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.coi(class="form-control-plaintext", value=exhibition.coi, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.coi(class="form-control-plaintext", value=exhibition.coi, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.coi_renewal.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.coi_renewal.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.signage_submit.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.signage_submit(class="form-control-plaintext", value=exhibition.signage_submit, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.signage_submit(class="form-control-plaintext", value=exhibition.signage_submit, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.signage_received.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.signage_received(class="form-control-plaintext", value=exhibition.signage_received, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.signage_received(class="form-control-plaintext", value=exhibition.signage_received, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.press_draft.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.press_draft(class="form-control-plaintext", value=exhibition.press_draft, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.press_draft(class="form-control-plaintext", value=exhibition.press_draft, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.press_approved.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.press_approved(class="form-control-plaintext", value=exhibition.press_approved, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.press_approved(class="form-control-plaintext", value=exhibition.press_approved, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.web_text.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.web_text(class="form-control-plaintext", value=exhibition.web_text, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.web_text(class="form-control-plaintext", value=exhibition.web_text, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-3 ]">{{ form.work_images.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.work_images(class="form-control-plaintext", value=exhibition.work_images, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.work_images(class="form-control-plaintext", value=exhibition.work_images, readonly=true) }}</div>
 						</li> -->
 
 					</ul>
@@ -325,29 +325,29 @@
 
 					<ul class="[ list-unstyled p-0 ]">
 
-						<li class="is-active [ row mb-3 align-items-baseline ]">
+						<li class="is-active [ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
-							<div class="[ col-md-6 ]">{{ exhibition.deinstall_date|date_format }}</div>
+							<div class="[ col-lg-7 ]">{{ exhibition.deinstall_date|date_format }}</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline d-none ]">
+						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.deinstall_date(class="form-control-plaintext", value=exhibition.deinstall_date, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.deinstall_date(class="form-control-plaintext", value=exhibition.deinstall_date, readonly=true) }}</div>
 						</li>
 
-<!-- 						<li class="[ row mb-3 ]">
+<!-- 						<li class="[ row mb-4 ]">
 							<div class="[ col-md-4 ]">{{ form.deinstall_check.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.deinstall_check(class="form-control-plaintext", value=exhibition.deinstall_check, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.deinstall_check(class="form-control-plaintext", value=exhibition.deinstall_check, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-4 ]">{{ form.bond_return.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.bond_return(class="form-control-plaintext", value=exhibition.bond_return, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.bond_return(class="form-control-plaintext", value=exhibition.bond_return, readonly=true) }}</div>
 						</li>
 
-						<li class="[ row mb-3 ]">
+						<li class="[ row mb-4 ]">
 							<div class="[ col-md-4 ]">{{ form.press_clippings.label }}</div>
-							<div class="[ col-md-6 ]">{{ form.press_clippings(class="form-control-plaintext", value=exhibition.press_clippings, readonly=true) }}</div>
+							<div class="[ col-lg-7 ]">{{ form.press_clippings(class="form-control-plaintext", value=exhibition.press_clippings, readonly=true) }}</div>
 						</li> -->
 
 					</ul>
@@ -361,7 +361,7 @@
 			<section id="section--submit">
 				<div class="[ row justify-content-center d-none py-4 ]">
 					<div class="[ col-md-8 text-right py-4 ]">
-						<button id="js-cancel_exhibition" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+						<button id="js-cancel_exhibition" class="butt butt--text js-cancel-form" type="button">Cancel</button>
 						<button id="js-post_exhibition" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 					</div>
 				</div>
@@ -379,11 +379,11 @@
 		<div class="[ col-md-3 ]">
 			<label for="artworks">Artwork</label>
 		</div>
-		<div class="[ col-10 col-md-6 mb-1 ]">
+		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
 			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
-		<div class="[ col-2 ]">
+		<div class="[ col-2 col-md-1 ]">
 			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 		<div class="[ col-md-3 ]">
@@ -399,15 +399,15 @@
 
 <!-- Empty org template -->
 <script id="js-template_org" type="text/template">
-	<li class="js-li_org [ row mb-3 align-items-baseline ]">
+	<li class="js-li_org [ row mb-4 align-items-baseline ]">
 		<div class="[ col-md-3 ]">
 			<label for="artworks">Organization</label>
 		</div>
-		<div class="[ col-10 col-md-6 ]">
+		<div class="[ col-10 col-md-8 col-lg-6 ]">
 			<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="js-datalist-child js-datalist_org [ form-control ]">
 			{{ datalist("orgs", orgs) }}
 		</div>
-		<div class="[ col-2 ]">
+		<div class="[ col-2 col-md-1 ]">
 			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>

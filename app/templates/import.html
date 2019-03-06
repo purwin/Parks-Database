@@ -49,7 +49,7 @@
 						</div>
 
 						<div class="[ col-md-8 py-4 text-right ]">
-							<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+							<a id="js-cancel_file" class="butt butt--text js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 							<button id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]">Import File</button>
 						</div>
 
@@ -80,7 +80,7 @@
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
 									<div class="[ form-check col-7 text-left ]">
 										{{ form_data.match_existing(class="form-check-input") }}
-										{{ form_data.match_existing.label(class="form-check-label") }}
+										{{ form_data.match_existing.label(class="form-check-label h6") }}
 									</div>
 								</li>
 
@@ -93,7 +93,7 @@
 						</div>
 
 						<div class="[ col-md-8 py-4 text-right ]">
-							<a id="js-cancel_data" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+							<a id="js-cancel_data" class="butt butt--text js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 							<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">
 								<span id="js-post_loading" class="[ d-none ]">
 									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -128,7 +128,7 @@
 
 				</div>
 				<div class="[ modal-footer ]">
-					<button id="js-modal-cancel_export" class="js-cancel-modal butt butt--delete" type="button" data-dismiss="modal">No Thanks</button>
+					<button id="js-modal-cancel_export" class="js-cancel-modal butt butt--text" type="button" data-dismiss="modal">No Thanks</button>
 					<button id="js-modal-post_export" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Export!</button>
 				</div>
 			</form>

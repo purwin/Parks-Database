@@ -27,8 +27,8 @@
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 text-right py-5 ]">
+					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--text [ btn btn-sm ]" role="button">Delete</a>
 					<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
-					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--delete [ btn btn-sm ]" role="button">Delete</a>
 				</div>
 			</div>
 		{% endif %}
@@ -42,49 +42,49 @@
 
 					<ul class="js-ul_park [ p-0 ]">
 
-						<li class="[ row mb-3 d-none align-items-baseline ]">
+						<li class="[ row mb-4 d-none align-items-baseline ]">
 							<div class="[ col-md-3 ]">
 								{{ form.name.label }}
 							</div>
-							<div class="[ col ]">
+							<div class="[ col-lg-7 ]">
 								{{ form.name(class="form-control-plaintext", value=park.name) }}
 							</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline ]">
+						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">
 								{{ form.park_id.label }}
 							</div>
-							<div class="[ col ]">
+							<div class="[ col-lg-7 ]">
 								{{ form.park_id(class="form-control-plaintext", value=park.park_id, readonly=true) }}
 							</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline ]">
+						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">
 								{{ form.borough.label }}
 							</div>
-							<div class="[ col ]">
+							<div class="[ col-lg-7 ]">
 								<p class="is-active [ m-0 ]">{{ park.borough }}</p>
 								{{ form.borough(class="form-control-plaintext d-none", readonly=true) }}
 							</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline ]">
+						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">
 								{{ form.address.label }}
 							</div>
-							<div class="[ col ]">
+							<div class="[ col-lg-7 ]">
 								<p class="is-active [ m-0 ]"><a href="https://www.google.com/maps/place/{{ park.address }}" target="_blank">{{ park.address }}</a></p>
 								{{ form.address(class="form-control-plaintext d-none", value=park.address, readonly=true) }}
 							</div>
 						</li>
 
-						<li class="[ row mb-3 align-items-baseline ]">
+						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">
 								{{ form.cb.label }}
 							</div>
-							<div class="[ col ]">
+							<div class="[ col-lg-7 ]">
 								{{ form.cb(class="form-control-plaintext", value=park.cb, readonly=true) }}
 							</div>
 						</li>
@@ -101,9 +101,9 @@
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
 
-					<div class="[ row justify-content-center ]">
+					<div class="[ row justify-content-center d-none ]">
 						<div class="[ col-12 text-right pb-4 ]">
-							<button id="js-add_exhibition" class="js-add-li butt butt--add [ d-none ml-2 ]" type="button">Add</button>
+							<button id="js-add_exhibition" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 						</div>
 					</div>
 
@@ -111,22 +111,22 @@
 
 						{% for item in park_art %}
 
-							<li class="js-li_exhibition [ row mb-3 align-items-baseline ]">
+							<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
 								<div class="[ col-md-3 ]">
 									<label for="exhibitions">Exhibition</label>
 								</div>
-								<div class="[ col-10 col-md-6 mb-1 ]">
+								<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
 									<a href="{{ url_for('exhibition', id=item.exhib.id) }}" class="is-active">{{ item.exhib.name }}</a>
 									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
-								<div class="[ col-2 align-items-baseline ]">
+								<div class="[ col-2 col-md-1 align-items-baseline ]">
 									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
 								</div>
 								<div class="[ col-md-3 ]">
 									<label for="parks">Artwork</label>
 								</div>
-								<div class="[ col-10 col-md-6 ]">
+								<div class="[ col-10 col-md-8 col-lg-6 ]">
 									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
 									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("artworks", artworks) }}
@@ -150,7 +150,7 @@
 			<section id="section--submit">
 				<div class="[ row justify-content-center d-none py-5 ]">
 					<div class="[ col-md-8 text-right py-4 ]">
-						<button id="js-cancel_park" class="butt butt--delete js-cancel-form" type="button">Cancel</button>
+						<button id="js-cancel_park" class="butt butt--text js-cancel-form" type="button">Cancel</button>
 						<button id="js-post_park" class="butt butt--add js-update-form [ ml-2 ]" value="Create" type="button">Update</button>
 					</div>
 				</div>
@@ -165,18 +165,18 @@
 <!-- Empty artwork template -->
 <script id="js-template_artwork" type="text/template">
 	<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
-		<div class="[ col-10 col-md-8 mb-1 ]">
+		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
 			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
-		<div class="[ col-2 col-md-3 align-items-baseline ]">
+		<div class="[ col-2 col-md-1 align-items-baseline ]">
 			<span class="[ px-2 ]">@</span>
 		</div>
-		<div class="[ col-10 col-md-8 ]">
+		<div class="[ col-10 col-md-8 col-lg-6 ]">
 			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
-		<div class="[ col-2 ]">
+		<div class="[ col-2 col-md-1 ]">
 			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 	</li>
@@ -185,21 +185,21 @@
 
 <!-- Empty exhibition template -->
 <script id="js-template_exhibition" type="text/template">
-	<li class="js-li_exhibition [ row mb-3 align-items-baseline ]">
+	<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
 		<div class="[ col-md-3 ]">
 			<label for="exhibitions">Exhibition</label>
 		</div>
-		<div class="[ col-10 col-md-6 ]">
+		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
 			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
-		<div class="[ col-2 ]">
+		<div class="[ col-2 col-md-1 ]">
 			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
 		</div>
 		<div class="[ col-md-3 ]">
 			<label for="artworks">Artwork</label>
 		</div>
-		<div class="[ col-10 col-md-6 ]">
+		<div class="[ col-10 col-md-8 col-lg-6 ]">
 			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>

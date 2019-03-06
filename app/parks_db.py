@@ -182,11 +182,11 @@ class Exh_art_park(db.Model):
 
 class Artist(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  pName = db.Column(db.String(40))
-  fName = db.Column(db.String(40))
-  email = db.Column(db.String(80))
-  phone = db.Column(db.String(12))
-  website = db.Column(db.String(80))
+  pName = db.Column(db.String(40), default='')
+  fName = db.Column(db.String(40), default='')
+  email = db.Column(db.String(80), default='')
+  phone = db.Column(db.String(12), default='')
+  website = db.Column(db.String(80), default='')
 
   @hybrid_property
   def name(self):

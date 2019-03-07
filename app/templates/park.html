@@ -56,7 +56,7 @@
 								{{ form.park_id.label }}
 							</div>
 							<div class="[ col-lg-7 ]">
-								{{ form.park_id(class="form-control-plaintext", value=park.park_id, readonly=true) }}
+								{{ form.park_id(class="form-control-plaintext", value=park.park_id, readonly=true, disabled=true) }}
 							</div>
 						</li>
 
@@ -66,7 +66,7 @@
 							</div>
 							<div class="[ col-lg-7 ]">
 								<p class="is-active [ m-0 ]">{{ park.borough }}</p>
-								{{ form.borough(class="form-control-plaintext d-none", readonly=true) }}
+								{{ form.borough(class="form-control-plaintext d-none", readonly=true, disabled=true) }}
 							</div>
 						</li>
 
@@ -85,7 +85,7 @@
 								{{ form.cb.label }}
 							</div>
 							<div class="[ col-lg-7 ]">
-								{{ form.cb(class="form-control-plaintext", value=park.cb, readonly=true) }}
+								{{ form.cb(class="form-control-plaintext", value=park.cb, readonly=true, disabled=true) }}
 							</div>
 						</li>
 

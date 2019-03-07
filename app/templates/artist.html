@@ -73,8 +73,7 @@
 									{{ form.phone.label }}
 								</div>
 								<div class="[ col-lg-7 ]">
-									{% if artist.phone %}<p class="is-active [ m-0 ]">{{ artist.phone }}</p>{% endif %}
-									{{ form.phone(class="form-control-plaintext d-none", value=artist.phone,) }}
+									{{ form.phone(class="form-control-plaintext", value=artist.phone, readonly=true, disabled=true) }}
 								</div>
 							</li>
 

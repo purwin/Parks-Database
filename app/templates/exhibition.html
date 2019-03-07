@@ -59,21 +59,17 @@
 							<div class="[ col-lg-7 ]">{{ form.end_date(class="form-control-plaintext", value=exhibition.end_date, readonly=true) }}</div>
 						</li>
 
-						<li class="is-active [ row mb-4 align-items-baseline ]">
+						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-lg-7 ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
-						</li>
-
-						<li class="[ row mb-4 align-items-baseline d-none ]">
-							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="[ col-lg-7 ]">{{ form.opening(class="form-control-plaintext", value=exhibition.opening, readonly=true) }}</div>
+							<div class="is-active [ col-lg-7 ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
+							<div class="[ col-lg-7 d-none ]">{{ form.opening(class="form-control-plaintext", value=exhibition.opening, readonly=true) }}</div>
 						</li>
 
 						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.comments.label }}</div>
 							<div class="[ col-lg-7 ]">
 								<p class="is-active [ m-0 ]">{{ exhibition.comments }}</p>
-								{{ form.comments(class="form-control-plaintext d-none", value=exhibition.comments, readonly=true) }}
+								{{ form.comments(class="form-control-plaintext d-none", value=exhibition.comments, readonly=true, disabled=true) }}
 							</div>
 						</li>
 

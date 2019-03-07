@@ -75,7 +75,7 @@
 								{{ form.address.label }}
 							</div>
 							<div class="[ col-lg-7 ]">
-								<p class="is-active [ m-0 ]"><a href="https://www.google.com/maps/place/{{ park.address }}" target="_blank">{{ park.address }}</a></p>
+								<p class="is-active [ m-0 ]"><a href="https://www.google.com/maps/search/{{ park.address }}" target="_blank">{{ park.address }}</a></p>
 								{{ form.address(class="form-control-plaintext d-none", value=park.address, readonly=true) }}
 							</div>
 						</li>

@@ -83,12 +83,15 @@ def add_park(match=True, **params):
       db.session.flush()
       exhibitions = filter(None, params.get('exhibitions', None))
       # If park.exhibitions is string, convert to list
-      exhibitions = [exhibitions] if isinstance(exhibitions, str)\
-                                  else exhibitions
+      exhibitions = [exhibitions] if\
+          (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
+          else exhibitions
 
       artworks = filter(None, params.get('artworks', None))
       # If park.artworks is string, convert to list
-      artworks = [artworks] if isinstance(artworks, str) else artworks
+      artworks = [artworks] if\
+          (isinstance(artworks, str) or isinstance(artworks, unicode))\
+          else artworks
 
       if len(exhibitions) != len(artworks):
         warnings += 'There’s an uneven number of exhibitions and artworks in '\

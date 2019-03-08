@@ -49,12 +49,12 @@ def add_artwork(match=True, **params):
   elif match == True:
     artwork = Artwork.query.filter_by(name=name).first()
 
-  result = 'Found {} in the database. Updated artwork with new data.'\
+  result = u'Found {} in the database. Updated artwork with new data.'\
            .format(name)
 
   if not artwork:
     artwork = Artwork()
-    result = 'Added new artwork: {}.'.format(name)
+    result = u'Added new artwork: {}.'.format(name)
 
   # Define warnings string to return
   warnings = ""
@@ -64,7 +64,7 @@ def add_artwork(match=True, **params):
     for key, value in params.iteritems():
       # Check for bad keys, skip and add to warning list
       if key not in artwork_params:
-        warnings += 'Unexpected {} attribute found. Skipping "{}" addition.\n'\
+        warnings += u'Unexpected {} attribute found. Skipping "{}" addition.\n'\
                     .format(key, value)
       # Add non-list key items to exhibition object
       elif key not in ['exh_art_park', 'artists', 'exhibitions', 'parks']:
@@ -76,7 +76,9 @@ def add_artwork(match=True, **params):
     if 'artists' in params:
       artists = params.get('artists', None)
       # If artwork.artists is string, convert to list
-      artists = [artists] if isinstance(artists, str) else artists
+      artists = [artists] if\
+          (isinstance(artists, str) or isinstance(artists, unicode))\
+          else artists
 
       # Loop through list values if they exist, add to artwork
       for artist in artists or []:
@@ -84,7 +86,7 @@ def add_artwork(match=True, **params):
 
         if person['success'] == True:
           if person['artist'] not in artwork.artists:
-            print 'Adding {} artist to {}'.format(person['data']['name'], artwork.name)
+            print u'Adding {} artist to {}'.format(person['data']['name'], artwork.name)
             artwork.artists.append(person['artist'])
         else:
           warnings += person['result']
@@ -96,15 +98,18 @@ def add_artwork(match=True, **params):
 
       exhibitions = filter(None, params.get('exhibitions', None))
     #   # If artwork.exhibitions is string, convert to list
-      exhibitions = [exhibitions] if isinstance(exhibitions, str)\
-                                  else exhibitions
+      exhibitions = [exhibitions] if\
+          (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
+          else exhibitions
 
       parks = filter(None, params.get('parks', None))
     #   # If artwork.parks is string, convert to list
-      parks = [parks] if isinstance(parks, str) else parks
+      parks = [parks] if\
+          (isinstance(parks, str) or isinstance(parks, unicode))\
+          else parks
 
       if len(exhibitions) != len(parks):
-        warnings += 'There’s an uneven number of exhibitions and parks in '\
+        warnings += u'There’s an uneven number of exhibitions and parks in '\
                     '{}. Skipping addition.\n'.format(name)
       else:
         for exhibition, park in zip(exhibitions, parks):
@@ -120,15 +125,15 @@ def add_artwork(match=True, **params):
                  artwork_id=artwork.id)
 
           if exh_art_park['success'] == True:
-            result += "\nAdded {} @ {} to the {} exhibition"\
+            result += u"\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition, park, artwork.name)
           else:
-            warnings += "\n{}".format(exh_art_park['result'])
+            warnings += u"\n{}".format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
 
-    print "Add_artwork: {}".format(result)
+    print u"Add_artwork: {}".format(result)
 
     return {
       "success": True,
@@ -142,7 +147,7 @@ def add_artwork(match=True, **params):
     db.session.rollback()
     return {
       "success": False,
-      "result": "{}: {}".format(name, e),
+      "result": u"{}: {}".format(name, e),
       "warning": warnings,
       "data": params
     }

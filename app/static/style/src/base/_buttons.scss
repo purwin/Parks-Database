@@ -25,10 +25,7 @@ add       - blue
   font-size: 1rem;
   padding: .25rem 2.25rem;
   transition: .15s;
-  /* @include butts(grey--l, grey, grey) */
-  border-color: color(grey);
-  background-color: color(grey);
-  color: color(grey--l);
+  @include butts(grey--l, grey, grey)
 
   a {
     color: inherit;
@@ -36,34 +33,24 @@ add       - blue
   }
 
   &:hover {
-    /* @include butts(grey--l, grey--d, grey--d) */
-    color: color(grey--l);
-    border-color: color(grey--d);
-    background-color: color(grey--d);
+    @include butts(grey--l, grey--d, grey--d)
   }
 
   &:active {
-    /* @include butts(grey--l, grey--d, grey) */
-    border-color: color(grey) !important;
-    background-color: color(grey--l) !important;
-    color: color(grey--d) !important;
+    @include butts(grey--l, grey--d, grey)
   }
 }
 
 
 .butt--text, .butt--text a {
-  /* @include butts(grey, transparent, transparent) */
+  @include butts(grey, transparent, transparent)
   background: none;
   border: none;
-  color: color(grey) !important;
   padding: 0;
   margin: .25rem 2.25rem;
 
   &:hover {
-    /* @include butts(grey--d, transparent, transparent) */
-    color: color(grey--d) !important;
-    border-color: transparent !important;
-    background-color: transparent !important;
+    @include butts(grey--d, transparent, transparent)
   }
 }
 
@@ -84,23 +71,14 @@ add       - blue
 
 /* .butt--create: Used for submit/create buttons */
 .butt--create {
-  /* @include butts(grey--l, green--l, green--l) */
-  background-color: color(green--l) !important;
-  border-color: color(green--l) !important;
-  color: color(grey--l) !important;
+  @include butts(grey--l, green--l, green--l)
 
   &:hover {
-    /* @include butts(grey--l, green--d, green--d) */
-    color: color(grey--l) !important;
-    border-color: color(green--d) !important;
-    background-color: color(green--d) !important;
+    @include butts(grey--l, green--d, green--d)
   }
 
   &:active {
-    /* @include butts(green--d, grey--l, green--l) */
-    border-color: color(green--l) !important;
-    background-color: color(grey--l) !important;
-    color: color(green--d) !important;
+    @include butts(green--d, grey--l, green--l)
   }
 }
 
@@ -108,24 +86,15 @@ add       - blue
 
 /* .butt--delete: Used for delete/cancel buttons */
 .butt--delete, .butt--delete a {
-  /* @include butts(grey--l, red--l, red--l) */
-  background-color: color(red--l) !important;
-  border-color: color(red--l) !important;
-  color: color(grey--l);
+  @include butts(grey--l, red--l, red--l)
   vertical-align: inherit;
 
   &:hover {
-    /* @include butts(grey--l, red--d, red--d) */
-    color: color(grey--l) !important;
-    border-color: color(red--d) !important;
-    background-color: color(red--d) !important;
+    @include butts(grey--l, red--d, red--d)
   }
 
   &:active {
-    /* @include butts(red--d, grey--l, red--l) */
-    border-color: color(red--l) !important;
-    background-color: color(grey--l) !important;
-    color: color(red--d) !important;
+    @include butts(red--d, grey--l, red--l)
   }
 }
 
@@ -133,24 +102,18 @@ add       - blue
 
 /* .butt--delete-icon: Used for X icon for delete/remove buttons */
 .butt--delete-icon {
-    /* @include butts(red--l, transparent, transparent) */
-  color: color(red--l) !important;
+    @include butts(red--l, transparent, transparent)
   border: none;
-  background-color: transparent;
   padding: 0;
 
   &:hover {
-    /* @include butts(red--d, transparent, transparent) */
-    color: color(red--d) !important;
+    @include butts(red--d, transparent, transparent)
     border: none;
-    background-color: transparent;
   }
 
   &:active {
-    /* @include butts(red--l, transparent, transparent) */
-    border-color: color(red--l) !important;
+    @include butts(red--l, transparent, transparent)
     border: none;
-    background-color: transparent;
   }
 }
 
@@ -158,23 +121,14 @@ add       - blue
 
 /* .butt--edit: Used for edit buttons */
 .butt--edit {
-    /* @include butts(grey--l, orange--l, orange--l) */
-  border-color: color(orange--l) !important;
-  background-color: color(orange--l) !important;
-  color: color(grey--l) !important;
+    @include butts(grey--l, orange--l, orange--l)
 
   &:hover {
-    /* @include butts(grey--l, orange--d, orange--d) */
-    border-color: color(orange--d) !important;
-    background-color: color(orange--d) !important;
-    color: color(grey--l) !important;
+    @include butts(grey--l, orange--d, orange--d)
   }
 
   &:active {
-    /* @include butts(orange--d, grey--l, orange--l) */
-    border-color: color(orange--l) !important;
-    background-color: color(grey--l) !important;
-    color: color(orange--d) !important;
+    @include butts(orange--d, grey--l, orange--l)
   }
 }
 
@@ -182,23 +136,14 @@ add       - blue
 
 /* .butt--add: Used for add buttons */
 .butt--add {
-  /* @include butts(grey--l, blue--l, blue--l) */
-  border-color: color(blue--l);
-  background-color: color(blue--l);
-  color: color(grey--l);
+  @include butts(grey--l, blue--l, blue--l)
 
   &:hover {
-    /* @include butts(grey--l, blue--d, blue--d) */
-    border-color: color(blue--d);
-    background-color: color(blue--d);
-    color: color(grey--l);
+    @include butts(grey--l, blue--d, blue--d)
   }
 
   &:active {
-    /* @include butts(blue--d, grey--l, blue--l) */
-    border-color: color(blue--l);
-    background-color: color(grey--l);
-    color: color(blue--d);
+    @include butts(blue--d, grey--l, blue--l)
   }
 }
 
@@ -206,19 +151,16 @@ add       - blue
 
 /* .butt--add-icon: Used for + icon for add buttons */
 .butt--add-icon {
-  /* @include butts(blue--l, transparent, transparent) */
-  color: color(blue--l);
+  @include butts(blue--l, transparent, transparent)
   border: none;
 
   &:hover {
-    /* @include butts(blue--d, transparent, transparent) */
-    color: color(blue--d);
+    @include butts(blue--d, transparent, transparent)
     border: none;
   }
 
   &:active {
-    /* @include butts(blue--l, transparent, transparent) */
-    border-color: color(blue--l);
+    @include butts(blue--l, transparent, transparent)
     border: none;
   }
 }

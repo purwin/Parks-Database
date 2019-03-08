@@ -63,63 +63,61 @@ a {
   border-bottom: 2px solid;
   text-decoration: none;
   transition: .2s;
-}
 
-a:hover {
-  text-decoration: none;
-  color: color(green--d);
+  &:hover {
+    text-decoration: none;
+    color: color(green--d);
+  }
 }
-
-a:active {}
 
 
 /* Interal links: Parks */
 a[href^="/parks"] {
   border-bottom-color: color(green--d);
-}
 
-a[href^="/parks"]:hover {
-  color: color(green--d);
+  &:hover {
+    color: color(green--d);
+  }
 }
 
 
 /* Interal links: Exhibitions */
 a[href^="/exhibitions"] {
   border-bottom-color: color(purple--l);
-}
 
-a[href^="/exhibitions"]:hover {
-  color: color(purple--l);
+  &:hover {
+    color: color(purple--l);
+  }
 }
 
 
 /* Interal links: Artworks */
 a[href^="/artworks"] {
   border-bottom-color: color(blue--l);
-}
 
-a[href^="/artworks"]:hover {
-  color: color(blue--l);
+  &:hover {
+    color: color(blue--l);
+  }
 }
 
 
 /* Interal links: Artists */
 a[href^="/artists"] {
   border-bottom-color: color(pink--l);
-}
 
-a[href^="/artists"]:hover {
-  color: color(pink--l);
+  &:hover {
+    color: color(pink--l);
+  }
 }
 
 
 /* Interal links: Organizations */
 a[href^="/orgs"] {
   border-bottom-color: color(orange--l);
-}
 
-a[href^="/orgs"]:hover {
-  color: color(orange--l);
+  &:hover {
+    color: color(orange--l);
+  }
 }
 
 /*
@@ -155,6 +153,9 @@ ol li {}
 
 
 .align-sub { vertical-align: sub; }
+
+
+.f-grow { flex-grow: 1; }
 
 
 /*

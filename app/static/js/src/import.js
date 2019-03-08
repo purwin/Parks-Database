@@ -446,6 +446,7 @@ $(document).ready(function() {
 
         // Show/add spinner
         view.showItem('#js-post_loading');
+        $('.js-spinner').addClass('is-spinning');
         view.hideItem('#js-post_label');
       },
 

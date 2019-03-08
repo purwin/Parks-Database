@@ -12,16 +12,26 @@
    Used when needing to toggle between .is-active and .is-inactive */
 .is-active {}
 
-.is-inactive { display: none !important; }
 
+.is-inactive { display: none !important; }
 
 
 .is-invisible { visibility: hidden !important; }
 
+
 .is-visible { visibility: visible !important; }
 
 
+.is-spinning { animation: spinning 1750ms linear infinite; }
 
+@keyframes spinning {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 
 /*

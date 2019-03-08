@@ -36,11 +36,12 @@ def read_csv_heads(file):
   """
 
   # Get form data (object type, classes, etc.)
-  file_data = pd.read_csv(file)
+  file_data = pd.read_csv(file, quoting=1)
   # Drop unnamed columns
   file_data.drop(
       file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
-      axis=1, inplace=True)
+      axis=1, inplace=True
+  )
   # Return file column names
   return file_data.columns.values
 
@@ -66,7 +67,7 @@ def import_csv(file, obj, cols, vals, match=False):
   """
 
   # Read passed file
-  csv_data = pd.read_csv(file, skiprows = 0, na_values = [''])
+  csv_data = pd.read_csv(file, skiprows = 0, na_values = [''], encoding='utf-8')
 
   # Remove empty rows
   csv_data = csv_data.replace('', pd.np.nan).dropna(how='all')
@@ -85,7 +86,7 @@ def import_csv(file, obj, cols, vals, match=False):
     kwargs = {}
     for col, val in zip(cols, vals):
       # Store val item as key, value of row item as value
-      kwargs[val] = str(row[col]).strip()
+      kwargs[val] = row[col].strip()
     # Call relevant function with key/value items
     result = model_object(match=match, **kwargs)
     # Add result dict to results list
@@ -94,7 +95,7 @@ def import_csv(file, obj, cols, vals, match=False):
       "result": result['result'],
       "warning": result['warning'],
       "data": result['data'],
-      })
+    })
 
   return results
 

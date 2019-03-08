@@ -15,7 +15,7 @@ org_params = [
 ]
 
 
-def add_org(match=False, **params):
+def add_org(match=True, **params):
   """
   Add dict argument to Org database table
 
@@ -74,8 +74,9 @@ def add_org(match=False, **params):
     if 'exhibitions' in params:
       print "There's exhibitions in this!"
       exhibitions = params.get('exhibitions', None)
-      exhibitions = [exhibitions] if isinstance(exhibitions, str) \
-        else exhibitions
+      exhibitions = [exhibitions] if\
+          (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
+          else exhibitions
 
       # Loop through items in exhibitions list,
       # add each to object relationship

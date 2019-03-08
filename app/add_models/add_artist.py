@@ -18,7 +18,7 @@ artist_params = [
 ]
 
 
-def add_artist(match=False, **params):
+def add_artist(match=True, **params):
   """
   Add dict argument to Artwork database table
 
@@ -51,12 +51,12 @@ def add_artist(match=False, **params):
   elif match == True:
     artist = Artist.query.filter_by(name=name['name']).first()
 
-  result = 'Found {} in the database. '\
+  result = u'Found {} in the database. '\
             'Updated artist with new data.'.format(name['name'])
 
   if not artist:
     artist = Artist()
-    result = 'Added new artist: {}.'.format(name)
+    result = u'Added new artist: {}.'.format(name)
 
   # Define warnings string to return
   warnings = ""
@@ -66,7 +66,7 @@ def add_artist(match=False, **params):
     for key, value in params.iteritems():
       # Check for bad keys, skip and add to warning list
       if key not in artist_params:
-        warnings += 'Unexpected {} attribute found. Skipping "{}" addition.\n'\
+        warnings += u'Unexpected {} attribute found. Skipping "{}" addition.\n'\
                     .format(key, value)
       # Add non-list key items to exhibition object
       # Skip name key item as that's created from artist.serialize
@@ -80,23 +80,25 @@ def add_artist(match=False, **params):
       print "There's artworks in this!"
       artworks = params.get('artworks', None)
       # If artist.artworks is string, convert to list
-      artworks = [artworks] if isinstance(artworks, str) else artworks
+      artworks = [artworks] if\
+          (isinstance(artworks, str) or isinstance(artworks, unicode))\
+          else artworks
       # Loop through list values if they exist, add to artwork
       for artwork in artworks or []:
         art = add_artwork.add_artwork(name=artwork)
 
         if art['success'] == True:
-          print "ART: {}".format(art)
-        if art['artwork'] not in artist.artworks:
-          print '{} art data not in artist.artworks'.format(art['data']['name'])
-          artist.artworks.append(art['artwork'])
+          if art['artwork'] not in artist.artworks:
+            print u'{} art data not in artist.artworks'.format(
+                art['data']['name'])
+            artist.artworks.append(art['artwork'])
+        else:
+          warnings += art['result']
 
     db.session.commit()
     db.session.flush()
 
-    print "Artist result: {}".format(result)
-    print "Artist warnings: {}".format(warnings)
-    print "Artist data: {}".format(artist.serialize)
+    print u"Add artist: {}".format(result)
 
     return {
       "success": True,
@@ -111,7 +113,7 @@ def add_artist(match=False, **params):
     print "ERROR! {}".format(e)
     return {
       "success": False,
-      "result": "{}: {}".format(name, e),
+      "result": u"{}: {}".format(name, e),
       "warning": warnings,
       "data": params
     }

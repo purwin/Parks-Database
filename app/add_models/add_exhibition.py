@@ -78,12 +78,12 @@ def add_exhibition(match=True, **params):
   elif match == True:
     exhibition = Exhibition.query.filter_by(name=name).first()
 
-  result = 'Found {} in the database. Updated exhibition with new data.'\
+  result = u'Found {} in the database. Updated exhibition with new data.'\
            .format(name)
 
   if not exhibition:
     exhibition = Exhibition()
-    result = 'Added new exhibition: {}.'.format(name)
+    result = u'Added new exhibition: {}.'.format(name)
 
   # Define warnings string to return
   warnings = ""
@@ -93,7 +93,7 @@ def add_exhibition(match=True, **params):
     for key, value in params.iteritems():
       # Check for bad keys, skip and add to warning list
       if key not in exhibition_params:
-        warnings += 'Unexpected {} attribute found. Skipping "{}" addition.\n'\
+        warnings += u'Unexpected {} attribute found. Skipping "{}" addition.\n'\
                     .format(key, value)
 
       # Add non-list key items to exhibition object
@@ -115,14 +115,16 @@ def add_exhibition(match=True, **params):
     if 'orgs' in params:
       orgs = params.get('orgs', None)
       # If exhibition.organizations is string, convert to list
-      orgs = [orgs] if isinstance(orgs, str) else orgs
+      orgs = [orgs] if\
+          (isinstance(orgs, str) or isinstance(orgs, unicode))\
+          else orgs
       for org in orgs or []:
         organization = add_org.add_org(name=org)
 
         if organization['success'] == True:
           if organization['org'] not in exhibition.organizations:
             exhibition.organizations.append(organization['org'])
-            result += "\nAdded {} to the {} exhibition"\
+            result += u"\nAdded {} to the {} exhibition"\
                       .format(org, exhibition.name)
 
 
@@ -133,15 +135,18 @@ def add_exhibition(match=True, **params):
 
       artworks = filter(None, params.get('artworks', None))
       # If park.artworks is string, convert to list
-      artworks = [artworks] if isinstance(artworks, str) else artworks
+      artworks = [artworks] if\
+          (isinstance(artworks, str) or isinstance(artworks, unicode))\
+          else artworks
 
       parks = filter(None, params.get('parks', None))
       # If exhibition.parks is string, convert to list
-      parks = [parks] if isinstance(parks, str)\
-                                  else parks
+      parks = [parks] if\
+          (isinstance(parks, str) or isinstance(parks, unicode))\
+          else parks
 
       if len(parks) != len(artworks):
-        warnings += 'There’s an uneven number of artworks and parks in '\
+        warnings += u'There’s an uneven number of artworks and parks in '\
                     '{}. Skipping addition.\n'.format(name)
       else:
 
@@ -158,16 +163,16 @@ def add_exhibition(match=True, **params):
                     park_id=park_id)
 
           if exh_art_park['success'] == True:
-            result += "\nAdded {} @ {} to the {} exhibition"\
+            result += u"\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition.name, artwork, park)
-            print "Added {} @ {} to the {} exhibition".format(exhibition.name, artwork, park)
+            print u"Added {} @ {} to the {} exhibition".format(exhibition.name, artwork, park)
           else:
-            warnings += "{}\n".format(exh_art_park['result'])
+            warnings += u"{}\n".format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
 
-    print "Add_exhibition: {}".format(result)
+    print u"Add_exhibition: {}".format(result)
 
     return {
       "success": True,
@@ -179,11 +184,11 @@ def add_exhibition(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
-    print "Error: {}".format(e)
+    print u"Error: {}".format(e)
 
     return {
       "success": False,
-      "result": "{}: {}".format(name, e),
+      "result": u"{}: {}".format(name, e),
       "warning": warnings,
       "data": params
     }

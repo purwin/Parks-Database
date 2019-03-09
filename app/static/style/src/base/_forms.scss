@@ -12,7 +12,17 @@
 
 /* input */
 
-input { color: #58595b }
+input { color: color(grey--d); }
+
+.input--attr {
+  color: color(grey--d);
+  background: #e2f1d5;
+  border: none;
+}
+
+.input--attr:disabled {
+  background: none;
+}
 
 .select--create {
   color: inherit;
@@ -34,8 +44,7 @@ label {
 
 /* Class applied to required form labels */
 .required {
-  font-weight: bold;
-  border-color: #e76a58;
+  background: #ffd6c7;
 }
 
 

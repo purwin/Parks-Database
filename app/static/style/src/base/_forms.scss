@@ -24,14 +24,10 @@ input { color: color(grey--d); }
   background: none;
 }
 
-.select--create {
-  color: inherit;
-  border:none;
-  border-radius: 0;
-  border-bottom: 5px dashed;
-  -webkit-appearance: none;
-  background-color: transparent;
-  padding:  0 1rem;
+
+/* Class applied to required form labels */
+.required {
+  background: #ffd6c7;
 }
 
 /* label */
@@ -42,9 +38,30 @@ label {
 }
 
 
-/* Class applied to required form labels */
-.required {
+/* Select */
+
+.select {
+  border: none;
+}
+
+.select--create {
+  color: inherit;
+  border:none;
+  border-radius: 0;
+  border-bottom: 5px dashed;
+  -webkit-appearance: none;
+  background-color: transparent;
+  padding:  0 1rem;
+}
+
+.select-key {
   background: #ffd6c7;
+  border: none;
+}
+
+.select-value {
+  background: #f8ebce;
+  border: none;
 }
 
 
@@ -52,6 +69,10 @@ label {
 /* Import.html-specific items */
 .arrow-import {
   transform: rotate(90deg);
+
+  @include query(m) {
+    transform: rotate(0deg);
+  }
 }
 
 
@@ -64,9 +85,7 @@ label {
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 
-  .arrow-import {
-    transform: rotate(0deg);
-  }
+
 
 }
 

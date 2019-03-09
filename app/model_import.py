@@ -85,8 +85,10 @@ def import_csv(file, obj, cols, vals, match=False):
   for index, row in csv_data.iterrows():
     kwargs = {}
     for col, val in zip(cols, vals):
-      # Store val item as key, value of row item as value
-      kwargs[val] = row[col].strip()
+      # if val is not empty
+      if val:
+        # Store val item as key, value of row item as value
+        kwargs[val] = row[col].strip()
     # Call relevant function with key/value items
     result = model_object(match=match, **kwargs)
     # Add result dict to results list

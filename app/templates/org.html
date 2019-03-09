@@ -46,8 +46,8 @@
 							<div class="[ col-md-3 ]">
 								{{ form.name.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
-								{{ form.name(class="form-control-plaintext", value=org.name) }}
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.name(class="form-control-plaintext input--attr", value=org.name) }}
 							</div>
 						</li>
 
@@ -55,9 +55,9 @@
 							<div class="[ col-md-3 ]">
 								{{ form.website.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
 								<a href="http://{{ org.website }}" class="is-active" target="_blank">{{ org.website }}</a>
-								{{ form.website(class="form-control-plaintext d-none", value=org.website) }}
+								{{ form.website(class="form-control-plaintext input--attr d-none", value=org.website) }}
 							</div>
 						</li>
 
@@ -65,8 +65,8 @@
 							<div class="[ col-md-3 ]">
 								{{ form.phone.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
-								{{ form.phone(class="form-control-plaintext", value=org.phone, readonly=true, disabled=true) }}
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.phone(class="form-control-plaintext input--attr", value=org.phone, readonly=true, disabled=true) }}
 							</div>
 						</li>
 
@@ -103,7 +103,7 @@
 								<div class="[ col-10 col-md-8 col-lg-6 ]">
 									<a href="{{ url_for('exhibition', id=exhibition.id) }}" class="is-active">{{ exhibition.name }}</a>
 
-									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibition.id }}" value="{{ exhibition.name }}" class="js-datalist-child js-datalist_exhibition input--attr [ form-control-plaintext d-none ]" readonly>
 									<!-- Call datalist macro function -->
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
@@ -148,7 +148,7 @@
 			<label for="exhibitions">Exhibition</label>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
+			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
 		<div class="[ col-2 col-md-1 ]">

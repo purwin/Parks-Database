@@ -64,15 +64,18 @@ class Form_exhibition(FlaskForm):
   # Bio
   name = StringField('Name')
   start_date = DateField('Start Date', validators=[DataRequired()],
-      format='%Y-%m-%d')
+                         format='%Y-%m-%d'
+                        )
   end_date = DateField('End Date', validators=[DataRequired()],
-      format='%Y-%m-%d')
+                       format='%Y-%m-%d'
+                      )
   opening = DateField('Opening', validators=[Optional()])
   comments = TextAreaField('Comments')
 
   # Install
-  install_start = DateField('Install Start', validators=[DataRequired()],
-      format='%Y-%m-%d')
+  install_start = DateField('Install Start', format='%Y-%m-%d',
+                            validators=[Optional()]
+                           )
   install_end = DateField('Install End', validators=[Optional()])
   prm = StringField('PRM Review')
   approval = StringField('Borough Approval')
@@ -92,10 +95,12 @@ class Form_exhibition(FlaskForm):
   work_images = StringField('Images of Installed Work')
 
   # De-Install
-  deinstall_date = DateField('De-Install Due Date', validators=[DataRequired()],
-      format='%Y-%m-%d')
+  deinstall_date = DateField('De-Install Due Date', format='%Y-%m-%d',
+                             validators=[Optional()]
+                            )
   deinstall_check = DateField('De-Install Site Check', format='%Y-%m-%d',
-      validators=[Optional()])
+                              validators=[Optional()]
+                             )
   bond_return = StringField('Bond returned')
   press_clippings = StringField('Press Clippings Saved')
 
@@ -138,7 +143,14 @@ class Form_signup(FlaskForm):
 
 class Form_search(FlaskForm):
   class_object = HiddenField('Class Object', validators=[DataRequired(),
-    AnyOf(['Park', 'Exhibition', 'Artwork', 'Artist', 'Org'])])
+                             AnyOf([
+                                    'Park',
+                                    'Exhibition',
+                                    'Artwork',
+                                    'Artist',
+                                    'Org'
+                                  ])]
+                            )
   search = StringField('Search', validators=[DataRequired()])
 
 
@@ -168,6 +180,7 @@ class Form_import_data(FlaskForm):
                ('org', 'Orgs')],
       validators=[DataRequired()])
   match_existing = BooleanField('Match Existing Items in the Database',
-      default=True)
+                                default=True
+                               )
   keys = FieldList(FreeSelectField('Key'))
   values = FieldList(FreeSelectField('Value'))

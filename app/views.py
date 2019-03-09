@@ -62,6 +62,12 @@ def date_format(value, format='%m/%d/%y'):
 
 today = datetime.utcnow().strftime('%Y-%m-%d')
 
+
+@app.errorhandler(404)
+def error_404(error):
+  return render_template('404.html'), 404
+
+
 @app.route('/home')
 @app.route('/index')
 @app.route('/')

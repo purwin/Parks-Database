@@ -86,7 +86,8 @@ def add_artwork(match=True, **params):
 
         if person['success'] == True:
           if person['artist'] not in artwork.artists:
-            print u'Adding {} artist to {}'.format(person['data']['name'], artwork.name)
+            print u'Adding {} artist to {}'\
+                .format(person['data']['name'], artwork.name)
             artwork.artists.append(person['artist'])
         else:
           warnings += person['result']
@@ -110,7 +111,7 @@ def add_artwork(match=True, **params):
 
       if len(exhibitions) != len(parks):
         warnings += u'There’s an uneven number of exhibitions and parks in '\
-                    '{}. Skipping addition.\n'.format(name)
+                     '{}. Skipping addition.\n'.format(name)
       else:
         for exhibition, park in zip(exhibitions, parks):
           park_dict = add_park.add_park(name=park)
@@ -121,8 +122,9 @@ def add_artwork(match=True, **params):
 
           exh_art_park = add_exh_art_park.add_exh_art_park(
               exhibition_id=exhibition_id,
-                    park_id=park_id,
-                 artwork_id=artwork.id)
+              park_id=park_id,
+              artwork_id=artwork.id
+          )
 
           if exh_art_park['success'] == True:
             result += u"\nAdded {} @ {} to the {} exhibition"\

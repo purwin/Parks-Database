@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block head_extras %}
+{% endblock %}
+{% block title %}NYC Parks Database – 500{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+  <section id="section--head">
+    {% include "include/nav.html" %}
+    <div class="head [ row justify-content-center align-items-center ]">
+      <div class="[ col-md-8 ]">
+        <h1 class="head__h1 [ text-center display-3 ]"><b>500 ERROR!</b></h1>
+      </div>
+    </div>
+  </section>
+
+  {% include "include/user.html" %}
+
+  <section class="section--500">
+    <div class="chunk [ row justify-content-center py-5 ]">
+      <div class="[ col-md-8 ]">
+        <h1 class="[ text-center ]">Noooooooooo! Internal Service Error.</h1>
+        <h3 class="[ text-center ]">Something broke. So sorry.</h3>
+        <p class="text-center">{{ error }}</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

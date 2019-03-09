@@ -44,8 +44,8 @@
 								<div class="[ col-md-3 ]">
 									{{ form.fName.label }}
 								</div>
-								<div class="[ col-lg-7 ]">
-									{{ form.fName(class="form-control-plaintext", value=artist.fName) }}
+								<div class="[ col-10 col-md-9 col-lg-7 ]">
+									{{ form.fName(class="form-control-plaintext input--attr", value=artist.fName) }}
 								</div>
 							</li>
 
@@ -53,8 +53,8 @@
 								<div class="[ col-md-3 ]">
 									{{ form.pName.label }}
 								</div>
-								<div class="[ col-lg-7 ]">
-									{{ form.pName(class="form-control-plaintext", value=artist.pName) }}
+								<div class="[ col-10 col-md-9 col-lg-7 ]">
+									{{ form.pName(class="form-control-plaintext input--attr", value=artist.pName) }}
 								</div>
 							</li>
 
@@ -62,9 +62,9 @@
 								<div class="[ col-md-3 ]">
 									{{ form.email.label }}
 								</div>
-								<div class="[ col-lg-7 ]">
+								<div class="[ col-10 col-md-9 col-lg-7 ]">
 									<p class="is-active [ m-0 ]"><a href="mailto:{{ artist.email }}" class="is-active">{{ artist.email }}</a></p>
-									{{ form.email(class="form-control-plaintext d-none", value=artist.email, readonly=true) }}
+									{{ form.email(class="form-control-plaintext input--attr d-none", value=artist.email, readonly=true) }}
 								</div>
 							</li>
 
@@ -72,8 +72,8 @@
 								<div class="[ col-md-3 ]">
 									{{ form.phone.label }}
 								</div>
-								<div class="[ col-lg-7 ]">
-									{{ form.phone(class="form-control-plaintext", value=artist.phone, readonly=true, disabled=true) }}
+								<div class="[ col-10 col-md-9 col-lg-7 ]">
+									{{ form.phone(class="form-control-plaintext input--attr", value=artist.phone, readonly=true, disabled=true) }}
 								</div>
 							</li>
 
@@ -81,9 +81,9 @@
 								<div class="[ col-md-3 ]">
 									{{ form.website.label }}
 								</div>
-								<div class="[ col-lg-7 ]">
+								<div class="[ col-10 col-md-9 col-lg-7 ]">
 									{% if artist.website %}<p class="is-active [ m-0 ]"><a href="http://{{ artist.website }}" class="is-active" target="_blank">{{ artist.website }}</a></p>{% endif %}
-									{{ form.website(class="form-control-plaintext d-none", value=artist.website) }}
+									{{ form.website(class="form-control-plaintext input--attr d-none", value=artist.website) }}
 								</div>
 							</li>
 
@@ -116,7 +116,7 @@
 									<div class="[ col-10 col-md-8 col-lg-6 ]">
 										<a href="{{ url_for('artwork', id=artwork.id) }}" class="is-active">{{ artwork.name }}</a>
 						
-										<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]">
+										<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ artwork.id }}" value="{{ artwork.name }}" class="js-datalist-child js-datalist_artwork input--attr [ form-control-plaintext d-none ]">
 										<!-- Call datalist macro function -->
 										{{ datalist("artworks", artworks) }}
 									</div>
@@ -246,7 +246,7 @@
 		</div>
 
 		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
 

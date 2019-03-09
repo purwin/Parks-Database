@@ -147,7 +147,7 @@ def add_exhibition(match=True, **params):
 
       if len(parks) != len(artworks):
         warnings += u'There’s an uneven number of artworks and parks in '\
-                    '{}. Skipping addition.\n'.format(name)
+                     '{}. Skipping addition.\n'.format(name)
       else:
 
         for artwork, park in zip(artworks, parks):
@@ -159,13 +159,15 @@ def add_exhibition(match=True, **params):
 
           exh_art_park = add_exh_art_park.add_exh_art_park(
               exhibition_id=exhibition.id,
-                 artwork_id=artwork_id,
-                    park_id=park_id)
+              artwork_id=artwork_id,
+              park_id=park_id
+          )
 
           if exh_art_park['success'] == True:
             result += u"\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition.name, artwork, park)
-            print u"Added {} @ {} to the {} exhibition".format(exhibition.name, artwork, park)
+            print u"Added {} @ {} to the {} exhibition"\
+                  .format(exhibition.name, artwork, park)
           else:
             warnings += u"{}\n".format(exh_art_park['result'])
 

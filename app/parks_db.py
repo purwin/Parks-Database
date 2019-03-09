@@ -21,37 +21,37 @@ exh_org = db.Table(
 class Exhibition(db.Model):
   # Bio
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80))
+  name = db.Column(db.String(80), default='')
   start_date = db.Column(db.Date())
   end_date = db.Column(db.Date())
   opening = db.Column(db.Date())
-  comments = db.Column(db.String())
+  comments = db.Column(db.String(), default='')
 
   # Install
   install_start = db.Column(db.Date())
   install_end = db.Column(db.Date())
-  prm = db.Column(db.String(5))
-  approval = db.Column(db.String(5))
-  walkthrough = db.Column(db.String(10))
-  cb_presentation = db.Column(db.String(10))
-  license_mailed = db.Column(db.String(5))
-  license_signed = db.Column(db.String(5))
-  license_borough = db.Column(db.String(5))
-  bond = db.Column(db.String(10))
-  coi = db.Column(db.String(10))
-  coi_renewal = db.Column(db.String(10))
-  signage_submit = db.Column(db.String(5))
-  signage_received = db.Column(db.String(5))
-  press_draft = db.Column(db.String(5))
-  press_approved = db.Column(db.String())
-  web_text = db.Column(db.String(5))
-  work_images = db.Column(db.String(5))
+  prm = db.Column(db.String(5), default='')
+  approval = db.Column(db.String(5), default='')
+  walkthrough = db.Column(db.String(10), default='')
+  cb_presentation = db.Column(db.String(10), default='')
+  license_mailed = db.Column(db.String(5), default='')
+  license_signed = db.Column(db.String(5), default='')
+  license_borough = db.Column(db.String(5), default='')
+  bond = db.Column(db.String(10), default='')
+  coi = db.Column(db.String(10), default='')
+  coi_renewal = db.Column(db.String(10), default='')
+  signage_submit = db.Column(db.String(5), default='')
+  signage_received = db.Column(db.String(5), default='')
+  press_draft = db.Column(db.String(5), default='')
+  press_approved = db.Column(db.String(), default='')
+  web_text = db.Column(db.String(5), default='')
+  work_images = db.Column(db.String(5), default='')
 
   # De-Install
   deinstall_date = db.Column(db.Date())
-  deinstall_check = db.Column(db.String(5))
-  bond_return = db.Column(db.String(5))
-  press_clippings = db.Column(db.String(5))
+  deinstall_check = db.Column(db.String(5), default='')
+  bond_return = db.Column(db.String(5), default='')
+  press_clippings = db.Column(db.String(5), default='')
 
   # Related
   parks = db.relationship('Park',
@@ -112,11 +112,11 @@ class Exhibition(db.Model):
 class Park(db.Model):
   __searchable__ = ['name']
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80))
-  park_id = db.Column(db.String(8))
-  borough = db.Column(db.String(15))
-  address = db.Column(db.String(200))
-  cb = db.Column(db.String(40))
+  name = db.Column(db.String(80), default='')
+  park_id = db.Column(db.String(8), default='')
+  borough = db.Column(db.String(15), default='')
+  address = db.Column(db.String(200), default='')
+  cb = db.Column(db.String(40), default='')
 
   def __repr__(self):
     return "<Park: (%s)>"
@@ -136,7 +136,7 @@ class Park(db.Model):
 
 class Artwork(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80))
+  name = db.Column(db.String(80), default='')
   parks = db.relationship('Park',
                           secondary='exh_art_park',
                           backref=db.backref('artworks')
@@ -213,9 +213,9 @@ class Artist(db.Model):
 
 class Org(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(40))
-  website = db.Column(db.String(40))
-  phone = db.Column(db.String(12))
+  name = db.Column(db.String(40), default='')
+  website = db.Column(db.String(40), default='')
+  phone = db.Column(db.String(12), default='')
 
   @property
   def serialize(self):

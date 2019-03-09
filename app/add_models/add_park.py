@@ -113,13 +113,15 @@ def add_park(match=True, **params):
 
           exh_art_park = add_exh_art_park.add_exh_art_park(
               exhibition_id=exhibition_id,
-                 artwork_id=artwork_id,
-                    park_id=park.id)
+              artwork_id=artwork_id,
+              park_id=park.id
+          )
 
           if exh_art_park['success'] == True:
             result += "\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition, artwork, park.name)
-            print "Added {} @ {} to the {} exhibition".format(exhibition, artwork, park.name)
+            print "Added {} @ {} to the {} exhibition"\
+                  .format(exhibition, artwork, park.name)
           else:
             warnings += "\n{}".format(exh_art_park['result'])
 

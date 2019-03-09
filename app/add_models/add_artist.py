@@ -90,7 +90,8 @@ def add_artist(match=True, **params):
         if art['success'] == True:
           if art['artwork'] not in artist.artworks:
             print u'{} art data not in artist.artworks'.format(
-                art['data']['name'])
+                art['data']['name']
+            )
             artist.artworks.append(art['artwork'])
         else:
           warnings += art['result']
@@ -138,7 +139,7 @@ def get_artist_name(**params):
     name = ''.join([fName, ' ', pName]) if fName else pName
 
   return {
-     'name': params.get('name', name),
+    'name': params.get('name', name),
     'fName': params.get('fName', fName),
     'pName': params.get('pName', pName)
   }

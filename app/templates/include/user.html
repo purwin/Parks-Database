@@ -1,9 +1,9 @@
 <div class="[ row ]">
-  <div class="[ col-12 align-self-end ]">
+  <div class="[ col-12 align-self-end h6 my-1 ]">
     {% if current_user.is_anonymous %}
       <p class="[ text-right my-2 ]"><a id="js-login" href="{{ url_for('login') }}">Login</a></p>
     {% else %}
-      <p class="[ text-right my-2 ]">Hi {{ current_user.username }}! | <a href="{{ url_for('logout') }}">Log Out</a></p>
+      <p class="[ text-right my-2 ]">Hi {{ current_user.username }}!&#x2004;&#x2004;|&#x2004;&#x2004;<a href="{{ url_for('logout') }}">Log Out</a></p>
     {% endif %}
   </div>
 </div>

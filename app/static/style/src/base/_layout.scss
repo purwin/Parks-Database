@@ -47,6 +47,14 @@
 
 .site-nav {
   z-index: 1;
+
+  /* Set nav position to fixed on larger screens */
+  @include query(m) {
+    position: fixed;
+    width: 110px;
+    top: 45px;
+    left: 25px;
+  }
 }
 
   .site-nav__butt {
@@ -74,6 +82,10 @@
       &:hover a {
         color:  color(green--d);
       }
+
+      @include query(m) {
+        font-size: 1rem;
+      }
     }
 
         .site-nav__link-text {
@@ -84,54 +96,3 @@
 .chunk {
   min-height: 50vh;
 }
-
-
-/*
- *
- * Media Queries
- *
- */
-
-
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-
-}
-
-
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-
-  /* Set nav position to fixed on larger screens */
-  .site-nav {
-    position: fixed;
-    width: 110px;
-    top: 45px;
-    left: 25px;
-  }
-
-    .site-nav__link {
-      font-size: 1rem;
-    }
-
-}
-
-
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-
-}
-
-
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-
-}
-
-
-
-
-

@@ -18,7 +18,8 @@ def add_exh_art_park(exhibition_id, artwork_id, park_id):
   - "warning": string detailing any unforseen issues
   """
   # Search for existing relationship in exh_art_park table
-  exh_art_park = Exh_art_park.query.filter_by(exhibition_id=exhibition_id)\
+  exh_art_park = Exh_art_park.query\
+                             .filter_by(exhibition_id=exhibition_id)\
                              .filter_by(artwork_id=artwork_id)\
                              .filter_by(park_id=park_id).first()
 
@@ -33,8 +34,11 @@ def add_exh_art_park(exhibition_id, artwork_id, park_id):
   if not exh_art_park:
     # Add relationship if nothing found
     try:
-      exh_rel = Exh_art_park(exhibition_id=exhibition_id, artwork_id=artwork_id,
-          park_id=park_id)
+      exh_rel = Exh_art_park(
+          exhibition_id=exhibition_id,
+          artwork_id=artwork_id,
+          park_id=park_id
+      )
 
       db.session.add(exh_rel)
       db.session.commit()

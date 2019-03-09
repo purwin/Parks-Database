@@ -1,0 +1,9 @@
+/* Mixins! */
+
+
+/* Button mixin for adding colors */
+@mixin butts($c-color, $bg-color, $br-color) {
+  color: color($c-color) !important;
+  background-color: color($bg-color) !important;
+  border-color: color($br-color) !important;
+}

@@ -46,8 +46,8 @@
 							<div class="[ col-md-3 ]">
 								{{ form.name.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
-								{{ form.name(class="form-control-plaintext", value=park.name) }}
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.name(class="form-control-plaintext input--attr", value=park.name) }}
 							</div>
 						</li>
 
@@ -55,8 +55,8 @@
 							<div class="[ col-md-3 ]">
 								{{ form.park_id.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
-								{{ form.park_id(class="form-control-plaintext", value=park.park_id, readonly=true, disabled=true) }}
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.park_id(class="form-control-plaintext input--attr", value=park.park_id, readonly=true, disabled=true) }}
 							</div>
 						</li>
 
@@ -64,9 +64,9 @@
 							<div class="[ col-md-3 ]">
 								{{ form.borough.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
 								<p class="is-active [ m-0 ]">{{ park.borough }}</p>
-								{{ form.borough(class="form-control-plaintext d-none", readonly=true, disabled=true) }}
+								{{ form.borough(class="form-control-plaintext input--attr d-none", readonly=true, disabled=true) }}
 							</div>
 						</li>
 
@@ -74,9 +74,9 @@
 							<div class="[ col-md-3 ]">
 								{{ form.address.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
 								<p class="is-active [ m-0 ]"><a href="https://www.google.com/maps/search/{{ park.address }}" target="_blank">{{ park.address }}</a></p>
-								{{ form.address(class="form-control-plaintext d-none", value=park.address, readonly=true) }}
+								{{ form.address(class="form-control-plaintext input--attr d-none", value=park.address, readonly=true) }}
 							</div>
 						</li>
 
@@ -84,8 +84,8 @@
 							<div class="[ col-md-3 ]">
 								{{ form.cb.label }}
 							</div>
-							<div class="[ col-lg-7 ]">
-								{{ form.cb(class="form-control-plaintext", value=park.cb, readonly=true, disabled=true) }}
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.cb(class="form-control-plaintext input--attr", value=park.cb, readonly=true, disabled=true) }}
 							</div>
 						</li>
 
@@ -117,7 +117,7 @@
 								</div>
 								<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
 									<a href="{{ url_for('exhibition', id=item.exhib.id) }}" class="is-active">{{ item.exhib.name }}</a>
-									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("exhibitions", exhibitions) }}
 								</div>
 								<div class="[ col-2 col-md-1 align-items-baseline ]">
@@ -128,7 +128,7 @@
 								</div>
 								<div class="[ col-10 col-md-8 col-lg-6 ]">
 									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
-									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control-plaintext d-none ]" readonly>
+									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control-plaintext d-none ]" readonly>
 									{{ datalist("artworks", artworks) }}
 								</div>
 							</li>
@@ -166,14 +166,14 @@
 <script id="js-template_artwork" type="text/template">
 	<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
 		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
 		<div class="[ col-2 col-md-1 align-items-baseline ]">
 			<span class="[ px-2 ]">@</span>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
+			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
 		<div class="[ col-2 col-md-1 ]">
@@ -190,7 +190,7 @@
 			<label for="exhibitions">Exhibition</label>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition [ form-control ]">
+			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
 			{{ datalist("exhibitions", exhibitions) }}
 		</div>
 		<div class="[ col-2 col-md-1 ]">
@@ -200,7 +200,7 @@
 			<label for="artworks">Artwork</label>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork [ form-control ]">
+			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
 			{{ datalist("artworks", artworks) }}
 		</div>
 	</li>

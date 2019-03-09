@@ -36,7 +36,10 @@ body {
 
 h1 {}
 
-.head__h1 { font-size: 4rem; }
+.head__h1 {
+  font-size: 4rem;
+  hyphens: initial;
+}
 
 h2 { color:  color(green--d); }
 

@@ -21,9 +21,13 @@
 body {
   color: color(grey--d);
   max-width: 100%;
-  font-size: 21px;
+  font-size: 18px;
   font-family: 'Arimo', sans-serif;
   hyphens: auto;
+
+  @include query(m) {
+    font-size: 21px;
+  }
 }
 
 
@@ -37,11 +41,15 @@ body {
 h1 {}
 
 .head__h1 {
-  font-size: 4rem;
+  font-size: 2rem;
   hyphens: initial;
+
+  @include query(m) {
+    font-size: 4rem;
+  }
 }
 
-h2 { color:  color(green--d); }
+h2 { color: color(green--d); }
 
 h3 {}
 
@@ -159,31 +167,3 @@ ol li {}
 
 
 .f-grow { flex-grow: 1; }
-
-
-/*
- *
- * Media Queries
- *
- */
-
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-
-}
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-  
-}
-
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-
-}

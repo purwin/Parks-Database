@@ -86,7 +86,7 @@ def add_exhibition(match=True, **params):
     result = u'Added new exhibition: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = ""
+  warnings = u""
 
   # Loop through passed key/value attributes, add to class object
   try:

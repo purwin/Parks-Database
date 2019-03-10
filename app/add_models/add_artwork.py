@@ -57,7 +57,7 @@ def add_artwork(match=True, **params):
     result = u'Added new artwork: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = ""
+  warnings = u""
 
   # Loop through passed key/value attributes, add to class object
   try:

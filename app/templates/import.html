@@ -86,6 +86,13 @@
 
 							</ul>
 
+							<ol class="ordered--bold [ h5 text-left px-0 py-3 ]">
+								<li>Select the object type you’re importing</li>
+								<li>Match the <b>Column</b> you want to import with the object <b>Category</b>—Don’t worry about the order!</li>
+								<li>Name options are required</li>
+								<li>Selections w/ <b>*</b> need to be imported together so they don’t throw an error</li>
+							</ol>
+
 						</div>
 
 						<div class="[ col-8 justify-content-center ]">
@@ -132,7 +139,7 @@
 				</div>
 				<div class="[ modal-footer ]">
 					<button id="js-modal-cancel_export" class="js-cancel-modal butt butt--text" type="button" data-dismiss="modal">No Thanks</button>
-					<button id="js-modal-post_export" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Export!</button>
+					<button id="js-modal-post_export" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Export</button>
 				</div>
 			</form>
 		</div>
@@ -193,8 +200,8 @@
 		<option value="">Select a Category</option>
 		<option value="name">Artwork Name</option>
 		<option value="artists">Artist</option>
-		<option value="exhibitions">Exhibition</option>
-		<option value="parks">Park</option>
+		<option value="exhibitions">Exhibition*</option>
+		<option value="parks">Park*</option>
 	</select>
 </script>
 
@@ -206,8 +213,8 @@
 		<option value="borough">Borough</option>
 		<option value="address">Address</option>
 		<option value="cb">Community Board</option>
-		<option value="exhibitions">Exhibition</option>
-		<option value="artworks">Artwork</option>
+		<option value="exhibitions">Exhibition*</option>
+		<option value="artworks">Artwork*</option>
 	</select>
 </script>
 
@@ -218,8 +225,8 @@
 		<option value="start_date">Start Date</option>
 		<option value="end_date">End Date</option>
 		<option value="orgs">Org</option>
-		<option value="artworks">Artwork</option>
-		<option value="parks">Park</option>
+		<option value="artworks">Artwork*</option>
+		<option value="parks">Park*</option>
 	</select>
 </script>
 

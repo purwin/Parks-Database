@@ -34,7 +34,7 @@ class ProductionConfig(Config):
   Production configurations
   """
 
-  DEBUG = False
+  DEBUG = True
 
   PSQL = {
     'user': 'michaelpurwin',

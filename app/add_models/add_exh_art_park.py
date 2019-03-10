@@ -27,10 +27,6 @@ def add_exh_art_park(exhibition_id, artwork_id, park_id):
   result = "Exh_art_park: Already exists Exh {} > Art {} > Park {}\n"\
       .format(exhibition_id, artwork_id, park_id)
 
-  print "Exh_art_park: Already exists Exh {} > Art {} > Park {}\n"\
-      .format(exhibition_id, artwork_id, park_id)
-
-
   if not exh_art_park:
     # Add relationship if nothing found
     try:

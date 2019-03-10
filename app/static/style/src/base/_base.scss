@@ -141,6 +141,23 @@ ul {}
 
 ol {}
 
+ol.ordered--bold {
+  list-style: none;
+  counter-reset: ordered-bold;
+
+  & li {
+    counter-increment: ordered-bold;
+    text-indent: -1.5rem;
+    margin-left: 1.5rem;
+
+    &:before {
+      content: counter(ordered-bold) ". ";
+      font-weight: bold;
+      color: color(green--d);
+    }
+  }
+}
+
 ul li {}
 
 ol li {}

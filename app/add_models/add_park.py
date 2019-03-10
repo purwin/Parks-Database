@@ -62,7 +62,7 @@ def add_park(match=True, **params):
     result = 'Added new park: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = ""
+  warnings = u""
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -118,17 +118,15 @@ def add_park(match=True, **params):
           )
 
           if exh_art_park['success'] == True:
-            result += "\nAdded {} @ {} to the {} exhibition"\
+            result += u"\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition, artwork, park.name)
-            print "Added {} @ {} to the {} exhibition"\
-                  .format(exhibition, artwork, park.name)
           else:
-            warnings += "\n{}".format(exh_art_park['result'])
+            warnings += u"\n{}".format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
 
-    print "Add_park: {}".format(result)
+    print u"Add_park: {}".format(result)
 
     return {
       "success": True,
@@ -139,7 +137,7 @@ def add_park(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
-    print "ERROR! {}".format(e)
+    print u"ERROR! {}".format(e)
     return {
       "success": False,
       "result": "{}: {}".format(name, e),

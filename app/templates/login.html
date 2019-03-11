@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block head_extras %}
-<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Login{% endblock %}
 {% block content %}
@@ -44,29 +43,27 @@
 					<ul class="js-ul_login [ p-0 ]">
 
 						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<!-- <div class="[ col-md-3 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.username.label }}
-							</div> -->
+							</div>
 							<div class="[ col-md-6 ]">
 								{{ form.username(class="form-control", placeholder=form.username.label.text) }}
 							</div>
 						</li>
 
 						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<!-- <div class="[ col-md-3 ]">
+							<div class="[ col-md-3 ]">
 								{{ form.password.label }}
-							</div> -->
+							</div>
 							<div class="[ col-md-6 ]">
 								{{ form.password(class="form-control", placeholder=form.password.label.text) }}
 							</div>
 						</li>
 
 						<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-							<div class="[ col-1 offset-md-1 ]">
-								{{ form.remember(class="[ form-control ]") }}
-							</div>
-							<div class="[ col-11 col-md-6 ]">
-								{{ form.remember.label }}
+							<div class="[ col-md-6 offset-md-3 form-check ]">
+								{{ form.remember(class="[ align-middle ]") }}
+								{{ form.remember.label(class="[ form-check-label h6 ]") }}
 							</div>
 						</li>
 
@@ -80,7 +77,7 @@
 		<section id="section--submit">
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 py-4 text-right ]">
-					<a id="js-cancel_login" class="butt butt--delete js-cancel-login [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+					<a id="js-cancel_login" class="butt butt--text js-cancel-login [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 					<input id="js-post_login" class="butt butt--add js-post-login [ ml-2 ]" value="Login" type="submit" />
 				</div>
 			</div>

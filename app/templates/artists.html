@@ -9,7 +9,7 @@
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
-		<div class="head [ row justify-content-center align-items-center ]">
+		<div class="head head--artists [ row justify-content-center align-items-center ]">
 			<div class="[ col-md-8 ]">
 				<h1 class="head__h1 head__h1--artists [ text-center display-3 ]"><b>ARTISTS</b></h1>
 			</div>
@@ -20,7 +20,7 @@
 		{% include "include/user.html" %}
 
 		<div class="[ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
+			<div class="[ col-sm-8 col-md-6 ]">
 				<form id="js-form_search" action="/search" method="POST">
 					{{ form.csrf_token }}
 
@@ -29,10 +29,7 @@
 					</div>
 
 					<div class="[ input-group ]">
-						{{ form.search(class="form-control", placeholder="Search") }}
-						<div class="[ input-group-append ]">
-							<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
-						</div>
+						{{ form.search(class="form-control", placeholder="Search Artists") }}
 					</div>
 
 				</form>
@@ -72,7 +69,5 @@
 	</section>
 
 </div>
-
-<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 
 {% endblock %}

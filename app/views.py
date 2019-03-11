@@ -8,7 +8,8 @@ from flask import (
   redirect,
   url_for,
   jsonify,
-  session
+  session,
+  send_file
 )
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -22,6 +23,9 @@ from flask_login import (
   logout_user,
   current_user
 )
+from datetime import datetime
+import json
+
 from app import app, db
 from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
 from forms import (
@@ -37,20 +41,7 @@ from forms import (
   Form_import_data
 )
 from users import User
-
-from model_import import (
-import_park,
-import_artist,
-import_artwork,
-import_exhibition,
-import_org,
-import_csv,
-object_table
-)
-
-from datetime import datetime
-import pandas as pd
-
+from model_import import import_csv, read_csv_heads, export_csv
 
 
 # Flask-login settings
@@ -65,14 +56,27 @@ def load_user(user_id):
 
 @app.template_filter('date_format')
 def date_format(value, format='%m/%d/%y'):
-  return value.strftime(format)
+  if value is not None:
+    return value.strftime(format)
 
 
 today = datetime.utcnow().strftime('%Y-%m-%d')
 
+
+@app.errorhandler(404)
+def error_404(error):
+  return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def error_500(error):
+  return render_template('500.html', error=error), 500
+
+
 @app.route('/home')
 @app.route('/index')
 @app.route('/')
+@login_required
 def home():
   exhibitions = Exhibition.query.all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
@@ -133,7 +137,7 @@ def signup():
 
   if form.validate_on_submit():
     hashed_password = generate_password_hash(form.password.data,
-      method='sha256')
+        method='sha256')
     new_user = User(username=form.username.data, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
@@ -162,10 +166,10 @@ def create():
   form_org = Form_org()
 
   return render_template('create.html',
-    artworks = artworks, parks = parks, orgs = orgs, artists = artists,
-    form_artist = form_artist, form_artwork = form_artwork,
-    form_park = form_park, form_exhibition = form_exhibition,
-    form_org = form_org)
+      artworks = artworks, parks = parks, orgs = orgs, artists = artists,
+      form_artist = form_artist, form_artwork = form_artwork,
+      form_park = form_park, form_exhibition = form_exhibition,
+      form_org = form_org)
 
 
 @app.route('/import', methods=['GET', 'POST'])
@@ -175,17 +179,10 @@ def import_file():
 
   if form.is_submitted():
     if form.validate():
-      # get file upload
-      # filename = secure_filename(form.file.data.filename)
+      # Get file upload
       file = form.file.data
-      # print "FILENAME: {}".format(file)
-      # Get form data (object type, classes, etc.)
-      file_data = pd.read_csv(file)
-      # Drop unnamed columns
-      file_data.drop(file_data.columns[file_data.columns.str.contains('unnamed', case=False)],
-        axis=1, inplace=True)
-      file_headers = file_data.columns.values
-      # print "FILE HEADERS: {}".format(file_headers)
+      # Read CSV, get column head values
+      file_headers = read_csv_heads(file)
       return jsonify({"success": True, "data": list(file_headers)})
     else:
       # Return errors if form doesn't validate
@@ -196,6 +193,7 @@ def import_file():
 
 
 @app.route('/import/data', methods=['GET', 'POST'])
+@login_required
 def import_data():
   pass
   form = Form_import_data()
@@ -205,36 +203,52 @@ def import_data():
     print "FILENAME: {}".format(file)
     # Get form data (object type, classes, etc.)
     class_object = form.class_object.data
-    # print "CLASS OBJECT: {}".format(class_object)
     # Get column heads to import
-    cols = form.keys.data
-    print "cols: {}".format(cols)
+    cols = filter(None, form.keys.data)
     # Get object attributes to import
-    vals = form.values.data
-    print "vals: {}".format(vals)
+    vals = filter(None, form.values.data)
     # Check for duplicate values in cols/vals lists
-    if ((len(cols) != len(set(cols))) or (len(vals) != len(set(vals)))):
+    if (len(cols) != len(set(cols))) or (len(vals) != len(set(vals))):
       return jsonify({"success": False,
                       "data": {
-                        "Columns": "Duplicate Column value(s)! Make sure\
-                        these are unique."}})
+                          "Columns": "Duplicate Column value(s)! Make sure "\
+                                     "these are unique."}})
 
     # FUTURE: Allow imports with duplicate row/attributes
     # FUTURE: Ask for including header row
     # Get value of matching existing items
     match_existing = form.match_existing.data
-    file_data = pd.read_csv(file, skiprows = 0, na_values = [''])
     # Import data with import_csv() from model_import
-    results = import_csv(csv_data=file_data, obj=class_object, cols=cols,
+    results = import_csv(file=file, obj=class_object, cols=cols,
       vals=vals, match=match_existing)
 
-    return jsonify({"success": True, "data": list(results)})
+    return jsonify({"success": True, "data": results})
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
 
 
+@app.route('/export', methods=['POST'])
+@login_required
+def export_data():
+  if request.method == 'POST':
+    print "EXPORT POST!"
+    try:
+      # Check if received data is JSON
+      json_object = json.loads(request.form['export_data'])
+      # Create temporary CSV file
+      csv_file = export_csv(json_object)
+      # Send CSV to client
+      return send_file(csv_file,
+          attachment_filename="export.csv",
+          mimetype='text/csv')
+    except ValueError, e:
+      print "ERROR: {}".format(e)
+      return e
+
+
 @app.route('/exhibitions')
+@login_required
 def exhibitions():
   exhibitions = Exhibition.query.all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
@@ -258,8 +272,9 @@ def exhibitions():
 
 
 @app.route('/exhibitions/<int:id>')
+@login_required
 def exhibition(id):
-  exhibition = Exhibition.query.filter_by(id = id).one()
+  exhibition = Exhibition.query.filter_by(id = id).first_or_404()
   artworks = Artwork.query.all()
   parks = Park.query.all()
   orgs = Org.query.all()
@@ -536,6 +551,7 @@ def exhibition_delete(id):
 
 
 @app.route('/parks')
+@login_required
 def parks():
   parks = Park.query.all()
   active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
@@ -552,8 +568,9 @@ def parks():
 
 
 @app.route('/parks/<int:id>')
+@login_required
 def park(id):
-  park = Park.query.filter_by(id=id).one()
+  park = Park.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
   artworks = Artwork.query.all()
   form = Form_park()
@@ -658,7 +675,7 @@ def park_edit(id):
                       "data": {
                         "Exhibitions": "There’s an uneven number of\
                                         exhibitions and artworks. This data\
-                                         needs to be complete."}})
+                                        needs to be complete."}})
 
     # Update park data to database
     db.session.add(park)
@@ -676,14 +693,15 @@ def park_delete(id):
   park = Park.query.filter_by(id=id).one()
   form = Form_park()
   if request.method == 'POST':
-      db.session.delete(park)
-      db.session.commit()
-      return redirect(url_for('parks'))
+    db.session.delete(park)
+    db.session.commit()
+    return redirect(url_for('parks'))
   else:
-      return render_template('park_delete.html', park = park, form = form)
+    return render_template('park_delete.html', park = park, form = form)
 
 
 @app.route('/artists')
+@login_required
 def artists():
   artists = Artist.query.all()
   form = Form_search()
@@ -692,8 +710,9 @@ def artists():
 
 
 @app.route('/artists/<int:id>')
+@login_required
 def artist(id):
-  artist = Artist.query.filter_by(id = id).one()
+  artist = Artist.query.filter_by(id = id).first_or_404()
   artworks = Artwork.query.all()
 
   form = Form_artist()
@@ -814,6 +833,7 @@ def artist_delete(id):
 
 
 @app.route('/artworks')
+@login_required
 def artworks():
   artworks = Artwork.query.all()
   active_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
@@ -831,8 +851,9 @@ def artworks():
 
 
 @app.route('/artworks/<int:id>')
+@login_required
 def artwork(id):
-  artwork = Artwork.query.filter_by(id=id).one()
+  artwork = Artwork.query.filter_by(id=id).first_or_404()
   artists = Artist.query.all()
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
@@ -995,6 +1016,7 @@ def artwork_delete(id):
 
 
 @app.route('/orgs')
+@login_required
 def orgs():
   orgs = Org.query.all()
   form = Form_search()
@@ -1003,8 +1025,9 @@ def orgs():
 
 
 @app.route('/orgs/<int:id>')
+@login_required
 def org(id):
-  org = Org.query.filter_by(id=id).one()
+  org = Org.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
   form = Form_org()
   for exh in org.exhibitions:
@@ -1112,7 +1135,8 @@ def org_delete(id):
       return render_template('org_delete.html', org = org, form = form)
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['POST'])
+@login_required
 def search():
   form = Form_search()
   if form.validate_on_submit():

@@ -1,0 +1,66 @@
+/*
+ *
+ * Colors
+ *
+ */
+
+$colors: (
+  transparent: transparent,
+  red--d: #e76a58,
+  red--l: #ec8879,
+  yellow--d: #ffd248,
+  yellow--l: #ffdb6d,
+  orange--d: #fe8254,
+  orange--l: #fe9b76,
+  purple--d: #a174f6,
+  purple--l: #b490f8,
+  blue--d: #62b5ff,
+  blue--l: #81c4ff,
+  pink--d: #ff7c9e,
+  pink--l: #ff96b1,
+  teal--d: #51f4ae,
+  teal--l: #74f6be,
+  green: #a0d17a,
+  green--d: #88c659,
+  green--l: #b8dd9b,
+  grey: #bcbdbd,
+  grey--l: #f8f9fa,
+  grey--d: #58595b
+);
+
+
+.c-red--d { color: color(red--d); }
+.c-red--l { color: color(red--l); }
+
+
+.c-yellow--d { color: color(yellow--d); }
+.c-yellow--l { color: color(yellow--l); }
+
+
+.c-orange--d { color: color(orange--d); }
+.c-orange--l { color: color(orange--l); }
+
+
+.c-purple--d { color: color(purple--d); }
+.c-purple--l { color: color(purple--l); }
+
+
+.c-blue--d { color: color(blue--d); }
+.c-blue--l { color: color(blue--l); }
+
+
+.c-pink--d { color: color(pink--d); }
+.c-pink--l { color: color(pink--l); }
+
+
+.c-teal--d { color: color(teal--d); }
+.c-teal--l { color: color(teal--l); }
+
+
+.c-green { color: color(green); }
+.c-green--d { color: color(green--d); }
+.c-green--l { color: color(green--l); }
+
+
+.grey--l { color: color(grey--l); }
+.grey--d { color: color(grey--d); }

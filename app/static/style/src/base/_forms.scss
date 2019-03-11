@@ -1,0 +1,76 @@
+/*
+ *
+ * Parks DB Form CSS
+ *
+ */
+
+ /* Module(reusable pieces, nav, featured item, thumbnail divs, etc.) (can break up into smaller chunks) */
+
+
+
+/* textarea */
+
+/* input */
+
+input { color: color(grey--d); }
+
+.input--attr {
+  color: color(grey--d);
+  background: #e2f1d5;
+  border: none;
+}
+
+.input--attr:disabled {
+  background: none;
+}
+
+
+/* Class applied to required form labels */
+.required {
+  background: #ffd6c7;
+}
+
+/* label */
+
+label {
+  color: #9fa9b2;
+  margin-bottom: .25em;
+}
+
+
+/* Select */
+
+.select {
+  border: none;
+}
+
+.select--create {
+  color: inherit;
+  border:none;
+  border-radius: 0;
+  border-bottom: 5px dashed;
+  -webkit-appearance: none;
+  background-color: transparent;
+  padding:  0 1rem;
+}
+
+.select-key {
+  background: #ffd6c7;
+  border: none;
+}
+
+.select-value {
+  background: #f8ebce;
+  border: none;
+}
+
+
+
+/* Import.html-specific items */
+.arrow-import {
+  transform: rotate(90deg);
+
+  @include query(m) {
+    transform: rotate(0deg);
+  }
+}

@@ -1,9 +1,6 @@
 import {model} from './model';
 import {view} from './view';
 
-import 'jquery'
-import 'bootstrap'
-
 export let controller = {
 
   init: function() {
@@ -430,6 +427,10 @@ export let controller = {
     $(model[obj].form.id).find(":input").not(":button").each(function() {
       // Remove input readonly attributes
       $(this).attr("readonly", false);
+
+      // Remove input disabled attributes
+      $(this).attr("disabled", false);
+
       // Update input classes
       $(this).toggleClass('form-control-plaintext').toggleClass('form-control');
     });

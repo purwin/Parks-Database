@@ -22,7 +22,10 @@ csp = {
     'img-src': '* data:;',
     'script-src': [
       '\'self\'',
-      '*.trusted.com'
+      '*.trusted.com',
+      'https://code.jquery.com',
+      'https://cdnjs.cloudflare.com',
+      'https://maxcdn.bootstrapcdn.com'
     ],
     'style-src': [
       '\'self\'',
@@ -37,7 +40,11 @@ csp = {
     ]
 }
 
-# Talisman(app, content_security_policy=csp)
+Talisman(
+    app,
+    content_security_policy=csp,
+    content_security_policy_nonce_in=['script-src']
+)
 
 db = SQLAlchemy(app)
 

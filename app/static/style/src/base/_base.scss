@@ -1,0 +1,186 @@
+/*
+ *
+ * Parks DB Layout CSS
+ *
+ */
+
+
+/* - Featuring Base elements: Body, link, headings, resets, etc. */
+
+
+
+
+
+
+/*
+ *
+ * Body
+ *
+ */
+
+body {
+  color: color(grey--d);
+  max-width: 100%;
+  font-size: 18px;
+  font-family: 'Arimo', sans-serif;
+  hyphens: auto;
+
+  @include query(m) {
+    font-size: 21px;
+  }
+}
+
+
+
+/*
+ *
+ * Text
+ *
+ */
+
+h1 {}
+
+.head__h1 {
+  font-size: 2rem;
+  hyphens: initial;
+
+  @include query(m) {
+    font-size: 4rem;
+  }
+}
+
+h2 { color: color(green--d); }
+
+h3 {}
+
+h4 {}
+
+h5 {}
+
+h6 {}
+
+p {}
+
+
+
+/*
+ *
+ * Links
+ *
+ */
+
+a {
+  color: color(grey--d);
+  border-bottom: 2px solid;
+  text-decoration: none;
+  transition: .2s;
+
+  &:hover {
+    text-decoration: none;
+    color: color(green--d);
+  }
+}
+
+
+/* Interal links: Parks */
+a[href^="/parks"] {
+  border-bottom-color: color(green--d);
+
+  &:hover {
+    color: color(green--d);
+  }
+}
+
+
+/* Interal links: Exhibitions */
+a[href^="/exhibitions"] {
+  border-bottom-color: color(purple--l);
+
+  &:hover {
+    color: color(purple--l);
+  }
+}
+
+
+/* Interal links: Artworks */
+a[href^="/artworks"] {
+  border-bottom-color: color(blue--l);
+
+  &:hover {
+    color: color(blue--l);
+  }
+}
+
+
+/* Interal links: Artists */
+a[href^="/artists"] {
+  border-bottom-color: color(pink--l);
+
+  &:hover {
+    color: color(pink--l);
+  }
+}
+
+
+/* Interal links: Organizations */
+a[href^="/orgs"] {
+  border-bottom-color: color(orange--l);
+
+  &:hover {
+    color: color(orange--l);
+  }
+}
+
+/*
+ *
+ * Lists
+ *
+ */
+
+ul {}
+
+ol {}
+
+ol.ordered--bold {
+  list-style: none;
+  counter-reset: ordered-bold;
+
+  & li {
+    counter-increment: ordered-bold;
+    text-indent: -1.5rem;
+    margin-left: 1.5rem;
+
+    &:before {
+      content: counter(ordered-bold) ". ";
+      font-weight: bold;
+      color: color(green--d);
+    }
+  }
+}
+
+ul li {}
+
+ol li {}
+
+
+
+/*
+ *
+ * Resets
+ *
+ */
+
+
+
+
+/*
+ *
+ * Bootstrap Overrides
+ *
+ */
+
+
+.align-sub { vertical-align: sub; }
+
+
+.f-grow { flex-grow: 1; }

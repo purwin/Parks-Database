@@ -1,6 +1,5 @@
 from app import db
 from sqlalchemy.ext.hybrid import hybrid_property
-# from sqlalchemy import UniqueConstraint, ForeignKeyConstraint
 
 
 artist_artwork = db.Table(
@@ -20,45 +19,45 @@ exh_org = db.Table(
 
 
 class Exhibition(db.Model):
-  # __tablename__ = 'exhibition'
   # Bio
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80))
+  name = db.Column(db.String(80), default='')
   start_date = db.Column(db.Date())
   end_date = db.Column(db.Date())
   opening = db.Column(db.Date())
-  comments = db.Column(db.String())
+  comments = db.Column(db.String(), default='')
 
   # Install
   install_start = db.Column(db.Date())
   install_end = db.Column(db.Date())
-  prm = db.Column(db.String(5))
-  approval = db.Column(db.String(5))
-  walkthrough = db.Column(db.String(10))
-  cb_presentation = db.Column(db.String(10))
-  license_mailed = db.Column(db.String(5))
-  license_signed = db.Column(db.String(5))
-  license_borough = db.Column(db.String(5))
-  bond = db.Column(db.String(10))
-  coi = db.Column(db.String(10))
-  coi_renewal = db.Column(db.String(10))
-  signage_submit = db.Column(db.String(5))
-  signage_received = db.Column(db.String(5))
-  press_draft = db.Column(db.String(5))
-  press_approved = db.Column(db.String())
-  web_text = db.Column(db.String(5))
-  work_images = db.Column(db.String(5))
+  prm = db.Column(db.String(5), default='')
+  approval = db.Column(db.String(5), default='')
+  walkthrough = db.Column(db.String(10), default='')
+  cb_presentation = db.Column(db.String(10), default='')
+  license_mailed = db.Column(db.String(5), default='')
+  license_signed = db.Column(db.String(5), default='')
+  license_borough = db.Column(db.String(5), default='')
+  bond = db.Column(db.String(10), default='')
+  coi = db.Column(db.String(10), default='')
+  coi_renewal = db.Column(db.String(10), default='')
+  signage_submit = db.Column(db.String(5), default='')
+  signage_received = db.Column(db.String(5), default='')
+  press_draft = db.Column(db.String(5), default='')
+  press_approved = db.Column(db.String(), default='')
+  web_text = db.Column(db.String(5), default='')
+  work_images = db.Column(db.String(5), default='')
 
   # De-Install
   deinstall_date = db.Column(db.Date())
-  deinstall_check = db.Column(db.String(5))
-  bond_return = db.Column(db.String(5))
-  press_clippings = db.Column(db.String(5))
+  deinstall_check = db.Column(db.String(5), default='')
+  bond_return = db.Column(db.String(5), default='')
+  press_clippings = db.Column(db.String(5), default='')
 
   # Related
   parks = db.relationship('Park',
                           secondary='exh_art_park',
-                          backref=db.backref('exhibitions')
+                          backref=db.backref('exhibitions'),
+                          viewonly=True
   )
   artworks = db.relationship('Artwork',
                              secondary='exh_art_park',
@@ -80,19 +79,44 @@ class Exhibition(db.Model):
 
     return {
       'id': self.id,
-      'name': self.name
+      'name': self.name,
+      'start_date': self.start_date,
+      'end_date': self.end_date,
+      'opening': self.opening,
+      'comments': self.comments,
+      'install_start': self.install_start,
+      'install_end': self.install_end,
+      'prm': self.prm,
+      'approval': self.approval,
+      'walkthrough': self.walkthrough,
+      'cb_presentation': self.cb_presentation,
+      'license_mailed': self.license_mailed,
+      'license_signed': self.license_signed,
+      'license_borough': self.license_borough,
+      'bond': self.bond,
+      'coi': self.coi,
+      'coi_renewal': self.coi_renewal,
+      'signage_submit': self.signage_submit,
+      'signage_received': self.signage_received,
+      'press_draft': self.press_draft,
+      'press_approved': self.press_approved,
+      'web_text': self.web_text,
+      'work_images': self.work_images,
+      'deinstall_date': self.deinstall_date,
+      'deinstall_check': self.deinstall_check,
+      'bond_return': self.bond_return,
+      'press_clippings': self.press_clippings
     }
 
 
 class Park(db.Model):
-  # __tablename__ = 'park'
   __searchable__ = ['name']
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80))
-  park_id = db.Column(db.String(8))
-  borough = db.Column(db.String(15))
-  address = db.Column(db.String(100))
-  cb = db.Column(db.String(40))
+  name = db.Column(db.String(80), default='')
+  park_id = db.Column(db.String(8), default='')
+  borough = db.Column(db.String(15), default='')
+  address = db.Column(db.String(200), default='')
+  cb = db.Column(db.String(40), default='')
 
   def __repr__(self):
     return "<Park: (%s)>"
@@ -111,9 +135,8 @@ class Park(db.Model):
 
 
 class Artwork(db.Model):
-  # __tablename__ = 'artwork'
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80))
+  name = db.Column(db.String(80), default='')
   parks = db.relationship('Park',
                           secondary='exh_art_park',
                           backref=db.backref('artworks')
@@ -135,8 +158,6 @@ class Artwork(db.Model):
 
 
 class Exh_art_park(db.Model):
-  # __tablename__ = 'exh_art_park'
-  # id = db.Column(db.Integer, primary_key=True)
   exhibition_id = db.Column(db.Integer,
                             db.ForeignKey('exhibition.id'),
                             primary_key=True
@@ -158,21 +179,14 @@ class Exh_art_park(db.Model):
   def __repr__(self):
     return "<Exh_art_park (%s)>"
 
-# Exh_art_park = db.Table('exhibition_artwork_park',
-#   db.Column('exhibition_id', db.Integer, db.ForeignKey('exhibition.id'), primary_key=True),
-#   db.Column('artwork_id', db.Integer, db.ForeignKey('artwork.id'), primary_key=True),
-#   db.Column('park_id', db.Integer, db.ForeignKey('park.id'), primary_key=True)
-# )
-
 
 class Artist(db.Model):
-  # __tablename__ = 'artist'
   id = db.Column(db.Integer, primary_key=True)
-  pName = db.Column(db.String(40))
-  fName = db.Column(db.String(40))
-  email = db.Column(db.String(80))
-  phone = db.Column(db.String(12))
-  website = db.Column(db.String(80))
+  pName = db.Column(db.String(40), default='')
+  fName = db.Column(db.String(40), default='')
+  email = db.Column(db.String(80), default='')
+  phone = db.Column(db.String(12), default='')
+  website = db.Column(db.String(80), default='')
 
   @hybrid_property
   def name(self):
@@ -198,11 +212,10 @@ class Artist(db.Model):
 
 
 class Org(db.Model):
-  # __tablename__ = 'org'
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(40))
-  website = db.Column(db.String(40))
-  phone = db.Column(db.String(12))
+  name = db.Column(db.String(40), default='')
+  website = db.Column(db.String(40), default='')
+  phone = db.Column(db.String(12), default='')
 
   @property
   def serialize(self):
@@ -216,7 +229,6 @@ class Org(db.Model):
 
 
 class Event(db.Model):
-  # __tablename__ = 'event'
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(40))
   exhibition_id = db.Column(db.Integer, db.ForeignKey('exhibition.id'))
@@ -234,22 +246,3 @@ def init_db():
 
 if __name__ == '__main__':
   init_db()
-
-
-
-'''
-
-exhib = session.query(Exh_art_park).filter(exhibition_id=#).all()
-
-for x in exhib:
-  print '%s at %s from %s to %s' % (x.artw.name, x.nycpark.name, x.exhib.startDate, x.exhib.endDate)
-
-for x in exhib:
-  print x.artw.creators.all()
-
-for x in exhib:
-  for y in x.artw.creators:
-    print y
-
-
-'''

@@ -1,0 +1,24 @@
+/*
+ *
+ * Parks DB Background CSS
+ *
+ */
+
+ /* Module(reusable pieces, nav, featured item, thumbnail divs, etc.) (can break up into smaller chunks) */
+
+
+/* Background colors for sections */
+section:nth-of-type(2n+1) .chunk {
+  background-color: #F9F9F9;
+}
+
+section:nth-of-type(2n) .chunk {
+  /* background-color: #e3f1d7; */
+  /* background-color: #f7fbf3; */
+  background-color: #F0F3F7;
+}
+
+
+.bg-green { background-color: #b8dd9b; }
+
+.bg-d-green { background-color: #6EBC20; }

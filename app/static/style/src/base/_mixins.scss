@@ -1,0 +1,33 @@
+/* Mixins! */
+
+
+/* Button mixin for adding colors */
+@mixin butts($c-color, $bg-color, $br-color) {
+  color: color($c-color) !important;
+  background-color: color($bg-color) !important;
+  border-color: color($br-color) !important;
+}
+
+
+$breakpoints: (
+  s: 576px,
+  m: 768px,
+  l:  992px,
+  xl: 1200px
+);
+
+/* Small devices (landscape phones, 576px and up) */
+/* Medium devices (tablets, 768px and up) */
+/* Large devices (desktops, 992px and up) */
+/* Extra large devices (large desktops, 1200px and up) */
+
+
+@mixin query($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}

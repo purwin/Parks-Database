@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block head_extras %}
 <script src="{{ url_for('static', filename='js/dist/import.bundle.js') }}"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 {% block title %}Parks Database – Import Data{% endblock %}
 {% block content %}
@@ -17,6 +18,8 @@
 		</div>
 	</section>
 
+	{% include "include/user.html" %}
+
 	<div class="js-alert [ fixed-top ]"></div>
 
 	<section id="section--import-file">
@@ -28,11 +31,17 @@
 						<div class="[ col-lg-8 text-center ]">
 							<h4 class="[ py-4 ]">Choose a File to Import</h4>
 
-							<ul class="js-ul_import [ py-2 ]">
+							<ul class="js-ul_import [ py-2 px-0 ]">
 
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-									<div class="[ col-md-8 ]">
-										{{ form.file(class="form-control", id='file_file') }}
+									<div class="[ col-sm-10 col-md-8 input-group ]">
+										<label class="butt butt--left [ m-0 ]" for="file_file">
+											{{ form.file(class="form-control", id='file_file', hidden=true) }}
+												Browse
+										</label>
+										<div class="f-grow [ form-control text-left align-items-center text-truncate ]">
+											<span class="[ h6 ]" id="file_text"></span>
+										</div>
 									</div>
 								</li>
 
@@ -40,7 +49,7 @@
 						</div>
 
 						<div class="[ col-md-8 py-4 text-right ]">
-							<a id="js-cancel_file" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+							<a id="js-cancel_file" class="butt butt--text js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 							<button id="js-post_file" class="butt butt--add js-post-import [ ml-2 ]">Import File</button>
 						</div>
 
@@ -62,24 +71,27 @@
 
 							<ul id="js-import_data_ul" class="[ p-0 list-unstyled ]">
 
-								<!-- FUTURE: Add hidden form_data.file ref -->
-
-								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
+								<li class="[ row mb-2 justify-content-center align-items-baseline ]">
 									<div class="[ col-8 ]">
-										{{ form_data.class_object(class="form-control") }}
+										{{ form_data.class_object(class="form-control select") }}
 									</div>
 								</li>
 
 								<li class="[ row mb-3 justify-content-center align-items-baseline ]">
-									<div class="[ col-1 ]">
-										{{ form_data.match_existing(class="form-control") }}
-									</div>
-									<div class="[ col-10 col-md-7 text-left ]">
-										{{ form_data.match_existing.label }}
+									<div class="[ form-check col-7 text-left ]">
+										{{ form_data.match_existing(class="form-check-input") }}
+										{{ form_data.match_existing.label(class="form-check-label h6") }}
 									</div>
 								</li>
 
 							</ul>
+
+							<ol class="ordered--bold [ h5 text-left px-0 py-3 ]">
+								<li>Select the object type you’re importing</li>
+								<li>Match the <b>Column</b> you want to import with the object <b>Category</b>—Don’t worry about the order!</li>
+								<li>Name options are required</li>
+								<li>Selections w/ <b>*</b> need to be included together so they can import successfully</li>
+							</ol>
 
 						</div>
 
@@ -88,8 +100,17 @@
 						</div>
 
 						<div class="[ col-md-8 py-4 text-right ]">
-							<a id="js-cancel_data" class="butt butt--delete js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
-							<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">Import Data</button>
+							<a id="js-cancel_data" class="butt butt--text js-cancel-import [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+							<button id="js-post_data" class="butt butt--add js-post-import [ ml-2 ]">
+								<span id="js-post_loading" class="[ d-none ]">
+									&#x2004;
+									<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+										<i class="fas fa-asterisk js-spinner"></i>
+									</span>
+									&#x2004;
+								</span>
+								<span id="js-post_label">Import Data</span>
+							</button>
 						</div>
 
 					</div>
@@ -98,6 +119,31 @@
 		</div>
 	</section>
 
+</div>
+
+<!-- Import Results modal -->
+<div id="js-modal_results" class="[ modal fade ]" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="[ modal-dialog ]" role="document">
+		<div class="[ modal-content ]">
+			<form id="js-form_export" action="{{ url_for('export_data') }}" method="POST">
+				<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+				<input type="hidden" id="export_data" name="export_data" />
+				<div class="bg-green [ modal-header ]">
+					<h5 class="[ modal-title ]" id="">IMPORT RESULTS</h5>
+					<button type="button" class="js-cancel-modal [ close ]" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="[ modal-body px-4 ]">
+
+				</div>
+				<div class="[ modal-footer ]">
+					<button id="js-modal-cancel_export" class="js-cancel-modal butt butt--text" type="button" data-dismiss="modal">No Thanks</button>
+					<button id="js-modal-post_export" class="js-post-modal butt butt--create" type="button" data-toggle="modal">Export</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <!-- Empty error template -->
@@ -126,7 +172,7 @@
 
 
 <script id="js-template_keys" type="text/template">
-	<select name="keys" class="js-column_key [form-control]">
+	<select name="keys" class="select-key js-column_key [ form-control ]">
 		<option value="">Select a Column</option>
 	</select>
 </script>
@@ -138,7 +184,7 @@
 </script>
 
 <script id="js-template_artist" type="text/template">
-	<select name="values" class="js-column_artist [form-control]">
+	<select name="values" class="select-value js-column_artist [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="pName">Last/Primary Name</option>
 		<option value="fName">First Name</option>
@@ -150,41 +196,47 @@
 </script>
 
 <script id="js-template_artwork" type="text/template">
-	<select name="values" class="js-column_artwork [form-control]">
+	<select name="values" class="select-value js-column_artwork [ form-control ]">
 		<option value="">Select a Category</option>
-		<option value="name">Name</option>
+		<option value="name">Artwork Name</option>
+		<option value="artists">Artist</option>
+		<option value="exhibitions">Exhibition*</option>
+		<option value="parks">Park*</option>
 	</select>
 </script>
 
 <script id="js-template_park" type="text/template">
-	<select name="values" class="js-column_park [form-control]">
+	<select name="values" class="select-value js-column_park [ form-control ]">
 		<option value="">Select a Category</option>
-		<option value="name">Name</option>
+		<option value="name">Park Name</option>
 		<option value="park_id">Park ID</option>
 		<option value="borough">Borough</option>
 		<option value="address">Address</option>
 		<option value="cb">Community Board</option>
+		<option value="exhibitions">Exhibition*</option>
+		<option value="artworks">Artwork*</option>
 	</select>
 </script>
 
 <script id="js-template_exhibition" type="text/template">
-	<select name="values" class="js-column_exhibition [form-control]">
+	<select name="values" class="select-value js-column_exhibition [ form-control ]">
 		<option value="">Select a Category</option>
 		<option value="name">Exhibition Name</option>
 		<option value="start_date">Start Date</option>
 		<option value="end_date">End Date</option>
-		<option value="org">Org</option>
-		<option value="artwork">Artwork</option>
-		<option value="park">Park</option>
+		<option value="orgs">Org</option>
+		<option value="artworks">Artwork*</option>
+		<option value="parks">Park*</option>
 	</select>
 </script>
 
 <script id="js-template_org" type="text/template">
-	<select name="values" class="js-column_org [form-control]">
+	<select name="values" class="select-value js-column_org [ form-control ]">
 		<option value="">Select a Category</option>
-		<option value="name">Name</option>
+		<option value="name">Organization Name</option>
 		<option value="website">Website</option>
 		<option value="phone">Phone</option>
+		<option value="exhibitions">Exhibition</option>
 	</select>
 </script>
 

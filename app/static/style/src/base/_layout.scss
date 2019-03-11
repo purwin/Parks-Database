@@ -1,0 +1,98 @@
+/*
+ *
+ * Parks DB Layout CSS
+ *
+ */
+
+
+/* - Featuring Main Layout elements: Header, Footer, Site Nav */
+
+
+
+/*
+ *
+ * Header
+ *
+ */
+
+.head { 
+  padding: 1rem;
+  background-color: color(green--l);
+  min-height: 200px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+
+.head--parks { border-bottom-color: color(green--d); }
+.head--exhibitions { border-bottom-color: (color(purple--l)); }
+.head--artworks { border-bottom-color: (color(blue--l)); }
+.head--artists { border-bottom-color: (color(pink--l)); }
+.head--orgs { border-bottom-color: (color(orange--l)); }
+
+
+/*
+ *
+ * Footer
+ *
+ */
+
+.foot {}
+
+
+/*
+ *
+ * Site Nav
+ *
+ */
+
+.site-nav {
+  z-index: 1;
+
+  /* Set nav position to fixed on larger screens */
+  @include query(m) {
+    position: fixed;
+    width: 110px;
+    top: 45px;
+    left: 25px;
+  }
+}
+
+  .site-nav__butt {
+    background-color: transparent;
+  }
+
+  .site-nav__menu {
+    min-width: 0rem;
+  }
+
+    .site-nav__link {
+      padding: 0;
+      font-size: 3rem;
+
+      & a {
+        color: color(grey--d);
+        text-decoration: none;
+        border-bottom: none;
+        padding: .25rem 1rem;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+      }
+
+      &:hover a {
+        color:  color(green--d);
+      }
+
+      @include query(m) {
+        font-size: 1rem;
+      }
+    }
+
+        .site-nav__link-text {
+          border-bottom: 2px solid color(green--d);
+        }
+
+
+.chunk {
+  min-height: 50vh;
+}

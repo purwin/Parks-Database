@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block head_extras %}
-<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Delete {{ park.name|capitalize }}{% endblock %}
 {% block content %}
@@ -9,7 +8,7 @@
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
-		<div class="head [ row justify-content-center align-items-center ]">
+		<div class="head head--parks [ row justify-content-center align-items-center ]">
 			<div class="[ col-md-8 ]">
 				<h1 class="head__h1 head__h1--parks [ text-center display-3 ]"><b>{{ park.name|upper }}</b></h1>
 			</div>
@@ -28,7 +27,7 @@
 		<section id="section--submit">
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 text-right p-4 ]">
-					<a id="js-cancel_park" class="js-cancel-form butt butt--edit [ btn btn-sm ]" href="{{ url_for('park', id=park.id) }}" role="button">Cancel</a>
+					<a id="js-cancel_park" class="js-cancel-form butt butt--text [ btn btn-sm ]" href="{{ url_for('park', id=park.id) }}" role="button">Cancel</a>
 					<input id="js-delete_park" type="submit" class="butt butt--delete js-delete-form [ ml-2 btn btn-sm ]" value="Delete">
 				</div>
 			</div>

@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block head_extras %}
-<script src="{{ url_for('static', filename='js/dist/main.bundle.js') }}"></script>
 {% endblock %}
 {% block title %}Parks Database – Sign Up{% endblock %}
 {% block content %}
@@ -63,10 +62,8 @@
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline ]">
-							<div class="[ col-md-3 ]">
+							<div class="[ col ]">
 								{{ form.remember.label }}
-							</div>
-							<div class="[ col-md-9 ]">
 								{{ form.remember }}
 							</div>
 						</li>
@@ -81,7 +78,7 @@
 		<section id="section--submit">
 			<div class="[ row justify-content-center text-right ]">
 				<div class="[ col-md-8 py-4 ]">
-					<a id="js-cancel_signup" class="butt butt--delete js-cancel-signup [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+					<a id="js-cancel_signup" class="butt butt--text js-cancel-signup [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 					<button id="js-post_signup" class="butt butt--add js-post-signup [ ml-2 ]" value="" type="submit">Sign Up</button>
 				</div>
 			</div>

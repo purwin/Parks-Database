@@ -1,6 +1,7 @@
 {% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/dist/datatables.min.css') }}">
 {% endblock %}
 {% block title %}NYC Parks Database – {{ exhibition.name|capitalize }}{% endblock %}
 {% block content %}
@@ -74,6 +75,52 @@
 						</li>
 
 					</ul>
+
+				</div>
+			</div>
+		</section>
+
+		<section id="section--table">
+			<div class="chunk is-active [ row justify-content-center py-5 ]">
+				<div class="[ col-md-8 ]">
+					<h2 class="[ display-4 py-4 ]">Artworks</h2>
+
+					{% if exhib %}
+
+						<table id="js-table_artwork" class="table table-hover dataTable is-active d-xs-none d-md-table">
+							<thead class="table-head">
+								<tr>
+									<th scope="col">Artwork</th>
+									<th scope="col">Park</th>
+									<th scope="col">Artists</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in exhib %}
+									<tr>
+										<td>
+											<a href="{{ url_for('artwork', id=item.artw.id) }}">{{ item.artw.name }}</a>
+										</td>
+										<td>
+											<a href="{{ url_for('park', id=item.nycpark.id) }}">{{ item.nycpark.name }}</a>
+										</td>
+										<td>
+											{% for artist in item.artw.artists %}
+												<p class="[ m-0 ]">
+													<a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a>
+												</p>
+											{% else %}
+												<p class="[ m-0 ]">--</p>
+											{% endfor %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+					{% else %}
+						<p>{{ exhibition.name }} has no related parks.</p>
+					{% endif %}
 
 				</div>
 			</div>
@@ -223,91 +270,6 @@
 							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.install_end(class="form-control-plaintext input--attr", value=exhibition.install_end, readonly=true) }}</div>
 						</li>
 
-<!-- 						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.prm.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.prm(class="form-control-plaintext", value=exhibition.prm, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.approval.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.approval(class="form-control-plaintext", value=exhibition.approval, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.walkthrough.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.walkthrough(class="form-control-plaintext", value=exhibition.walkthrough, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.cb_presentation.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.cb_presentation(class="form-control-plaintext", value=exhibition.cb_presentation, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.license_mailed.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.license_mailed(class="form-control-plaintext", value=exhibition.license_mailed, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.license_signed.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.license_signed(class="form-control-plaintext", value=exhibition.license_signed, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.license_borough.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.license_borough(class="form-control-plaintext", value=exhibition.license_borough, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.bond.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.bond(class="form-control-plaintext", value=exhibition.bond, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.coi.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.coi(class="form-control-plaintext", value=exhibition.coi, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.coi_renewal.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.coi_renewal.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.coi_renewal(class="form-control-plaintext", value=exhibition.coi_renewal, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.signage_submit.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.signage_submit(class="form-control-plaintext", value=exhibition.signage_submit, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.signage_received.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.signage_received(class="form-control-plaintext", value=exhibition.signage_received, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.press_draft.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.press_draft(class="form-control-plaintext", value=exhibition.press_draft, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.press_approved.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.press_approved(class="form-control-plaintext", value=exhibition.press_approved, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.web_text.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.web_text(class="form-control-plaintext", value=exhibition.web_text, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-3 ]">{{ form.work_images.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.work_images(class="form-control-plaintext", value=exhibition.work_images, readonly=true) }}</div>
-						</li> -->
-
 					</ul>
 
 				</div>
@@ -330,21 +292,6 @@
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
 							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.deinstall_date(class="form-control-plaintext input--attr", value=exhibition.deinstall_date, readonly=true) }}</div>
 						</li>
-
-<!-- 						<li class="[ row mb-4 ]">
-							<div class="[ col-md-4 ]">{{ form.deinstall_check.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.deinstall_check(class="form-control-plaintext", value=exhibition.deinstall_check, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-4 ]">{{ form.bond_return.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.bond_return(class="form-control-plaintext", value=exhibition.bond_return, readonly=true) }}</div>
-						</li>
-
-						<li class="[ row mb-4 ]">
-							<div class="[ col-md-4 ]">{{ form.press_clippings.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.press_clippings(class="form-control-plaintext", value=exhibition.press_clippings, readonly=true) }}</div>
-						</li> -->
 
 					</ul>
 
@@ -422,7 +369,9 @@
 	</div>
 </script>
 
-<script src="{{ url_for('static', filename='js/dist/exhibition.bundle.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/js/mdb.min.js"></script>
+<script src="{{ url_for('static', filename='js/dist/datatables.min.js') }}"></script>
 
+<script src="{{ url_for('static', filename='js/dist/exhibition.bundle.js') }}"></script>
 
 {% endblock %}

@@ -105,7 +105,7 @@
 											<a href="{{ url_for('park', id=item.nycpark.id) }}">{{ item.nycpark.name }}</a>
 										</td>
 										<td>
-											{% for artist in item.artw.artists %}
+											{% for artist in item.artw.artists|sort(attribute='name') %}
 												<p class="[ m-0 ]">
 													<a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a>
 												</p>

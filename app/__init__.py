@@ -32,6 +32,7 @@ csp = {
       '*.trusted.com',
       'https://maxcdn.bootstrapcdn.com',
       'https://fonts.googleapis.com',
+      'https://cdnjs.cloudflare.com',
       'https://use.fontawesome.com'
     ],
     'font-src': [
@@ -43,7 +44,7 @@ csp = {
 Talisman(
     app,
     content_security_policy=csp,
-    content_security_policy_nonce_in=['script-src']
+    content_security_policy_nonce_in=['script-src', 'style-src']
 )
 
 db = SQLAlchemy(app)

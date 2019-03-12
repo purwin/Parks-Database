@@ -440,16 +440,6 @@ export let controller = {
       $(this).toggleClass("d-none");
     });
 
-    // Hide non-edit block elements
-    // $(model[obj].form.id).find(".d-block").each(function() {
-    //   $(this).toggleClass("d-block").toggleClass("d-none");
-    // });
-
-    // Hide non-edit inline elements
-    // $(model[obj].form.id).find(".d-inline").each(function() {
-    //   $(this).toggleClass("d-inline").toggleClass("d-none");
-    // });
-
     // Hide designated non-editable elements
     $(model[obj].form.id).find(".is-active").each(function() {
       $(this).toggleClass("is-active").toggleClass("d-none");

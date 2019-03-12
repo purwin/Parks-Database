@@ -18,61 +18,26 @@
 
 	{% include "include/user.html" %}
 
-	<!-- <section id="section--featured">
-		<div class="[ row py-4 ]">
-
-			<div class="[ col-md-4 order-1 order-md-2 ]">
-				<h3 class="[ text-center pb-3 ]">Today</h3>
-				<ul>
-					<li>item 1</li>
-					<li>item 2</li>
-					<li>item 3</li>
-				</ul>
-			</div>
-
-			<div class="[ col-md-4 order-2 order-md-3 ]">
-				<h3 class="[ text-center pb-3 ]">Upcoming</h3>
-				<ul>
-					<li>item 1</li>
-					<li>item 2</li>
-					<li>item 3</li>
-				</ul>
-			</div>
-
-			<div class="[ col-md-4 order-3 order-md-1 ]">
-				<h3 class="[ text-center pb-3 ]">Active</h3>
-				<ul>
-					<li>item 1</li>
-					<li>item 2</li>
-					<li>item 3</li>
-				</ul>
-			</div>
-
-		</div>
-	</section> -->
-
-
-
 	<section class="section--active">
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
-		
+
 				<h2 class="[ display-4 py-4 ]">Active Exhibitions</h2>
-		
+
 				{% for exhibition in active_exhibitions %}
-		
+
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Start date: {{ exhibition.start_date }}</li>
 						<li>End date: {{ exhibition.end_date }}</li>
 					</ul>
-		
+
 				{% else %}
-		
+
 					<p><i>There are no active exhibitions right now.</i></p>
-		
+
 				{% endfor %}
-		
+
 			</div>
 		</div>
 	</section>

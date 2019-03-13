@@ -34,7 +34,7 @@ model.exhibition.children = {
 // Init controller object
 controller.init();
 
-
+// Call MDBootstrap function to set table as sortable
 $('#js-table_artwork').DataTable({
   // Sort table based on initial column (Artworks)
   "order": [[ 0, "asc" ]],

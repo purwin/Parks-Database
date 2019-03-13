@@ -67,10 +67,11 @@ label {
 
 // Tables
 
-.table {
+.table-object {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   overflow: hidden;
+  hyphens: initial;
 
   & thead.table-head th {
     background: color(green--l);

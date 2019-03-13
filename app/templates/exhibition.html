@@ -42,28 +42,40 @@
 
 						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.name.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.name(class="form-control-plaintext input--attr", value=exhibition.name) }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.name(class="form-control-plaintext input--attr", value=exhibition.name) }}
+							</div>
 						</li>
 
 						<li class="is-active [ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]"><label>Exhibition Dates</label></div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.start_date.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.start_date(class="form-control-plaintext input--attr", value=exhibition.start_date, readonly=true) }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.start_date(class="form-control-plaintext input--attr", value=exhibition.start_date, readonly=true) }}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.end_date.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.end_date(class="form-control-plaintext input--attr", value=exhibition.end_date, readonly=true) }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.end_date(class="form-control-plaintext input--attr", value=exhibition.end_date, readonly=true) }}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.opening.label }}</div>
-							<div class="is-active [ col-10 col-md-9 col-lg-7 ]">{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 d-none ]">{{ form.opening(class="form-control-plaintext input--attr", value=exhibition.opening, readonly=true) }}</div>
+							<div class="is-active [ col-10 col-md-9 col-lg-7 ]">
+								{% if exhibition.opening %}{{ exhibition.opening|date_format }}{% else %}None{% endif %}
+							</div>
+							<div class="[ col-10 col-md-9 col-lg-7 d-none ]">
+								{{ form.opening(class="form-control-plaintext input--attr", value=exhibition.opening, readonly=true) }}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 align-items-baseline ]">
@@ -80,54 +92,120 @@
 			</div>
 		</section>
 
-		<section id="section--table">
-			<div class="chunk is-active [ row justify-content-center py-5 ]">
+		<section id="section--artworks">
+			<div class="chunk [ row justify-content-center py-5 ]">
+
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Artworks</h2>
 
 					{% if exhib %}
 
-						<table id="js-table_artwork" class="table table-hover dataTable is-active d-xs-none d-md-table">
-							<thead class="table-head">
-								<tr>
-									<th scope="col">Artwork</th>
-									<th scope="col">Park</th>
-									<th scope="col">Artists</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for item in exhib %}
+						<div class="is-active [ table-responsive-sm ]">
+							<table id="js-table_artwork" class="table-object dataTable [ table table-hover ]">
+								<thead class="table-head">
 									<tr>
-										<td>
-											<a href="{{ url_for('artwork', id=item.artw.id) }}">{{ item.artw.name }}</a>
-										</td>
-										<td>
-											<a href="{{ url_for('park', id=item.nycpark.id) }}">{{ item.nycpark.name }}</a>
-										</td>
-										<td>
-											{% for artist in item.artw.artists|sort(attribute='name') %}
-												<p class="[ m-0 ]">
-													<a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a>
-												</p>
-											{% else %}
-												<p class="[ m-0 ]">--</p>
-											{% endfor %}
-										</td>
+										<th scope="col">Artwork</th>
+										<th scope="col">Park</th>
+										<th scope="col">Artists</th>
 									</tr>
+								</thead>
+								<tbody>
+									{% for item in exhib %}
+										<tr>
+											<td>
+												<a href="{{ url_for('artwork', id=item.artw.id) }}">
+													{{ item.artw.name }}
+												</a>
+											</td>
+											<td>
+												<a href="{{ url_for('park', id=item.nycpark.id) }}">
+													{{ item.nycpark.name }}
+												</a>
+											</td>
+											<td>
+												{% for artist in item.artw.artists|sort(attribute='name') %}
+													<p class="[ m-0 ]">
+														<a href="{{ url_for('artist', id=artist.id) }}">
+															{{ artist.name }}
+														</a>
+													</p>
+												{% else %}
+													<p class="[ m-0 ]">--</p>
+												{% endfor %}
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+
+
+						<div class="d-none">
+							<div class="[ row justify-content-center d-none ]">
+								<div class="[ col-12 text-right pb-4 ]">
+									<button id="js-add_artwork" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
+								</div>
+							</div>
+
+							<ul class="[ list-unstyled p-0 ]">
+								{% for item in exhib %}
+
+									<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
+										<div class="[ col-md-3 ]">
+											<label for="artworks">Artwork</label>
+										</div>
+										<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
+											<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
+											<input
+												id="js-datalist_artwork-{{ loop.index }}"
+												type="text" name="artworks-{{ loop.index }}"
+												list="artworks"
+												data-value="{{ item.artw.id }}"
+												value="{{ item.artw.name }}"
+												class="js-datalist-child js-datalist_artwork input--attr [ form-control-plaintext d-none ]"
+											>
+											{{ datalist("artworks", artworks) }}
+										</div>
+										<div class="[ col-2 col-md-1 ]">
+											<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+										</div>
+
+										<div class="[ col-md-3 ]">
+											<label for="artworks">Park</label>
+										</div>
+										<div class="[ col-10 col-md-8 col-lg-6 ]">
+											<a href="{{ url_for('park', id=item.nycpark.id) }}" class="is-active">
+												{{ item.nycpark.name }}
+											</a>
+											<input
+												id="js-datalist_park-{{ loop.index }}"
+												type="text"
+												name="parks-{{ loop.index }}"
+												list="parks"
+												data-value="{{ item.nycpark.id }}"
+												value="{{ item.nycpark.name }}"
+												placeholder="Park Name"
+												class="js-datalist-child js-datalist_park input--attr [ form-control-plaintext d-none ]"
+											>
+											{{ datalist("parks", parks) }}
+										</div>
+									</li>
+
 								{% endfor %}
-							</tbody>
-						</table>
+							</ul>
+						</div>
 
-					{% else %}
-						<p>{{ exhibition.name }} has no related parks.</p>
-					{% endif %}
 
-				</div>
+						{% else %}
+							<p class="is-active [ my-5 ]">{{ exhibition.name }} has no related artworks.</p>
+						{% endif %}
+					</div>
+
 			</div>
 		</section>
 
 
-		<section id="section--parks">
+<!-- 		<section id="section--parks">
 			<div class="is-active chunk [ row justify-content-center py-5 ]">
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Parks</h2>
@@ -153,7 +231,7 @@
 
 				</div>
 			</div>
-		</section>
+		</section> -->
 
 
 
@@ -176,8 +254,18 @@
 								<label for="artworks">Org</label>
 							</div>
 								<div class="[ col-10 col-md-8 col-lg-6 ]">
-									<a href="{{ url_for('org', id=org.id) }}" class="is-active">{{ org.name }}</a>
-									<input id="js-datalist_org-{{ loop.index }}" type="text" name="orgs-{{ loop.index }}" list="orgs" data-value="{{ org.id }}" value="{{ org.name }}" class="js-datalist-child js-datalist_org input--attr [ form-control-plaintext d-none ]">
+									<a href="{{ url_for('org', id=org.id) }}" class="is-active">
+										{{ org.name }}
+									</a>
+									<input
+										id="js-datalist_org-{{ loop.index }}"
+										type="text"
+										name="orgs-{{ loop.index }}"
+										list="orgs"
+										data-value="{{ org.id }}"
+										value="{{ org.name }}"
+										class="js-datalist-child js-datalist_org input--attr [ form-control-plaintext d-none ]"
+									>
 									{{ datalist("orgs", orgs) }}
 								</div>
 								<div class="[ col-2 col-md-1 ]">
@@ -187,57 +275,9 @@
 
 						{% else %}
 
-							<li class="is-active"><i>{{ exhibition.name }} has no related organizations.</i></li>
-
-						{% endfor %}
-					</ul>
-
-				</div>
-			</div>
-		</section>
-
-
-
-		<section id="section--artworks">
-			<div class="chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 py-4 ]">Artworks</h2>
-
-					<div class="[ row justify-content-center d-none ]">
-						<div class="[ col-12 text-right pb-4 ]">
-							<button id="js-add_artwork" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
-						</div>
-					</div>
-
-					<ul class="[ list-unstyled p-0 ]">
-						{% for item in exhib %}
-
-							<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
-								<div class="[ col-md-3 ]">
-									<label for="artworks">Artwork</label>
-								</div>
-								<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
-									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" class="js-datalist-child js-datalist_artwork input--attr [ form-control-plaintext d-none ]">
-									{{ datalist("artworks", artworks) }}
-								</div>
-								<div class="[ col-2 col-md-1 ]">
-									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
-								</div>
-
-								<div class="[ col-md-3 ]">
-									<label for="artworks">Park</label>
-								</div>
-								<div class="[ col-10 col-md-8 col-lg-6 ]">
-									<a href="{{ url_for('park', id=item.nycpark.id) }}" class="is-active">{{ item.nycpark.name }}</a>
-									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ item.nycpark.id }}" value="{{ item.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park input--attr [ form-control-plaintext d-none ]">
-									{{ datalist("parks", parks) }}
-								</div>
+							<li class="is-active">
+								<i>{{ exhibition.name }} has no related organizations.</i>
 							</li>
-
-						{% else %}
-
-							<li class="is-active"><i>{{ exhibition.name }} has no related artworks.</i></li>
 
 						{% endfor %}
 					</ul>
@@ -256,18 +296,29 @@
 					<ul class="[ list-unstyled p-0 ]">
 
 						<li class="is-active [ row mb-4 ]">
-							<div class="[ col-md-3 ]"><label>Install Date{% if exhibition.install_end %}s{% endif %}</label></div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ exhibition.install_start|date_format }}{% if exhibition.install_end %}–{{ exhibition.install_end|date_format }}{% endif %}</div>
+							<div class="[ col-md-3 ]">
+								<label>Install Date{% if exhibition.install_end %}s{% endif %}</label>
+							</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ exhibition.install_start|date_format }}
+								{% if exhibition.install_end %}
+									–{{ exhibition.install_end|date_format }}
+								{% endif %}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 d-none ]">
 							<div class="[ col-md-3 ]">{{ form.install_start.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.install_start(class="form-control-plaintext input--attr", value=exhibition.install_start, readonly=true) }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.install_start(class="form-control-plaintext input--attr", value=exhibition.install_start, readonly=true) }}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 d-none ]">
 							<div class="[ col-md-3 ]">{{ form.install_end.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.install_end(class="form-control-plaintext input--attr", value=exhibition.install_end, readonly=true) }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.install_end(class="form-control-plaintext input--attr", value=exhibition.install_end, readonly=true) }}
+							</div>
 						</li>
 
 					</ul>
@@ -275,6 +326,8 @@
 				</div>
 			</div>
 		</section>
+
+
 
 		<section id="section--de-install">
 			<div class="chunk [ row justify-content-center py-5 ]">
@@ -285,12 +338,16 @@
 
 						<li class="is-active [ row mb-4 align-items-baseline ]">
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ exhibition.deinstall_date|date_format }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ exhibition.deinstall_date|date_format }}
+							</div>
 						</li>
 
 						<li class="[ row mb-4 align-items-baseline d-none ]">
 							<div class="[ col-md-3 ]">{{ form.deinstall_date.label }}</div>
-							<div class="[ col-10 col-md-9 col-lg-7 ]">{{ form.deinstall_date(class="form-control-plaintext input--attr", value=exhibition.deinstall_date, readonly=true) }}</div>
+							<div class="[ col-10 col-md-9 col-lg-7 ]">
+								{{ form.deinstall_date(class="form-control-plaintext input--attr", value=exhibition.deinstall_date, readonly=true) }}
+							</div>
 						</li>
 
 					</ul>
@@ -323,7 +380,16 @@
 			<label for="artworks">Artwork</label>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
+			<input
+				id="js-datalist_artwork"
+				type="text"
+				name="artworks"
+				list="artworks"
+				data-value=""
+				value=""
+				placeholder="Artwork Name"
+				class="js-datalist-child js-datalist_artwork input--attr [ form-control ]"
+			>
 			{{ datalist("artworks", artworks) }}
 		</div>
 		<div class="[ col-2 col-md-1 ]">
@@ -333,7 +399,16 @@
 			<label for="artworks">Park</label>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_park" type="text" name="parks" list="parks" data-value="" value="" placeholder="Park Name" class="js-datalist-child js-datalist_park input--attr [ form-control ]">
+			<input
+				id="js-datalist_park"
+				type="text"
+				name="parks"
+				list="parks"
+				data-value=""
+				value=""
+				placeholder="Park Name"
+				class="js-datalist-child js-datalist_park input--attr [ form-control ]"
+			>
 			{{ datalist("parks", parks) }}
 		</div>
 	</li>
@@ -347,7 +422,16 @@
 			<label for="artworks">Org</label>
 		</div>
 		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_org" type="text" name="orgs" list="orgs" data-value="" value="" placeholder="Organization Name" class="js-datalist-child js-datalist_org input--attr [ form-control ]">
+			<input
+				id="js-datalist_org"
+				type="text"
+				name="orgs"
+				list="orgs"
+				data-value=""
+				value=""
+				placeholder="Organization Name"
+				class="js-datalist-child js-datalist_org input--attr [ form-control ]"
+			>
 			{{ datalist("orgs", orgs) }}
 		</div>
 		<div class="[ col-2 col-md-1 ]">
@@ -369,7 +453,7 @@
 	</div>
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/js/mdb.min.js"></script>
+<!-- <script nonce="{{ csp_nonce() }}" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/js/mdb.min.js"></script> -->
 <script src="{{ url_for('static', filename='js/dist/datatables.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/dist/exhibition.bundle.js') }}"></script>

@@ -24,7 +24,10 @@ class DevelopmentConfig(Config):
 
   DEBUG = True
 
-  print 'THIS APP IS IN DEBUG MODE. YOU SHOULD NOT SEE THIS IN PRODUCTION.'
+  SQLALCHEMY_ECHO = False
+
+  # print 'THIS APP IS IN DEBUG MODE. YOU SHOULD NOT SEE THIS IN PRODUCTION.'
+
 
 
 class ProductionConfig(Config):
@@ -32,7 +35,7 @@ class ProductionConfig(Config):
   Production configurations
   """
 
-  DEBUG = True
+  DEBUG = False
 
   PSQL = {
     'user': 'michaelpurwin',
@@ -42,11 +45,11 @@ class ProductionConfig(Config):
     'port': '5433'
   }
 
-  # SQLALCHEMY_DATABASE_URI = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % PSQL
   SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
-app_config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig
-}
+
+# app_config = {
+#     'development': DevelopmentConfig,
+#     'production': ProductionConfig
+# }

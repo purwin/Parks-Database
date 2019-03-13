@@ -6,9 +6,6 @@ import {view} from './view';
 model.org = new model.Obj("org");
 model.exhibition = new model.Obj("exhibition");
 
-// Set form POST route based on HTML's action attribute
-// model.org.post.edit = $('form').attr('action');
-
 // Set child datalist classnames
 model.org.children = {
   exhibition: {

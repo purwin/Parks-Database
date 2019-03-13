@@ -7,8 +7,7 @@ from flask_talisman import Talisman
 
 app = Flask(__name__, instance_relative_config=True)
 
-# Config currently set to Development Mode
-# app.config.from_object('config.DevelopmentConfig')
+# Set mode from config file
 app.config.from_object('config.ProductionConfig')
 
 
@@ -32,6 +31,7 @@ csp = {
       '*.trusted.com',
       'https://maxcdn.bootstrapcdn.com',
       'https://fonts.googleapis.com',
+      'https://cdnjs.cloudflare.com',
       'https://use.fontawesome.com'
     ],
     'font-src': [
@@ -43,7 +43,7 @@ csp = {
 Talisman(
     app,
     content_security_policy=csp,
-    content_security_policy_nonce_in=['script-src']
+    content_security_policy_nonce_in=['script-src', 'style-src']
 )
 
 db = SQLAlchemy(app)

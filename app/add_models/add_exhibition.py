@@ -86,7 +86,7 @@ def add_exhibition(match=True, **params):
     result = u'Added new exhibition: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = u""
+  warnings = u''
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -113,7 +113,8 @@ def add_exhibition(match=True, **params):
 
     # Add any orgs to exhibitions.org
     if 'orgs' in params:
-      orgs = params.get('orgs', None)
+      # Filter empty items out of 'exhibitions' parameter, strip whitespace
+      orgs = filter(None, params.get('orgs', None)).strip()
       # If exhibition.organizations is string, convert to list
       orgs = [orgs] if\
           (isinstance(orgs, str) or isinstance(orgs, unicode))\
@@ -124,33 +125,47 @@ def add_exhibition(match=True, **params):
         if organization['success'] == True:
           if organization['org'] not in exhibition.organizations:
             exhibition.organizations.append(organization['org'])
-            result += u"\nAdded {} to the {} exhibition"\
-                      .format(org, exhibition.name)
+            result += u'\nAdded {} to the {} exhibition'\
+                      .format(org, name)
 
 
     # Add exh_art_park relationships
     if 'artworks' and 'parks' in params:
       # Flush session to get and use exhibition ID
-      db.session.flush()
 
-      artworks = filter(None, params.get('artworks', None))
-      # If park.artworks is string, convert to list
-      artworks = [artworks] if\
-          (isinstance(artworks, str) or isinstance(artworks, unicode))\
-          else artworks
+      parks = params.get('parks', None)
 
-      parks = filter(None, params.get('parks', None))
       # If exhibition.parks is string, convert to list
-      parks = [parks] if\
+      # while filtering out empty values
+      parks = filter(None, [parks]) if\
           (isinstance(parks, str) or isinstance(parks, unicode))\
-          else parks
+          else filter(None, parks)
 
-      if len(parks) != len(artworks):
+      print "Parks ({}): {}".format(len(parks), parks)
+
+      artworks = params.get('artworks', None)
+
+      # If exhibition.artworks is string, convert to list
+      # while filtering out empty values
+      artworks = filter(None, [artworks]) if\
+          (isinstance(artworks, str) or isinstance(artworks, unicode))\
+          else filter(None, artworks)
+
+      print "Artworks ({}): {}".format(len(artworks), artworks)
+
+      # If empty value found or list lengths are unequal, throw warning
+      if (not parks or not artworks) or (len(parks) != len(artworks)):
+        print 'parks and artworks uneven! {} and {}'.format(len(artworks), len(parks))
         warnings += u'There’s an uneven number of artworks and parks in '\
                      '{}. Skipping addition.\n'.format(name)
-      else:
 
+      # Otherwise, add artworks and parks
+      else:
+        print 'parks and artworks even! {} and {}'.format(len(artworks), len(parks))
+
+        db.session.flush()
         for artwork, park in zip(artworks, parks):
+          print "ARTWORK {}, PARK {}".format(artwork, park)
           artwork_dict = add_artwork.add_artwork(name=artwork)
           artwork_id = artwork_dict['data']['id']
 
@@ -164,17 +179,13 @@ def add_exhibition(match=True, **params):
           )
 
           if exh_art_park['success'] == True:
-            result += u"\nAdded {} @ {} to the {} exhibition"\
-                      .format(exhibition.name, artwork, park)
-            print u"Added {} @ {} to the {} exhibition"\
-                  .format(exhibition.name, artwork, park)
+            result += u'\nAdded {} @ {} to the {} exhibition'\
+                      .format(name, artwork, park)
           else:
-            warnings += u"{}\n".format(exh_art_park['result'])
+            warnings += u'{}\n'.format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
-
-    print u"Add_exhibition: {}".format(result)
 
     return {
       "success": True,
@@ -186,11 +197,12 @@ def add_exhibition(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
-    print u"Error: {}".format(e)
+
+    print u'Error: {}: {}'.format(name, e)
 
     return {
       "success": False,
-      "result": u"{}: {}".format(name, e),
+      "result": u'{}: {}'.format(name, e),
       "warning": warnings,
       "data": params
     }

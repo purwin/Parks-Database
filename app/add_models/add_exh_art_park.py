@@ -24,7 +24,7 @@ def add_exh_art_park(exhibition_id, artwork_id, park_id):
                              .filter_by(park_id=park_id).first()
 
   success = True
-  result = "Exh_art_park: Already exists Exh {} > Art {} > Park {}\n"\
+  result = u'Exh_art_park: Already exists Exh {} > Art {} > Park {}\n'\
       .format(exhibition_id, artwork_id, park_id)
 
   if not exh_art_park:
@@ -39,14 +39,14 @@ def add_exh_art_park(exhibition_id, artwork_id, park_id):
       db.session.add(exh_rel)
       db.session.commit()
 
-      result = "Exh_art_park: Added Exh {} > Art {} > Park {}\n"\
+      result = u'Exh_art_park: Added Exh {} > Art {} > Park {}\n'\
           .format(exhibition_id, artwork_id, park_id)
 
     except Exception as e:
-      print "Exh_art_park error: {}".format(e)
-
       success = False
-      result = "Exh_art_park: Error: {}".format(e)
+      result = u'Exh_art_park: Error: {}'.format(e)
+
+      print result
 
   return {
     "success": success,

@@ -48,35 +48,39 @@ def add_org(match=True, **params):
   elif match == True:
     org = Org.query.filter_by(name=name).first()
 
-  result = 'Found {} in the database. Updated org with new data.'.format(name)
+  result = u'Found {} in the database. Updated org with new data.'.format(name)
 
   # Create new class object if nothing found
   if not org:
     org = Org()
-    result = 'Added new org: {}.'.format(name)
+    result = u'Added new org: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = ""
+  warnings = u''
 
   # Loop through passed key/value attributes, add to class object
   try:
     for key, value in params.iteritems():
       # Check for bad keys, add to warning list
       if key not in org_params:
-        warnings += 'Unexpected {} attribute found. Skipping "{}" addition.'\
+        warnings += u'Unexpected {} attribute found. Skipping "{}" addition.'\
             .format(key, value)
 
       # Add non-list key items to exhibition object
       elif key not in ['exhibitions']:
         setattr(org, key, value)
 
-    # Add any exhibitions to exhibitions.exhibition
+    db.session.add(org)
+
+    # Add any exhibitions to org.exhibitions
     if 'exhibitions' in params:
-      print "There's exhibitions in this!"
       exhibitions = params.get('exhibitions', None)
-      exhibitions = [exhibitions] if\
+
+      # If org.exhibitions is string, convert to list
+      # while filtering out empty values
+      exhibitions = filter(None, [exhibitions]) if\
           (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
-          else exhibitions
+          else filter(None, exhibitions)
 
       # Loop through items in exhibitions list,
       # add each to object relationship
@@ -84,17 +88,12 @@ def add_org(match=True, **params):
         exh = add_exhibition.add_exhibition(name=exhibition)
 
         if exh['success'] == True:
-          print "EXHIBITION: {}".format(exh)
-        if exh['exhibition'] not in org.exhibitions:
-          print '{} exh data not in org.exhibitions'.format(exh['data']['name'])
-          org.exhibitions.append(exh['exhibition'])
+          if exh['exhibition'] not in org.exhibitions:
+            org.exhibitions.append(exh['exhibition'])
 
-    db.session.add(org)
     db.session.commit()
+    db.session.flush()
 
-    print "RESULT: {}".format(result)
-    print "WARNING: {}".format(warnings)
-    print "DATA: {}".format(org.serialize)
     return {
       "success": True,
       "result": result,
@@ -104,10 +103,13 @@ def add_org(match=True, **params):
     }
 
   except Exception as e:
-    print "Error: {}: {}".format(name, e)
+    db.session.rollback()
+
+    print u'Error: {}: {}'.format(name, e)
+
     return {
       "success": False,
-      "result": "{}: {}".format(name, e),
+      "result": u'{}: {}'.format(name, e),
       "warning": warnings,
       "data": params
     }

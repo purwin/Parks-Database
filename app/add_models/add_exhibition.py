@@ -131,8 +131,6 @@ def add_exhibition(match=True, **params):
 
     # Add exh_art_park relationships
     if 'artworks' and 'parks' in params:
-      # Flush session to get and use exhibition ID
-
       parks = params.get('parks', None)
 
       # If exhibition.parks is string, convert to list
@@ -156,6 +154,7 @@ def add_exhibition(match=True, **params):
 
       # Otherwise, add artworks and parks
       else:
+        # Flush session to get and use exhibition ID
         db.session.flush()
 
         for artwork, park in zip(artworks, parks):

@@ -76,12 +76,14 @@ def add_artist(match=True, **params):
 
     # Loop through artwork.artists separately
     if 'artworks' in params:
-      # Filter empty items out of 'artworks' parameter, strip whitespace
-      artworks = filter(None, params.get('artworks', None)).strip()
+      artworks = params.get('artworks', None)
+
       # If artist.artworks is string, convert to list
-      artworks = [artworks] if\
+      # while filtering out empty values
+      artworks = filter(None, [artworks]) if\
           (isinstance(artworks, str) or isinstance(artworks, unicode))\
-          else artworks
+          else filter(None, artworks)
+
       # Loop through list values if they exist, add to artwork
       for artwork in artworks or []:
         art = add_artwork.add_artwork(name=artwork)

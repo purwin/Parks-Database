@@ -113,12 +113,14 @@ def add_exhibition(match=True, **params):
 
     # Add any orgs to exhibitions.org
     if 'orgs' in params:
-      # Filter empty items out of 'exhibitions' parameter, strip whitespace
-      orgs = filter(None, params.get('orgs', None)).strip()
-      # If exhibition.organizations is string, convert to list
-      orgs = [orgs] if\
+      orgs = params.get('orgs', None)
+
+      # If exhibition.orgs is string, convert to list
+      # while filtering out empty values
+      orgs = filter(None, [orgs]) if\
           (isinstance(orgs, str) or isinstance(orgs, unicode))\
-          else orgs
+          else filter(None, orgs)
+
       for org in orgs or []:
         organization = add_org.add_org(name=org)
 

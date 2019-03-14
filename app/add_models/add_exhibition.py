@@ -141,8 +141,6 @@ def add_exhibition(match=True, **params):
           (isinstance(parks, str) or isinstance(parks, unicode))\
           else filter(None, parks)
 
-      print "Parks ({}): {}".format(len(parks), parks)
-
       artworks = params.get('artworks', None)
 
       # If exhibition.artworks is string, convert to list
@@ -151,21 +149,16 @@ def add_exhibition(match=True, **params):
           (isinstance(artworks, str) or isinstance(artworks, unicode))\
           else filter(None, artworks)
 
-      print "Artworks ({}): {}".format(len(artworks), artworks)
-
       # If empty value found or list lengths are unequal, throw warning
       if (not parks or not artworks) or (len(parks) != len(artworks)):
-        print 'parks and artworks uneven! {} and {}'.format(len(artworks), len(parks))
         warnings += u'There’s an uneven number of artworks and parks in '\
                      '{}. Skipping addition.\n'.format(name)
 
       # Otherwise, add artworks and parks
       else:
-        print 'parks and artworks even! {} and {}'.format(len(artworks), len(parks))
-
         db.session.flush()
+
         for artwork, park in zip(artworks, parks):
-          print "ARTWORK {}, PARK {}".format(artwork, park)
           artwork_dict = add_artwork.add_artwork(name=artwork)
           artwork_id = artwork_dict['data']['id']
 

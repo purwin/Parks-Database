@@ -74,7 +74,8 @@ def add_artwork(match=True, **params):
 
     # Loop through artwork.artists separately
     if 'artists' in params:
-      artists = params.get('artists', None)
+      # Filter empty items out of 'artists' parameter, strip whitespace
+      artists = filter(None, params.get('artists', None)).strip()
       # If artwork.artists is string, convert to list
       artists = [artists] if\
           (isinstance(artists, str) or isinstance(artists, unicode))\
@@ -86,33 +87,38 @@ def add_artwork(match=True, **params):
 
         if person['success'] == True:
           if person['artist'] not in artwork.artists:
-            print u'Adding {} artist to {}'\
-                .format(person['data']['name'], artwork.name)
             artwork.artists.append(person['artist'])
         else:
-          warnings += person['result']
+          warnings += u'{}\n'.format(person['result'])
 
-    # # Add exh_art_park relationships
+    # Add exh_art_park relationships
     if 'exhibitions' and 'parks' in params:
-    #   # Flush session to get and use artwork ID
-      db.session.flush()
+      parks = params.get('parks', None)
 
-      exhibitions = filter(None, params.get('exhibitions', None))
-    #   # If artwork.exhibitions is string, convert to list
-      exhibitions = [exhibitions] if\
-          (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
-          else exhibitions
-
-      parks = filter(None, params.get('parks', None))
-    #   # If artwork.parks is string, convert to list
-      parks = [parks] if\
+      # If artwork.parks is string, convert to list
+      # while filtering out empty values
+      parks = filter(None, [parks]) if\
           (isinstance(parks, str) or isinstance(parks, unicode))\
-          else parks
+          else filter(None, parks)
 
-      if len(exhibitions) != len(parks):
+      exhibitions = params.get('exhibitions', None)
+
+      # If artwork.exhibitions is string, convert to list
+      # while filtering out empty values
+      exhibitions = filter(None, [exhibitions]) if\
+          (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
+          else filter(None, exhibitions)
+
+      # If empty value found or list lengths are unequal, throw warning
+      if (not parks or not exhibitions) or (len(parks) != len(exhibitions)):
         warnings += u'There’s an uneven number of exhibitions and parks in '\
                      '{}. Skipping addition.\n'.format(name)
+
+      # Otherwise, add artworks and parks
       else:
+        # Flush session to get and use artwork ID
+        db.session.flush()
+
         for exhibition, park in zip(exhibitions, parks):
           park_dict = add_park.add_park(name=park)
           park_id = park_dict['data']['id']
@@ -130,12 +136,10 @@ def add_artwork(match=True, **params):
             result += u"\nAdded {} @ {} to the {} exhibition"\
                       .format(exhibition, park, artwork.name)
           else:
-            warnings += u"\n{}".format(exh_art_park['result'])
+            warnings += u"{}\n".format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
-
-    print u"Add_artwork: {}".format(result)
 
     return {
       "success": True,
@@ -147,9 +151,12 @@ def add_artwork(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
+
+    print u'Error: {}: {}'.format(name, e)
+
     return {
       "success": False,
-      "result": u"{}: {}".format(name, e),
+      "result": u'{}: {}'.format(name, e),
       "warning": warnings,
       "data": params
     }

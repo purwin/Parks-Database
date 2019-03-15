@@ -15,19 +15,16 @@ class BaseTests(unittest.TestCase):
     app.config.from_object('config.TestConfig')
     return app
 
+
   def setUp(self):
-    self.app = app.test_client()
-
-    db.drop_all()
     db.create_all()
-
-    db.session.add(User("admin", "admin123456"))
+    db.session.add(User(username="admin", password="admin123456"))
     db.session.commit()
 
-    self.assertEqual(app.debug, False)
 
   def tearDown(self):
-    pass
+    db.session.remove()
+    db.drop_all()
 
 
   ########################
@@ -36,10 +33,10 @@ class BaseTests(unittest.TestCase):
 
 
   # Function to create user in app database
-  def signup(self, username, password, remember):
+  def signup(self, username, password):
     return self.app.post(
       '/signup',
-      data=dict(username=username, password=password, remember=remember),
+      data=dict(username=username, password=password),
       follow_redirects=True
     )
 

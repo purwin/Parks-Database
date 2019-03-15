@@ -41,7 +41,7 @@ class TestRoutesPark(BaseTests):
       borough='Queens',
       address='30 Broadway',
       cb='04'
-  )
+    )
 
     park_object = Park.query.filter_by(name='NY Park').first()
     self.assertEqual(park_object.id, 1)
@@ -51,6 +51,19 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(park_object.address, self.default_park['address'])
     self.assertEqual(park_object.cb, self.default_park['cb'])
 
+
+  # Test CREATE park valid
+  def test_valid_park_create_name(self):
+    # print self.default_park
+    self.create_park(name=self.default_park['name'])
+
+    park_object = Park.query.filter_by(name=self.default_park['name']).first()
+    self.assertEqual(park_object.id, 1)
+    self.assertEqual(park_object.name, self.default_park['name'])
+    self.assertEqual(park_object.park_id, '')
+    self.assertEqual(park_object.borough, '')
+    self.assertEqual(park_object.address, '')
+    self.assertEqual(park_object.cb, '')
 
 
 if __name__ == '__main__':

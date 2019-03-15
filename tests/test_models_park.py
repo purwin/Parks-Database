@@ -1,22 +1,20 @@
 import unittest
 
-from base import BasicTests
+from base import BaseTests
 
 from app import db
 from app.parks_db import Park
 
 
+class TestRoutesPark(BaseTests):
 
-class TestRoutesPark(BasicTests):
-
-  default_park = {
-    'name': 'NY Park',
-    'park_id': 'W450',
-    'borough': 'Queens',
-    'address': '30 Broadway',
-    'cb': '04'
-  }
-
+  default_park = dict(
+      name='NY Park',
+      park_id='W450',
+      borough='Queens',
+      address='30 Broadway',
+      cb='04'
+  )
 
   @staticmethod
   def create_park(**kwargs):
@@ -26,17 +24,24 @@ class TestRoutesPark(BasicTests):
     Adds class to Park database, commits session, and flushes to get id val
     Returns the created class instance
     """
-    park = Park(kwargs)
+    park = Park(**kwargs)
     db.session.add(park)
-    db.commit()
-    db.flush()
+    db.session.commit()
+    db.session.flush()
 
     return park
 
 
   # Test CREATE park valid
   def test_valid_park_create(self):
-    self.create_park(self.default_park)
+    # print self.default_park
+    self.create_park(
+      name='NY Park',
+      park_id='W450',
+      borough='Queens',
+      address='30 Broadway',
+      cb='04'
+  )
 
     park_object = Park.query.filter_by(name='NY Park').first()
     self.assertEqual(park_object.id, 1)
@@ -45,6 +50,7 @@ class TestRoutesPark(BasicTests):
     self.assertEqual(park_object.borough, self.default_park['borough'])
     self.assertEqual(park_object.address, self.default_park['address'])
     self.assertEqual(park_object.cb, self.default_park['cb'])
+
 
 
 if __name__ == '__main__':

@@ -36,11 +36,11 @@ class TestRoutesPark(BaseTests):
   def test_valid_park_create(self):
     # print self.default_park
     self.create_park(
-      name=self.default_park['name'],
-      park_id=self.default_park['park_id'],
-      borough=self.default_park['borough'],
-      address=self.default_park['address'],
-      cb=self.default_park['cb']
+        name=self.default_park['name'],
+        park_id=self.default_park['park_id'],
+        borough=self.default_park['borough'],
+        address=self.default_park['address'],
+        cb=self.default_park['cb']
     )
 
     park_object = Park.query.filter_by(name=self.default_park['name']).first()
@@ -76,11 +76,11 @@ class TestRoutesPark(BaseTests):
   # Test UPDATING park
   def test_valid_park_update(self):
     park = self.create_park(
-      name=self.default_park['name'],
-      park_id=self.default_park['park_id'],
-      borough=self.default_park['borough'],
-      address=self.default_park['address'],
-      cb=self.default_park['cb']
+        name=self.default_park['name'],
+        park_id=self.default_park['park_id'],
+        borough=self.default_park['borough'],
+        address=self.default_park['address'],
+        cb=self.default_park['cb']
     )
 
     park.borough = 'Brooklyn'
@@ -99,11 +99,11 @@ class TestRoutesPark(BaseTests):
   # Test DELETING park
   def test_valid_park_delete(self):
     park = self.create_park(
-      name=self.default_park['name'],
-      park_id=self.default_park['park_id'],
-      borough=self.default_park['borough'],
-      address=self.default_park['address'],
-      cb=self.default_park['cb']
+        name=self.default_park['name'],
+        park_id=self.default_park['park_id'],
+        borough=self.default_park['borough'],
+        address=self.default_park['address'],
+        cb=self.default_park['cb']
     )
 
     park_object = Park.query.filter_by(name=self.default_park['name']).first()
@@ -114,6 +114,30 @@ class TestRoutesPark(BaseTests):
 
     park_object = Park.query.filter_by(name=self.default_park['name']).first()
     self.assertIsNone(park_object)
+
+
+  # Test Park.serialize
+  def test_valid_park_serialize(self):
+    self.create_park(
+        name=self.default_park['name'],
+        park_id=self.default_park['park_id'],
+        borough=self.default_park['borough'],
+        address=self.default_park['address'],
+        cb=self.default_park['cb']
+    )
+
+    park_object = Park.query.filter_by(name='NY Park').first()
+    self.assertEqual(
+        park_object.serialize,
+        {
+          'id': 1,
+          'name': self.default_park['name'],
+          'park_id': self.default_park['park_id'],
+          'borough': self.default_park['borough'],
+          'address': self.default_park['address'],
+          'cb': self.default_park['cb']
+        }
+    )
 
 
 if __name__ == '__main__':

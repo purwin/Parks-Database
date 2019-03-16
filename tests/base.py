@@ -17,6 +17,7 @@ class BaseTests(unittest.TestCase):
 
 
   def setUp(self):
+    self.create_app()
     db.create_all()
     db.session.add(User(username="admin", password="admin123456"))
     db.session.commit()

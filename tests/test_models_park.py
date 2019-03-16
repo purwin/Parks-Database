@@ -6,7 +6,7 @@ from app import db
 from app.parks_db import Park
 
 
-class TestRoutesPark(BaseTests):
+class TestModelsPark(BaseTests):
 
   default_park = dict(
       name='NY Park',

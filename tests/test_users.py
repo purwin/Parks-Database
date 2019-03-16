@@ -24,6 +24,30 @@ class TestUsers(BaseTests):
     self.assertTrue(user, "admin")
 
 
+  # Test signup success
+  def test_valid_user_signup(self):
+    signup_user = {
+      "username": 'cool_username',
+      "password": 'party123456'
+    }
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+
+      response = self.signup(
+          username=signup_user['username'],
+          password=signup_user['password']
+      )
+
+      user = current_user.username
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(user, signup_user['username'])
+
+
 
 
 

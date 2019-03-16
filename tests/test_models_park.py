@@ -36,14 +36,14 @@ class TestRoutesPark(BaseTests):
   def test_valid_park_create(self):
     # print self.default_park
     self.create_park(
-      name='NY Park',
-      park_id='W450',
-      borough='Queens',
-      address='30 Broadway',
-      cb='04'
+      name=self.default_park['name'],
+      park_id=self.default_park['park_id'],
+      borough=self.default_park['borough'],
+      address=self.default_park['address'],
+      cb=self.default_park['cb']
     )
 
-    park_object = Park.query.filter_by(name='NY Park').first()
+    park_object = Park.query.filter_by(name=self.default_park['name']).first()
     self.assertEqual(park_object.id, 1)
     self.assertEqual(park_object.name, self.default_park['name'])
     self.assertEqual(park_object.park_id, self.default_park['park_id'])
@@ -64,6 +64,56 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(park_object.borough, '')
     self.assertEqual(park_object.address, '')
     self.assertEqual(park_object.cb, '')
+
+
+  # Test CREATE park with no name value added
+  def test_invalid_park_create_empty(self):
+    self.create_park(name=False)
+
+    self.assertRaises(AttributeError)
+
+
+  # Test UPDATING park
+  def test_valid_park_update(self):
+    park = self.create_park(
+      name=self.default_park['name'],
+      park_id=self.default_park['park_id'],
+      borough=self.default_park['borough'],
+      address=self.default_park['address'],
+      cb=self.default_park['cb']
+    )
+
+    park.borough = 'Brooklyn'
+    db.session.add(park)
+    db.session.commit()
+
+    park_object = Park.query.filter_by(name=self.default_park['name']).first()
+    self.assertEqual(park_object.id, 1)
+    self.assertEqual(park_object.name, self.default_park['name'])
+    self.assertEqual(park_object.park_id, self.default_park['park_id'])
+    self.assertEqual(park_object.borough, 'Brooklyn')
+    self.assertEqual(park_object.address, self.default_park['address'])
+    self.assertEqual(park_object.cb, self.default_park['cb'])
+
+
+  # Test DELETING park
+  def test_valid_park_delete(self):
+    park = self.create_park(
+      name=self.default_park['name'],
+      park_id=self.default_park['park_id'],
+      borough=self.default_park['borough'],
+      address=self.default_park['address'],
+      cb=self.default_park['cb']
+    )
+
+    park_object = Park.query.filter_by(name=self.default_park['name']).first()
+    self.assertEqual(park_object.name, self.default_park['name'])
+
+    db.session.delete(park)
+    db.session.commit()
+
+    park_object = Park.query.filter_by(name=self.default_park['name']).first()
+    self.assertIsNone(park_object)
 
 
 if __name__ == '__main__':

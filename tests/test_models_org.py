@@ -1,4 +1,6 @@
 import unittest
+from sqlalchemy.exc import IntegrityError
+# from psycopg2 import IntegrityError
 
 from base import BaseTests
 
@@ -114,6 +116,29 @@ class TestModelsOrg(BaseTests):
     self.assertEqual(org_object.phone, self.default_org['phone'])
     self.assertEqual(org_object.website, self.default_org['website'])
     self.assertIn(exhibition, org.exhibitions)
+
+
+  # Test ADDING Exhibition to Org twice
+  def test_invalid_org_add_exhibition_twice(self):
+    org = self.create_org(
+        name=self.default_org['name'],
+        phone=self.default_org['phone'],
+        website=self.default_org['website']
+    )
+
+    exhibition = Exhibition(name='Hip Exhibition')
+    db.session.add(exhibition)
+    db.session.commit()
+
+    org.exhibitions.append(exhibition)
+    db.session.add(org)
+    db.session.commit()
+
+    with self.assertRaises(Exception) as cm:
+      org.exhibitions.append(exhibition)
+      db.session.add(org)
+
+    self.assertEqual(IntegrityError, type(cm.exception))
 
 
 if __name__ == '__main__':

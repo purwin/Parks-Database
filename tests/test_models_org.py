@@ -1,6 +1,4 @@
 import unittest
-from sqlalchemy.exc import IntegrityError
-# from psycopg2 import IntegrityError
 
 from base import BaseTests
 
@@ -138,6 +136,24 @@ class TestModelsOrg(BaseTests):
     db.session.add(org)
 
     self.assertRaises(Exception)
+
+
+  # Test DELETING Org
+  def test_valid_org_delete(self):
+    org = self.create_org(
+        name=self.default_org['name'],
+        phone=self.default_org['phone'],
+        website=self.default_org['website']
+    )
+
+    org_object = Org.query.filter_by(name=self.default_org['name']).one()
+
+    db.session.delete(org)
+    db.session.commit()
+
+    org_object = Org.query.filter_by(name=self.default_org['name']).first()
+
+    self.assertFalse(org_object)
 
 
 if __name__ == '__main__':

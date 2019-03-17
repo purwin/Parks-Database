@@ -73,5 +73,26 @@ class TestUsers(BaseTests):
     self.assertIn(b'/signup', req)
 
 
+  # Test signup not admin
+  def test_invalid_user_signup_not_admin(self):
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      response = self.signup(
+          username=self.default_user['username'],
+          password='party123456'
+      )
+
+      req = request.url
+
+    print "test_invalid_user_signup_not_admin: ", response
+
+    user = User.query.filter_by(username=self.default_user['username']).first()
+
+    self.assertIn(b'/login', req)
+    self.assertIsNone(user)
+
+
 if __name__ == "__main__":
   unittest.main()

@@ -1,10 +1,12 @@
 import unittest
+from werkzeug.security import generate_password_hash
 
 from app import app, db
 from app.users import User
 
 
 class BaseTests(unittest.TestCase):
+
 
   ############################
   #### setup and teardown ####
@@ -18,8 +20,11 @@ class BaseTests(unittest.TestCase):
 
   def setUp(self):
     self.create_app()
+    self.app = app.test_client()
     db.create_all()
-    db.session.add(User(username="admin", password="admin123456"))
+    pw = generate_password_hash("admin123456",
+      method='sha256')
+    db.session.add(User(username="admin", password=pw))
     db.session.commit()
 
 
@@ -43,10 +48,10 @@ class BaseTests(unittest.TestCase):
 
   # Function to log user into app
   # Set admin username/password as defaults
-  def login(self, username="admin", password="admin123456", remember=True):
+  def login(self, username="admin", password="admin123456"):
     return self.app.post(
       '/login',
-      data=dict(username=username, password=password, remember=remember),
+      data=dict(username=username, password=password),
       follow_redirects=True
     )
 

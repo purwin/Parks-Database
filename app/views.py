@@ -109,8 +109,6 @@ def login():
       if check_password_hash(user.password, form.password.data):
         login_user(user, remember = form.remember.data)
         next = request.args.get('next')
-        print "NEXT!!!!!: {}".format(next)
-        print "ARGS!!!!!: {}".format(request.values)
         if not next or url_parse(next).netloc != '':
           next = session['url']
           return redirect(next)

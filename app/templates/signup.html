@@ -48,7 +48,7 @@
 								{{ form.username.label }}
 							</div>
 							<div class="[ col-md-9 ]">
-								{{ form.username(class="form-control", placeholder=form.username.label.text) }}
+								{{ form.username(class="input--attr form-control", placeholder=form.username.label.text) }}
 							</div>
 						</li>
 
@@ -57,14 +57,14 @@
 								{{ form.password.label }}
 							</div>
 							<div class="[ col-md-9 ]">
-								{{ form.password(class="form-control", placeholder=form.password.label.text) }}
+								{{ form.password(class="input--attr form-control", placeholder=form.password.label.text) }}
 							</div>
 						</li>
 
 						<li class="[ row mb-3 align-items-baseline ]">
 							<div class="[ col ]">
 								{{ form.remember.label }}
-								{{ form.remember }}
+								{{ form.remember(class="input--attr") }}
 							</div>
 						</li>
 

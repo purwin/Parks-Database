@@ -9,17 +9,20 @@ class Config(object):
   """
   Common configurations
   """
-  SQLALCHEMY_DATABASE_URI = 'sqlite:////{}/parks.db'.format(BASE_DIR)
+
   SECRET_KEY = os.environ.get('PARKS_DB_KEY')
   SQLALCHEMY_TRACK_MODIFICATIONS = True
+  SQLALCHEMY_ECHO = False
+  WTF_CSRF_ENABLED = True
 
 
 class DevelopmentConfig(Config):
   """
   Development configurations
   """
+
+  SQLALCHEMY_DATABASE_URI = 'sqlite:////{}/parks.db'.format(BASE_DIR)
   DEBUG = True
-  SQLALCHEMY_ECHO = False
 
 
 class ProductionConfig(Config):
@@ -27,15 +30,8 @@ class ProductionConfig(Config):
   Production configurations
   """
 
-  DEBUG = False
-  PSQL = {
-    'user': 'michaelpurwin',
-    'pw': 'P1i1z1z1a1!',
-    'db': 'parks_db',
-    'host': 'localhost',
-    'port': '5433'
-  }
   SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+  DEBUG = False
 
 
 class TestConfig(Config):
@@ -44,7 +40,6 @@ class TestConfig(Config):
   """
 
   SQLALCHEMY_DATABASE_URI = 'sqlite:////{}/test.db'.format(BASE_DIR)
-  SECRET_KEY = os.environ.get('PARKS_DB_KEY')
   DEBUG = True
   TESTING = True
   WTF_CSRF_ENABLED = False

@@ -1139,7 +1139,7 @@ def search():
   form = Form_search()
   if form.validate_on_submit():
     obj = eval(form.class_object.data)
-    results = obj.query.filter(obj.name.contains(form.search.data)).all()
+    results = obj.query.filter(obj.name.ilike("%{}%".format(form.search.data))).all()
     return render_template('results.html', form = form, results = results)
   else:
     # Return errors if form doesn't validate

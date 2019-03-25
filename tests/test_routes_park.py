@@ -144,6 +144,13 @@ class TestRoutesPark(BaseTests):
 
 
   # Test POST park EDIT page not logged in
+  def test_invalid_park_edit_post_not_logged_in(self):
+    with self.app:
+      response = self.app.post('/parks/1/edit', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
   # Test park EDIT page logged in
 

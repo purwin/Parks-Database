@@ -6,7 +6,11 @@ artist_artwork = db.Table(
   'artist_artwork',
   db.Column('artwork_id', db.Integer, db.ForeignKey('artwork.id')),
   db.Column('artist_id', db.Integer, db.ForeignKey('artist.id')),
-  db.UniqueConstraint('artwork_id', 'artist_id', name='UC_artist_id_artwork_id')
+  db.UniqueConstraint(
+      'artwork_id',
+      'artist_id',
+      name='UC_artist_id_artwork_id'
+  )
 )
 
 
@@ -14,14 +18,18 @@ exh_org = db.Table(
   'exh_org',
   db.Column('exhibition_id', db.Integer, db.ForeignKey('exhibition.id')),
   db.Column('organization_id', db.Integer, db.ForeignKey('org.id')),
-  db.UniqueConstraint('exhibition_id', 'organization_id', name='UC_exhibition_id_organization_id')
+  db.UniqueConstraint(
+      'exhibition_id',
+      'organization_id',
+      name='UC_exhibition_id_organization_id'
+  )
 )
 
 
 class Exhibition(db.Model):
   # Bio
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80), default='')
+  name = db.Column(db.String(80), default='', nullable=False)
   start_date = db.Column(db.Date())
   end_date = db.Column(db.Date())
   opening = db.Column(db.Date())
@@ -54,21 +62,21 @@ class Exhibition(db.Model):
   press_clippings = db.Column(db.String(5), default='')
 
   # Related
-  parks = db.relationship('Park',
-                          secondary='exh_art_park',
-                          backref=db.backref('exhibitions'),
-                          viewonly=True
+  parks = db.relationship(
+      'Park',
+      secondary='exh_art_park',
+      backref=db.backref('exhibitions'),
+      viewonly=True
   )
-  artworks = db.relationship('Artwork',
-                             secondary='exh_art_park',
-                             backref=db.backref('exhibitions')
+  artworks = db.relationship(
+      'Artwork',
+      secondary='exh_art_park',
+      backref=db.backref('exhibitions')
   )
-  events = db.relationship('Event', backref='exhibitions')
-  organizations = db.relationship('Org',
-                                  secondary=exh_org,
-                                  backref=db.backref('exhibitions',
-                                                     lazy='dynamic'
-                                                    )
+  organizations = db.relationship(
+      'Org',
+      secondary=exh_org,
+      backref=db.backref('exhibitions', lazy='dynamic')
   )
 
   def __repr__(self):
@@ -112,7 +120,7 @@ class Exhibition(db.Model):
 class Park(db.Model):
   __searchable__ = ['name']
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80), default='')
+  name = db.Column(db.String(80), nullable=False)
   park_id = db.Column(db.String(8), default='')
   borough = db.Column(db.String(15), default='')
   address = db.Column(db.String(200), default='')
@@ -136,14 +144,16 @@ class Park(db.Model):
 
 class Artwork(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80), default='')
-  parks = db.relationship('Park',
-                          secondary='exh_art_park',
-                          backref=db.backref('artworks')
+  name = db.Column(db.String(80), nullable=False)
+  parks = db.relationship(
+      'Park',
+      secondary='exh_art_park',
+      backref=db.backref('artworks')
   )
-  artists = db.relationship('Artist',
-                             secondary='artist_artwork',
-                             backref=db.backref('artworks', lazy='dynamic')
+  artists = db.relationship(
+      'Artist',
+      secondary='artist_artwork',
+      backref=db.backref('artworks', lazy='dynamic')
   )
 
   def __repr__(self):
@@ -158,17 +168,20 @@ class Artwork(db.Model):
 
 
 class Exh_art_park(db.Model):
-  exhibition_id = db.Column(db.Integer,
-                            db.ForeignKey('exhibition.id'),
-                            primary_key=True
+  exhibition_id = db.Column(
+      db.Integer,
+      db.ForeignKey('exhibition.id'),
+      primary_key=True
   )
-  artwork_id = db.Column(db.Integer,
-                         db.ForeignKey('artwork.id'),
-                         primary_key=True
+  artwork_id = db.Column(
+      db.Integer,
+      db.ForeignKey('artwork.id'),
+      primary_key=True
   )
-  park_id = db.Column(db.Integer,
-                      db.ForeignKey('park.id'),
-                      primary_key=True
+  park_id = db.Column(
+      db.Integer,
+      db.ForeignKey('park.id'),
+      primary_key=True
   )
 
   # db.UniqueConstraint('exhibition_id', 'artwork_id')
@@ -182,7 +195,7 @@ class Exh_art_park(db.Model):
 
 class Artist(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  pName = db.Column(db.String(40), default='')
+  pName = db.Column(db.String(40), nullable=False)
   fName = db.Column(db.String(40), default='')
   email = db.Column(db.String(80), default='')
   phone = db.Column(db.String(12), default='')
@@ -213,7 +226,7 @@ class Artist(db.Model):
 
 class Org(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(40), default='')
+  name = db.Column(db.String(40), nullable=False)
   website = db.Column(db.String(40), default='')
   phone = db.Column(db.String(12), default='')
 
@@ -226,18 +239,6 @@ class Org(db.Model):
       'phone': self.phone,
       'website': self.website
     }
-
-
-class Event(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(40))
-  exhibition_id = db.Column(db.Integer, db.ForeignKey('exhibition.id'))
-  date = db.Column(db.String(20))
-  time = db.Column(db.String(20))
-  location = db.Column(db.String(80))
-
-  def __repr__(self):
-    return "<Event: (%s)>"
 
 
 def init_db():

@@ -93,7 +93,7 @@ class TestRoutesPark(BaseTests):
 
 
   # Test park CREATE page not logged in
-  def test_invalid_park_create_not_logged_in(self):
+  def test_invalid_park_create_get_not_logged_in(self):
     with self.app:
       response = self.app.get('/parks/create', follow_redirects=True)
 

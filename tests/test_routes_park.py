@@ -32,7 +32,7 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test park page with no parks
+  # Test park page
   def test_valid_park(self):
     # Add park to database
     park = Park(
@@ -71,7 +71,28 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 404)
 
 
-  # Test parks page not logged in
+  # Test park page not logged in
+  def test_invalid_park_not_logged_in(self):
+    # Add park to database
+    park = Park(
+        name='NY Park',
+        park_id='W450',
+        borough='Queens',
+        address='30 Broadway',
+        cb='04'
+    )
+    db.session.add(park)
+    db.session.commit()
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      response = self.app.get('/parks/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
 
   # Test park CREATE page not logged in

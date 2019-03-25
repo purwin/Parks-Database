@@ -59,31 +59,108 @@
 
 					{% for line in active_parks %}
 
-						{% if line.Park.id not in park_list %}
-							<h3 class="[ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+						{%- if line.Park.id not in park_list -%}
+							<h3 class="indent [ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+								{%- set park_exhibitions = [] -%}
+								{%- for exhibition in line.Park.exhibitions -%}
+									{%- if exhibition.id in active_exhibitions -%}
+										{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
+									{%- endif -%}
+								{%- endfor -%}
+								{%- for exhibition in park_exhibitions -%}
+									<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+								{%- endfor -%}
+							</h3>
+							{%- set park_list = park_list.append(line.Park.id) -%}
+						{%- endif -%}
 
-								<!-- Loop and get list of park exhibitions if exhibition is in the list of active exhibitions -->
-								{% set park_exhibitions = [] %}
-								{% for exhibition in line.Park.exhibitions %}
-									{% if exhibition.id in active_exhibitions %}
-										{% set park_exhibitions = park_exhibitions.append(exhibition) %}
-									{% endif %}
-								{% endfor %}
-
-								<!-- Loop and display each active park exhibition -->
-								{% for exhibition in park_exhibitions %}
-									<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>
-									{{ "/" if not loop.last }}
-								{% endfor %}
-
-							)</h3>
-							<!-- Add park to list of parks -->
-							{% set park_list = park_list.append(line.Park.id) %}
-						{% endif %}
-
-					{% else %}
+					{%- else -%}
 						<p><i>There are no active parks.</i></p>
-					{% endfor %}
+					{%- endfor -%}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--upcoming">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Upcoming Parks</h2>
+
+				<!-- Loop and get list of upcoming exhibitions -->
+				{%- set upcoming_exhibitions = [] -%}
+				{%- for line in upcoming_parks -%}
+					{%- set active_exhibitions = upcoming_exhibitions.append(line.Exhibition.id) -%}
+				{%- endfor -%}
+
+				<!-- Create list of parks to prevent listing duplicates -->
+				{% set park_list = [] %}
+
+					{%- for line in upcoming_parks -%}
+
+						{%- if line.Park.id not in park_list -%}
+							<h3 class="indent [ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+								{%- set park_exhibitions = [] -%}
+								{%- for exhibition in line.Park.exhibitions -%}
+									{%- if exhibition.id in upcoming_exhibitions -%}
+										{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
+									{%- endif -%}
+								{%- endfor -%}
+								{%- for exhibition in park_exhibitions -%}
+									<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+								{%- endfor -%}
+							</h3>
+							{%- set park_list = park_list.append(line.Park.id) -%}
+						{%- endif -%}
+
+					{%- else -%}
+						<p><i>There are no parks with upcoming exhibitions.</i></p>
+					{%- endfor -%}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--recent">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Recent Parks</h2>
+
+				<!-- Loop and get list of recent exhibitions -->
+				{% set recent_exhibitions = [] %}
+				{% for line in recent_parks %}
+					{% set active_exhibitions = recent_exhibitions.append(line.Exhibition.id) %}
+				{% endfor %}
+
+				<!-- Create list of parks to prevent listing duplicates -->
+				{% set park_list = [] %}
+
+					{%- for line in recent_parks -%}
+
+						{%- if line.Park.id not in park_list -%}
+							<h3 class="indent [ py-1 ]"><a href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+								{%- set park_exhibitions = [] -%}
+								{%- for exhibition in line.Park.exhibitions -%}
+									{%- if exhibition.id in recent_exhibitions -%}
+										{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
+									{%- endif -%}
+								{%- endfor -%}
+								{%- for exhibition in park_exhibitions -%}
+									<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+								{%- endfor -%}
+							</h3>
+							{%- set park_list = park_list.append(line.Park.id) -%}
+						{%- endif -%}
+
+					{%- else -%}
+						<p><i>There are no parks with recent exhibitions.</i></p>
+					{%- endfor -%}
 
 			</div>
 		</div>
@@ -97,20 +174,16 @@
 
 				<h2 class="[ display-4 py-4 ]">Parks</h2>
 
-				{% for park in parks %}
-
-					<h3 class="[ pt-3 ]"><a href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a></h3>
-					<ul class="[ list-unstyled p-0 ]">
-						<li>Park ID: {{ park.park_id }}</li>
-						<li>Address: {{ park.address }}</li>
-						<li>Community Board: {{ park.cb }}</li>
-					</ul>
-
-				{% else %}
-
+				{%- for park in parks -%}
+					<h3 class="indent [ pt-3 ]">
+						<a href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a>
+						{%- for exhibition in park.exhibitions -%}
+							{{ " (" if loop.first }}<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ " / " if not loop.last else ")" }}
+						{%- endfor -%}
+					</h3>
+				{%- else -%}
 					<p><i>There are no parks in the database.</i></p>
-
-				{% endfor %}
+				{%- endfor -%}
 
 			</div>
 		</div>

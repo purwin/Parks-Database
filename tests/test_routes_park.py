@@ -84,10 +84,7 @@ class TestRoutesPark(BaseTests):
     db.session.add(park)
     db.session.commit()
 
-    with self.app as c:
-      with c.session_transaction() as sess:
-        sess['url'] = '/'
-
+    with self.app:
       response = self.app.get('/parks/1', follow_redirects=True)
       req = request.url
 

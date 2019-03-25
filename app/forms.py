@@ -54,7 +54,7 @@ class Form_park(FlaskForm):
           ('Staten Island', 'Staten Island')
       ],
       validators=[DataRequired()])
-  address = StringField('Address')
+  address = TextAreaField('Address')
   cb = StringField('Community Board')
 
   # Related

@@ -245,7 +245,7 @@ def export_data():
 @app.route('/exhibitions')
 @login_required
 def exhibitions():
-  exhibitions = Exhibition.query.all()
+  exhibitions = Exhibition.query.order_by(Exhibition.name).all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
@@ -550,7 +550,7 @@ def exhibition_delete(id):
 @app.route('/parks')
 @login_required
 def parks():
-  parks = Park.query.all()
+  parks = Park.query.order_by(Park.name).all()
   active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
     .filter(Exh_art_park.exhibition_id == Exhibition.id)\
     .filter(Exh_art_park.park_id == Park.id)\
@@ -720,7 +720,7 @@ def park_delete(id):
 @app.route('/artists')
 @login_required
 def artists():
-  artists = Artist.query.all()
+  artists = Artist.query.order_by(Artist.pName).all()
   form = Form_search()
   session['url'] = request.path
   return render_template('artists.html', artists = artists, form = form)
@@ -852,7 +852,7 @@ def artist_delete(id):
 @app.route('/artworks')
 @login_required
 def artworks():
-  artworks = Artwork.query.all()
+  artworks = Artwork.query.order_by(Artwork.name).all()
   active_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
       .filter(Exh_art_park.exhibition_id == Exhibition.id)\
       .filter(Exh_art_park.artwork_id == Artwork.id)\
@@ -1035,7 +1035,7 @@ def artwork_delete(id):
 @app.route('/orgs')
 @login_required
 def orgs():
-  orgs = Org.query.all()
+  orgs = Org.query.order_by(Org.name).all()
   form = Form_search()
   session['url'] = request.path
   return render_template('orgs.html', orgs = orgs, form = form)

@@ -134,11 +134,11 @@ class TestRoutesPark(BaseTests):
       response = self.app.post(
           '/parks/create',
           data=dict(
-              name='NY Park',
-              park_id='W450',
-              borough='Queens',
-              address='30 Broadway',
-              cb='04'
+              name=self.default_park['name'],
+              park_id=self.default_park['park_id'],
+              borough=self.default_park['borough'],
+              address=self.default_park['address'],
+              cb=self.default_park['cb']
           ),
           follow_redirects=True
       )
@@ -154,6 +154,40 @@ class TestRoutesPark(BaseTests):
       req = request.url
 
     self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test POST park EDIT page logged in
+  def test_valid_park_edit_post(self):
+    new_park = 'NYC Park'
+    # Add park to database
+    self.create_park(
+        name=self.default_park['name'],
+        park_id=self.default_park['park_id'],
+        borough=self.default_park['borough'],
+        address=self.default_park['address'],
+        cb=self.default_park['cb']
+    )
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/parks/1/edit',
+          data=dict(
+              name=new_park,
+              park_id=self.default_park['park_id'],
+              borough=self.default_park['borough'],
+              address=self.default_park['address'],
+              cb=self.default_park['cb']
+          ),
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertIn(new_park, response.data)
     self.assertEqual(response.status_code, 200)
 
 
@@ -174,9 +208,6 @@ class TestRoutesPark(BaseTests):
 
     self.assertIn(b'/login', req)
     self.assertEqual(response.status_code, 200)
-
-  # Test park EDIT page logged in
-
 
   # Test park DELETE page not logged in
 

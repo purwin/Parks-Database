@@ -96,6 +96,12 @@ class TestRoutesPark(BaseTests):
 
 
   # Test park CREATE page not logged in
+  def test_invalid_park_create_not_logged_in(self):
+    with self.app:
+      response = self.app.get('/parks/create', follow_redirects=True)
+
+    self.assertIn('Method Not Allowed', response.data)
+    self.assertEqual(response.status_code, 405)
 
   # Test park CREATE page logged in
 

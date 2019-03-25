@@ -50,11 +50,11 @@ class TestRoutesPark(BaseTests):
         sess['url'] = '/'
 
       self.login()
-      response = self.app.get('/park/1', follow_redirects=True)
+      response = self.app.get('/parks/1', follow_redirects=True)
       req = request.url
 
-    self.assertIn(b'/park/1', req)
-    self.assertEqual(response.status_code, 404)
+    self.assertIn(b'/parks/1', req)
+    self.assertEqual(response.status_code, 200)
 
 
   # Test park page with no parks
@@ -64,10 +64,10 @@ class TestRoutesPark(BaseTests):
         sess['url'] = '/'
 
       self.login()
-      response = self.app.get('/park/1', follow_redirects=True)
+      response = self.app.get('/parks/1', follow_redirects=True)
       req = request.url
 
-    self.assertIn(b'/park/1', req)
+    self.assertIn(b'/parks/1', req)
     self.assertEqual(response.status_code, 404)
 
 

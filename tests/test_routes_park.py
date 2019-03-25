@@ -134,7 +134,15 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test GET park EDIT page not logged in
+  # Test GET park EDIT page
+  def test_invalid_park_edit_get(self):
+    with self.app:
+      response = self.app.get('/parks/1/edit', follow_redirects=True)
+
+    self.assertIn('Method Not Allowed', response.data)
+    self.assertEqual(response.status_code, 405)
+
+
   # Test POST park EDIT page not logged in
 
   # Test park EDIT page logged in

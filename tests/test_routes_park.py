@@ -92,7 +92,7 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test park CREATE page not logged in
+  # Test GET park CREATE page not logged in
   def test_invalid_park_create_get_not_logged_in(self):
     with self.app:
       response = self.app.get('/parks/create', follow_redirects=True)
@@ -100,8 +100,37 @@ class TestRoutesPark(BaseTests):
     self.assertIn('Method Not Allowed', response.data)
     self.assertEqual(response.status_code, 405)
 
-  # Test park CREATE page logged in
 
+  # Test POST park CREATE page not logged in
+  def test_invalid_park_create_post_not_logged_in(self):
+    with self.app:
+      response = self.app.post('/parks/create', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
+  # Test park CREATE page logged in
+  def test_valie_park_create_post(self):
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/parks/create',
+          data=dict(
+              name='NY Park',
+              park_id='W450',
+              borough='Queens',
+              address='30 Broadway',
+              cb='04'
+          ),
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertEqual(response.status_code, 200)
 
   # Test park EDIT page not logged in
 

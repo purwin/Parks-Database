@@ -210,6 +210,37 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
+  # Test GET park DELETE page logged in
+  def test_valid_park_delete_get(self):
+    # Add park to database
+    self.create_park(
+        name=self.default_park['name'],
+        park_id=self.default_park['park_id'],
+        borough=self.default_park['borough'],
+        address=self.default_park['address'],
+        cb=self.default_park['cb']
+    )
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get(
+          '/parks/1/delete',
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn('/parks/1/delete', req)
+    self.assertIn('Are you sure you want to delete', response.data)
+    self.assertIn(self.default_park['name'], response.data)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test POST park DELETE page logged in
+
+
   # Test GET park DELETE page not logged in
   def test_invalid_park_delete_get_not_logged_in(self):
     with self.app:
@@ -219,9 +250,9 @@ class TestRoutesPark(BaseTests):
     self.assertIn(b'/login', req)
     self.assertEqual(response.status_code, 200)
 
+
   # Test POST park DELETE page not logged in
 
-  # Test park DELETE page logged in
 
 if __name__ == "__main__":
   unittest.main()

@@ -76,7 +76,7 @@
 							</div>
 							<div class="[ col-10 col-md-9 col-lg-7 ]">
 								<p class="is-active [ m-0 ]"><a href="https://www.google.com/maps/search/{{ park.address }}" target="_blank">{{ park.address }}</a></p>
-								{{ form.address(class="form-control-plaintext input--attr d-none", value=park.address, readonly=true) }}
+								{{ form.address(class="form-control-plaintext input--attr d-none", readonly=true, disabled=true) }}
 							</div>
 						</li>
 

@@ -591,6 +591,8 @@ def park(id):
   form = Form_park()
   # Set default select item to current park borough
   form.borough.data = park.borough
+  # Set default address textarea value
+  form.address.data = park.address
   park_art = Exh_art_park.query.filter_by(park_id = id)\
                                .order_by(Exh_art_park.exhibition_id).all()
   session['url'] = request.path

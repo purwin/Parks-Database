@@ -55,7 +55,7 @@ def load_user(user_id):
   return User.query.get(user_id)
 
 @app.template_filter('date_format')
-def date_format(value, format='%m/%d/%y'):
+def date_format(value, format='%m/%d/%Y'):
   if value is not None:
     return value.strftime(format)
 
@@ -85,12 +85,10 @@ def home():
                                        .all()
   upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
                                          .order_by(Exhibition.start_date)\
-                                         .limit(10)\
-                                         .all()
+                                         .limit(10)
   recent_exhibitions = Exhibition.query.filter(Exhibition.end_date <= today)\
                                          .order_by(Exhibition.end_date.desc())\
-                                         .limit(10)\
-                                         .all()
+                                         .limit(10)
   session['url'] = request.path
   return render_template('index.html', exhibitions=exhibitions, parks=parks,
     active_exhibitions = active_exhibitions,
@@ -198,7 +196,6 @@ def import_data():
   if form.validate_on_submit():
     # Get file
     file = form.file.data
-    print "FILENAME: {}".format(file)
     # Get form data (object type, classes, etc.)
     class_object = form.class_object.data
     # Get column heads to import
@@ -278,6 +275,8 @@ def exhibition(id):
   orgs = Org.query.all()
   exhib = Exh_art_park.query.filter_by(exhibition_id = id).all()
   form = Form_exhibition()
+  # Set textarea default value
+  form.comments.data = exhibition.comments
   session['url'] = request.path
   return render_template('exhibition.html', exhibition = exhibition,
                          exhib = exhib, artworks = artworks, parks = parks,
@@ -559,10 +558,28 @@ def parks():
     .filter(Exhibition.start_date < today)\
     .order_by(Park.name)\
     .all()
+  upcoming_parks = db.session.query(Exh_art_park, Exhibition, Park)\
+    .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+    .filter(Exh_art_park.park_id == Park.id)\
+    .filter(Exhibition.start_date > today)\
+    .order_by(Exhibition.start_date)\
+    .limit(5)
+  recent_parks = db.session.query(Exh_art_park, Exhibition, Park)\
+    .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+    .filter(Exh_art_park.park_id == Park.id)\
+    .filter(Exhibition.end_date < today)\
+    .order_by(Exhibition.end_date.desc())\
+    .limit(5)
   form = Form_search()
   session['url'] = request.path
-  return render_template('parks.html', parks = parks,
-    active_parks = active_parks, form = form)
+  return render_template(
+      'parks.html',
+      parks = parks,
+      active_parks = active_parks,
+      upcoming_parks = upcoming_parks,
+      recent_parks = recent_parks,
+      form = form
+  )
 
 
 @app.route('/parks/<int:id>')

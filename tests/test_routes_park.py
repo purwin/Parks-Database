@@ -92,8 +92,8 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test GET park CREATE page not logged in
-  def test_invalid_park_create_get_not_logged_in(self):
+  # Test GET park CREATE page
+  def test_invalid_park_create_get(self):
     with self.app:
       response = self.app.get('/parks/create', follow_redirects=True)
 
@@ -101,17 +101,8 @@ class TestRoutesPark(BaseTests):
     self.assertEqual(response.status_code, 405)
 
 
-  # Test POST park CREATE page not logged in
-  def test_invalid_park_create_post_not_logged_in(self):
-    with self.app:
-      response = self.app.post('/parks/create', follow_redirects=True)
-      req = request.url
-
-    self.assertIn(b'/login', req)
-    self.assertEqual(response.status_code, 200)
-
   # Test park CREATE page logged in
-  def test_valie_park_create_post(self):
+  def test_valid_park_create_post(self):
     with self.app as c:
       with c.session_transaction() as sess:
         sess['url'] = '/'
@@ -132,7 +123,19 @@ class TestRoutesPark(BaseTests):
     self.assertIn('"success": true', response.data)
     self.assertEqual(response.status_code, 200)
 
-  # Test park EDIT page not logged in
+
+  # Test POST park CREATE page not logged in
+  def test_invalid_park_create_post_not_logged_in(self):
+    with self.app:
+      response = self.app.post('/parks/create', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test GET park EDIT page not logged in
+  # Test POST park EDIT page not logged in
 
   # Test park EDIT page logged in
 

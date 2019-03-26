@@ -12,6 +12,7 @@ from flask import (
   send_file
 )
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -78,7 +79,16 @@ def error_500(error):
 @app.route('/')
 @login_required
 def home():
-  exhibitions = Exhibition.query.all()
+  today_items = Exhibition.query.filter(or_(
+                                    Exhibition.start_date == today,
+                                    Exhibition.end_date == today,
+                                    Exhibition.opening == today,
+                                    Exhibition.install_start == today,
+                                    Exhibition.install_end == today,
+                                    Exhibition.deinstall_date == today
+                                ))\
+                                .order_by(Exhibition.start_date)\
+                                .all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
@@ -90,10 +100,14 @@ def home():
                                          .order_by(Exhibition.end_date.desc())\
                                          .limit(10)
   session['url'] = request.path
-  return render_template('index.html', exhibitions=exhibitions, parks=parks,
-    active_exhibitions = active_exhibitions,
-    upcoming_exhibitions = upcoming_exhibitions,
-    recent_exhibitions = recent_exhibitions)
+  return render_template(
+      'index.html',
+      today=today,
+      today_items=today_items,
+      active_exhibitions=active_exhibitions,
+      upcoming_exhibitions=upcoming_exhibitions,
+      recent_exhibitions=recent_exhibitions
+  )
 
 
 @app.route('/login', methods=['GET', 'POST'])

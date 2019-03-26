@@ -29,7 +29,7 @@ exh_org = db.Table(
 class Exhibition(db.Model):
   # Bio
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(), default='', nullable=False)
+  name = db.Column(db.String(240), default='', nullable=False)
   start_date = db.Column(db.Date())
   end_date = db.Column(db.Date())
   opening = db.Column(db.Date())
@@ -120,10 +120,10 @@ class Exhibition(db.Model):
 class Park(db.Model):
   __searchable__ = ['name']
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80), nullable=False)
-  park_id = db.Column(db.String(8), default='')
+  name = db.Column(db.String(240), nullable=False)
+  park_id = db.Column(db.String(15), default='')
   borough = db.Column(db.String(15), default='')
-  address = db.Column(db.String(200), default='')
+  address = db.Column(db.String(500), default='')
   cb = db.Column(db.String(40), default='')
 
   def __repr__(self):
@@ -144,7 +144,7 @@ class Park(db.Model):
 
 class Artwork(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80), nullable=False)
+  name = db.Column(db.String(240), nullable=False)
   parks = db.relationship(
       'Park',
       secondary='exh_art_park',
@@ -195,8 +195,8 @@ class Exh_art_park(db.Model):
 
 class Artist(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  pName = db.Column(db.String(40), nullable=False)
-  fName = db.Column(db.String(40), default='')
+  pName = db.Column(db.String(120), nullable=False)
+  fName = db.Column(db.String(120), default='')
   email = db.Column(db.String(80), default='')
   phone = db.Column(db.String(12), default='')
   website = db.Column(db.String(80), default='')
@@ -226,7 +226,7 @@ class Artist(db.Model):
 
 class Org(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(40), nullable=False)
+  name = db.Column(db.String(240), nullable=False)
   website = db.Column(db.String(40), default='')
   phone = db.Column(db.String(12), default='')
 

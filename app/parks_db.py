@@ -29,7 +29,7 @@ exh_org = db.Table(
 class Exhibition(db.Model):
   # Bio
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(80), default='', nullable=False)
+  name = db.Column(db.String(), default='', nullable=False)
   start_date = db.Column(db.Date())
   end_date = db.Column(db.Date())
   opening = db.Column(db.Date())

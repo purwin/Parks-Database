@@ -33,7 +33,7 @@ def add_artist(match=True, **params):
   name = get_artist_name(**params)
 
   # If required name parameter not included, return error
-  if name == False:
+  if not name.get('pName', None) or name == False:
     return {
       "success": False,
       "result": "Couldn't determine object name.",

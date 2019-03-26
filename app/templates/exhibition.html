@@ -139,6 +139,8 @@
 							</table>
 						</div>
 
+					{% else %}
+						<p class="is-active [ mb-5 ]"><i>{{ exhibition.name }} has no related artworks.</i></p>
 					{% endif %}
 
 						<div class="d-none">
@@ -192,8 +194,6 @@
 										</div>
 									</li>
 
-								{% else %}
-									<li class="is-active [ mb-5 ]"><i>{{ exhibition.name }} has no related artworks.</i></li>
 								{% endfor %}
 							</ul>
 

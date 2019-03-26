@@ -18,6 +18,48 @@
 
 	{% include "include/user.html" %}
 
+	<section class="section--today">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Today</h2>
+
+				{% for item in today_items %}
+
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=item.id) }}">{{ item.name }}</a></h3>
+					<ul class="[ list-unstyled p-0 ]">
+						{% if item.start_date|string() == today|string() %}
+							<li>Exhibition Start Date: {{ item.start_date|date_format }}</li>
+						{% endif %}
+						{% if item.end_date|string() == today|string() %}
+							<li>Exhibition End Date: {{ item.end_date|date_format }}</li>
+						{% endif %}
+						{% if item.opening|string() == today|string() %}
+							<li>Opening Date: {{ item.opening|date_format }}</li>
+						{% endif %}
+						{% if item.install_start|string() == today|string() %}
+							<li>Install Start: {{ item.install_start|date_format }}</li>
+						{% endif %}
+						{% if item.install_end|string() == today|string() %}
+							<li>Install Finish: {{ item.install_end|date_format }}</li>
+						{% endif %}
+						{% if item.deinstall_date|string() == today|string() %}
+						<li>De-Install Due Date: {{ item.deinstall_date|date_format }}</li>
+						{% endif %}
+					</ul>
+
+				{% else %}
+
+					<p><i>There are no events happening today.</i></p>
+
+				{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
 	<section class="section--active">
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">

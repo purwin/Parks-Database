@@ -43,6 +43,7 @@ from forms import (
 )
 from users import User
 from model_import import import_csv, read_csv_heads, export_csv
+from add_models import add_exhibition
 
 
 # Flask-login settings
@@ -427,9 +428,59 @@ def exhibition_create():
 def exhibition_edit(id):
   exhibition = Exhibition.query.filter_by(id=id).one()
   form = Form_exhibition()
+  # Update exhibition items if form submission is valid
   if form.validate_on_submit():
-    # Update exhibition items
-    # Bio
+    # Check for uneven artworks / parks
+    artworks = filter(None, form.artworks.data)
+    parks = filter(None, form.parks.data)
+
+    # Add artwork/park children to Exh_art_park table if numbers are equal
+    if len(parks) != len(artworks):
+      return jsonify(
+          {
+            "success": False,
+            "data": {
+                      "Artworks": "There’s an uneven number of artworks and\
+                                   parks. This data needs to be equal."
+                    }
+          }
+      )
+
+    # Store form data
+    exhibit = dict(form.data)
+    # Add id attribute
+    exhibit['id'] = id
+    exhibit['artworks'] = form.artworks.data
+    exhibit['parks'] = form.parks.data
+    # Strip csrf_token from dict
+    exhibit.pop('csrf_token', None)
+
+    print exhibit
+
+    # Remove previous instances of exhibition in Exh_art_park
+    Exh_art_park.query.filter_by(exhibition_id=exhibition.id).delete()
+
+    result = add_exhibition.add_exhibition(**exhibit)
+
+    if result['success'] == False:
+      db.session.rollback()
+      return jsonify(
+          {
+            "success": False,
+            "data": {
+                      "Exhibition": result['result']
+                    }
+          }
+      )
+
+    elif result['success'] == True:
+      return jsonify(
+          {
+            "success": True,
+            "data": result['exhibition'].serialize
+          }
+      )
+
     exhibition.name = form.name.data
     exhibition.start_date = form.start_date.data
     exhibition.end_date = form.end_date.data
@@ -477,7 +528,7 @@ def exhibition_edit(id):
         return jsonify({
                         "success": False,
                         "data": {
-                          "Organizations": "{} isn’t a recognized\
+                    "Organizations": "{} isn’t a recognized\
                                             organization. Add it to the\
                                             database!".format(item)}})
 

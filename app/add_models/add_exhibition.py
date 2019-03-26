@@ -62,7 +62,7 @@ def add_exhibition(match=True, **params):
   if not params.get('name'):
     return {
       "success": False,
-      "result": "Couldn't determine object name.",
+      "result": "Error: Couldn't determine object name.",
       "warning": "",
       "data": params
     }
@@ -196,7 +196,7 @@ def add_exhibition(match=True, **params):
 
     return {
       "success": False,
-      "result": u'{}: {}'.format(name, e),
+      "result": u'Error: {}: {}'.format(name, e),
       "warning": warnings,
       "data": params
     }

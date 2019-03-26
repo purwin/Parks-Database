@@ -12,6 +12,7 @@ import add_exh_art_park
 
 # List of acceptable keys for Exhibition objects
 exhibition_params = [
+  'id',
   'name',
   'start_date',
   'end_date',
@@ -72,7 +73,8 @@ def add_exhibition(match=True, **params):
   exhibition = False
 
   # Check for existing ID
-  if params.get('id'):
+  if params.get('id', None):
+    id = int(params.get('id'))
     exhibition = Exhibition.query.filter_by(id=id).first()
   # Or search for existing items if match option is set
   elif match == True:
@@ -100,7 +102,7 @@ def add_exhibition(match=True, **params):
       elif key not in ['exh_art_park', 'orgs', 'artworks', 'parks']:
         # Check for date keys
         if key in ['start_date', 'end_date', 'opening', 'install_start',
-                   'install_end', 'deinstall_date']:
+            'install_end', 'deinstall_date']:
           # Create a date object from string
           value = format_date(value)
 
@@ -174,7 +176,7 @@ def add_exhibition(match=True, **params):
 
           if exh_art_park['success'] == True:
             result += u'\nAdded {} @ {} to the {} exhibition'\
-                      .format(name, artwork, park)
+                      .format(artwork, park, name)
           else:
             warnings += u'{}\n'.format(exh_art_park['result'])
 
@@ -203,12 +205,16 @@ def add_exhibition(match=True, **params):
 
 
 def format_date(date_text):
+  if not date_text:
+    return None
+
   for style in ('%Y-%m-%d', '%m.%d.%Y', '%m.%d.%y', '%m/%d/%Y', '%m/%d/%y'):
     try:
       # Determine style of date string
-      date = datetime.strptime(date_text, style)
+      date = datetime.strptime(str(date_text), style)
       # Return date object
       return date
+
     except ValueError:
       pass
   raise ValueError('Can\'t determine date format of {}!'.format(date_text))

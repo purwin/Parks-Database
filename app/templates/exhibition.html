@@ -139,9 +139,10 @@
 							</table>
 						</div>
 
+					{% endif %}
 
 						<div class="d-none">
-							<div class="[ row justify-content-center d-none ]">
+							<div class="[ row justify-content-center ]">
 								<div class="[ col-12 text-right pb-4 ]">
 									<button id="js-add_artwork" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
 								</div>
@@ -191,47 +192,17 @@
 										</div>
 									</li>
 
+								{% else %}
+									<li class="is-active [ mb-5 ]"><i>{{ exhibition.name }} has no related artworks.</i></li>
 								{% endfor %}
 							</ul>
+
 						</div>
 
-
-						{% else %}
-							<p class="is-active [ my-5 ]">{{ exhibition.name }} has no related artworks.</p>
-						{% endif %}
 					</div>
 
 			</div>
 		</section>
-
-
-<!-- 		<section id="section--parks">
-			<div class="is-active chunk [ row justify-content-center py-5 ]">
-				<div class="[ col-md-8 ]">
-					<h2 class="[ display-4 py-4 ]">Parks</h2>
-
-					<ul class="[ list-unstyled p-0 ]">
-						{% for park in exhibition.parks %}
-
-							<li class="js-li_park [ row mb-4 align-items-baseline ]">
-								<div class="[ col-md-3 ]">
-									<label for="artworks">Park</label>
-								</div>
-								<div class="[ col-10 col-md-9 col-lg-7 ]">
-									<a href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a>
-								</div>
-							</li>
-
-						{% else %}
-
-							<li><i>{{ exhibition.name }} has no related parks.</i></li>
-
-						{% endfor %}
-					</ul>
-
-				</div>
-			</div>
-		</section> -->
 
 
 
@@ -453,7 +424,6 @@
 	</div>
 </script>
 
-<!-- <script nonce="{{ csp_nonce() }}" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/js/mdb.min.js"></script> -->
 <script src="{{ url_for('static', filename='js/dist/datatables.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/dist/exhibition.bundle.js') }}"></script>

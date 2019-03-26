@@ -28,8 +28,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -54,8 +53,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -80,8 +78,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}

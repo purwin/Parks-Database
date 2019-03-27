@@ -8,6 +8,7 @@ from flask_talisman import Talisman
 app = Flask(__name__, instance_relative_config=True)
 
 # Set mode from config file
+# app.config.from_object('config.DevelopmentConfig')
 app.config.from_object('config.ProductionConfig')
 
 

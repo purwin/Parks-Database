@@ -41,10 +41,10 @@ body {
 h1 {}
 
 .head__h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   hyphens: initial;
 
-  @include query(m) {
+  @include query(s) {
     font-size: 4rem;
   }
 }
@@ -60,6 +60,11 @@ h5 {}
 h6 {}
 
 p {}
+
+.indent {
+  text-indent: -2rem;
+  margin-left: 2rem;
+}
 
 
 

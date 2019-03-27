@@ -36,7 +36,7 @@ def add_park(match=True, **params):
   if not params.get('name'):
     return {
       "success": False,
-      "result": "Couldn't determine object name.",
+      "result": "Error: Couldn't determine object name.",
       "warning": "",
       "data": params
     }
@@ -62,7 +62,7 @@ def add_park(match=True, **params):
     result = 'Added new park: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = u""
+  warnings = u''
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -79,24 +79,31 @@ def add_park(match=True, **params):
 
     # Add exh_art_park relationships
     if 'exhibitions' and 'artworks' in params:
-      # Flush session to get and use park ID
-      db.session.flush()
-      exhibitions = filter(None, params.get('exhibitions', None))
+      exhibitions = params.get('exhibitions', None)
+
       # If park.exhibitions is string, convert to list
-      exhibitions = [exhibitions] if\
+      # while filtering out empty values
+      exhibitions = filter(None, [exhibitions]) if\
           (isinstance(exhibitions, str) or isinstance(exhibitions, unicode))\
-          else exhibitions
+          else filter(None, exhibitions)
 
-      artworks = filter(None, params.get('artworks', None))
+      artworks = params.get('artworks', None)
+
       # If park.artworks is string, convert to list
-      artworks = [artworks] if\
+      # while filtering out empty values
+      artworks = filter(None, [artworks]) if\
           (isinstance(artworks, str) or isinstance(artworks, unicode))\
-          else artworks
+          else filter(None, artworks)
 
-      if len(exhibitions) != len(artworks):
-        warnings += 'There’s an uneven number of exhibitions and artworks in '\
-                    '{}. Skipping addition.\n'.format(name)
+      # If empty value found or list lengths are unequal, throw warning
+      if (not exhibitions or not artworks) or (len(exhibitions) != len(artworks)):
+        warnings += u'There’s an uneven number of artworks and exhibitions in '\
+                     '{}. Skipping addition.\n'.format(name)
+
+      # Otherwise, add artworks and parks
       else:
+        # Flush session to get and use exhibition ID
+        db.session.flush()
 
         # FUTURE: have this code placed in exh_art_park file
         # park_list = []
@@ -118,15 +125,13 @@ def add_park(match=True, **params):
           )
 
           if exh_art_park['success'] == True:
-            result += u"\nAdded {} @ {} to the {} exhibition"\
+            result += u'\nAdded {} @ {} to the {} exhibition'\
                       .format(exhibition, artwork, park.name)
           else:
-            warnings += u"\n{}".format(exh_art_park['result'])
+            warnings += u'{}\n'.format(exh_art_park['result'])
 
     db.session.commit()
     db.session.flush()
-
-    print u"Add_park: {}".format(result)
 
     return {
       "success": True,
@@ -137,10 +142,12 @@ def add_park(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
-    print u"ERROR! {}".format(e)
+
+    print u'Error: {}: {}'.format(name, e)
+
     return {
       "success": False,
-      "result": "{}: {}".format(name, e),
+      "result": u'Error: {}: {}'.format(name, e),
       "warning": warnings,
       "data": params
     }

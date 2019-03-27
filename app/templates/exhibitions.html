@@ -46,23 +46,22 @@
 	<section id="section--active">
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
-		
+
 				<h2 class="[ display-4 py-4 ]">Active Exhibitions</h2>
-		
+
 				{% for exhibition in active_exhibitions %}
-		
+
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
 					</ul>
-		
+
 				{% else %}
-		
+
 					<p><i>There are no active exhibitions right now.</i></p>
-		
+
 				{% endfor %}
-		
+
 			</div>
 		</div>
 	</section>
@@ -78,8 +77,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -104,8 +102,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -131,8 +128,6 @@
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
-						<li>Install Date(s): {{ exhibition.install_start|date_format }}{%if exhibition.install_end %} to {{ exhibition.install_end|date_format }}{% endif %}</li>
-						<li>De-Install Due Date: {{ exhibition.deinstall_date|date_format }}</li>
 					</ul>
 
 				{% else %}

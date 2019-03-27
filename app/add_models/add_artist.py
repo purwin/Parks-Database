@@ -33,15 +33,14 @@ def add_artist(match=True, **params):
   name = get_artist_name(**params)
 
   # If required name parameter not included, return error
-  if name == False:
+  if not name.get('pName', None) or name == False:
     return {
       "success": False,
-      "result": "Couldn't determine object name.",
+      "result": "Error: Couldn't determine object name.",
       "warning": "",
       "data": params
     }
 
-  print "IMPORT ARTIST!"
   artist = False
 
   # Check for existing ID
@@ -59,7 +58,7 @@ def add_artist(match=True, **params):
     result = u'Added new artist: {}.'.format(name)
 
   # Define warnings string to return
-  warnings = ""
+  warnings = u''
 
   # Loop through passed key/value attributes, add to class object
   try:
@@ -77,29 +76,26 @@ def add_artist(match=True, **params):
 
     # Loop through artwork.artists separately
     if 'artworks' in params:
-      print "There's artworks in this!"
       artworks = params.get('artworks', None)
+
       # If artist.artworks is string, convert to list
-      artworks = [artworks] if\
+      # while filtering out empty values
+      artworks = filter(None, [artworks]) if\
           (isinstance(artworks, str) or isinstance(artworks, unicode))\
-          else artworks
+          else filter(None, artworks)
+
       # Loop through list values if they exist, add to artwork
       for artwork in artworks or []:
         art = add_artwork.add_artwork(name=artwork)
 
         if art['success'] == True:
           if art['artwork'] not in artist.artworks:
-            print u'{} art data not in artist.artworks'.format(
-                art['data']['name']
-            )
             artist.artworks.append(art['artwork'])
         else:
-          warnings += art['result']
+          warnings += u'{}\n'.format(art['result'])
 
     db.session.commit()
     db.session.flush()
-
-    print u"Add artist: {}".format(result)
 
     return {
       "success": True,
@@ -111,16 +107,25 @@ def add_artist(match=True, **params):
 
   except Exception as e:
     db.session.rollback()
-    print "ERROR! {}".format(e)
+
+    print u'Error: {}: {}'.format(name, e)
+
     return {
       "success": False,
-      "result": u"{}: {}".format(name, e),
+      "result": u'Error: {}: {}'.format(name, e),
       "warning": warnings,
       "data": params
     }
 
 
 def get_artist_name(**params):
+  """
+  Discern name parameter from a variety of object parameters
+  Receives an object
+  Searches for any name, fName, and pName params
+  Returns an object with these keys and string values
+  """
+
   # Return false if required parameters aren't present
   if 'name' not in params and 'pName' not in params:
     return False

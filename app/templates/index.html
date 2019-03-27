@@ -18,6 +18,48 @@
 
 	{% include "include/user.html" %}
 
+	<section class="section--today">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Today</h2>
+
+				{% for item in today_items %}
+
+					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=item.id) }}">{{ item.name }}</a></h3>
+					<ul class="[ list-unstyled p-0 ]">
+						{% if item.start_date|string() == today|string() %}
+							<li>Exhibition Start Date: {{ item.start_date|date_format }}</li>
+						{% endif %}
+						{% if item.end_date|string() == today|string() %}
+							<li>Exhibition End Date: {{ item.end_date|date_format }}</li>
+						{% endif %}
+						{% if item.opening|string() == today|string() %}
+							<li>Opening Date: {{ item.opening|date_format }}</li>
+						{% endif %}
+						{% if item.install_start|string() == today|string() %}
+							<li>Install Start: {{ item.install_start|date_format }}</li>
+						{% endif %}
+						{% if item.install_end|string() == today|string() %}
+							<li>Install Finish: {{ item.install_end|date_format }}</li>
+						{% endif %}
+						{% if item.deinstall_date|string() == today|string() %}
+						<li>De-Install Due Date: {{ item.deinstall_date|date_format }}</li>
+						{% endif %}
+					</ul>
+
+				{% else %}
+
+					<p><i>There are no events happening today.</i></p>
+
+				{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
 	<section class="section--active">
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
@@ -28,8 +70,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -54,8 +95,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -80,8 +120,7 @@
 
 					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
 					<ul class="[ list-unstyled p-0 ]">
-						<li>Start date: {{ exhibition.start_date }}</li>
-						<li>End date: {{ exhibition.end_date }}</li>
+						<li>Exhibition Dates: {{ exhibition.start_date|date_format }}–{{ exhibition.end_date|date_format }}</li>
 					</ul>
 
 				{% else %}
@@ -91,33 +130,6 @@
 				{% endfor %}
 
 			</div>
-		</div>
-	</section>
-
-
-
-	<section id="section--exhibitions">
-		<div class="chunk [ row justify-content-center py-5 ]">
-
-			<div class="[ col-md-8 ]">
-				<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
-			</div>
-
-			<div class="[ col-md-8 ]">
-
-				{% for exhibition in exhibitions %}
-					<h3><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
-					<ul class="[ p-0 ]">
-						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
-						<li>Install Date(s): {{ exhibition.install_start|date_format }}{%if exhibition.install_end %} to {{ exhibition.install_end|date_format }}{% endif %}</li>
-						<li>De-Install Due Date: {{ exhibition.deinstall_date|date_format }}</li>
-					</ul>
-				{% else %}
-					<p><i>There are no exhibitions in the database yet.</i></p>
-				{% endfor %}
-
-			</div>
-
 		</div>
 	</section>
 

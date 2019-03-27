@@ -12,6 +12,7 @@ from flask import (
   send_file
 )
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -42,6 +43,7 @@ from forms import (
 )
 from users import User
 from model_import import import_csv, read_csv_heads, export_csv
+from add_models import add_exhibition
 
 
 # Flask-login settings
@@ -55,7 +57,7 @@ def load_user(user_id):
   return User.query.get(user_id)
 
 @app.template_filter('date_format')
-def date_format(value, format='%m/%d/%y'):
+def date_format(value, format='%m/%d/%Y'):
   if value is not None:
     return value.strftime(format)
 
@@ -78,24 +80,35 @@ def error_500(error):
 @app.route('/')
 @login_required
 def home():
-  exhibitions = Exhibition.query.all()
+  today_items = Exhibition.query.filter(or_(
+                                    Exhibition.start_date == today,
+                                    Exhibition.end_date == today,
+                                    Exhibition.opening == today,
+                                    Exhibition.install_start == today,
+                                    Exhibition.install_end == today,
+                                    Exhibition.deinstall_date == today
+                                ))\
+                                .order_by(Exhibition.start_date)\
+                                .all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
                                        .all()
   upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
                                          .order_by(Exhibition.start_date)\
-                                         .limit(10)\
-                                         .all()
+                                         .limit(10)
   recent_exhibitions = Exhibition.query.filter(Exhibition.end_date <= today)\
                                          .order_by(Exhibition.end_date.desc())\
-                                         .limit(10)\
-                                         .all()
+                                         .limit(10)
   session['url'] = request.path
-  return render_template('index.html', exhibitions=exhibitions, parks=parks,
-    active_exhibitions = active_exhibitions,
-    upcoming_exhibitions = upcoming_exhibitions,
-    recent_exhibitions = recent_exhibitions)
+  return render_template(
+      'index.html',
+      today=today,
+      today_items=today_items,
+      active_exhibitions=active_exhibitions,
+      upcoming_exhibitions=upcoming_exhibitions,
+      recent_exhibitions=recent_exhibitions
+  )
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -109,8 +122,6 @@ def login():
       if check_password_hash(user.password, form.password.data):
         login_user(user, remember = form.remember.data)
         next = request.args.get('next')
-        print "NEXT!!!!!: {}".format(next)
-        print "ARGS!!!!!: {}".format(request.values)
         if not next or url_parse(next).netloc != '':
           next = session['url']
           return redirect(next)
@@ -200,7 +211,6 @@ def import_data():
   if form.validate_on_submit():
     # Get file
     file = form.file.data
-    print "FILENAME: {}".format(file)
     # Get form data (object type, classes, etc.)
     class_object = form.class_object.data
     # Get column heads to import
@@ -250,7 +260,7 @@ def export_data():
 @app.route('/exhibitions')
 @login_required
 def exhibitions():
-  exhibitions = Exhibition.query.all()
+  exhibitions = Exhibition.query.order_by(Exhibition.name).all()
   active_exhibitions = Exhibition.query.filter(Exhibition.end_date > today)\
                                        .filter(Exhibition.start_date < today)\
                                        .order_by(Exhibition.end_date)\
@@ -280,6 +290,8 @@ def exhibition(id):
   orgs = Org.query.all()
   exhib = Exh_art_park.query.filter_by(exhibition_id = id).all()
   form = Form_exhibition()
+  # Set textarea default value
+  form.comments.data = exhibition.comments
   session['url'] = request.path
   return render_template('exhibition.html', exhibition = exhibition,
                          exhib = exhib, artworks = artworks, parks = parks,
@@ -416,121 +428,64 @@ def exhibition_create():
 def exhibition_edit(id):
   exhibition = Exhibition.query.filter_by(id=id).one()
   form = Form_exhibition()
+  # Update exhibition items if form submission is valid
   if form.validate_on_submit():
-    # Update exhibition items
-    # Bio
-    exhibition.name = form.name.data
-    exhibition.start_date = form.start_date.data
-    exhibition.end_date = form.end_date.data
-    exhibition.opening = form.opening.data
-    exhibition.comments = form.comments.data
-
-    # Install
-    exhibition.install_start = form.install_start.data
-    exhibition.install_end = form.install_end.data
-    exhibition.prm = form.prm.data
-    exhibition.approval = form.approval.data
-    exhibition.walkthrough = form.walkthrough.data
-    exhibition.cb_presentation = form.cb_presentation.data
-    exhibition.license_mailed = form.license_mailed.data
-    exhibition.license_signed = form.license_signed.data
-    exhibition.license_borough = form.license_borough.data
-    exhibition.bond = form.bond.data
-    exhibition.coi = form.coi.data
-    exhibition.coi_renewal = form.coi_renewal.data
-    exhibition.signage_submit = form.signage_submit.data
-    exhibition.signage_received = form.signage_received.data
-    exhibition.press_draft = form.press_draft.data
-    exhibition.press_approved = form.press_approved.data
-    exhibition.web_text = form.web_text.data
-    exhibition.work_images = form.work_images.data
-
-    # De-Install
-    exhibition.deinstall_date = form.deinstall_date.data
-    exhibition.deinstall_check = form.deinstall_check.data
-    exhibition.bond_return = form.bond_return.data
-    exhibition.press_clippings = form.press_clippings.data
-
-    # Get org child list data
-    orgs = filter(None, form.orgs.data)
-    # Clear organizations 1-to-many relationships
-    exhibition.organizations = []
-
-    for item in list(set(orgs)):
-      try:
-        org = Org.query.filter_by(name = item).one()
-        exhibition.organizations.append(org)
-        print "Added {} org to {}".format(org.name, exhibition.name)
-      except Exception as e:
-        db.session.rollback()
-        return jsonify({
-                        "success": False,
-                        "data": {
-                          "Organizations": "{} isn’t a recognized\
-                                            organization. Add it to the\
-                                            database!".format(item)}})
-
-    # Get artworks/parks child list data
+    # Check for uneven artworks / parks
     artworks = filter(None, form.artworks.data)
     parks = filter(None, form.parks.data)
 
-    # Add artwork/park children to Exh_art_park table if numbers are equal
-    if len(parks) == len(artworks):
-      # Clear exhibitions/artworks 1-to-many relationships
-      exhibition.artworks = []
-      exhibition.parks = []
+    # Return error if artworks and parks count is uneven
+    if len(parks) != len(artworks):
+      return jsonify(
+          {
+            "success": False,
+            "data": {
+                      "Artworks": "There’s an uneven number of artworks and\
+                                   parks. This data needs to be equal."
+                    }
+          }
+      )
 
-      for x, y in zip(artworks, parks):
-        # Check if artwork is in database
-        try:
-          artwork = Artwork.query.filter_by(name = x).one()
-          print "!!!ARTWORK FOUND!: {}".format(artwork.name)
-        except Exception as e:
-          db.session.rollback()
-          # Return error if artwork not found
-          return jsonify({
-                          "success": False,
-                          "data": {
-                            "Artworks": "{} isn’t a recognized artwork. Add\
-                                            it to the database!".format(x)}})
-        # Check if park is in database
-        try:
-          park = Park.query.filter_by(name = y).one()
-          print "!!!PARK FOUND!: {}".format(park.name)
-        except Exception as e:
-          db.session.rollback()
-          # Return error if artwork not found
-          return jsonify({
-                          "success": False,
-                          "data": {
-                            "Artworks": "{} isn’t a recognized park. Add\
-                                            it to the database!".format(y)}})
-        # Add unique exhibition/artwork/park to database
-        try:
-          exh_rel = Exh_art_park(exhibition_id = exhibition.id,
-                               artwork_id = artwork.id,
-                               park_id = park.id)
-          db.session.add(exh_rel)
-        except Exception as e:
-          db.session.rollback()
-          # Return error if exhibition/artwork/park can't be added
-          return jsonify({"success": False,
-                          "data": {
-                            "Artworks": str(e)}})
-    # Return error if exhibitions and artworks count is uneven
-    else:
-      db.session.rollback()
-      return jsonify({"success": False,
-                      "data": {
-                        "Artworks": "There’s an uneven number of\
-                                        artworks and parks. This data\
-                                         needs to be complete."}})
+    # Store form data
+    exhibit = dict(form.data)
 
-    # Add exhibition to database if we made it this far
-    db.session.add(exhibition)
-    db.session.commit()
+    # Add id attribute
+    exhibit['id'] = id
+
+    # Update artworks and parks arrays based on received data
+    # form.data does not account for manual updates to these fields
+    exhibit['artworks'] = form.artworks.data
+    exhibit['parks'] = form.parks.data
+
+    # Strip csrf_token from dict
+    exhibit.pop('csrf_token', None)
+
+    # Remove previous instances of exhibition in Exh_art_park
+    # Clean exh / art / park relationships so that deleted items are removed
+    Exh_art_park.query.filter_by(exhibition_id=exhibition.id).delete()
+
+    # Call add_exhibition function to update data
+    result = add_exhibition.add_exhibition(**exhibit)
+
+    # Check for result error(s), return via AJAX
+    if result['success'] == False:
+      return jsonify(
+          {
+            "success": False,
+            "data": {
+                      "Exhibition": result['result']
+                    }
+          }
+      )
+
     # Return success message, exhibition object via AJAX
-    return jsonify({"success": True, "data": exhibition.serialize})
+    return jsonify(
+        {
+          "success": True,
+          "data": result['exhibition'].serialize
+        }
+    )
+
   else:
     # Return errors if form doesn't validate
     return jsonify({"success": False, "data": form.errors})
@@ -553,7 +508,7 @@ def exhibition_delete(id):
 @app.route('/parks')
 @login_required
 def parks():
-  parks = Park.query.all()
+  parks = Park.query.order_by(Park.name).all()
   active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
     .filter(Exh_art_park.exhibition_id == Exhibition.id)\
     .filter(Exh_art_park.park_id == Park.id)\
@@ -561,10 +516,28 @@ def parks():
     .filter(Exhibition.start_date < today)\
     .order_by(Park.name)\
     .all()
+  upcoming_parks = db.session.query(Exh_art_park, Exhibition, Park)\
+    .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+    .filter(Exh_art_park.park_id == Park.id)\
+    .filter(Exhibition.start_date > today)\
+    .order_by(Exhibition.start_date)\
+    .limit(5)
+  recent_parks = db.session.query(Exh_art_park, Exhibition, Park)\
+    .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+    .filter(Exh_art_park.park_id == Park.id)\
+    .filter(Exhibition.end_date < today)\
+    .order_by(Exhibition.end_date.desc())\
+    .limit(5)
   form = Form_search()
   session['url'] = request.path
-  return render_template('parks.html', parks = parks,
-    active_parks = active_parks, form = form)
+  return render_template(
+      'parks.html',
+      parks = parks,
+      active_parks = active_parks,
+      upcoming_parks = upcoming_parks,
+      recent_parks = recent_parks,
+      form = form
+  )
 
 
 @app.route('/parks/<int:id>')
@@ -576,6 +549,8 @@ def park(id):
   form = Form_park()
   # Set default select item to current park borough
   form.borough.data = park.borough
+  # Set default address textarea value
+  form.address.data = park.address
   park_art = Exh_art_park.query.filter_by(park_id = id)\
                                .order_by(Exh_art_park.exhibition_id).all()
   session['url'] = request.path
@@ -703,7 +678,7 @@ def park_delete(id):
 @app.route('/artists')
 @login_required
 def artists():
-  artists = Artist.query.all()
+  artists = Artist.query.order_by(Artist.pName).all()
   form = Form_search()
   session['url'] = request.path
   return render_template('artists.html', artists = artists, form = form)
@@ -835,7 +810,7 @@ def artist_delete(id):
 @app.route('/artworks')
 @login_required
 def artworks():
-  artworks = Artwork.query.all()
+  artworks = Artwork.query.order_by(Artwork.name).all()
   active_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
       .filter(Exh_art_park.exhibition_id == Exhibition.id)\
       .filter(Exh_art_park.artwork_id == Artwork.id)\
@@ -1018,7 +993,7 @@ def artwork_delete(id):
 @app.route('/orgs')
 @login_required
 def orgs():
-  orgs = Org.query.all()
+  orgs = Org.query.order_by(Org.name).all()
   form = Form_search()
   session['url'] = request.path
   return render_template('orgs.html', orgs = orgs, form = form)
@@ -1141,7 +1116,7 @@ def search():
   form = Form_search()
   if form.validate_on_submit():
     obj = eval(form.class_object.data)
-    results = obj.query.filter(obj.name.contains(form.search.data)).all()
+    results = obj.query.filter(obj.name.ilike("%{}%".format(form.search.data))).all()
     return render_template('results.html', form = form, results = results)
   else:
     # Return errors if form doesn't validate

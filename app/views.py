@@ -242,7 +242,6 @@ def import_data():
 @login_required
 def export_data():
   if request.method == 'POST':
-    print "EXPORT POST!"
     try:
       # Check if received data is JSON
       json_object = json.loads(request.form['export_data'])

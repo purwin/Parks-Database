@@ -46,6 +46,8 @@
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
 
+				<h2 class="[ display-4 py-4 ]">Organizations</h2>
+
 				{% for org in orgs %}
 
 					<h2 class="[ pt-3 ]"><a href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a></h2>

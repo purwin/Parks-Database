@@ -70,6 +70,58 @@
 
 
 
+	<section id="section--upcoming">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Upcoming Artworks</h2>
+
+				{% set artworks_list = [] %}
+
+					{% for line in upcoming_artworks %}
+
+						{% if line.Artwork.id not in artworks_list %}
+							<h3 class="[ py-1 ]"><a href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
+						{% endif %}
+
+					{% else %}
+						<p><i>There are no upcoming artworks.</i></p>
+					{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--recent">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Recent Artworks</h2>
+
+				{% set artworks_list = [] %}
+
+					{% for line in recent_artworks %}
+
+						{% if line.Artwork.id not in artworks_list %}
+							<h3 class="[ py-1 ]"><a href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
+						{% endif %}
+
+					{% else %}
+						<p><i>There are no recent artworks.</i></p>
+					{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
 	<section id="section--artworks">
 		<div class="[ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
@@ -81,7 +133,7 @@
 					<h2 class="[ pt-3 ]"><a href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a></h2>
 					<ul class="[ list-unstyled p-0 ]">
 						<li>Artists:
-							<ul>
+							<ul class="[ list-unstyled pl-4 ]">
 
 								{% for artist in artwork.artists %}
 									<li><a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a></li>

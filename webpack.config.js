@@ -14,7 +14,8 @@ module.exports = {
     artwork: './app/static/js/src/artwork.js',
     artist: './app/static/js/src/artist.js',
     create: './app/static/js/src/create.js',
-    import: './app/static/js/src/import.js'
+    import: './app/static/js/src/import.js',
+    main: './app/static/js/src/main.js'
   },
   output: {
     path: path.resolve(__dirname, './app/static/js/dist'),

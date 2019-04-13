@@ -19,151 +19,158 @@
 	<section id="section--search">
 		{% include "include/user.html" %}
 
-		<div class="[ row justify-content-center py-5 ]">
-			<div class="[ col-sm-8 col-md-6 ]">
-				<form id="js-form_search" action="/search" method="POST">
-					{{ form.csrf_token }}
+		{%- if current_user.is_authenticated -%}
 
-					<div class="[ d-none ]">
-						{{ form.class_object(class="form-control", value="Park") }}
-					</div>
+			<div class="[ row justify-content-center py-5 ]">
+				<div class="[ col-sm-8 col-md-6 ]">
+					<form id="js-form_search" action="/search" method="POST">
+						{{ form.csrf_token }}
 
-					<div class="[ input-group ]">
-						{{ form.search(class="form-control", placeholder="Search Parks") }}
-						<div class="[ input-group-append ]">
-							<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
+						<div class="[ d-none ]">
+							{{ form.class_object(class="form-control", value="Park") }}
 						</div>
-					</div>
 
-				</form>
+						<div class="[ input-group ]">
+							{{ form.search(class="form-control", placeholder="Search Parks") }}
+							<div class="[ input-group-append ]">
+								<button class="js-search butt--right butt" type="submit" id="js-search_parks">Search</button>
+							</div>
+						</div>
+
+					</form>
+				</div>
 			</div>
-		</div>
+
+		{%- endif -%}
 	</section>
 
+	{%- if current_user.is_authenticated -%}
 
-	<section id="section--active">
-		<div class="chunk [ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
+		<section id="section--active">
+			<div class="chunk [ row justify-content-center py-5 ]">
+				<div class="[ col-md-8 ]">
 
-				<h2 class="[ display-4 py-4 ]">Active Parks</h2>
+					<h2 class="[ display-4 py-4 ]">Active Parks</h2>
 
-				<!-- Loop and get list of active exhibitions -->
-				{% set active_exhibitions = [] %}
-				{% for line in active_parks %}
-					{% set active_exhibitions = active_exhibitions.append(line.Exhibition.id) %}
-				{% endfor %}
-
-				<!-- Create list of parks to prevent listing duplicates -->
-				{% set park_list = [] %}
-
+					<!-- Loop and get list of active exhibitions -->
+					{% set active_exhibitions = [] %}
 					{% for line in active_parks %}
+						{% set active_exhibitions = active_exhibitions.append(line.Exhibition.id) %}
+					{% endfor %}
 
-						{%- if line.Park.id not in park_list -%}
-							<h3 class="indent [ py-1 ]"><a class="js-internal" href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
-								{%- set park_exhibitions = [] -%}
-								{%- for exhibition in line.Park.exhibitions -%}
-									{%- if exhibition.id in active_exhibitions -%}
-										{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
-									{%- endif -%}
-								{%- endfor -%}
-								{%- for exhibition in park_exhibitions -%}
-									<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
-								{%- endfor -%}
-							</h3>
-							{%- set park_list = park_list.append(line.Park.id) -%}
-						{%- endif -%}
+					<!-- Create list of parks to prevent listing duplicates -->
+					{% set park_list = [] %}
 
-					{%- else -%}
-						<p><i>There are no active parks.</i></p>
-					{%- endfor -%}
+						{% for line in active_parks %}
 
+							{%- if line.Park.id not in park_list -%}
+								<h3 class="indent [ py-1 ]"><a class="js-internal" href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+									{%- set park_exhibitions = [] -%}
+									{%- for exhibition in line.Park.exhibitions -%}
+										{%- if exhibition.id in active_exhibitions -%}
+											{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
+										{%- endif -%}
+									{%- endfor -%}
+									{%- for exhibition in park_exhibitions -%}
+										<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+									{%- endfor -%}
+								</h3>
+								{%- set park_list = park_list.append(line.Park.id) -%}
+							{%- endif -%}
+
+						{%- else -%}
+							<p><i>There are no active parks.</i></p>
+						{%- endfor -%}
+
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
 
 
-	<section id="section--upcoming">
-		<div class="chunk [ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
+		<section id="section--upcoming">
+			<div class="chunk [ row justify-content-center py-5 ]">
+				<div class="[ col-md-8 ]">
 
-				<h2 class="[ display-4 py-4 ]">Upcoming Parks</h2>
+					<h2 class="[ display-4 py-4 ]">Upcoming Parks</h2>
 
-				<!-- Loop and get list of upcoming exhibitions -->
-				{%- set upcoming_exhibitions = [] -%}
-				{%- for line in upcoming_parks -%}
-					{%- set active_exhibitions = upcoming_exhibitions.append(line.Exhibition.id) -%}
-				{%- endfor -%}
-
-				<!-- Create list of parks to prevent listing duplicates -->
-				{% set park_list = [] %}
-
+					<!-- Loop and get list of upcoming exhibitions -->
+					{%- set upcoming_exhibitions = [] -%}
 					{%- for line in upcoming_parks -%}
-
-						{%- if line.Park.id not in park_list -%}
-							<h3 class="indent [ py-1 ]"><a class="js-internal" href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
-								{%- set park_exhibitions = [] -%}
-								{%- for exhibition in line.Park.exhibitions -%}
-									{%- if exhibition.id in upcoming_exhibitions -%}
-										{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
-									{%- endif -%}
-								{%- endfor -%}
-								{%- for exhibition in park_exhibitions -%}
-									<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
-								{%- endfor -%}
-							</h3>
-							{%- set park_list = park_list.append(line.Park.id) -%}
-						{%- endif -%}
-
-					{%- else -%}
-						<p><i>There are no parks with upcoming exhibitions.</i></p>
+						{%- set active_exhibitions = upcoming_exhibitions.append(line.Exhibition.id) -%}
 					{%- endfor -%}
 
+					<!-- Create list of parks to prevent listing duplicates -->
+					{% set park_list = [] %}
+
+						{%- for line in upcoming_parks -%}
+
+							{%- if line.Park.id not in park_list -%}
+								<h3 class="indent [ py-1 ]"><a class="js-internal" href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+									{%- set park_exhibitions = [] -%}
+									{%- for exhibition in line.Park.exhibitions -%}
+										{%- if exhibition.id in upcoming_exhibitions -%}
+											{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
+										{%- endif -%}
+									{%- endfor -%}
+									{%- for exhibition in park_exhibitions -%}
+										<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+									{%- endfor -%}
+								</h3>
+								{%- set park_list = park_list.append(line.Park.id) -%}
+							{%- endif -%}
+
+						{%- else -%}
+							<p><i>There are no parks with upcoming exhibitions.</i></p>
+						{%- endfor -%}
+
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
 
 
-	<section id="section--recent">
-		<div class="chunk [ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
+		<section id="section--recent">
+			<div class="chunk [ row justify-content-center py-5 ]">
+				<div class="[ col-md-8 ]">
 
-				<h2 class="[ display-4 py-4 ]">Recent Parks</h2>
+					<h2 class="[ display-4 py-4 ]">Recent Parks</h2>
 
-				<!-- Loop and get list of recent exhibitions -->
-				{% set recent_exhibitions = [] %}
-				{% for line in recent_parks %}
-					{% set active_exhibitions = recent_exhibitions.append(line.Exhibition.id) %}
-				{% endfor %}
+					<!-- Loop and get list of recent exhibitions -->
+					{% set recent_exhibitions = [] %}
+					{% for line in recent_parks %}
+						{% set active_exhibitions = recent_exhibitions.append(line.Exhibition.id) %}
+					{% endfor %}
 
-				<!-- Create list of parks to prevent listing duplicates -->
-				{% set park_list = [] %}
+					<!-- Create list of parks to prevent listing duplicates -->
+					{% set park_list = [] %}
 
-					{%- for line in recent_parks -%}
+						{%- for line in recent_parks -%}
 
-						{%- if line.Park.id not in park_list -%}
-							<h3 class="indent [ py-1 ]"><a class="js-internal" href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
-								{%- set park_exhibitions = [] -%}
-								{%- for exhibition in line.Park.exhibitions -%}
-									{%- if exhibition.id in recent_exhibitions -%}
-										{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
-									{%- endif -%}
-								{%- endfor -%}
-								{%- for exhibition in park_exhibitions -%}
-									<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
-								{%- endfor -%}
-							</h3>
-							{%- set park_list = park_list.append(line.Park.id) -%}
-						{%- endif -%}
+							{%- if line.Park.id not in park_list -%}
+								<h3 class="indent [ py-1 ]"><a class="js-internal" href="{{ url_for('park', id=line.Park.id) }}">{{ line.Park.name }}</a> (
+									{%- set park_exhibitions = [] -%}
+									{%- for exhibition in line.Park.exhibitions -%}
+										{%- if exhibition.id in recent_exhibitions -%}
+											{%- set park_exhibitions = park_exhibitions.append(exhibition) -%}
+										{%- endif -%}
+									{%- endfor -%}
+									{%- for exhibition in park_exhibitions -%}
+										<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+									{%- endfor -%}
+								</h3>
+								{%- set park_list = park_list.append(line.Park.id) -%}
+							{%- endif -%}
 
-					{%- else -%}
-						<p><i>There are no parks with recent exhibitions.</i></p>
-					{%- endfor -%}
+						{%- else -%}
+							<p><i>There are no parks with recent exhibitions.</i></p>
+						{%- endfor -%}
 
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+
+	{%- endif -%}
 
 
 
@@ -182,9 +189,11 @@
 					{% set parks_index = parks_index if item in parks_index else parks_index.append(item) %}
 					<h3 class="indent js-index-item {{ 'js-index_' ~ park.name[0]|lower if park.name[0].isalpha() else 'js-index_#' }} [ pt-3 d-none ]">
 						<a class="js-internal" href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a>
-						{%- for exhibition in park.exhibitions -%}
-							{{ " (" if loop.first }}<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ " / " if not loop.last else ")" }}
-						{%- endfor -%}
+						{%- if current_user.is_authenticated -%}
+							{%- for exhibition in park.exhibitions -%}
+								{{ " (" if loop.first }}<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ " / " if not loop.last else ")" }}
+							{%- endfor -%}
+						{%- endif -%}
 					</h3>
 				{%- else -%}
 					<p><i>There are no parks in the database.</i></p>

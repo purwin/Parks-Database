@@ -77,13 +77,13 @@
 		<section id="section--submit">
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 py-4 text-right ]">
-					<a id="js-cancel_login" class="butt butt--text js-cancel-login [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
+					<a id="js-cancel_login" class="butt butt--text js-cancel-login js-internal [ btn btn-sm ]" role="button" href="{{ session['url'] }}">Cancel</a>
 					<input id="js-post_login" class="butt butt--add js-post-login [ ml-2 ]" value="Login" type="submit" />
 				</div>
 			</div>
 		</section>
 
-		<p class="[ text-center ]">Just browsing? Head <a href="{{ url_for('parks') }}">here</a>.</p>
+		<p class="[ text-center ]">Just browsing? Head <a class="js-internal" href="{{ url_for('parks') }}">here</a>.</p>
 
 	</form>
 

@@ -104,21 +104,34 @@
 
 	<section id="section--orgs">
 		<div class="chunk [ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
-
+			<div class="[ col-md-8 order-1 ]">
 				<h2 class="[ display-4 py-4 ]">Organizations</h2>
+			</div>
 
-				{% for org in orgs %}
+			<div class="[ col-md-8 order-3 ]">
+				{% set orgs_index = [] %}
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a></h2>
+				{%- for org in orgs -%}
+				{% set item = org.name[0]|lower if org.name[0].isalpha() else '#' %}
+				{% set orgs_index = orgs_index if item in orgs_index else orgs_index.append(item) %}
 
-				{% else %}
+					<h3 class="indent js-index-item {{ 'js-index_' ~ org.name[0]|lower if org.name[0].isalpha() else 'js-index_#' }} [ pt-3 ]">
+						<a class="js-internal" href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a>
+					</h3>
+
+				{%- else -%}
 
 					<p><i>There are no organizations in the database yet.</i></p>
 
-				{% endfor %}
-
+				{%- endfor -%}
 			</div>
+
+			<div class="[ col-md-8 order-2 mb-5 text-center ]">
+				{% for item in orgs_index %}
+					<span id="js-index_{{ item }}" class="index index--orgs js-index [ display-5 ]">{{ item|upper }}</span>
+				{% endfor %}
+			</div>
+
 		</div>
 	</section>
 

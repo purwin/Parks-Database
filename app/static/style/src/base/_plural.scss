@@ -9,6 +9,7 @@
 /* Index Alpha Item: Parks */
 .index--parks {
   color: color(green--d);
+  border-bottom: 0px solid color(green--d);
 
   &:hover {
     border-bottom: 2px solid color(green--d);
@@ -53,4 +54,10 @@
   &:hover {
     border-bottom-color: color(orange--l);
   }
+}
+
+
+.index--selected {
+  color: color(grey--d);
+  border-bottom-width: 2px;
 }

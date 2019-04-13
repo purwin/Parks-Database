@@ -115,7 +115,7 @@
 				{% set item = org.name[0]|lower if org.name[0].isalpha() else '#' %}
 				{% set orgs_index = orgs_index if item in orgs_index else orgs_index.append(item) %}
 
-					<h3 class="indent js-index-item {{ 'js-index_' ~ org.name[0]|lower if org.name[0].isalpha() else 'js-index_#' }} [ pt-3 ]">
+					<h3 class="indent js-index-item {{ 'js-index_' ~ org.name[0]|lower if org.name[0].isalpha() else 'js-index_#' }} [ pt-3 d-none ]">
 						<a class="js-internal" href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a>
 					</h3>
 

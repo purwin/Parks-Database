@@ -1,17 +1,15 @@
 $(window).on('load', () => {
   // Add animation classes to container and loading divs
-  const internalLinkLoad = e => {
-    $('.js-spinner').addClass('is-spinning');
+  const internalLinkLoad = () => {
+    $('.js-spinner').toggleClass('is-spinning');
 
     // Fade out container div
-    $('.container-fluid').toggleClass('fade-out');
-    // $('#js-container').hide('slow');
+    $('.container-fluid').toggleClass('is-hidden');
 
     // Fade in loading div
-    $('#js-loading').toggleClass('fade-in').toggleClass('is-inactive');
+    $('#js-loading').toggleClass('is-hidden');
 
-    // $('#js-loading').show('slow');
-    $('.js-spinner-div').toggleClass('fade-in').toggleClass('is-hidden');
+    $('.js-spinner-div').toggleClass('is-hidden');
   };
 
 
@@ -19,24 +17,31 @@ $(window).on('load', () => {
   $('.js-internal').on('click', e => {
     // Add temporary preventDefault to observe transition
     // e.preventDefault();
-    internalLinkLoad(e);
+    internalLinkLoad();
   });
 
 
   // Toggle indexed names based on selected index value
   $('.js-index').on('click', e => {
-    console.log('.js-index clicked!');
-    // Get value of selected item
-    const classTarget = $(this).attr('id');
 
-    // Hide elements that don't have the target value as a class
-    $('.js-index-item').not(document.getElementsByClassName(classTarget)).hide('fast');
+    // If selected doesn't have selected class, toggle displayed index items
+    if (!$(e.target).hasClass('index--selected')) {
+      $('.index--selected').removeClass('index--selected');
 
-    // Show targeted elements
-    $(document.getElementsByClassName(classTarget)).show('slow');
+      // Get value of selected item
+      const classTarget = e.target.id;
+
+      // Add selected class
+      $(e.target).addClass('index--selected');
+
+      // Hide elements that don't have the target value as a class
+      $('.js-index-item').not(
+        document.getElementsByClassName(classTarget)
+        ).addClass('d-none');
+
+      // Show targeted elements
+      $(document.getElementsByClassName(classTarget)).removeClass('d-none');
+    }
   })
 
 });
-
-
-// FUTURE: if hide/show work for both things, make one single function called separately

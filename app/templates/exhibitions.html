@@ -5,7 +5,7 @@
 {% block title %}NYC Parks Database – Exhibitions{% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="[ container-fluid ]">
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
@@ -119,24 +119,40 @@
 
 	<section id="section--exhibitions">
 		<div class="chunk [ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
-
+			
+			<div class="[ col-md-8 order-1 ]">
 				<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
+			</div>
 
-				{% for exhibition in exhibitions %}
+			<div class="[ col-md-8 order-3 ]">
+				{% set exhibitions_index = [] %}
 
-					<h3 class="[ pt-3 ]"><a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a></h3>
-					<ul class="[ list-unstyled p-0 ]">
-						<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
-					</ul>
+				{%- for exhibition in exhibitions -%}
+					{% set item = exhibition.name[0]|lower if exhibition.name[0].isalpha() else '#' %}
+					{% set exhibitions_index = exhibitions_index if item in exhibitions_index else exhibitions_index.append(item) %}
+
+					<div class="js-index-item {{ 'js-index_' ~ exhibition.name[0]|lower if exhibition.name[0].isalpha() else 'js-index_#' }} [ d-none ]">
+						<h3 class="[ pt-3 ]">
+							<a href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>
+						</h3>
+						<ul class="[ list-unstyled p-0 ]">
+							<li>Exhibition Dates: {{ exhibition.start_date|date_format }} to {{ exhibition.end_date|date_format }}</li>
+						</ul>
+					</div>
 
 				{% else %}
 
 					<p><i>There are no exhibitions in the database yet.</i></p>
 
 				{% endfor %}
-
 			</div>
+
+			<div class="[ col-md-8 order-2 mb-5 ]">
+				{% for item in exhibitions_index %}
+					<span id="js-index_{{ item }}" class="index index--exhibitions js-index [ display-5 ]">{{ item|upper }}</span>
+				{% endfor %}
+			</div>
+
 		</div>
 	</section>
 

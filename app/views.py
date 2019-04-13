@@ -1028,45 +1028,38 @@ def artwork_delete(id):
 @login_required
 def orgs():
   orgs = Org.query.order_by(Org.name).all()
-  # active_orgs = db.session.query(Org)\
-  #   .join(exh_org)\
-  #   .filter(Exhibition.end_date > today)\
-  #   .filter(Exhibition.start_date < today)\
-  #   .order_by(Org.name)\
-  #   .all()
-  active_orgs = Org.filter(Org.exhibitions.any(Exhibition.end_date > today))\
-  .filter(Exhibition.start_date < today)\
-  .order_by(Org.name)\
-  .all()
-  active_orgs = Org.filter(
+  # Get active orgs, exhibitions
+  active_orgs = Org.query.filter(
         Org.exhibitions.any(
-            and_(start_date <= today, end_date >= today)
+            and_(Exhibition.start_date <= today, Exhibition.end_date >= today)
         )
     )\
     .order_by(Org.name)\
     .all()
-  # upcoming_orgs = active_orgs
-  # recent_orgs = active_orgs
-  upcoming_orgs = db.session.query(Org, Exhibition)\
-    .filter(exh_org.exhibition_id == Exhibition.id)\
-    .filter(exh_org.organization_id == Org.id)\
-    .filter(Exhibition.start_date > today)\
-    .order_by(Exhibition.start_date)\
-    .limit(5)
-  # recent_orgs = db.session.query(Org, Exhibition)\
-  #   .filter(exh_org.exhibition_id == Exhibition.id)\
-  #   .filter(exh_org.organization_id == Org.id)\
-  #   .filter(Exhibition.end_date < today)\
-  #   .order_by(Exhibition.end_date.desc())\
-  #   .limit(5)
+  active_exhibitions = Exhibition.query.filter(
+      and_(Exhibition.start_date <= today, Exhibition.end_date >= today)
+  ).all()
+
+  # Get upcoming orgs, exhibitions
+  upcoming_orgs = Org.query.join(Org.exhibitions)\
+      .filter(Exhibition.start_date > today)\
+      .order_by(Exhibition.start_date)\
+      .limit(5)
+  upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
+      .order_by(Exhibition.start_date)\
+      .limit(5)
+
   form = Form_search()
   session['url'] = request.path
   return render_template(
       'orgs.html',
       orgs = orgs,
       active_orgs = active_orgs,
+      active_exhibitions = active_exhibitions,
       upcoming_orgs = upcoming_orgs,
-      recent_orgs = recent_orgs,
+      upcoming_exhibitions = upcoming_exhibitions,
+      # recent_orgs = recent_orgs,
+      # recent_exhibitions = recent_exhibitions,
       form = form
   )
 

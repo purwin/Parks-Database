@@ -1049,6 +1049,15 @@ def orgs():
       .order_by(Exhibition.start_date)\
       .limit(5)
 
+  # Get recent orgs, exhibitions
+  recent_orgs = Org.query.join(Org.exhibitions)\
+      .filter(Exhibition.end_date < today)\
+      .order_by(Exhibition.end_date.desc())\
+      .limit(5)
+  recent_exhibitions = Exhibition.query.filter(Exhibition.end_date < today)\
+      .order_by(Exhibition.end_date.desc())\
+      .limit(5)
+
   form = Form_search()
   session['url'] = request.path
   return render_template(
@@ -1058,8 +1067,8 @@ def orgs():
       active_exhibitions = active_exhibitions,
       upcoming_orgs = upcoming_orgs,
       upcoming_exhibitions = upcoming_exhibitions,
-      # recent_orgs = recent_orgs,
-      # recent_exhibitions = recent_exhibitions,
+      recent_orgs = recent_orgs,
+      recent_exhibitions = recent_exhibitions,
       form = form
   )
 

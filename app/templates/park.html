@@ -28,7 +28,7 @@
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 text-right py-5 ]">
-					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--text [ btn btn-sm ]" role="button">Delete</a>
+					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--text js-internal [ btn btn-sm ]" role="button">Delete</a>
 					<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
 				</div>
 			</div>

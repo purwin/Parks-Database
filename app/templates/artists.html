@@ -50,7 +50,7 @@
 				{%- for artist in artists -%}
 					{% set item = artist.pName[0]|lower if artist.pName[0].isalpha() else '#' %}
 					{% set artists_index = artists_index if item in artists_index else artists_index.append(item) %}
-					<div class="js-index-item {{ 'js-index_' ~ artist.pName[0]|lower if artist.pName[0].isalpha() else 'js-index_#' }}">
+					<div class="js-index-item {{ 'js-index_' ~ artist.pName[0]|lower if artist.pName[0].isalpha() else 'js-index_#' }} [ d-none ]">
 						<h3 class="[ pt-3 ]">
 							<a class="js-internal" href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a>
 						</h3>

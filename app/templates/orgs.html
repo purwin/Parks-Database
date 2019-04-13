@@ -41,12 +41,17 @@
 		</div>
 	</section>
 
+
+
 	{% macro show_orgs(org_list, exh_list, type) -%}
 		{% for org in org_list %}
 			<h3 class="indent [ py-1 ]">
 				<a class="js-internal" href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a>
 				{% for exhibition in org.exhibitions if (exhibition in exh_list) %}
 					{{ " (" if loop.first }}<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+				{% else %}
+					{% set exhibition_order = org.exhibitions|sort(attribute='start_date') %}
+						(<a class="js-internal" href="{{ url_for('exhibition', id=exhibition_order[0].id) }}">{{ exhibition_order[0].name }}</a>)
 				{%- endfor -%}
 			</h3>
 
@@ -63,17 +68,7 @@
 
 				<h2 class="[ display-4 py-4 ]">Active Organizations</h2>
 
-				{% for org in active_orgs %}
-					<h3 class="indent [ py-1 ]">
-						<a class="js-internal" href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a>
-						{% for exhibition in org.exhibitions if (exhibition in active_exhibitions) %}
-							{{ " (" if loop.first }}<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
-						{%- endfor -%}
-					</h3>
-
-				{% else %}
-					<p><i>There are no active organizations.</i></p>
-				{% endfor %}
+				{{ show_orgs(active_orgs, active_exhibitions, "active") }}
 
 			</div>
 		</div>
@@ -101,7 +96,7 @@
 
 				<h2 class="[ display-4 py-4 ]">Recent Organizations</h2>
 
-
+				{{ show_orgs(recent_orgs, recent_exhibitions, "recent") }}
 
 			</div>
 		</div>

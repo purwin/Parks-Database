@@ -5,7 +5,7 @@
 {% block title %}NYC Parks Database – Parks{% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="[ container-fluid ]">
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
@@ -180,7 +180,7 @@
 				{%- for park in parks -%}
 					{% set item = park.name[0]|lower if park.name[0].isalpha() else '#' %}
 					{% set parks_index = parks_index if item in parks_index else parks_index.append(item) %}
-					<h3 class="indent js-index-item {{ 'js-index_' ~ park.name[0]|lower if park.name[0].isalpha() else 'js-index_#' }} [ pt-3 ]">
+					<h3 class="indent js-index-item {{ 'js-index_' ~ park.name[0]|lower if park.name[0].isalpha() else 'js-index_#' }} [ pt-3 d-none ]">
 						<a class="js-internal" href="{{ url_for('park', id=park.id) }}">{{ park.name }}</a>
 						{%- for exhibition in park.exhibitions -%}
 							{{ " (" if loop.first }}<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ " / " if not loop.last else ")" }}

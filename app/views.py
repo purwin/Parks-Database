@@ -271,11 +271,11 @@ def exhibitions():
                                        .all()
   upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
                                          .order_by(Exhibition.start_date)\
-                                         .limit(10)\
+                                         .limit(5)\
                                          .all()
   recent_exhibitions = Exhibition.query.filter(Exhibition.end_date <= today)\
                                          .order_by(Exhibition.end_date.desc())\
-                                         .limit(10)\
+                                         .limit(5)\
                                          .all()
   form = Form_search()
   session['url'] = request.path
@@ -686,7 +686,7 @@ def park_delete(id):
 @app.route('/artists')
 @login_required
 def artists():
-  artists = Artist.query.order_by(Artist.pName).all()
+  artists = Artist.query.order_by(Artist.pName).order_by(Artist.fName).all()
   form = Form_search()
   session['url'] = request.path
   return render_template('artists.html', artists = artists, form = form)

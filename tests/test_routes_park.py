@@ -48,12 +48,12 @@ class TestRoutesPark(BaseTests):
 
 
   # Test parks page not logged in
-  def test_invalid_parks_not_logged_in(self):
+  def test_valid_parks_not_logged_in(self):
     with self.app:
       response = self.app.get('/parks', follow_redirects=True)
       req = request.url
 
-    self.assertIn(b'/login', req)
+    self.assertIn(b'/parks', req)
     self.assertEqual(response.status_code, 200)
 
 
@@ -97,7 +97,7 @@ class TestRoutesPark(BaseTests):
 
 
   # Test park page not logged in
-  def test_invalid_park_not_logged_in(self):
+  def test_valid_park_not_logged_in(self):
     # Add park to database
     self.create_park(
         name=self.default_park['name'],
@@ -111,7 +111,7 @@ class TestRoutesPark(BaseTests):
       response = self.app.get('/parks/1', follow_redirects=True)
       req = request.url
 
-    self.assertIn(b'/login', req)
+    self.assertIn(b'/parks/1', req)
     self.assertEqual(response.status_code, 200)
 
 

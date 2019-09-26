@@ -101,6 +101,15 @@ class TestRoutesOrg(BaseTests):
     self.assertEqual(response.status_code, 404)
 
 
+  # Test GET org CREATE page
+  def test_invalid_org_create_get(self):
+    with self.app:
+      response = self.app.get('/orgs/create', follow_redirects=True)
+
+    self.assertIn('Method Not Allowed', response.data)
+    self.assertEqual(response.status_code, 405)
+
+
   # Test org CREATE page not logged in
 
   # Test org CREATE page logged in

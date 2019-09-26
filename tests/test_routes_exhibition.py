@@ -97,9 +97,36 @@ class TestRoutesExhibition(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test exhibition page not logged in
-
   # Test exhibition page logged in
+  def test_valid_exhibition_logged_in(self):
+    exhibition = self.default_exhibition
+    # Add exhibition to database
+    self.create_exhibition(**exhibition)
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get('/exhibitions/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/exhibitions/1', req)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test exhibition page not logged in
+  def test_invalid_exhibition_not_logged_in(self):
+    exhibition = self.default_exhibition
+    # Add exhibition to database
+    self.create_exhibition(**exhibition)
+
+    with self.app:
+      response = self.app.get('/orgs/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
 
   # Test exhibition CREATE page not logged in

@@ -215,14 +215,144 @@ class TestRoutesExhibition(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test exhibition CREATE page logged in
+  # Test POST exhibition EDIT page logged in
+  def test_valid_exhibition_edit_post(self):
+    exhibition = self.default_exhibition
+    new_exhibition = 'Swankier Exhibition'
+    # Add exhibition to database
+    self.create_exhibition(**exhibition)
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/exhibitions/1/edit',
+          data=dict(
+            name=new_exhibition,
+            start_date=self.default_exhibition_string['start_date'],
+            end_date=self.default_exhibition_string['end_date'],
+            opening=self.default_exhibition_string['opening'],
+            comments=exhibition['comments'],
+            install_start=self.default_exhibition_string['install_start'],
+            install_end=self.default_exhibition_string['install_end'],
+            prm=exhibition['prm'],
+            approval=exhibition['approval'],
+            walkthrough=exhibition['walkthrough'],
+            cb_presentation=exhibition['cb_presentation'],
+            license_mailed=exhibition['license_mailed'],
+            license_signed=exhibition['license_signed'],
+            license_borough=exhibition['license_borough'],
+            bond=exhibition['bond'],
+            coi=exhibition['coi'],
+            coi_renewal=exhibition['coi_renewal'],
+            signage_submit=exhibition['signage_submit'],
+            signage_received=exhibition['signage_received'],
+            press_draft=exhibition['press_draft'],
+            press_approved=exhibition['press_approved'],
+            web_text=exhibition['web_text'],
+            work_images=exhibition['work_images'],
+            deinstall_date=self.default_exhibition_string['deinstall_date'],
+            deinstall_check=exhibition['deinstall_check'],
+            bond_return=exhibition['bond_return'],
+            press_clippings=exhibition['press_clippings']
+          ),
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertIn(new_exhibition, response.data)
+    self.assertEqual(response.status_code, 200)
 
 
-  # Test exhibition EDIT page not logged in
+  # Test POST exhibition EDIT page not logged in
+  def tesit_invalid_exhbition_edit_post(self):
+    exhibition = self.default_exhibition_string
+    # Add exhibition to database
+    self.create_exhbition(**exhibition)
 
-  # Test exhibition EDIT page logged in
+    new_exhibition = 'Swankier Exhibition'
+
+    with self.app as c:
+      response = self.app.post(
+          '/exhibitions/1/edit',
+          data=dict(
+            name=new_exhibition,
+            start_date=self.default_exhibition_string['start_date'],
+            end_date=self.default_exhibition_string['end_date'],
+            opening=self.default_exhibition_string['opening'],
+            comments=exhibition['comments'],
+            install_start=self.default_exhibition_string['install_start'],
+            install_end=self.default_exhibition_string['install_end'],
+            prm=exhibition['prm'],
+            approval=exhibition['approval'],
+            walkthrough=exhibition['walkthrough'],
+            cb_presentation=exhibition['cb_presentation'],
+            license_mailed=exhibition['license_mailed'],
+            license_signed=exhibition['license_signed'],
+            license_borough=exhibition['license_borough'],
+            bond=exhibition['bond'],
+            coi=exhibition['coi'],
+            coi_renewal=exhibition['coi_renewal'],
+            signage_submit=exhibition['signage_submit'],
+            signage_received=exhibition['signage_received'],
+            press_draft=exhibition['press_draft'],
+            press_approved=exhibition['press_approved'],
+            web_text=exhibition['web_text'],
+            work_images=exhibition['work_images'],
+            deinstall_date=self.default_exhibition_string['deinstall_date'],
+            deinstall_check=exhibition['deinstall_check'],
+            bond_return=exhibition['bond_return'],
+            press_clippings=exhibition['press_clippings']
+          ),
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test exhibition DELETE page logged in
+  def test_valid_exhibition_delete_post(self):
+    exhibition = self.default_exhibition
+    # Add exhibition to database
+    self.create_exhibition(**exhibition)
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/exhibitions/1/delete',
+          follow_redirects=True
+      )
+      req = request.url
+
+      retry = self.app.get(
+          '/exhibitions/1',
+          follow_redirects=True
+      )
+
+    self.assertIn('/exhibitions', req)
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(retry.status_code, 404)
 
 
   # Test exhibition DELETE page not logged in
+  def test_invalid_exhibition_delete_post(self):
+    exhibition = self.default_exhibition
+    # Add exhibition to database
+    self.create_exhibition(**exhibition)
 
-  # Test exhibition DELETE page logged in
+    with self.app as c:
+      response = self.app.post(
+          '/exhibitions/1/delete',
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)

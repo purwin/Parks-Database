@@ -110,9 +110,25 @@ class TestRoutesOrg(BaseTests):
     self.assertEqual(response.status_code, 405)
 
 
-  # Test org CREATE page not logged in
-
   # Test org CREATE page logged in
+  def test_valid_org_create_post(self):
+    org = self.default_org
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/orgs/create',
+          data=org,
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test org CREATE page not logged in
 
 
   # Test org EDIT page not logged in

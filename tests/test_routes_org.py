@@ -32,6 +32,14 @@ class TestRoutesOrg(BaseTests):
 
 
   # Test orgs page not logged in
+  def test_invalid_orgs_not_logged_in(self):
+    with self.app:
+      response = self.app.get('/orgs', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
 
   # Test orgs page logged in
   def test_valid_orgs_logged_in(self):

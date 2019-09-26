@@ -70,7 +70,21 @@ class TestRoutesOrg(BaseTests):
 
 
   # Test org page logged in
+  def test_valid_org_logged_in(self):
+    org = self.default_org
+    # Add org to database
+    self.create_org(**org)
 
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get('/orgs/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/orgs/1', req)
+    self.assertEqual(response.status_code, 200)
 
   # Test org CREATE page not logged in
 

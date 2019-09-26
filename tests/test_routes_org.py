@@ -86,6 +86,21 @@ class TestRoutesOrg(BaseTests):
     self.assertIn(b'/orgs/1', req)
     self.assertEqual(response.status_code, 200)
 
+
+  # Test org page with no orgs
+  def test_invalid_org_no_orgs(self):
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get('/orgs/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/orgs/1', req)
+    self.assertEqual(response.status_code, 404)
+
+
   # Test org CREATE page not logged in
 
   # Test org CREATE page logged in

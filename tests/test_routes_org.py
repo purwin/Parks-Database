@@ -129,6 +129,18 @@ class TestRoutesOrg(BaseTests):
 
 
   # Test org CREATE page not logged in
+  def test_invalid_org_create_post(self):
+    org = self.default_org
+    with self.app as c:
+      response = self.app.post(
+          '/orgs/create',
+          data=org,
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
 
   # Test org EDIT page not logged in

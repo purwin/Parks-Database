@@ -143,9 +143,34 @@ class TestRoutesOrg(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test org EDIT page not logged in
+  # Test POST org EDIT page logged in
+  def test_valid_org_edit_post(self):
+    org = self.default_org
+    new_org = 'Fancier Org'
+    # Add org to database
+    self.create_org(**org)
 
-  # Test org EDIT page logged in
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/orgs/1/edit',
+          data=dict(
+              name=new_org,
+              phone=org['phone'],
+              website=org['website']
+          ),
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertIn(new_org, response.data)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test POST org EDIT page not logged in
 
 
   # Test org DELETE page not logged in

@@ -171,7 +171,26 @@ class TestRoutesOrg(BaseTests):
 
 
   # Test POST org EDIT page not logged in
+  def test_invalid_org_edit_post(self):
+    org = self.default_org
+    new_org = 'Fancier Org'
+    # Add org to database
+    self.create_org(**org)
 
+    with self.app as c:
+      response = self.app.post(
+          '/orgs/1/edit',
+          data=dict(
+              name=new_org,
+              phone=org['phone'],
+              website=org['website']
+          ),
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
   # Test org DELETE page not logged in
 

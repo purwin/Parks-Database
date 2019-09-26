@@ -192,6 +192,31 @@ class TestRoutesOrg(BaseTests):
     self.assertIn(b'/login', req)
     self.assertEqual(response.status_code, 200)
 
-  # Test org DELETE page not logged in
 
   # Test org DELETE page logged in
+  def test_valid_org_delete_post(self):
+    org = self.default_org
+    # Add org to database
+    self.create_org(**org)
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/orgs/1/delete',
+          follow_redirects=True
+      )
+      req = request.url
+
+      retry = self.app.get(
+          '/orgs/1',
+          follow_redirects=True
+      )
+
+    self.assertIn('/orgs', req)
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(retry.status_code, 404)
+
+  # Test org DELETE page not logged in

@@ -128,6 +128,20 @@ class TestRoutesExhibition(BaseTests):
     self.assertIn(b'/login', req)
     self.assertEqual(response.status_code, 200)
 
+  
+  # Test exhibition page with no exhibitions
+  def test_invalid_exhibition_no_exhibitions(self):
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get('/exhibitions/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/exhibitions/1', req)
+    self.assertEqual(response.status_code, 404)
+
 
   # Test exhibition CREATE page not logged in
 

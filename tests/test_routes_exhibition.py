@@ -56,6 +56,36 @@ class TestRoutesExhibition(BaseTests):
       press_clippings=''
   )
 
+  default_exhibition_string = dict(
+      name='Swanky Exhibition',
+      start_date='2019-01-01',
+      end_date='2019-06-01',
+      opening='2019-01-01',
+      comments='',
+      install_start='2018-12-28',
+      install_end='2019-01-01',
+      prm='',
+      approval='',
+      walkthrough='',
+      cb_presentation='',
+      license_mailed='',
+      license_signed='',
+      license_borough='',
+      bond='',
+      coi='',
+      coi_renewal='',
+      signage_submit='',
+      signage_received='',
+      press_draft='',
+      press_approved='',
+      web_text='',
+      work_images='',
+      deinstall_date='2019-06-05',
+      deinstall_check='',
+      bond_return='',
+      press_clippings=''
+  )
+
 
   @staticmethod
   def create_exhibition(**kwargs):
@@ -143,7 +173,47 @@ class TestRoutesExhibition(BaseTests):
     self.assertEqual(response.status_code, 404)
 
 
+  # Test GET exhibition CREATE page
+  def test_invalid_exhibition_create_get(self):
+    with self.app:
+      response = self.app.get('/exhibitions/create', follow_redirects=True)
+
+    self.assertIn('Method Not Allowed', response.data)
+    self.assertEqual(response.status_code, 405)
+
+
+  # Test exhibition CREATE page logged in
+  def test_valid_exhibition_create_post(self):
+    exhibition = self.default_exhibition_string
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/exhibitions/create',
+          data=exhibition,
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertEqual(response.status_code, 200)
+
+
   # Test exhibition CREATE page not logged in
+  def test_invalid_exhibition_create_post(self):
+    exhibition = self.default_exhibition_string
+    with self.app as c:
+      response = self.app.post(
+          '/exhibitions/create',
+          data=exhibition,
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
 
   # Test exhibition CREATE page logged in
 

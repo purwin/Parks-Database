@@ -199,6 +199,45 @@ class TestRoutesArtist(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test artist DELETE page not logged in
-
   # Test artist DELETE page logged in
+  def test_valid_artist_delete_post(self):
+    artist = self.default_artist
+    # Add artist to database
+    self.create_artist(**artist)
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/artists/1/delete',
+          follow_redirects=True
+      )
+      req = request.url
+
+      retry = self.app.get(
+          '/artists/1',
+          follow_redirects=True
+      )
+
+    self.assertIn('/artists', req)
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(retry.status_code, 404)
+
+
+  # Test artist DELETE page not logged in
+  def test_invalid_artist_delete_post(self):
+    artist = self.default_artist
+    # Add artist to database
+    self.create_artist(**artist)
+
+    with self.app as c:
+      response = self.app.post(
+          '/artists/1/delete',
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)

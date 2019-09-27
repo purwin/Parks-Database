@@ -145,9 +145,58 @@ class TestRoutesArtist(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test artist EDIT page not logged in
+  # Test POST artist EDIT page logged in
+  def test_valid_artist_edit_post(self):
+    artist = self.default_artist
+    new_artist_fName = 'Cooler'
+    # Add artist to database
+    self.create_artist(**artist)
 
-  # Test artist EDIT page logged in
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/artists/1/edit',
+          data=dict(
+              fName=new_artist_fName,
+              pName=artist['pName'],
+              email=artist['email'],
+              phone=artist['phone'],
+              website=artist['website']
+          ),
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertIn(new_artist_fName, response.data)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test POST artist EDIT page not logged in
+  def test_invalid_artist_edit_post(self):
+    artist = self.default_artist
+    new_artist_fName = 'Cooler'
+    # Add artist to database
+    self.create_artist(**artist)
+
+    with self.app as c:
+      response = self.app.post(
+          '/artists/1/edit',
+          data=dict(
+              fName=new_artist_fName,
+              pName=artist['pName'],
+              email=artist['email'],
+              phone=artist['phone'],
+              website=artist['website']
+          ),
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
 
   # Test artist DELETE page not logged in

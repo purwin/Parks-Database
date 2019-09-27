@@ -141,9 +141,50 @@ class TestRoutesArtwork(BaseTests):
     self.assertEqual(response.status_code, 200)
 
 
-  # Test artwork EDIT page not logged in
+  # Test POST artwork EDIT page logged in
+  def test_valid_artwork_edit_post(self):
+    artwork = self.default_artwork
+    new_artwork = 'Fancier artwork'
+    # Add artwork to database
+    self.create_artwork(**artwork)
 
-  # Test artwork EDIT page logged in
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.post(
+          '/artworks/1/edit',
+          data=dict(
+              name=new_artwork
+          ),
+          follow_redirects=True
+      )
+
+    self.assertIn('"success": true', response.data)
+    self.assertIn(new_artwork, response.data)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test POST artwork EDIT page not logged in
+  def test_invalid_artwork_edit_post(self):
+    artwork = self.default_artwork
+    new_artwork = 'Fancier artwork'
+    # Add artwork to database
+    self.create_artwork(**artwork)
+
+    with self.app as c:
+      response = self.app.post(
+          '/artworks/1/edit',
+          data=dict(
+              name=new_artwork
+          ),
+          follow_redirects=True
+      )
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
 
 
   # Test artwork DELETE page not logged in

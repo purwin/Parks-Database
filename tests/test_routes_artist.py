@@ -58,8 +58,49 @@ class TestRoutesArtist(BaseTests):
 
 
   # Test artist page not logged in
+  def test_invalid_artist_not_logged_in(self):
+    artist = self.default_artist
+    # Add artist to database
+    self.create_artist(**artist)
+
+    with self.app:
+      response = self.app.get('/artists/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/login', req)
+    self.assertEqual(response.status_code, 200)
+
 
   # Test artist page logged in
+  def test_valid_artist_logged_in(self):
+    artist = self.default_artist
+    # Add artist to database
+    self.create_artist(**artist)
+
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get('/artists/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/artists/1', req)
+    self.assertEqual(response.status_code, 200)
+
+
+  # Test artist page with no artists
+  def test_invalid_artist_no_artists(self):
+    with self.app as c:
+      with c.session_transaction() as sess:
+        sess['url'] = '/'
+
+      self.login()
+      response = self.app.get('/artists/1', follow_redirects=True)
+      req = request.url
+
+    self.assertIn(b'/artists/1', req)
+    self.assertEqual(response.status_code, 404)
 
 
   # Test artist CREATE page not logged in

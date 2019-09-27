@@ -712,7 +712,7 @@ def artist(id):
                          form = form)
 
 
-@app.route('/artists/create', methods=['GET', 'POST'])
+@app.route('/artists/create', methods=['POST'])
 @login_required
 def artist_create():
   pass

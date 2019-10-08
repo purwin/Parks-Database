@@ -55,8 +55,6 @@ class TestModelsOrg(BaseTests):
     org_object = Org.query.filter_by(name=self.default_org['name']).first()
     org_all = Org.query.filter_by(name=self.default_org['name']).all()
 
-    print len(org_all)
-
     self.assertEqual(org_object.id, 1)
     self.assertEqual(org_object.name, self.default_org['name'])
     self.assertEqual(org_object.phone, '')

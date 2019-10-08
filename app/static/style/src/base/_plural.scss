@@ -1,0 +1,68 @@
+
+
+/* Index Alpha Item */
+.index {
+  font-size: 2rem;
+	margin: .75rem;
+  cursor: pointer;
+}
+
+/* Index Alpha Item: Parks */
+.index--parks {
+  color: color(green--d);
+  border-bottom: 0px solid color(green--d);
+
+  &:hover {
+    border-bottom: 2px solid color(green--d);
+  }
+}
+
+
+/* Index Alpha Item: Exhibitions */
+.index--exhibitions {
+  color: color(purple--l);
+  border-bottom: 0px solid color(purple--l);
+
+  &:hover {
+    border-bottom-color: color(purple--l);
+  }
+}
+
+
+/* Index Alpha Item: Artworks */
+.index--artworks {
+  color: color(blue--l);
+  border-bottom: 0px solid color(blue--l);
+
+  &:hover {
+    border-bottom-color: color(blue--l);
+  }
+}
+
+
+/* Index Alpha Item: Artists */
+.index--artists {
+  color: color(pink--l);
+  border-bottom: 0px solid color(pink--l);
+
+  &:hover {
+    border-bottom-color: color(pink--l);
+  }
+}
+
+
+/* Index Alpha Item: Organizations */
+.index--orgs {
+  color: color(orange--l);
+  border-bottom: 0px solid color(orange--l);
+
+  &:hover {
+    border-bottom-color: color(orange--l);
+  }
+}
+
+
+.index--selected {
+  color: color(grey--d);
+  border-bottom-width: 2px;
+}

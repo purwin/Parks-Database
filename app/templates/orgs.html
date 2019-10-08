@@ -4,7 +4,6 @@
 {% block title %}NYC Parks Database – Organizations{% endblock %}
 {% block content %}
 
-
 <div class="container-fluid">
 
 	<section id="section--head">
@@ -42,21 +41,97 @@
 
 
 
-	<section id="section--orgs">
+	{% macro show_orgs(org_list, exh_list, type) -%}
+		{% for org in org_list %}
+			<h3 class="indent [ py-1 ]">
+				<a class="js-internal" href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a>
+				{% for exhibition in org.exhibitions if (exhibition in exh_list) %}
+					{{ " (" if loop.first }}<a class="js-internal" href="{{ url_for('exhibition', id=exhibition.id) }}">{{ exhibition.name }}</a>{{ "/" if not loop.last else ")" }}
+				{% else %}
+					{% set exhibition_order = org.exhibitions|sort(attribute='start_date') %}
+						(<a class="js-internal" href="{{ url_for('exhibition', id=exhibition_order[0].id) }}">{{ exhibition_order[0].name }}</a>)
+				{%- endfor -%}
+			</h3>
+
+		{% else %}
+			<p><i>There are no {{ type }} organizations.</i></p>
+		{% endfor %}
+	{%- endmacro %}
+
+
+
+	<section id="section--active">
 		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
 
-				{% for org in orgs %}
+				<h2 class="[ display-4 py-4 ]">Active Organizations</h2>
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a></h2>
+				{{ show_orgs(active_orgs, active_exhibitions, "active") }}
 
-				{% else %}
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--upcoming">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Upcoming Organizations</h2>
+
+				{{ show_orgs(upcoming_orgs, upcoming_exhibitions, "upcoming") }}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--recent">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Recent Organizations</h2>
+
+				{{ show_orgs(recent_orgs, recent_exhibitions, "recent") }}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--orgs">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 order-1 ]">
+				<h2 class="[ display-4 py-4 ]">Organizations</h2>
+			</div>
+
+			<div class="[ col-md-8 order-3 ]">
+				{% set orgs_index = [] %}
+
+				{%- for org in orgs -%}
+				{% set item = org.name[0]|lower if org.name[0].isalpha() else '#' %}
+				{% set orgs_index = orgs_index if item in orgs_index else orgs_index.append(item) %}
+
+					<h3 class="indent js-index-item {{ 'js-index_' ~ org.name[0]|lower if org.name[0].isalpha() else 'js-index_#' }} [ pt-3 d-none ]">
+						<a class="js-internal" href="{{ url_for('org', id=org.id) }}">{{ org.name }}</a>
+					</h3>
+
+				{%- else -%}
 
 					<p><i>There are no organizations in the database yet.</i></p>
 
-				{% endfor %}
-
+				{%- endfor -%}
 			</div>
+
+			<div class="[ col-md-8 order-2 mb-5 text-center ]">
+				{% for item in orgs_index %}
+					<span id="js-index_{{ item }}" class="index index--orgs js-index [ display-5 ]">{{ item|upper }}</span>
+				{% endfor %}
+			</div>
+
 		</div>
 	</section>
 

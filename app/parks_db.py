@@ -196,7 +196,7 @@ class Exh_art_park(db.Model):
 class Artist(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   pName = db.Column(db.String(120), nullable=False)
-  fName = db.Column(db.String(120), default='')
+  fName = db.Column(db.String(120), default=None)
   email = db.Column(db.String(80), default='')
   phone = db.Column(db.String(12), default='')
   website = db.Column(db.String(80), default='')

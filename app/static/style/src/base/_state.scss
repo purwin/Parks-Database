@@ -21,6 +21,8 @@
 
 .is-visible { visibility: visible !important; }
 
+.is-hidden { opacity: 0; }
+
 
 .is-spinning { animation: spinning 1750ms linear infinite; }
 

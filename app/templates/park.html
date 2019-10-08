@@ -1,11 +1,12 @@
 {% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/dist/datatables.min.css') }}">
 {% endblock %}
 {% block title %}NYC Parks Database – {{ park.name|capitalize }}{% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div id="js-container" class="container-fluid">
 
 	<section id="section--head">
 		{% include "include/nav.html" %}
@@ -27,7 +28,7 @@
 		{% if current_user.is_authenticated %}
 			<div class="[ row justify-content-center ]">
 				<div class="[ col-md-8 text-right py-5 ]">
-					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--text [ btn btn-sm ]" role="button">Delete</a>
+					<a href="{{ url_for('park_delete', id=park.id) }}" class="butt butt--text js-internal [ btn btn-sm ]" role="button">Delete</a>
 					<button id="js-edit_park" class="js-form-edit butt butt--edit" type="button">Edit</button>
 				</div>
 			</div>
@@ -101,45 +102,102 @@
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
 
-					<div class="[ row justify-content-center d-none ]">
-						<div class="[ col-12 text-right pb-4 ]">
-							<button id="js-add_exhibition" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
-						</div>
-					</div>
+					{% if not current_user.is_authenticated %}
+						<p class="is-active [ mb-5 ]"><i>Log in to view exhibition info!</i></p>
+					{% else %}
 
-					<ul class="js-ul-child js-ul_exhibitions [ p-0 list-unstyled ]">
+						{% if park_art %}
 
-						{% for item in park_art %}
-
-							<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
-								<div class="[ col-md-3 ]">
-									<label for="exhibitions">Exhibition</label>
-								</div>
-								<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-									<a href="{{ url_for('exhibition', id=item.exhib.id) }}" class="is-active">{{ item.exhib.name }}</a>
-									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control-plaintext d-none ]" readonly>
-									{{ datalist("exhibitions", exhibitions) }}
-								</div>
-								<div class="[ col-2 col-md-1 align-items-baseline ]">
-									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
-								</div>
-								<div class="[ col-md-3 ]">
-									<label for="parks">Artwork</label>
-								</div>
-								<div class="[ col-10 col-md-8 col-lg-6 ]">
-									<a href="{{ url_for('artwork', id=item.artw.id) }}" class="is-active">{{ item.artw.name }}</a>
-									<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control-plaintext d-none ]" readonly>
-									{{ datalist("artworks", artworks) }}
-								</div>
-							</li>
+							<div class="is-active [ table-responsive-sm ]">
+								<table id="js-table_exhibition" class="table-object dataTable [ table table-hover ]">
+									<thead class="table-head">
+										<tr>
+											<th scope="col">Exhibition</th>
+											<th scope="col">Artwork</th>
+											<th scope="col">Artists</th>
+											<th scope="col">Start Date</th>
+											<th scope="col">End Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for item in park_art %}
+											<tr>
+												<td>
+													<a class="js-internal" href="{{ url_for('exhibition', id=item.exhib.id) }}">
+														{{ item.exhib.name }}
+													</a>
+												</td>
+												<td>
+													<a class="js-internal" href="{{ url_for('artwork', id=item.artw.id) }}">
+														{{ item.artw.name }}
+													</a>
+												</td>
+												<td>
+													{% for artist in item.artw.artists|sort(attribute='name') %}
+														<p class="[ m-0 ]">
+															<a class="js-internal" href="{{ url_for('artist', id=artist.id) }}">
+																{{ artist.name }}
+															</a>
+														</p>
+													{% else %}
+														<p class="[ m-0 ]">--</p>
+													{% endfor %}
+												</td>
+												<td>
+													{{ item.exhib.start_date|sort_date }}
+												</td>
+												<td>
+													{{ item.exhib.end_date|sort_date }}
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
 
 						{% else %}
+							<p class="is-active [ mb-5 ]"><i>{{ park.name }} has no related exhibitions.</i></p>
+						{% endif %}
 
-							<li class="is-active"><i>There are no exhibitions connected with {{ park.name }}.</i></li>
+						<div class="d-none">
+							<div class="[ row justify-content-center ]">
+								<div class="[ col-12 text-right pb-4 ]">
+									<button id="js-add_exhibition" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
+								</div>
+							</div>
 
-						{% endfor %}
+							<ul class="js-ul-child js-ul_exhibitions [ p-0 list-unstyled ]">
 
-					</ul>
+								{% for item in park_art %}
+
+									<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
+										<div class="[ col-md-3 ]">
+											<label for="exhibitions">Exhibition</label>
+										</div>
+										<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
+											<a class="js-internal is-active" href="{{ url_for('exhibition', id=item.exhib.id) }}">{{ item.exhib.name }}</a>
+											<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ item.exhib.id }}" value="{{ item.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control-plaintext d-none ]" readonly>
+											{{ datalist("exhibitions", exhibitions) }}
+										</div>
+										<div class="[ col-2 col-md-1 align-items-baseline ]">
+											<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+										</div>
+										<div class="[ col-md-3 ]">
+											<label for="parks">Artwork</label>
+										</div>
+										<div class="[ col-10 col-md-8 col-lg-6 ]">
+											<a class="js-internal is-active" href="{{ url_for('artwork', id=item.artw.id) }}">{{ item.artw.name }}</a>
+											<input id="js-datalist_artwork-{{ loop.index }}" type="text" name="artworks-{{ loop.index }}" list="artworks" data-value="{{ item.artw.id }}" value="{{ item.artw.name }}" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control-plaintext d-none ]" readonly>
+											{{ datalist("artworks", artworks) }}
+										</div>
+									</li>
+
+								{% endfor %}
+
+							</ul>
+						</div>
+
+					{% endif %}
 
 				</div>
 			</div>
@@ -161,50 +219,51 @@
 
 </div>
 
+{% if current_user.is_authenticated %}
+	<!-- Empty artwork template -->
+	<script id="js-template_artwork" type="text/template">
+		<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
+			<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
+				<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
+				{{ datalist("artworks", artworks) }}
+			</div>
+			<div class="[ col-2 col-md-1 align-items-baseline ]">
+				<span class="[ px-2 ]">@</span>
+			</div>
+			<div class="[ col-10 col-md-8 col-lg-6 ]">
+				<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
+				{{ datalist("exhibitions", exhibitions) }}
+			</div>
+			<div class="[ col-2 col-md-1 ]">
+				<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
+			</div>
+		</li>
+	</script>
 
-<!-- Empty artwork template -->
-<script id="js-template_artwork" type="text/template">
-	<li class="js-li_artwork [ row mb-4 align-items-baseline ]">
-		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
-			{{ datalist("artworks", artworks) }}
-		</div>
-		<div class="[ col-2 col-md-1 align-items-baseline ]">
-			<span class="[ px-2 ]">@</span>
-		</div>
-		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
-			{{ datalist("exhibitions", exhibitions) }}
-		</div>
-		<div class="[ col-2 col-md-1 ]">
-			<button class="js-delete-li butt butt--delete-icon" type="button"><i class="far fa-times-circle"></i></button>
-		</div>
-	</li>
-</script>
 
-
-<!-- Empty exhibition template -->
-<script id="js-template_exhibition" type="text/template">
-	<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
-		<div class="[ col-md-3 ]">
-			<label for="exhibitions">Exhibition</label>
-		</div>
-		<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-			<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
-			{{ datalist("exhibitions", exhibitions) }}
-		</div>
-		<div class="[ col-2 col-md-1 ]">
-			<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
-		</div>
-		<div class="[ col-md-3 ]">
-			<label for="artworks">Artwork</label>
-		</div>
-		<div class="[ col-10 col-md-8 col-lg-6 ]">
-			<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
-			{{ datalist("artworks", artworks) }}
-		</div>
-	</li>
-</script>
+	<!-- Empty exhibition template -->
+	<script id="js-template_exhibition" type="text/template">
+		<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
+			<div class="[ col-md-3 ]">
+				<label for="exhibitions">Exhibition</label>
+			</div>
+			<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
+				<input id="js-datalist_exhibition" type="text" name="exhibitions" list="exhibitions" data-value="" value="" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control ]">
+				{{ datalist("exhibitions", exhibitions) }}
+			</div>
+			<div class="[ col-2 col-md-1 ]">
+				<button class="js-delete-li butt butt--delete-icon [ px-2 ]" type="button"><i class="far fa-times-circle"></i></button>
+			</div>
+			<div class="[ col-md-3 ]">
+				<label for="artworks">Artwork</label>
+			</div>
+			<div class="[ col-10 col-md-8 col-lg-6 ]">
+				<input id="js-datalist_artwork" type="text" name="artworks" list="artworks" data-value="" value="" placeholder="Artwork Name" class="js-datalist-child js-datalist_artwork input--attr [ form-control ]">
+				{{ datalist("artworks", artworks) }}
+			</div>
+		</li>
+	</script>
+{% endif %}
 
 <!-- Empty error template -->
 <script id="js-template_error" type="text/template">
@@ -218,6 +277,7 @@
 	</div>
 </script>
 
+<script src="{{ url_for('static', filename='js/dist/datatables.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/dist/park.bundle.js') }}"></script>
 

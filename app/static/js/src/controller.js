@@ -12,8 +12,6 @@ export let controller = {
   determineObject: function(x) {
     var y = x.id.split("_")[1];
 
-    console.log("Selected object type: " + y);
-
     return y;
   },
 
@@ -21,8 +19,6 @@ export let controller = {
   // Set model.activeObject to selected object
   selectActiveObject: function(x) {
     model.activeObject = model[x];
-
-    console.log("New active object: " + model[x].name);
   },
 
 
@@ -75,9 +71,6 @@ export let controller = {
     // Add modal ID to array of active modals
     model.createButton.push(x);
 
-    console.log("createbutton: ");
-    console.dir(model.createButton);
-
     // Get object type from argument's ID
     var obj = this.determineObject(x);
 
@@ -101,14 +94,14 @@ export let controller = {
     try {
       $(formID + ' [id^="js-datalist_"]').each(function(index) {
         tempVal = $(this).val();
-        console.log("Temp val: " + tempVal)
+
         idVal = $(formID + ' option').filter(function() {
           return this.value == tempVal;
         }).data('value');
         if (idVal === undefined) {
           throw tempVal + " is not a recognized value.";
         }
-        console.log("ID val: " + idVal);
+
         $(this).val(idVal);
       });
     }
@@ -121,24 +114,17 @@ export let controller = {
 
   // Update input ID and name value for each object child element
   iterateFieldlists: function(obj) {
-    console.log("iterate obj ID: " + obj);
-
     for (const child in model.activeObject.children) {
-      console.log("Updating " + child + " datalists");
       // Define child object in children
       let item = model.activeObject.children[child];
-      console.log(obj + ' ' + item.id);
+
       // Loop through matching IDs and append count number
       $.each($(obj + ' ' + item.id), function() {
-
-        console.log("ID: " + $(this).attr('id'));
-        console.log("LENGTH: " + $(this).closest('ul').children('li').length);
 
         // Update ID attribute
         $(this).attr('id', $(this).attr('id') + '-' + item.count);
 
         // Update name attribute
-        // $(this).attr('name', $(this).attr('name') + '-' + item.count);
         $(this).attr('name', $(this).attr('name') + '-' + item.count);
 
         // Update count
@@ -152,8 +138,6 @@ export let controller = {
   // Pop most recent addition to modal list
   popModalList: function() {
     let x = model.createButton.pop();
-    console.log("createbutton: ");
-    console.dir(model.createButton);
     return x;
   },
 
@@ -173,19 +157,15 @@ export let controller = {
     var obj = this.determineObject(x);
 
     // Call post data function, get response
-    var postPromise = this.postData(model[obj],
-                                    model[obj].form.modalID,
-                                    model[obj].post.create);
+    var postPromise = this.postData(
+        model[obj], model[obj].form.modalID, model[obj].post.create
+    );
 
     postPromise.done(function(response) {
       // If form POST doesn't validate with wtforms, add errors to page
       if (response.success == false) {
-        console.log("Form Error(s)!");
-        console.dir(response);
-
         // For each received error...
         for (var itemName in response.data) {
-          console.log("ITEM: " + itemName);
           // Notify user of alert error with alert DIV
           controller.addErrors(itemName + ": " + response.data[itemName]);
         }
@@ -193,15 +173,13 @@ export let controller = {
       }
       // ...Otherwise, return object sent from POST route
       else {
-        console.log("Form Sucess!");
-        console.dir(response);
-
         // Notify user of item successfully added with alert DIV
         controller.addSuccess("Success! Created " + response.data.name + "!");
 
         // Update model object datalist
-        model[obj].li.html = controller.updateTemplate(model[obj].li.html,
-                                                       response.data);
+        model[obj].li.html = controller.updateTemplate(
+            model[obj].li.html, response.data
+        );
 
         // Set all [obj] datalists to updated model object datalist
         try {
@@ -226,7 +204,6 @@ export let controller = {
       }
 
     }).fail(function(error) {
-      console.log("AJAX error!");
       console.dir(error);
     })
 
@@ -236,23 +213,19 @@ export let controller = {
 
   // Post main form
   submitForm: function(x) {
-    console.log("submitForm form ID: " + model.activeObject.form.id);
-    console.log("submitForm form post route: " + model.activeObject.post);
-
     // Call post data function, get response
-    var postPromise = this.postData(model.activeObject,
-                                    model.activeObject.form.id,
-                                    model.activeObject.post.create);
+    var postPromise = this.postData(
+        model.activeObject, model.activeObject.form.id,
+        model.activeObject.post.create
+    );
 
     postPromise.done(function(response) {
       // If form POST doesn't validate with wtforms, add errors to page
       if (response.success == false) {
-        console.log("Form Error(s)!");
         console.dir(response);
 
         // For each received error...
         for (var item in response.data) {
-          console.log("ITEM: " + item);
           // Notify user of alert error with alert DIV
           controller.addErrors(item + ": " + response.data[item]);
         }
@@ -260,8 +233,6 @@ export let controller = {
       }
       // ...Otherwise, reload page
       else {
-        console.log("Form Sucess!");
-        console.dir(response);
         controller.addSuccess("Success! Created " + response.data.name + "!");
 
         // Update model object datalist
@@ -295,34 +266,28 @@ export let controller = {
       this.selectActiveObject(obj);
     }
 
-    console.dir(model.activeObject);
-
     // Call post data function, get response
-    var postPromise = this.postData(model.activeObject,
-                                    model.activeObject.form.id,
-                                    model.activeObject.post.edit);
+    var postPromise = this.postData(
+        model.activeObject, model.activeObject.form.id,
+        model.activeObject.post.edit
+    );
 
     postPromise.done(function(response) {
       if (response.success == undefined) {
-        console.log("Unexpected response! " + response);
-        // controller.showLogin(response)
         location.assign("/login")
       }
       // If form POST doesn't validate with wtforms, add errors to page
       else if (response.success == false) {
-        console.log("Form Error(s)!");
         console.dir(response);
 
         // For each received error...
         for (var item in response.data) {
-          console.log("ITEM: " + item);
           // Notify user of alert error with alert DIV
           controller.addErrors(item + ": " + response.data[item]);
         }
       }
       // ...Otherwise, reload page
       else if (response.success == true) {
-        console.log("Form Sucess!");
         // Reload page
         window.location.reload(true);
       }
@@ -333,13 +298,6 @@ export let controller = {
 
   // Post form
   postData: function(obj, formID, postRoute) {
-
-    console.log("Form ID: " + formID);
-
-    console.log("Post data: " + $(formID).serialize());
-
-    console.log("Post route: " + postRoute);
-
     // Post data
     return $.ajax({
       url: postRoute,
@@ -463,9 +421,7 @@ export let controller = {
 
   // Log out user
   getLogout: function() {
-    console.log("Logout clicked!");
     $.get('/logout', function(data) {
-      console.log(data);
       controller.addSuccess(data);
     });
   }

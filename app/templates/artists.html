@@ -39,32 +39,49 @@
 
 	<section id="section--artists">
 		<div class="chunk [ row justify-content-center py-5 ]">
-			<div class="[ col-md-8 ]">
 
-				{% for artist in artists %}
+			<div class="[ col-md-8 order-1 ]">
+				<h2 class="[ display-4 py-4 ]">Artists</h2>
+			</div>
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a></h2>
-					<ul class="[ list-unstyled p-0 ]">
-						<li>Artworks:
-							<ul>
+			<div class="[ col-md-8 order-3 ]">
+				{% set artists_index = [] %}
 
-								{% for artwork in artist.artworks %}
-									<li><a href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a></li>
-								{% else %}
-									<li><i>{{ artist.name }} doesn't have any artworks yet.</i></li>
-								{% endfor %}
+				{%- for artist in artists -%}
+					{% set item = artist.pName[0]|lower if artist.pName[0].isalpha() else '#' %}
+					{% set artists_index = artists_index if item in artists_index else artists_index.append(item) %}
+					<div class="js-index-item {{ 'js-index_' ~ artist.pName[0]|lower if artist.pName[0].isalpha() else 'js-index_#' }} [ d-none ]">
+						<h3 class="[ pt-3 ]">
+							<a class="js-internal" href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a>
+						</h3>
+						<ul class="[ list-unstyled p-0 ]">
+							<li>Artworks:
+								<ul class="[ list-unstyled pl-4 ]">
+	
+									{% for artwork in artist.artworks %}
+										<li><a href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a></li>
+									{% else %}
+										<li><i>{{ artist.name }} doesn't have any artworks yet.</i></li>
+									{% endfor %}
+	
+								</ul>
+							</li>
+						</ul>
+					</div>
 
-							</ul>
-						</li>
-					</ul>
-
-				{% else %}
+				{%- else -%}
 
 				<p><i>There are no artists in the database yet.</i></p>
 
-				{% endfor %}
-
+				{%- endfor -%}
 			</div>
+
+			<div class="[ col-md-8 order-2 text-center mb-5 ]">
+				{% for item in artists_index %}
+					<span id="js-index_{{ item }}" class="index index--artists js-index [ display-5 ]">{{ item|upper }}</span>
+				{% endfor %}
+			</div>
+
 		</div>
 	</section>
 

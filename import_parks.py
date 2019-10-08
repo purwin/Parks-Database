@@ -147,7 +147,11 @@ def get_site(name):
 
 
 def find_cb(text):
-  search = re.findall(r'<strong>Community Board:</strong>(.+?)<br/>', text, re.DOTALL)
+  search = re.findall(
+      r'<strong>Community Board:</strong>(.+?)<br/>',
+      text,
+      re.DOTALL
+  )
   try:
     findings = search[0].lstrip().rstrip()
   except:
@@ -163,6 +167,6 @@ def dump_errors(error):
 
 if __name__ == '__main__':
   # Declare parks JSON file
-  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/sort/DPR_Parks_M-02.json'
+  json_file = '/Users/michaelpurwin/Documents/workings/parks database/data/parks-retry-01.json'
 
   import_parks(json_file)

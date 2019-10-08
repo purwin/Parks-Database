@@ -1,6 +1,5 @@
 'use strict';
 
-// import 'jquery';
 import {controller} from './controller';
 
 
@@ -109,7 +108,6 @@ $(document).ready(function() {
           }
 
           else {
-            console.log("Don't know what to do!");
             console.dir(response);
           }
 
@@ -155,7 +153,6 @@ $(document).ready(function() {
           }
 
           else {
-            console.log("Don't know what to do!");
             console.dir(response);
           }
 
@@ -170,8 +167,6 @@ $(document).ready(function() {
         $('#export_data').val(JSON.stringify(model.result.data));
         // Submit form
         $(x).closest('form').submit();
-        // Close modal if necessary
-        // $('.modal').modal('hide');
         // Reset page
         view.closeModal();
       },
@@ -214,8 +209,6 @@ $(document).ready(function() {
         // Set new model.activeObject
         model.activeObject = model[x];
 
-        console.log(model.activeObject);
-
         // Set values LI based on selected Object name
         $('.js-value').each(function() {
           $(this).html(model.activeObject.li);
@@ -229,9 +222,6 @@ $(document).ready(function() {
 
       // Post file form
       postFile: function(formID, postRoute) {
-        // console.log("Form ID: " + formID);
-        console.log("Post route: " + postRoute);
-
         let formData = new FormData($(formID)[0]);
 
         // Post data
@@ -250,7 +240,6 @@ $(document).ready(function() {
       iterateErrors: function(response) {
         // For each received error...
         for (const item in response.data) {
-          console.log("ERROR ITEM: " + item);
           // Notify user of alert error with alert DIV
           controller.addErrors(item + ": " + response.data[item]);
         }
@@ -292,7 +281,6 @@ $(document).ready(function() {
 
         // Clear import file text
         $('#file_text').html("");
-        console.log('file text: ', $('#file_text').html());
       }
 
     };
@@ -341,7 +329,6 @@ $(document).ready(function() {
             control.changeObject(obj);
 
             // Show UL
-            // FUTURE: Move to View
             $('#js-data_ul').removeClass('d-none');
           }
 
@@ -360,7 +347,6 @@ $(document).ready(function() {
         // Referenced from https://stackoverflow.com/questions/11235206/
         // twitter-bootstrap-form-file-element-upload-button/25053973#25053973
         $(document).on('change', '#file_file', function(e) {
-          console.log("changing file!");
           $('#file_text').html(this.files[0].name);
         });
       },
@@ -392,7 +378,6 @@ $(document).ready(function() {
         $('#js-modal_results').modal('hide');
 
         $('#js-modal_results').on('hidden.bs.modal', function (e) {
-          console.log("resetModal!");
           // Call function to hide modal, reset import page
           view.resetImport();
         });

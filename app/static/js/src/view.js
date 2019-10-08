@@ -99,9 +99,6 @@ export let view = {
   // Accounts for all variations of closing a modal
   cancelModal: function() {
     $('.modal').on('hide.bs.modal', function (e) {
-
-      console.log("Removing modal!");
-
       // Call controller function to cancel modal POST and remove modal
       controller.removeModal(this);
     });

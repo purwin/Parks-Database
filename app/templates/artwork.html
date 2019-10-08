@@ -1,6 +1,7 @@
 {% from "_datalist.html" import datalist %}
 {% extends "layout.html" %}
 {% block head_extras %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/dist/datatables.min.css') }}">
 {% endblock %}
 {% block title %}NYC Parks Database – {{ artwork.name|capitalize }}{% endblock %}
 {% block content %}
@@ -110,51 +111,91 @@
 				<div class="[ col-md-8 ]">
 					<h2 class="[ display-4 py-4 ]">Exhibitions</h2>
 
-					<div class="[ row justify-content-center d-none ]">
-						<div class="[ col-12 text-right pb-4 ]">
-							<button id="js-add_exhibition" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
+					{% if exhib %}
+
+						<div class="is-active [ table-responsive-sm ]">
+							<table id="js-table_exhibition" class="table-object dataTable [ table table-hover ]">
+								<thead class="table-head">
+									<tr>
+										<th scope="col">Exhibition</th>
+										<th scope="col">Park</th>
+										<th scope="col">Start Date</th>
+										<th scope="col">End Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in exhib %}
+										<tr>
+											<td>
+												<a href="{{ url_for('exhibition', id=item.exhib.id) }}">
+													{{ item.exhib.name }}
+												</a>
+											</td>
+											<td>
+												<a href="{{ url_for('park', id=item.nycpark.id) }}">
+													{{ item.nycpark.name }}
+												</a>
+											</td>
+											<td>
+												{{ item.exhib.start_date|sort_date }}
+											</td>
+											<td>
+												{{ item.exhib.end_date|sort_date }}
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
 						</div>
-					</div>
-
-					<ul class="js-ul-child js-ul_exhibitions [ list-unstyled p-0 ]">
-
-						{% for exhibit in art_exhib %}
-
-							<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
-
-								<div class="[ col-md-3 ]">
-									<label for="exhibitions">Exhibition</label>
-								</div>
-
-								<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
-									<a href="{{ url_for('exhibition', id=exhibit.exhib.id) }}" class="is-active">{{ exhibit.exhib.name }}</a>
-									<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibit.exhib.id }}" value="{{ exhibit.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control-plaintext d-none ]" readonly>
-									{{ datalist("exhibitions", exhibitions) }}
-								</div>
-
-								<div class="[ col-2 col-md-1 align-items-baseline ]">
-									<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
-								</div>
-
-								<div class="[ col-md-3 ]">
-									<label for="parks">Park</label>
-								</div>
-
-								<div class="[ col-10 col-md-8 col-lg-6 ]">
-									<a href="{{ url_for('park', id=exhibit.nycpark.id) }}" class="is-active">{{ exhibit.nycpark.name }}</a>
-									<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ exhibit.nycpark.id }}" value="{{ exhibit.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park input--attr [ form-control-plaintext d-none ]" readonly>
-									{{ datalist("parks", parks) }}
-								</div>
-
-							</li>
 
 					{% else %}
+						<p class="is-active [ mb-5 ]"><i>{{ artwork.name }} has no related exhibitions.</i></p>
+					{% endif %}
 
-						<li class="[ is-active ]"><i>There are no exhibitions connected with {{ artwork.name }}.</i></li>
 
-					{% endfor %}
+					<div class="d-none">
+						<div class="[ row justify-content-center d-none ]">
+							<div class="[ col-12 text-right pb-4 ]">
+								<button id="js-add_exhibition" class="js-add-li butt butt--add [ ml-2 ]" type="button">Add</button>
+							</div>
+						</div>
 
-					</ul>
+						<ul class="js-ul-child js-ul_exhibitions [ list-unstyled p-0 ]">
+
+							{% for exhibit in exhib %}
+
+								<li class="js-li_exhibition [ row mb-4 align-items-baseline ]">
+
+									<div class="[ col-md-3 ]">
+										<label for="exhibitions">Exhibition</label>
+									</div>
+
+									<div class="[ col-10 col-md-8 col-lg-6 mb-2 ]">
+										<a href="{{ url_for('exhibition', id=exhibit.exhib.id) }}" class="is-active">{{ exhibit.exhib.name }}</a>
+										<input id="js-datalist_exhibition-{{ loop.index }}" type="text" name="exhibitions-{{ loop.index }}" list="exhibitions" data-value="{{ exhibit.exhib.id }}" value="{{ exhibit.exhib.name }}" placeholder="Exhibition Name" class="js-datalist-child js-datalist_exhibition input--attr [ form-control-plaintext d-none ]" readonly>
+										{{ datalist("exhibitions", exhibitions) }}
+									</div>
+
+									<div class="[ col-2 col-md-1 align-items-baseline ]">
+										<button class="js-delete-li butt butt--delete-icon [ px-2 d-none ]" type="button"><i class="far fa-times-circle"></i></button>
+									</div>
+
+									<div class="[ col-md-3 ]">
+										<label for="parks">Park</label>
+									</div>
+
+									<div class="[ col-10 col-md-8 col-lg-6 ]">
+										<a href="{{ url_for('park', id=exhibit.nycpark.id) }}" class="is-active">{{ exhibit.nycpark.name }}</a>
+										<input id="js-datalist_park-{{ loop.index }}" type="text" name="parks-{{ loop.index }}" list="parks" data-value="{{ exhibit.nycpark.id }}" value="{{ exhibit.nycpark.name }}" placeholder="Park Name" class="js-datalist-child js-datalist_park input--attr [ form-control-plaintext d-none ]" readonly>
+										{{ datalist("parks", parks) }}
+									</div>
+
+								</li>
+
+						{% endfor %}
+
+						</ul>
+					</div>
 
 				</div>
 			</div>
@@ -228,7 +269,9 @@
 	</div>
 </script>
 
-<script src="{{ url_for('static', filename='js/dist/artwork.bundle.js') }}"></script>
 
+<script src="{{ url_for('static', filename='js/dist/datatables.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/dist/artwork.bundle.js') }}"></script>
 
 {% endblock %}

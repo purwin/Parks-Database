@@ -55,8 +55,8 @@
 					{% for line in active_artworks %}
 
 						{% if line.Artwork.id not in artworks_list %}
-							<h3 class="[ py-1 ]"><a href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
-								(<a href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							<h3 class="[ py-1 ]"><a class="js-internal" href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a class="js-internal" href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
 							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
 						{% endif %}
 
@@ -70,36 +70,104 @@
 
 
 
-	<section id="section--artworks">
-		<div class="[ row justify-content-center py-5 ]">
+	<section id="section--upcoming">
+		<div class="chunk [ row justify-content-center py-5 ]">
 			<div class="[ col-md-8 ]">
 
+				<h2 class="[ display-4 py-4 ]">Upcoming Artworks</h2>
+
+				{% set artworks_list = [] %}
+
+					{% for line in upcoming_artworks %}
+
+						{% if line.Artwork.id not in artworks_list %}
+							<h3 class="[ py-1 ]"><a class="js-internal" href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a class="js-internal" href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
+						{% endif %}
+
+					{% else %}
+						<p><i>There are no upcoming artworks.</i></p>
+					{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--recent">
+		<div class="chunk [ row justify-content-center py-5 ]">
+			<div class="[ col-md-8 ]">
+
+				<h2 class="[ display-4 py-4 ]">Recent Artworks</h2>
+
+				{% set artworks_list = [] %}
+
+					{% for line in recent_artworks %}
+
+						{% if line.Artwork.id not in artworks_list %}
+							<h3 class="[ py-1 ]"><a class="js-internal" href="{{ url_for('artwork', id=line.Artwork.id) }}">{{ line.Artwork.name }}</a>
+								(<a class="js-internal" href="{{ url_for('exhibition', id=line.Exhibition.id) }}">{{ line.Exhibition.name }}</a>)</h3>
+							{% set artworks_list = artworks_list.append(line.Artwork.id) %}
+						{% endif %}
+
+					{% else %}
+						<p><i>There are no recent artworks.</i></p>
+					{% endfor %}
+
+			</div>
+		</div>
+	</section>
+
+
+
+	<section id="section--artworks">
+		<div class="[ row justify-content-center py-5 ]">
+
+			<div class="[ col-md-8 order-1 ]">
 				<h2 class="[ display-4 py-4 ]">Artworks</h2>
+			</div>
 
-				{% for artwork in artworks %}
+			<div class="[ col-md-8 order-3 ]">
+				{% set artworks_index = [] %}
 
-					<h2 class="[ pt-3 ]"><a href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a></h2>
-					<ul class="[ list-unstyled p-0 ]">
-						<li>Artists:
-							<ul>
+				{%- for artwork in artworks -%}
+				{% set item = artwork.name[0]|lower if artwork.name[0].isalpha() else '#' %}
+				{% set artworks_index = artworks_index if item in artworks_index else artworks_index.append(item) %}
 
-								{% for artist in artwork.artists %}
-									<li><a href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a></li>
-								{% else %}
-								<li><i>{{ artwork.name }} doesn't have any artists yet.</i></li>
-								{% endfor %}
+					<div class="js-index-item {{ 'js-index_' ~ artwork.name[0]|lower if artwork.name[0].isalpha() else 'js-index_#' }} [ d-none ]">
+						<h3 class="[ pt-3 ]">
+							<a class="js-internal" href="{{ url_for('artwork', id=artwork.id) }}">{{ artwork.name }}</a>
+						</h3>
+						<ul class="[ list-unstyled p-0 ]">
+							<li>Artists:
+								<ul class="[ list-unstyled pl-4 ]">
 
-							</ul>
-						</li>
-					</ul>
+									{% for artist in artwork.artists %}
+										<li><a class="js-internal" href="{{ url_for('artist', id=artist.id) }}">{{ artist.name }}</a></li>
+									{% else %}
+									<li><i>{{ artwork.name }} doesn't have any artists yet.</i></li>
+									{% endfor %}
 
-				{% else %}
+								</ul>
+							</li>
+						</ul>
+					</div>
+
+				{%- else -%}
 
 				<p><i>There are no artworks in the database yet.</i></p>
 
-				{% endfor %}
-
+				{%- endfor -%}
 			</div>
+
+			<div class="[ col-md-8 order-2 text-center mb-5 ]">
+				{% for item in artworks_index %}
+					<span id="js-index_{{ item }}" class="index index--artworks js-index [ display-5 ]">{{ item|upper }}</span>
+				{% endfor %}
+			</div>
+
 		</div>
 	</section>
 

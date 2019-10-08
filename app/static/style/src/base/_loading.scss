@@ -1,0 +1,27 @@
+/*
+ *
+ * Parks DB CSS for Loading Element
+ *
+ */
+
+
+.full-page {
+	display: flex;
+	align-content: center;
+	align-items: center;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+  z-index: -999;
+  background: #fff;
+  transition: opacity .5s ease-in;
+}
+
+
+.js-spinner-div {
+  transition: opacity 1s ease-in;
+}
+
+.container-fluid {
+  transition: opacity .25s ease-in;
+}

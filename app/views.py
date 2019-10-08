@@ -12,7 +12,7 @@ from flask import (
   send_file
 )
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
@@ -28,7 +28,7 @@ from datetime import datetime
 import json
 
 from app import app, db
-from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org
+from parks_db import Exh_art_park, Exhibition, Park, Artwork, Artist, Org, exh_org
 from forms import (
   Form_artist,
   Form_exhibition,
@@ -58,6 +58,11 @@ def load_user(user_id):
 
 @app.template_filter('date_format')
 def date_format(value, format='%m/%d/%Y'):
+  if value is not None:
+    return value.strftime(format)
+
+@app.template_filter('sort_date')
+def date_format(value, format='%Y/%m/%d'):
   if value is not None:
     return value.strftime(format)
 
@@ -242,7 +247,6 @@ def import_data():
 @login_required
 def export_data():
   if request.method == 'POST':
-    print "EXPORT POST!"
     try:
       # Check if received data is JSON
       json_object = json.loads(request.form['export_data'])
@@ -267,11 +271,11 @@ def exhibitions():
                                        .all()
   upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
                                          .order_by(Exhibition.start_date)\
-                                         .limit(10)\
+                                         .limit(5)\
                                          .all()
   recent_exhibitions = Exhibition.query.filter(Exhibition.end_date <= today)\
                                          .order_by(Exhibition.end_date.desc())\
-                                         .limit(10)\
+                                         .limit(5)\
                                          .all()
   form = Form_search()
   session['url'] = request.path
@@ -506,7 +510,6 @@ def exhibition_delete(id):
 
 
 @app.route('/parks')
-@login_required
 def parks():
   parks = Park.query.order_by(Park.name).all()
   active_parks = db.session.query(Exh_art_park, Exhibition, Park)\
@@ -541,7 +544,6 @@ def parks():
 
 
 @app.route('/parks/<int:id>')
-@login_required
 def park(id):
   park = Park.query.filter_by(id=id).first_or_404()
   exhibitions = Exhibition.query.all()
@@ -554,8 +556,14 @@ def park(id):
   park_art = Exh_art_park.query.filter_by(park_id = id)\
                                .order_by(Exh_art_park.exhibition_id).all()
   session['url'] = request.path
-  return render_template('park.html', park = park, exhibitions = exhibitions,
-                         artworks = artworks, park_art = park_art, form = form)
+  return render_template(
+      'park.html',
+      park = park,
+      exhibitions = exhibitions,
+      artworks = artworks,
+      park_art = park_art,
+      form = form
+  )
 
 
 @app.route('/parks/create', methods=['POST'])
@@ -678,7 +686,7 @@ def park_delete(id):
 @app.route('/artists')
 @login_required
 def artists():
-  artists = Artist.query.order_by(Artist.pName).all()
+  artists = Artist.query.order_by(Artist.pName).order_by(Artist.fName).all()
   form = Form_search()
   session['url'] = request.path
   return render_template('artists.html', artists = artists, form = form)
@@ -704,7 +712,7 @@ def artist(id):
                          form = form)
 
 
-@app.route('/artists/create', methods=['GET', 'POST'])
+@app.route('/artists/create', methods=['POST'])
 @login_required
 def artist_create():
   pass
@@ -819,10 +827,30 @@ def artworks():
       .order_by(Exhibition.name)\
       .order_by(Artwork.name)\
       .all()
+  upcoming_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
+      .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+      .filter(Exh_art_park.artwork_id == Artwork.id)\
+      .filter(Exhibition.start_date > today)\
+      .order_by(Exhibition.start_date)\
+      .order_by(Artwork.name)\
+      .limit(5)
+  recent_artworks = db.session.query(Exh_art_park, Exhibition, Artwork)\
+      .filter(Exh_art_park.exhibition_id == Exhibition.id)\
+      .filter(Exh_art_park.artwork_id == Artwork.id)\
+      .filter(Exhibition.end_date < today)\
+      .order_by(Exhibition.end_date.desc())\
+      .order_by(Artwork.name)\
+      .limit(5)
   form = Form_search()
   session['url'] = request.path
-  return render_template('artworks.html', artworks = artworks,
-    active_artworks = active_artworks, form = form)
+  return render_template(
+      'artworks.html',
+      artworks = artworks,
+      active_artworks = active_artworks,
+      upcoming_artworks = upcoming_artworks,
+      recent_artworks = recent_artworks,
+      form = form
+  )
 
 
 @app.route('/artworks/<int:id>')
@@ -833,14 +861,20 @@ def artwork(id):
   exhibitions = Exhibition.query.all()
   parks = Park.query.all()
   form = Form_artwork()
-  art_exhib = Exh_art_park.query.filter_by(artwork_id = id).all()
+  exhib = Exh_art_park.query.filter_by(artwork_id = id).all()
   # artwork_join = (db.session.query(Exh_art_park, Artwork)
   #   .filter(Exh_art_park.artwork_id == Artwork.id)
   #   .filter(Artwork.id == artwork_id)).all()
   session['url'] = request.path
-  return render_template('artwork.html', artwork = artwork, artists = artists,
-                         exhibitions = exhibitions, parks = parks,
-                         art_exhib = art_exhib, form = form)
+  return render_template(
+      'artwork.html',
+      artwork = artwork,
+      artists = artists,
+      exhibitions = exhibitions,
+      parks = parks,
+      exhib = exhib,
+      form = form
+  )
 
 
 @app.route('/artworks/create', methods=['POST'])
@@ -994,9 +1028,49 @@ def artwork_delete(id):
 @login_required
 def orgs():
   orgs = Org.query.order_by(Org.name).all()
+  # Get active orgs, exhibitions
+  active_orgs = Org.query.filter(
+        Org.exhibitions.any(
+            and_(Exhibition.start_date <= today, Exhibition.end_date >= today)
+        )
+    )\
+    .order_by(Org.name)\
+    .all()
+  active_exhibitions = Exhibition.query.filter(
+      and_(Exhibition.start_date <= today, Exhibition.end_date >= today)
+  ).all()
+
+  # Get upcoming orgs, exhibitions
+  upcoming_orgs = Org.query.join(Org.exhibitions)\
+      .filter(Exhibition.start_date > today)\
+      .order_by(Exhibition.start_date)\
+      .limit(5)
+  upcoming_exhibitions = Exhibition.query.filter(Exhibition.start_date > today)\
+      .order_by(Exhibition.start_date)\
+      .limit(5)
+
+  # Get recent orgs, exhibitions
+  recent_orgs = Org.query.join(Org.exhibitions)\
+      .filter(Exhibition.end_date < today)\
+      .order_by(Exhibition.end_date.desc())\
+      .limit(5)
+  recent_exhibitions = Exhibition.query.filter(Exhibition.end_date < today)\
+      .order_by(Exhibition.end_date.desc())\
+      .limit(5)
+
   form = Form_search()
   session['url'] = request.path
-  return render_template('orgs.html', orgs = orgs, form = form)
+  return render_template(
+      'orgs.html',
+      orgs = orgs,
+      active_orgs = active_orgs,
+      active_exhibitions = active_exhibitions,
+      upcoming_orgs = upcoming_orgs,
+      upcoming_exhibitions = upcoming_exhibitions,
+      recent_orgs = recent_orgs,
+      recent_exhibitions = recent_exhibitions,
+      form = form
+  )
 
 
 @app.route('/orgs/<int:id>')

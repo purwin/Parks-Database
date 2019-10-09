@@ -31,7 +31,6 @@ $ cd Parks-Database
 Create a virtual environment, then install the required app and node packages:
 ```
 $ mkvirtualenv parks-db
-$ workon parks-db
 $ pip install -r requirements.txt
 $ npm install
 ```
